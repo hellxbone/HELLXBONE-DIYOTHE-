@@ -1,1 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="90" fill="#101010"/><path d="M142 210 Q130 103 256 98 Q382 103 370 210 L346 300 316 324 316 384 196 384 196 324 166 300Z" fill="#e7e7e7" stroke="#ad202d" stroke-width="15"/><path d="M173 224 239 243 204 278ZM339 224 273 243 308 278Z" fill="#101010"/><path d="M256 273 236 306 276 306Z" fill="#101010"/><path d="M206 339H306M232 339V382M256 339V382M280 339V382" stroke="#101010" stroke-width="11"/><text x="256" y="457" font-size="42" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="900">HELLXBONE</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#101010"/>
+
+  <!-- Os croisés -->
+  <g fill="#f5f0e6" stroke="#101010" stroke-width="8">
+    <g transform="rotate(32 256 350)">
+      <rect x="123" y="333" width="266" height="34" rx="17"/>
+      <circle cx="124" cy="333" r="24"/>
+      <circle cx="124" cy="367" r="24"/>
+      <circle cx="388" cy="333" r="24"/>
+      <circle cx="388" cy="367" r="24"/>
+    </g>
+    <g transform="rotate(-32 256 350)">
+      <rect x="123" y="333" width="266" height="34" rx="17"/>
+      <circle cx="124" cy="333" r="24"/>
+      <circle cx="124" cy="367" r="24"/>
+      <circle cx="388" cy="333" r="24"/>
+      <circle cx="388" cy="367" r="24"/>
+    </g>
+  </g>
+
+  <!-- Crâne -->
+  <path fill="#f5f0e6" stroke="#101010" stroke-width="10"
+        stroke-linejoin="round"
+        d="M256 102
+           C184 102 145 149 145 209
+           C145 250 163 274 190 287
+           L190 321 Q190 340 209 340
+           L303 340 Q322 340 322 321
+           L322 287 C349 274 367 250 367 209
+           C367 149 328 102 256 102Z"/>
+
+  <!-- Orbites et nez -->
+  <path fill="#101010"
+        d="M175 206 Q201 183 232 207
+           L226 249 Q188 266 175 236Z
+           M337 206 Q311 183 280 207
+           L286 249 Q324 266 337 236Z
+           M256 244 L239 276 Q256 284 273 276Z"/>
+
+  <!-- Dents -->
+  <path fill="none" stroke="#101010" stroke-width="9"
+        stroke-linecap="round"
+        d="M210 307H302
+           M225 308V334
+           M246 308V334
+           M267 308V334
+           M288 308V334"/>
+</svg>
