@@ -28,6 +28,27 @@
     else if(key.dataset.codeAction==='clear'){code='';lit='';notice='';draw();}
     else validate();
   });
+
+  // Accès discret à la réinitialisation par appui long.
+  let resetHold=null, suppressClickUntil=0;
+  function cancelResetHold(){clearTimeout(resetHold);resetHold=null;}
+  function requestReset(){
+    if(busy)return;
+    const entered=window.prompt('Code de réinitialisation (5 chiffres)');
+    if(entered===null)return;
+    if(entered!=='00000'){window.alert('Code incorrect.');return;}
+    try{localStorage.removeItem(KEY);code='';lit='';notice='Tentative réinitialisée.';draw();}
+    catch(e){window.alert('La réinitialisation est indisponible dans ce navigateur.');}
+  }
+  document.addEventListener('pointerdown',e=>{
+    if(e.button!==0||!e.target.closest('#digicode')||e.target.closest('button,a'))return;
+    cancelResetHold();
+    resetHold=setTimeout(()=>{resetHold=null;suppressClickUntil=Date.now()+1000;requestReset();},2000);
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(kind=>document.addEventListener(kind,cancelResetHold));
+  document.addEventListener('contextmenu',e=>{if(resetHold&&e.target.closest('#digicode'))e.preventDefault();});
+  document.addEventListener('click',e=>{if(Date.now()<suppressClickUntil&&e.target.closest('#digicode')){e.preventDefault();e.stopImmediatePropagation();}},true);
+
   window.addEventListener('storage',e=>{if(e.key===KEY)draw();});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)draw();});
   window.HellCode={render(){code='';lit='';notice='';app.innerHTML='<section id="digicode" aria-label="Jeu du digicode"></section>';draw();}};
