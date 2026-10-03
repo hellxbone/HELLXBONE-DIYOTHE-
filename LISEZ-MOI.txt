@@ -2,7 +2,7 @@ HELLXBONE — PREMIÈRE VERSION
 
 Cette première version est une application web installable sur Android (PWA), pas encore un fichier APK.
 
-1. Le lien général de la boutique SumUp est déjà intégré. Pour ouvrir directement chaque vêtement, remplacer les sumupUrl vides par les liens de chaque fiche produit.
+1. Ouvrir content.js et remplacer sumupShop et sumupUrl par les vrais liens de votre boutique SumUp.
 2. Modifier les titres, descriptions, prix et articles dans content.js. Pour ajouter une photo, renseigner image avec une URL HTTPS ou un chemin local (ex. images/tee.jpg).
 3. Mettre tous les fichiers à la racine d'un dépôt GitHub public, puis activer Settings > Pages > Deploy from a branch > main / (root).
 4. Ouvrir l'adresse HTTPS de GitHub Pages dans Chrome sur Android, menu ⋮ > Ajouter à l'écran d'accueil > Installer.
