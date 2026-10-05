@@ -303,7 +303,12 @@ footer{
   }
 }
 </style>
-</head><body><header class="hellx-header">
+<style id="hellxbone-mobile-menu-final">
+@media(max-width:700px){
+  nav{display:flex!important;justify-content:space-between!important;overflow:hidden!important;padding:0!important;gap:0!important}
+  nav button{font-size:10px!important;padding:10px 2px!important;flex:1 1 20%!important;width:20%!important;min-width:0!important;max-width:20%!important;letter-spacing:-.2px!important;white-space:nowrap!important}
+}
+</style></head><body><header class="hellx-header">
   <div class="hellx-grain" aria-hidden="true"></div>
   <div class="hellx-emblem hellx-emblem-left" aria-hidden="true">✠</div>
   <div class="hellx-title-wrap">
@@ -319,6 +324,36 @@ function openArticle(id){const a=data.articles.find(x=>x.id===id);if(!a)return;d
 document.addEventListener('click',e=>{const nav=e.target.closest('[data-page],[data-go],[data-article]');if(!nav)return;if(nav.dataset.article)openArticle(nav.dataset.article);else render(nav.dataset.page||nav.dataset.go)});render(location.hash==='#jeu'?'jeu':'accueil');if('serviceWorker'in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js?v=20261005-news1',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
 
 
+</script><script>
+(function(){
+  const VERSION='menu-mobile-20261005-v3';
+  function fixMenu(){
+    if(window.innerWidth<=700){
+      document.querySelectorAll('nav button').forEach(b=>{
+        b.style.setProperty('font-size','10px','important');
+        b.style.setProperty('padding','10px 2px','important');
+        b.style.setProperty('flex','1 1 20%','important');
+        b.style.setProperty('width','20%','important');
+        b.style.setProperty('min-width','0','important');
+        b.style.setProperty('max-width','20%','important');
+        b.style.setProperty('white-space','nowrap','important');
+      });
+      const n=document.querySelector('nav');
+      if(n){
+        n.style.setProperty('overflow','hidden','important');
+        n.style.setProperty('gap','0','important');
+        n.style.setProperty('padding','0','important');
+      }
+    }
+  }
+  fixMenu();
+  window.addEventListener('resize',fixMenu);
+  if(localStorage.getItem('hellxbone-version')!==VERSION){
+    localStorage.setItem('hellxbone-version',VERSION);
+    if('caches' in window) caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))));
+    if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.update())));
+  }
+})();
 </script><script data-goatcounter="https://hellxbone.goatcounter.com/count"
         async src="https://gc.zgo.at/count.js"></script><!-- redeploy-icon-v6 --></body></html>
 
