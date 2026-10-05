@@ -19,3 +19,20 @@
 .wheel-zone .button[disabled]{opacity:.5;cursor:not-allowed}
 .wheel-result{min-height:30px;font-weight:700;margin-top:14px}
 @media(max-width:420px){.wheel-label{font-size:10px}.wheel-hub{font-size:15px}}
+
+/* Roue du Chaos v2 : libellés lisibles dans chaque quartier */
+.chaos-wheel .wheel-label{
+  left:50%!important;top:50%!important;width:30%!important;
+  font-size:10px!important;line-height:1.05!important;
+  transform-origin:0 50%!important;white-space:normal!important;
+  text-align:center!important;text-shadow:0 1px 2px #000!important;
+}
+.chaos-wheel .wheel-label.w0{transform:rotate(22.5deg) translate(105%,-50%) rotate(-22.5deg)!important}
+.chaos-wheel .wheel-label.w1{transform:rotate(67.5deg) translate(105%,-50%) rotate(-67.5deg)!important;color:#111!important;text-shadow:none!important}
+.chaos-wheel .wheel-label.w2{transform:rotate(112.5deg) translate(105%,-50%) rotate(-112.5deg)!important}
+.chaos-wheel .wheel-label.w3{transform:rotate(157.5deg) translate(105%,-50%) rotate(-157.5deg)!important;color:#111!important;text-shadow:none!important}
+.chaos-wheel .wheel-label.w4{transform:rotate(202.5deg) translate(105%,-50%) rotate(-202.5deg)!important}
+.chaos-wheel .wheel-label.w5{transform:rotate(247.5deg) translate(105%,-50%) rotate(-247.5deg)!important;color:#111!important;text-shadow:none!important}
+.chaos-wheel .wheel-label.w6{transform:rotate(292.5deg) translate(105%,-50%) rotate(-292.5deg)!important}
+.chaos-wheel .wheel-label.w7{transform:rotate(337.5deg) translate(105%,-50%) rotate(-337.5deg)!important;color:#111!important;text-shadow:none!important}
+@media(max-width:420px){.chaos-wheel .wheel-label{font-size:9px!important;width:29%!important}}
