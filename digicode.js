@@ -103,9 +103,14 @@
   }
   document.addEventListener('click',e=>{const b=e.target.closest('[data-wheel-action="spin"]');if(b&&!b.disabled)spinWheel();});
 
-  // Réinitialisation discrète de la Roue du Chaos par appui long de 5 secondes.
-  let wheelResetHold=null,wheelSuppressClickUntil=0;
-  function cancelWheelResetHold(){clearTimeout(wheelResetHold);wheelResetHold=null;}
+  // Réinitialisation de la Roue du Chaos : maintenir la roue 5 secondes.
+  // Gestion pensée pour Android/PWA : on capture le pointeur et on bloque le menu d'appui long.
+  let wheelResetHold=null,wheelSuppressClickUntil=0,wheelHoldPointerId=null;
+  function cancelWheelResetHold(){
+    clearTimeout(wheelResetHold);
+    wheelResetHold=null;
+    wheelHoldPointerId=null;
+  }
   function resetWheelGame(){
     if(wheelBusy)return;
     try{
@@ -118,16 +123,25 @@
     }
   }
   document.addEventListener('pointerdown',e=>{
-    if(e.button!==0||!e.target.closest('#chaos-wheel')||e.target.closest('button,a'))return;
+    const zone=e.target.closest('#chaos-wheel .wheel-stage');
+    if(!zone||e.target.closest('a')||(e.pointerType==='mouse'&&e.button!==0))return;
     cancelWheelResetHold();
+    wheelHoldPointerId=e.pointerId;
+    try{zone.setPointerCapture(e.pointerId);}catch(_){}
     wheelResetHold=setTimeout(()=>{
       wheelResetHold=null;
-      wheelSuppressClickUntil=Date.now()+1000;
+      wheelSuppressClickUntil=Date.now()+1200;
       resetWheelGame();
+      if(navigator.vibrate)navigator.vibrate(120);
     },5000);
-  });
-  ['pointerup','pointercancel','pointerleave'].forEach(kind=>document.addEventListener(kind,cancelWheelResetHold));
-  document.addEventListener('contextmenu',e=>{if(wheelResetHold&&e.target.closest('#chaos-wheel'))e.preventDefault();});
+  },true);
+  document.addEventListener('pointerup',e=>{if(wheelHoldPointerId===e.pointerId)cancelWheelResetHold();},true);
+  document.addEventListener('pointercancel',e=>{if(wheelHoldPointerId===e.pointerId)cancelWheelResetHold();},true);
+  document.addEventListener('contextmenu',e=>{
+    if(e.target.closest('#chaos-wheel .wheel-stage')){
+      e.preventDefault();
+    }
+  },true);
   document.addEventListener('click',e=>{
     if(Date.now()<wheelSuppressClickUntil&&e.target.closest('#chaos-wheel')){
       e.preventDefault();
