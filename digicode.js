@@ -56,7 +56,7 @@
   function readWheel(){const value=JSON.parse(localStorage.getItem(WHEEL_KEY)||'null');return value&&value.day===day()?value:null;}
   function wheelSvg(){
     const cx=160,cy=160,r=136,ri=58;
-    const labels=['PERDU','PERDU','REJOUE','PERDU','GAGNÉ','PERDU','PERDU','PERDU'];
+    const labels=['GAGNÉ','PERDU','GAGNÉ','PERDU','GAGNÉ','PERDU','GAGNÉ','PERDU'];
     const fills=['#111','#d9c998','#242424','#eee2b6','#111','#d9c998','#242424','#eee2b6'];
     let slices='';
     for(let i=0;i<8;i++){
@@ -90,7 +90,7 @@
     try{if(readWheel()){drawWheel();return;}}catch(e){drawWheel();return;}
     wheelBusy=true;wheelMessage='';drawWheel();
     const won=Math.floor(Math.random()*100)===0;
-    const targetIndex=won?4:([0,1,2,3,5,6,7][Math.floor(Math.random()*7)]);
+    const targetIndex=won?([0,2,4,6][Math.floor(Math.random()*4)]):([1,3,5,7][Math.floor(Math.random()*4)]);
     const center=targetIndex*45+22.5;
     const turns=6+Math.floor(Math.random()*2);
     wheelRotation += turns*360 + (360-center);
@@ -102,6 +102,38 @@
     },4250);
   }
   document.addEventListener('click',e=>{const b=e.target.closest('[data-wheel-action="spin"]');if(b&&!b.disabled)spinWheel();});
+
+  // Réinitialisation discrète de la Roue du Chaos par appui long de 5 secondes.
+  let wheelResetHold=null,wheelSuppressClickUntil=0;
+  function cancelWheelResetHold(){clearTimeout(wheelResetHold);wheelResetHold=null;}
+  function resetWheelGame(){
+    if(wheelBusy)return;
+    try{
+      localStorage.removeItem(WHEEL_KEY);
+      wheelRotation=0;
+      wheelMessage='Jeu réinitialisé.';
+      drawWheel();
+    }catch(e){
+      window.alert('La réinitialisation est indisponible dans ce navigateur.');
+    }
+  }
+  document.addEventListener('pointerdown',e=>{
+    if(e.button!==0||!e.target.closest('#chaos-wheel')||e.target.closest('button,a'))return;
+    cancelWheelResetHold();
+    wheelResetHold=setTimeout(()=>{
+      wheelResetHold=null;
+      wheelSuppressClickUntil=Date.now()+1000;
+      resetWheelGame();
+    },5000);
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(kind=>document.addEventListener(kind,cancelWheelResetHold));
+  document.addEventListener('contextmenu',e=>{if(wheelResetHold&&e.target.closest('#chaos-wheel'))e.preventDefault();});
+  document.addEventListener('click',e=>{
+    if(Date.now()<wheelSuppressClickUntil&&e.target.closest('#chaos-wheel')){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  },true);
   window.addEventListener('storage',e=>{if(e.key===WHEEL_KEY)drawWheel();});
 
   window.HellCode={render(){code='';lit='';notice='';app.innerHTML='<section id="digicode" aria-label="Jeu du digicode"></section><section id="chaos-wheel" aria-label="Roue du Chaos"></section>';draw();drawWheel();}};
