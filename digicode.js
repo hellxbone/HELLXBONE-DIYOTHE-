@@ -3,6 +3,49 @@
   const digest='8c40a6d264e529987be355b303cb08181b8595753e3ef3c8f4bdc29859ac5605';
   let code='',busy=false,lit='',notice='';
   const day=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const cookieGet=name=>document.cookie.split('; ').find(v=>v.startsWith(name+'='))?.split('=').slice(1).join('=')||'';
+  const cookieSet=(name,value,days=30)=>{
+    document.cookie=name+'='+encodeURIComponent(value)+'; Max-Age='+(days*86400)+'; Path=/; SameSite=Lax; Secure';
+  };
+  function sendGameEvent(kind,zone){
+    const path='mini-jeu-'+kind+'-zone-'+(zone||'non-partagee');
+    const fire=()=>{
+      if(window.goatcounter&&typeof window.goatcounter.count==='function'){
+        window.goatcounter.count({path,title:'HELLXBONE mini-jeu',event:true,no_session:true});
+        return true;
+      }
+      return false;
+    };
+    if(!fire()) setTimeout(fire,1200);
+  }
+  function trackMiniGame(kind){
+    const saved=decodeURIComponent(cookieGet('hellxbone_zone')||'');
+    const pref=decodeURIComponent(cookieGet('hellxbone_loc_pref')||'');
+    if(saved){sendGameEvent(kind,saved);return;}
+    if(pref==='refused'){sendGameEvent(kind,'non-partagee');return;}
+    if(pref==='accepted'){
+      if(!navigator.geolocation){sendGameEvent(kind,'indisponible');return;}
+      navigator.geolocation.getCurrentPosition(pos=>{
+        const lat=(Math.round(pos.coords.latitude*10)/10).toFixed(1);
+        const lon=(Math.round(pos.coords.longitude*10)/10).toFixed(1);
+        const zone=lat+'_'+lon;
+        cookieSet('hellxbone_zone',zone,30);
+        sendGameEvent(kind,zone);
+      },()=>sendGameEvent(kind,'non-partagee'),{enableHighAccuracy:false,timeout:7000,maximumAge:86400000});
+      return;
+    }
+    const ok=window.confirm('HELLXBONE souhaite connaître uniquement ta zone approximative en France quand tu joues (environ 10 km), jamais ton adresse exacte. Autoriser ?');
+    cookieSet('hellxbone_loc_pref',ok?'accepted':'refused',30);
+    if(!ok){sendGameEvent(kind,'non-partagee');return;}
+    if(!navigator.geolocation){sendGameEvent(kind,'indisponible');return;}
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const lat=(Math.round(pos.coords.latitude*10)/10).toFixed(1);
+      const lon=(Math.round(pos.coords.longitude*10)/10).toFixed(1);
+      const zone=lat+'_'+lon;
+      cookieSet('hellxbone_zone',zone,30);
+      sendGameEvent(kind,zone);
+    },()=>sendGameEvent(kind,'non-partagee'),{enableHighAccuracy:false,timeout:7000,maximumAge:86400000});
+  }
   function read(){const value=JSON.parse(localStorage.getItem(KEY)||'null');return value&&value.day===day()?value:null;}
   function draw(){
     const root=document.getElementById('digicode');if(!root)return;
@@ -13,6 +56,7 @@
   async function validate(){
     if(busy||code.length!==4)return;
     try{if(read()){draw();return;}}catch(e){draw();return;}
+    trackMiniGame('digicode');
     busy=true;draw();
     try{
       const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(code));
@@ -88,6 +132,7 @@
   function spinWheel(){
     if(wheelBusy)return;
     try{if(readWheel()){drawWheel();return;}}catch(e){drawWheel();return;}
+    trackMiniGame('roue');
     wheelBusy=true;wheelMessage='';drawWheel();
     const won=Math.floor(Math.random()*100)===0;
     const targetIndex=won?([0,2,4,6][Math.floor(Math.random()*4)]):([1,3,5,7][Math.floor(Math.random()*4)]);
