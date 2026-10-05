@@ -58,7 +58,7 @@
     const root=document.getElementById('chaos-wheel');if(!root)return;
     let saved=null;
     try{saved=readWheel();}catch(e){root.innerHTML='<p role="alert">Active le stockage de ton navigateur pour jouer à la Roue du Chaos.</p>';return;}
-    const labels=['💀 PERDU','🔥 PERDU','☠️ RETENTE DEMAIN','🤘 BONUS','🎁 GAGNÉ','💀 PERDU','🔥 PERDU','☠️ PERDU'];
+    const labels=['💀','🔥','☠️','🤘','🎁','💀','🔥','☠️'];
     root.innerHTML='<section class="wheel-zone" aria-label="Roue du Chaos"><h2 class="section-title">☠️ La Roue du Chaos</h2><p>Une seule tentative par jour. Lance la roue et tente ta chance.</p><div class="wheel-wrap"><div class="wheel-pointer" aria-hidden="true">▼</div><div class="chaos-wheel" style="transform:rotate('+wheelRotation+'deg)" aria-label="Roue de hasard">'+labels.map((x,i)=>'<span class="wheel-label w'+i+'">'+x+'</span>').join('')+'<div class="wheel-hub">HELL<br>XBONE</div></div></div><button class="button" data-wheel-action="spin" '+(wheelBusy||saved?'disabled':'')+'>'+(wheelBusy?'La roue tourne…':'🔥 Lancer la roue')+'</button><p class="wheel-result" role="status">'+(saved?(saved.won?'🎁 CHAOS ! Tu as gagné un tee-shirt HELLXBONE au choix. Contacte-moi sur Facebook.':'💀 Perdu pour aujourd’hui. Retente demain.'):(wheelMessage||''))+'</p><p class="code-small">Nouvelle chance à minuit, heure de Paris. La tentative est enregistrée sur cet appareil et ce navigateur.</p></section>';
   }
   function spinWheel(){
