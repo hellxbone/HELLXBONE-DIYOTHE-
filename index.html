@@ -323,8 +323,6 @@ footer{
 .share-label{width:100%;font-size:13px;font-weight:700;opacity:.75}
 .share-btn{border:0;border-radius:8px;padding:9px 11px;font:inherit;font-weight:700;cursor:pointer;background:#111;color:#fff}
 .share-btn.facebook{background:#1877f2}
-.share-btn.instagram{background:#111}
-.share-btn.tiktok{background:#000}
 @media(max-width:640px){
   .share-row{gap:6px}
   .share-btn{flex:1 1 30%;padding:9px 6px;font-size:12px}
@@ -361,7 +359,7 @@ footer{
   }
 })();
 </script><script src="digicode.js?v=20261005-wheel4"></script><script>const data=window.HELLXBONE;const app=document.querySelector('#app');const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const safeUrl=s=>/^https:\/\//i.test(s||'')?s:'';
-const shareButtons=(title,url,excerpt='')=>`<div class="share-row"><span class="share-label">📣 Partager</span><button class="share-btn facebook" data-share="facebook" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">Facebook</button><button class="share-btn instagram" data-share="instagram" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">Instagram</button><button class="share-btn tiktok" data-share="tiktok" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">TikTok</button></div>`;
+const shareButtons=(title,url,excerpt='')=>`<div class="share-row"><span class="share-label">📣 Partager</span><button class="share-btn facebook" data-share="facebook" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">Facebook</button></div>`;
 async function doShare(platform,title,url,excerpt=''){
   const link=url||location.href;
   const text=`${title} — HELLXBONE\n\n${excerpt?excerpt+'\n\n':''}Lire la suite sur HELLXBONE 🤘`;
