@@ -365,13 +365,14 @@ async function doShare(platform,title,url,excerpt=''){
   const link=url||location.href;
   const text=`🤘 ${title}\n\n${excerpt?excerpt+'\n\n':''}🔥 Lire l’article complet sur HELLXBONE :\n${link}`;
   if(platform==='facebook'){
-    try{
-      await navigator.clipboard.writeText(text);
-      alert('✅ Texte de l’article copié !\n\nFacebook va s’ouvrir. Fais une nouvelle publication puis reste appuyé dans le texte et choisis « Coller ».');
-      window.open('https://www.facebook.com/','_blank','noopener,noreferrer');
-    }catch(e){
-      prompt('Copie ce texte, puis colle-le dans une publication Facebook :',text);
+    if(navigator.share){
+      try{
+        await navigator.share({title:title,text:text,url:link});
+        return;
+      }catch(e){}
     }
+    const fb='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
+    window.open(fb,'_blank','noopener,noreferrer');
     return;
   }
   if(navigator.share){
