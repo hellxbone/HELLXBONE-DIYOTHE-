@@ -36,3 +36,30 @@
 .chaos-wheel .wheel-label.w6{transform:rotate(292.5deg) translate(105%,-50%) rotate(-292.5deg)!important}
 .chaos-wheel .wheel-label.w7{transform:rotate(337.5deg) translate(105%,-50%) rotate(-337.5deg)!important;color:#111!important;text-shadow:none!important}
 @media(max-width:420px){.chaos-wheel .wheel-label{font-size:9px!important;width:29%!important}}
+
+/* Roue du Chaos v3 : pictogrammes uniquement */
+.chaos-wheel .wheel-label{
+  width:auto!important;
+  font-size:30px!important;
+  line-height:1!important;
+  text-shadow:none!important;
+}
+.chaos-wheel .wheel-label.w0{transform:rotate(22.5deg) translate(118px,-50%) rotate(-22.5deg)!important}
+.chaos-wheel .wheel-label.w1{transform:rotate(67.5deg) translate(118px,-50%) rotate(-67.5deg)!important}
+.chaos-wheel .wheel-label.w2{transform:rotate(112.5deg) translate(118px,-50%) rotate(-112.5deg)!important}
+.chaos-wheel .wheel-label.w3{transform:rotate(157.5deg) translate(118px,-50%) rotate(-157.5deg)!important}
+.chaos-wheel .wheel-label.w4{transform:rotate(202.5deg) translate(118px,-50%) rotate(-202.5deg)!important}
+.chaos-wheel .wheel-label.w5{transform:rotate(247.5deg) translate(118px,-50%) rotate(-247.5deg)!important}
+.chaos-wheel .wheel-label.w6{transform:rotate(292.5deg) translate(118px,-50%) rotate(-292.5deg)!important}
+.chaos-wheel .wheel-label.w7{transform:rotate(337.5deg) translate(118px,-50%) rotate(-337.5deg)!important}
+@media(max-width:420px){
+ .chaos-wheel .wheel-label{font-size:26px!important}
+ .chaos-wheel .wheel-label.w0{transform:rotate(22.5deg) translate(34vw,-50%) rotate(-22.5deg)!important}
+ .chaos-wheel .wheel-label.w1{transform:rotate(67.5deg) translate(34vw,-50%) rotate(-67.5deg)!important}
+ .chaos-wheel .wheel-label.w2{transform:rotate(112.5deg) translate(34vw,-50%) rotate(-112.5deg)!important}
+ .chaos-wheel .wheel-label.w3{transform:rotate(157.5deg) translate(34vw,-50%) rotate(-157.5deg)!important}
+ .chaos-wheel .wheel-label.w4{transform:rotate(202.5deg) translate(34vw,-50%) rotate(-202.5deg)!important}
+ .chaos-wheel .wheel-label.w5{transform:rotate(247.5deg) translate(34vw,-50%) rotate(-247.5deg)!important}
+ .chaos-wheel .wheel-label.w6{transform:rotate(292.5deg) translate(34vw,-50%) rotate(-292.5deg)!important}
+ .chaos-wheel .wheel-label.w7{transform:rotate(337.5deg) translate(34vw,-50%) rotate(-337.5deg)!important}
+}
