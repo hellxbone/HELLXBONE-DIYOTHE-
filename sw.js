@@ -1,4 +1,4 @@
-const CACHE_VERSION='hellxbone-shareclean-20261005-1';
+const CACHE_VERSION='hellxbone-share-direct-20261005-v12';
 self.addEventListener('install',event=>{
   self.skipWaiting();
 });
