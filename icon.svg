@@ -1,50 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-     width="512" height="512" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#101010"/>
-
-  <!-- Os croisés -->
-  <g fill="#f5f0e6" stroke="#101010" stroke-width="8">
-    <g transform="rotate(32 256 350)">
-      <rect x="123" y="333" width="266" height="34" rx="17"/>
-      <circle cx="124" cy="333" r="24"/>
-      <circle cx="124" cy="367" r="24"/>
-      <circle cx="388" cy="333" r="24"/>
-      <circle cx="388" cy="367" r="24"/>
-    </g>
-    <g transform="rotate(-32 256 350)">
-      <rect x="123" y="333" width="266" height="34" rx="17"/>
-      <circle cx="124" cy="333" r="24"/>
-      <circle cx="124" cy="367" r="24"/>
-      <circle cx="388" cy="333" r="24"/>
-      <circle cx="388" cy="367" r="24"/>
-    </g>
-  </g>
-
-  <!-- Crâne -->
-  <path fill="#f5f0e6" stroke="#101010" stroke-width="10"
-        stroke-linejoin="round"
-        d="M256 102
-           C184 102 145 149 145 209
-           C145 250 163 274 190 287
-           L190 321 Q190 340 209 340
-           L303 340 Q322 340 322 321
-           L322 287 C349 274 367 250 367 209
-           C367 149 328 102 256 102Z"/>
-
-  <!-- Orbites et nez -->
-  <path fill="#101010"
-        d="M175 206 Q201 183 232 207
-           L226 249 Q188 266 175 236Z
-           M337 206 Q311 183 280 207
-           L286 249 Q324 266 337 236Z
-           M256 244 L239 276 Q256 284 273 276Z"/>
-
-  <!-- Dents -->
-  <path fill="none" stroke="#101010" stroke-width="9"
-        stroke-linecap="round"
-        d="M210 307H302
-           M225 308V334
-           M246 308V334
-           M267 308V334
-           M288 308V334"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+ <filter id="g" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+ </filter>
+ <linearGradient id="m" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#222"/><stop offset=".5" stop-color="#050505"/><stop offset="1" stop-color="#333"/></linearGradient>
+</defs>
+<rect width="512" height="512" rx="92" fill="#030303"/>
+<path d="M256 58 L302 154 L416 96 L358 210 L454 256 L358 302 L416 416 L302 358 L256 454 L210 358 L96 416 L154 302 L58 256 L154 210 L96 96 L210 154 Z" fill="none" stroke="#62ff00" stroke-width="30" stroke-linejoin="miter" filter="url(#g)" opacity=".75"/>
+<path d="M256 58 L302 154 L416 96 L358 210 L454 256 L358 302 L416 416 L302 358 L256 454 L210 358 L96 416 L154 302 L58 256 L154 210 L96 96 L210 154 Z" fill="url(#m)" stroke="#8cff00" stroke-width="13" stroke-linejoin="miter"/>
+<path d="M256 78 L292 172 L392 120 L340 220 L434 256 L340 292 L392 392 L292 340 L256 434 L220 340 L120 392 L172 292 L78 256 L172 220 L120 120 L220 172 Z" fill="none" stroke="#36c900" stroke-width="4" opacity=".8"/>
+<g stroke="#9aff00" stroke-width="3" opacity=".75">
+<path d="M190 170l38 27-20 30 37 18"/><path d="M323 164l-33 36 18 29-35 19"/><path d="M165 318l48-21 18 30-23 41"/><path d="M349 316l-49-18-17 29 24 42"/>
+</g>
 </svg>
