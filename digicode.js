@@ -51,5 +51,35 @@
 
   window.addEventListener('storage',e=>{if(e.key===KEY)draw();});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)draw();});
-  window.HellCode={render(){code='';lit='';notice='';app.innerHTML='<section id="digicode" aria-label="Jeu du digicode"></section>';draw();}};
+  const WHEEL_KEY='hellxbone-wheel-v1';
+  let wheelBusy=false,wheelMessage='',wheelRotation=0;
+  function readWheel(){const value=JSON.parse(localStorage.getItem(WHEEL_KEY)||'null');return value&&value.day===day()?value:null;}
+  function drawWheel(){
+    const root=document.getElementById('chaos-wheel');if(!root)return;
+    let saved=null;
+    try{saved=readWheel();}catch(e){root.innerHTML='<p role="alert">Active le stockage de ton navigateur pour jouer à la Roue du Chaos.</p>';return;}
+    const labels=['💀 PERDU','🔥 PERDU','☠️ RETENTE DEMAIN','🤘 BONUS','🎁 GAGNÉ','💀 PERDU','🔥 PERDU','☠️ PERDU'];
+    root.innerHTML='<section class="wheel-zone" aria-label="Roue du Chaos"><h2 class="section-title">☠️ La Roue du Chaos</h2><p>Une seule tentative par jour. Lance la roue et tente ta chance.</p><div class="wheel-wrap"><div class="wheel-pointer" aria-hidden="true">▼</div><div class="chaos-wheel" style="transform:rotate('+wheelRotation+'deg)" aria-label="Roue de hasard">'+labels.map((x,i)=>'<span class="wheel-label w'+i+'">'+x+'</span>').join('')+'<div class="wheel-hub">HELL<br>XBONE</div></div></div><button class="button" data-wheel-action="spin" '+(wheelBusy||saved?'disabled':'')+'>'+(wheelBusy?'La roue tourne…':'🔥 Lancer la roue')+'</button><p class="wheel-result" role="status">'+(saved?(saved.won?'🎁 CHAOS ! Tu as gagné un tee-shirt HELLXBONE au choix. Contacte-moi sur Facebook.':'💀 Perdu pour aujourd’hui. Retente demain.'):(wheelMessage||''))+'</p><p class="code-small">Nouvelle chance à minuit, heure de Paris. La tentative est enregistrée sur cet appareil et ce navigateur.</p></section>';
+  }
+  function spinWheel(){
+    if(wheelBusy)return;
+    try{if(readWheel()){drawWheel();return;}}catch(e){drawWheel();return;}
+    wheelBusy=true;wheelMessage='';drawWheel();
+    const won=Math.floor(Math.random()*100)===0;
+    const targetIndex=won?4:([0,1,2,3,5,6,7][Math.floor(Math.random()*7)]);
+    const segment=45;
+    const center=targetIndex*segment+segment/2;
+    const turns=5+Math.floor(Math.random()*3);
+    wheelRotation += turns*360 + (360-center) + (Math.random()*12-6);
+    const el=document.querySelector('.chaos-wheel');
+    if(el) requestAnimationFrame(()=>{el.style.transition='transform 3.8s cubic-bezier(.12,.68,.18,1)';el.style.transform='rotate('+wheelRotation+'deg)';});
+    setTimeout(()=>{
+      try{if(!readWheel())localStorage.setItem(WHEEL_KEY,JSON.stringify({day:day(),won}));}catch(e){}
+      wheelBusy=false;wheelMessage=won?'🎁 CHAOS ! Tu as gagné un tee-shirt HELLXBONE au choix.':'💀 Perdu. Retente demain.';drawWheel();
+    },3900);
+  }
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-wheel-action="spin"]');if(b&&!b.disabled)spinWheel();});
+  window.addEventListener('storage',e=>{if(e.key===WHEEL_KEY)drawWheel();});
+
+  window.HellCode={render(){code='';lit='';notice='';app.innerHTML='<section id="digicode" aria-label="Jeu du digicode"></section><section id="chaos-wheel" aria-label="Roue du Chaos"></section>';draw();drawWheel();}};
 })();
