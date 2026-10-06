@@ -149,3 +149,30 @@
   .wheel-head p{font-size:15px!important}
   .wheel-button{font-size:15px!important;padding:13px 14px!important}
 }
+
+
+/* Digicode — message après tentative */
+.code-poster-locked{filter:none!important;opacity:1!important}
+.code-poster-locked .metal-key,
+.code-poster-locked .code-validate{pointer-events:none!important}
+.code-feedback{
+  margin:16px auto 10px!important;
+  max-width:520px!important;
+  padding:14px 16px!important;
+  border-radius:12px!important;
+  font-size:18px!important;
+  font-weight:800!important;
+  line-height:1.45!important;
+  text-align:center!important;
+  background:#111!important;
+  color:#f5f1e8!important;
+  border:2px solid #3b3b3b!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.28)!important;
+}
+.code-feedback.error{
+  background:linear-gradient(180deg,#321010 0%,#170707 100%)!important;
+  color:#ffe6e6!important;
+  border-color:#ff4949!important;
+  box-shadow:0 0 18px rgba(255,73,73,.18),0 8px 20px rgba(0,0,0,.28)!important;
+}
+.code-feedback.error strong{color:#ff7b7b!important;font-size:20px!important}
