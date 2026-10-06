@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hellxbone.github.io/HELLXBONE-DIYOTHE-/sitemap.xml
