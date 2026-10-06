@@ -369,7 +369,7 @@ footer{
   </div>
   <div class="hellx-chat-messages" id="hellxChatMessages">
     <div class="hellx-msg bot">Salut, moi c’est HELLX. 🤘
-Je peux te parler de HELLXBONE, de la boutique, des news, du mini-jeu et de l’univers rock & metal.</div>
+Je peux te parler de HELLXBONE, de la boutique, des news et du mini-jeu. Tu peux aussi me poser des questions de culture générale : je chercherai une réponse dans Wikipédia en français.</div>
   </div>
   <form class="hellx-chat-form" id="hellxChatForm">
     <input id="hellxChatInput" autocomplete="off" placeholder="Écris à HELLX…" aria-label="Message à HELLX">
@@ -530,9 +530,9 @@ document.addEventListener('click',e=>{const ext=e.target.closest('[data-external
     messages.appendChild(d);
     messages.scrollTop=messages.scrollHeight;
   }
-  function answer(q){
+  function localAnswer(q){
     const s=q.toLowerCase();
-    if(/bonjour|salut|hello|bonsoir|yo/.test(s))return 'Salut ! 🤘 Moi c’est HELLX. Qu’est-ce que tu veux savoir sur HELLXBONE ?';
+    if(/bonjour|salut|hello|bonsoir|yo/.test(s))return 'Salut ! 🤘 Moi c’est HELLX. Tu peux me demander des infos sur HELLXBONE ou me poser une question de culture générale.';
     if(/boutique|acheter|achat|commande|sumup|tee.?shirt|tshirt|t-shirt/.test(s))return 'La boutique HELLXBONE est accessible depuis l’onglet Boutique. Les achats passent par SumUp, avec les prix et disponibilités à jour.';
     if(/news|article|interview|crorif|festival|mauges|war metal/.test(s))return 'Tu trouveras les dernières interviews, festivals et actus dans l’onglet News. Je peux aussi t’orienter vers les articles publiés dans l’appli.';
     if(/jeu|digicode|roue|gagner|lot/.test(s))return 'Les mini-jeux sont dans l’onglet Jeu. Le digicode et la roue y sont regroupés.';
@@ -540,15 +540,53 @@ document.addEventListener('click',e=>{const ext=e.target.closest('[data-external
     if(/facebook|réseaux|reseaux/.test(s))return 'La page Facebook officielle est facebook.com/DIYOTHE.';
     if(/qui es|ton nom|hellx/.test(s))return 'Je suis HELLX, le chatbot caché de l’application HELLXBONE. Tu m’ouvres en maintenant l’entête 5 secondes. ☠';
     if(/merci/.test(s))return 'Avec plaisir. HELLX reste dans l’ombre. 🤘';
-    return 'Je n’ai pas encore cette réponse. Essaie avec : boutique, News, mini-jeu, DIYOTHE, Facebook ou HELLXBONE.';
+    if(/quelle heure|heure est-il|quel jour|date d'aujourd'hui|date aujourd'hui/.test(s)){
+      const now=new Date();
+      return 'Nous sommes le '+now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' et il est '+now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+'.';
+    }
+    return '';
   }
-  form.addEventListener('submit',e=>{
+
+  async function wikiAnswer(q){
+    try{
+      const searchUrl='https://fr.wikipedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(q)+'&utf8=1&format=json&origin=*';
+      const sr=await fetch(searchUrl,{cache:'no-store'});
+      if(!sr.ok)throw new Error('search');
+      const sj=await sr.json();
+      const hit=sj&&sj.query&&sj.query.search&&sj.query.search[0];
+      if(!hit||!hit.title)return '';
+      const summaryUrl='https://fr.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(hit.title);
+      const rr=await fetch(summaryUrl,{cache:'no-store'});
+      if(!rr.ok)throw new Error('summary');
+      const data=await rr.json();
+      let text=(data.extract||'').trim();
+      if(!text)return '';
+      if(text.length>900)text=text.slice(0,897).replace(/\s+\S*$/,'')+'…';
+      return text+'\n\nSource : Wikipédia — '+hit.title;
+    }catch(e){
+      return '';
+    }
+  }
+
+  async function answer(q){
+    const local=localAnswer(q);
+    if(local)return local;
+    const wiki=await wikiAnswer(q);
+    if(wiki)return wiki;
+    return 'Je n’ai pas trouvé de réponse fiable pour ça. Reformule ta question avec quelques mots-clés précis.';
+  }
+
+  form.addEventListener('submit',async e=>{
     e.preventDefault();
     const q=input.value.trim();
     if(!q)return;
     addMsg(q,'user');
     input.value='';
-    setTimeout(()=>addMsg(answer(q),'bot'),220);
+    addMsg('Je cherche…','bot');
+    const waiting=messages.lastElementChild;
+    const reply=await answer(q);
+    if(waiting&&waiting.textContent==='Je cherche…')waiting.remove();
+    addMsg(reply,'bot');
   });
 })();
 </script></body></html>
