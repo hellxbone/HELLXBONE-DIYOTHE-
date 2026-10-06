@@ -18,6 +18,8 @@ window.HELLXBONE = {
       date: '2026-10-06',
       title: '🔥🎸 INTERVIEW EXCLUSIVE — HELLXBONE × CRORIF 🎸🔥',
       excerpt: 'Bienvenue dans l’univers complètement barré de CRORIF : du riff, de l’autodérision, des solos, du WTF et surtout une sacrée dose de bordel sur scène. 🤘',
+      imageBottom: 'crorif-portrait.webp',
+      imageBottomAlt: 'CRORIF — portrait rock dans une ambiance sombre et enfumée',
       body: [
         '💀 Bienvenue dans l’univers complètement barré de CRORIF ! Du riff, de l’autodérision, des solos, du WTF et surtout une sacrée dose de bordel sur scène. 🤘',
         '🎤 HELLXBONE : Pour ceux qui tombent sur CRORIF pour la première fois, présentez-nous le groupe. Qui se cache derrière CRORIF, comment le projet est-il né et surtout… d’où vient ce foutu nom ?',
