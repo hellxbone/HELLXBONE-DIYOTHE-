@@ -1,4 +1,4 @@
-const CACHE_VERSION='hellxbone-crorif-links-20261006-v4';
+const CACHE_VERSION='hellxbone-crorif-photo-20261006-v1';
 self.addEventListener('install',event=>{
   self.skipWaiting();
 });
