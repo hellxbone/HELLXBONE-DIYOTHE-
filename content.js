@@ -13,6 +13,32 @@ window.HELLXBONE = {
   ],
   articles: [
     {
+      id: 'interview-crorif-2026',
+      category: 'Interview',
+      date: '2026-10-06',
+      title: '🔥🎸 INTERVIEW EXCLUSIVE — HELLXBONE × CRORIF 🎸🔥',
+      excerpt: 'Bienvenue dans l’univers complètement barré de CRORIF : du riff, de l’autodérision, des solos, du WTF et surtout une sacrée dose de bordel sur scène. 🤘',
+      body: [
+        '💀 Bienvenue dans l’univers complètement barré de CRORIF ! Du riff, de l’autodérision, des solos, du WTF et surtout une sacrée dose de bordel sur scène. 🤘',
+        '🎤 HELLXBONE : Pour ceux qui tombent sur CRORIF pour la première fois, présentez-nous le groupe. Qui se cache derrière CRORIF, comment le projet est-il né et surtout… d’où vient ce foutu nom ?',
+        '🎸 CRORIF : « Un "groupe" ? Non, juste un mec tout seul. Pour le nom, c\'est simple : je fais des "crorif de guitare" — à prononcer impérativement avec une voix de débile. 😆 L\'histoire ? Ma chanteuse m\'a planté en pleine tournée. Panique. J\'ai composé 30 minutes de son et j\'ai créé des voix pour me meubler. La mienne, pitchée très grave, c\'est le guitariste virtuose insupportable qui se la raconte. Et les voix aiguës ("Petit Bout"), ce sont les voix cyniques qui passent leur temps à se foutre de sa gueule et à chauffer le public pour qu\'il le hue. Un vrai dialogue de sourds. » 🤘',
+        '🔥 HELLXBONE : On vous présente comme du “rock WTF et festif”, avec des riffs tranchants, des solos qui sentent bon les années 90 et pas mal de second degré. Mais musicalement, quelles sont les influences qui ont réellement construit CRORIF ?',
+        '🎸 CRORIF : « Un crash entre Stupeflip et Ultra Vomit. 💥 Stupeflip pour le côté électro déjanté et les voix, Ultra Vomit pour les gros riffs. La seule différence, c\'est qu\'eux ont du talent, alors que moi j\'ai juste une pédale d\'effet et beaucoup d\'illusions. » 😂🤘',
+        '🤘 HELLXBONE : Chez vous, le concert semble presque aussi important que les morceaux eux-mêmes. Votre public est régulièrement embarqué dans le show, jusqu’à parfois devenir une partie du spectacle. Quand vous montez sur scène, qu’est-ce qui est préparé et quelle place laissez-vous au bordel total et à l’improvisation ?',
+        '🎤 CRORIF : « Dans la vie je suis hôtelier, je parle à des centaines d\'inconnus par jour : le contact est naturel. J\'ai aussi mes pièges — comme faire crier "A-E-R-O-BEAT" au public jusqu\'à ce qu\'ils comprennent —, mais le reste c\'est du feeling. On est là pour rigoler… et afficher le premier rang, c\'est du bonus. » 😈🔥',
+        '🎶 HELLXBONE : Vous avez enchaîné plusieurs scènes en 2026, de petits lieux rock parisiens jusqu’au Skybird Fest devant un public beaucoup plus large et très différent. Est-ce que jouer devant des publics aussi variés change votre manière d’aborder un concert, ou CRORIF débarque partout avec exactement la même mission : retourner la salle ?',
+        '🎸 CRORIF : « En petite salle, la proximité est géniale : je peux regarder les gens dans les yeux quand je leur fais croire que je suis une légende du rock. 😎 En festival outdoor comme le Skybird, c\'est autre chose : il faut que mon ego traverse 50 mètres de champ. Donc j\'occupe tout l\'espace, je prends des poses de Guitar Hero XXL 🎸 et je fais comme si les 2 000 personnes étaient là uniquement pour aduler mes solos. » 🤘🔥',
+        '🚀 HELLXBONE : Maintenant, parlons de la suite. Nouveaux morceaux, enregistrements, clips, concerts, festivals… qu’est-ce qui se prépare actuellement dans les entrailles de CRORIF, et jusqu’où vous aimeriez pousser ce projet ?',
+        '🎤 CRORIF : « Objectif principal : faire assez de dates et de festivals pour enfin rembourser mon matos de rockstar — mon mur de Marshall et mes 12 guitares. 😂🎸 Et accessoirement, continuer de poster du contenu live sur YouTube pour prouver à ma banque que c\'est un vrai projet. »',
+        '📺 YouTube : https://m.youtube.com/@CRORIF',
+        '💀🔥 LE MOT DE LA FIN — HELLXBONE',
+        '🎤 HELLXBONE : Je vous laisse carte blanche… le dernier mot est à CRORIF.',
+        '🎸 CRORIF : « Bougez-vous pour soutenir votre scène locale ! 🤘 J\'ai 40 piges : dans dix ans je suis trop vieux, j\'aurai de l\'arthrose dans les doigts et je serai réduit à jouer à la pétanque. 😂 D\'ici là, j\'offre mon album pour un temps limité sur : 👉 https://crorif.carrd.co/ …tant que je tiens encore debout ! » 🤘🔥',
+        '🖤 Merci à CRORIF d’avoir pris le temps de répondre à HELLXBONE. Continue à foutre du riff 🎸, de l’énergie 🔥 et du joyeux bordel 🤘 sur les scènes !',
+        '💀 Fred — HELLXBONE / DiyOthe'
+      ]
+    },
+    {
       id: 'war-metal-fest-2026',
       category: 'Festival',
       date: '2026-10-05',
