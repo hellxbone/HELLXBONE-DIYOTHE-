@@ -195,5 +195,5 @@
   },true);
   window.addEventListener('storage',e=>{if(e.key===WHEEL_KEY)drawWheel();});
 
-  window.HellCode={render(){code='';lit='';notice='';app.innerHTML='<section id="digicode" aria-label="Jeu du digicode"></section><section id="chaos-wheel" aria-label="Roue du Chaos"></section>';draw();drawWheel();}};
+  window.HellCode={render(){code='';lit='';notice='';app.innerHTML='<section class="section-head section-head-game"><span class="section-kicker">HELLXBONE GAME</span><h2>🎮 MINI-JEU</h2><p>Tente ta chance. Une dose de hasard, un peu de chaos et peut-être la victoire.</p></section><section id="digicode" aria-label="Jeu du digicode"></section><section id="chaos-wheel" aria-label="Roue du Chaos"></section>';draw();drawWheel();}};
 })();
