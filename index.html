@@ -369,7 +369,7 @@ footer{
   </div>
   <div class="hellx-chat-messages" id="hellxChatMessages">
     <div class="hellx-msg bot">Salut, moi c’est HELLX. 🤘
-Je peux te parler de HELLXBONE, de la boutique, des news et du mini-jeu. Tu peux aussi me poser des questions de culture générale : je chercherai une réponse dans Wikipédia en français.</div>
+Je suis HELLX. On peut discuter normalement, parler de HELLXBONE, de musique, de la boutique, des news ou juste papoter.</div>
   </div>
   <form class="hellx-chat-form" id="hellxChatForm">
     <input id="hellxChatInput" autocomplete="off" placeholder="Écris à HELLX…" aria-label="Message à HELLX">
@@ -530,63 +530,164 @@ document.addEventListener('click',e=>{const ext=e.target.closest('[data-external
     messages.appendChild(d);
     messages.scrollTop=messages.scrollHeight;
   }
-  function localAnswer(q){
-    const s=q.toLowerCase();
-    if(/bonjour|salut|hello|bonsoir|yo/.test(s))return 'Salut ! 🤘 Moi c’est HELLX. Tu peux me demander des infos sur HELLXBONE ou me poser une question de culture générale.';
-    if(/boutique|acheter|achat|commande|sumup|tee.?shirt|tshirt|t-shirt/.test(s))return 'La boutique HELLXBONE est accessible depuis l’onglet Boutique. Les achats passent par SumUp, avec les prix et disponibilités à jour.';
-    if(/news|article|interview|crorif|festival|mauges|war metal/.test(s))return 'Tu trouveras les dernières interviews, festivals et actus dans l’onglet News. Je peux aussi t’orienter vers les articles publiés dans l’appli.';
-    if(/jeu|digicode|roue|gagner|lot/.test(s))return 'Les mini-jeux sont dans l’onglet Jeu. Le digicode et la roue y sont regroupés.';
-    if(/diyothe|association|handicap|hellxbone/.test(s))return 'HELLXBONE est l’univers artistique lié à DIYOTHE : créations rock, metal et underground, avec une démarche artistique autour de la maladie et de l’isolement social.';
-    if(/facebook|réseaux|reseaux/.test(s))return 'La page Facebook officielle est facebook.com/DIYOTHE.';
-    if(/qui es|ton nom|hellx/.test(s))return 'Je suis HELLX, le chatbot caché de l’application HELLXBONE. Tu m’ouvres en maintenant l’entête 5 secondes. ☠';
-    if(/merci/.test(s))return 'Avec plaisir. HELLX reste dans l’ombre. 🤘';
+  const hellxState={lastTopic:'',lastUser:''};
+
+  function normalise(s){
+    return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  }
+
+  function choose(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
+  }
+
+  function answer(q){
+    const s=normalise(q);
+    hellxState.lastUser=q;
+
+    if(/^(salut|bonjour|bonsoir|hello|yo|coucou)\b/.test(s)){
+      return choose([
+        'Salut 🤘 Ça roule ?',
+        'Hey 🤘 Quoi de neuf ?',
+        'Salut ! Je suis là. Tu veux parler de quoi ?'
+      ]);
+    }
+
+    if(/ca va|comment vas tu|comment tu vas|tu vas bien/.test(s)){
+      return choose([
+        'Toujours debout dans la machine 🤘 Et toi, ça va ?',
+        'Ça tourne nickel de mon côté. Et toi ?',
+        'Impeccable. Qu’est-ce qui t’amène ?'
+      ]);
+    }
+
+    if(/je vais bien|ca va bien|nickel|tranquille|super/.test(s)){
+      return choose([
+        'Parfait. On garde cette énergie-là 🤘',
+        'Bonne nouvelle. Tu veux qu’on parle de quoi ?',
+        'Nickel. Je t’écoute.'
+      ]);
+    }
+
+    if(/je vais mal|pas bien|fatigue|creve|saoule|marre/.test(s)){
+      return choose([
+        'Pas la meilleure journée visiblement. Tu veux m’en parler un peu ?',
+        'Je vois. Qu’est-ce qui te prend le plus la tête ?',
+        'Ça sent la journée lourde. Je t’écoute.'
+      ]);
+    }
+
+    if(/merci/.test(s)){
+      return choose([
+        'Avec plaisir 🤘',
+        'Pas de souci.',
+        'Quand tu veux.'
+      ]);
+    }
+
+    if(/au revoir|a plus|bonne nuit|bye/.test(s)){
+      return choose([
+        'À plus 🤘',
+        'Bonne suite à toi.',
+        'À bientôt dans HELLXBONE.'
+      ]);
+    }
+
+    if(/tu fais quoi|que fais tu|tu sers a quoi/.test(s)){
+      return 'Je discute avec toi, je peux t’aider à naviguer dans HELLXBONE et parler simplement de ce que tu veux. Je ne suis pas une IA connectée à Internet : je fonctionne directement dans l’application.';
+    }
+
+    if(/qui es|ton nom|hellx/.test(s)){
+      return 'Je suis HELLX, le chatbot caché de HELLXBONE. Tu m’ouvres en maintenant l’entête 5 secondes. ☠';
+    }
+
+    if(/boutique|acheter|achat|commande|sumup|tee.?shirt|tshirt|t-shirt/.test(s)){
+      hellxState.lastTopic='boutique';
+      return 'La boutique HELLXBONE est dans l’onglet Boutique. Les achats passent par SumUp. Tu veux plutôt parler des créations ou de l’achat ?';
+    }
+
+    if(/news|article|interview|crorif|festival|mauges|war metal/.test(s)){
+      hellxState.lastTopic='news';
+      return 'Les dernières interviews, festivals et actus sont dans News. Tu veux parler d’un article en particulier ?';
+    }
+
+    if(/jeu|digicode|roue|gagner|lot/.test(s)){
+      hellxState.lastTopic='jeu';
+      return 'Les mini-jeux sont dans l’onglet Jeu. Tu pensais au digicode ou à la roue ?';
+    }
+
+    if(/diyothe|association|handicap|hellxbone/.test(s)){
+      hellxState.lastTopic='hellxbone';
+      return 'HELLXBONE est l’univers artistique lié à DIYOTHE : créations, rock, metal, interviews et projets indépendants. Qu’est-ce qui t’intéresse le plus là-dedans ?';
+    }
+
+    if(/facebook|reseaux/.test(s)){
+      return 'La page Facebook officielle est facebook.com/DIYOTHE.';
+    }
+
     if(/quelle heure|heure est-il|quel jour|date d'aujourd'hui|date aujourd'hui/.test(s)){
       const now=new Date();
       return 'Nous sommes le '+now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' et il est '+now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+'.';
     }
-    return '';
-  }
 
-  async function wikiAnswer(q){
-    try{
-      const searchUrl='https://fr.wikipedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(q)+'&utf8=1&format=json&origin=*';
-      const sr=await fetch(searchUrl,{cache:'no-store'});
-      if(!sr.ok)throw new Error('search');
-      const sj=await sr.json();
-      const hit=sj&&sj.query&&sj.query.search&&sj.query.search[0];
-      if(!hit||!hit.title)return '';
-      const summaryUrl='https://fr.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(hit.title);
-      const rr=await fetch(summaryUrl,{cache:'no-store'});
-      if(!rr.ok)throw new Error('summary');
-      const data=await rr.json();
-      let text=(data.extract||'').trim();
-      if(!text)return '';
-      if(text.length>900)text=text.slice(0,897).replace(/\s+\S*$/,'')+'…';
-      return text+'\n\nSource : Wikipédia — '+hit.title;
-    }catch(e){
-      return '';
+    if(/pourquoi/.test(s)){
+      return choose([
+        'Ça dépend du contexte. Tu peux me préciser un peu ?',
+        'Bonne question. Tu parles de quoi exactement ?',
+        'Dis-m’en un peu plus et je te répondrai plus clairement.'
+      ]);
     }
+
+    if(/tu aimes|t'aimes|aime tu/.test(s)){
+      if(/metal|rock|punk/.test(s)) return 'Évidemment 😈 Ici, le rock et le metal font partie des murs.';
+      return 'Je n’ai pas de goûts personnels comme un humain, mais je peux jouer le jeu de la conversation.';
+    }
+
+    if(/metal|rock|punk|grunge|concert|musique/.test(s)){
+      hellxState.lastTopic='musique';
+      return choose([
+        'Là tu parles mon langage 🤘 Tu écoutes quoi en ce moment ?',
+        'Rock et metal, on est dans le bon terrain. Quel groupe tu veux mettre sur la table ?',
+        'Ça me va. Plutôt gros riffs, punk, grunge ou metal bien lourd ?'
+      ]);
+    }
+
+    if(/oui|ouais|yes/.test(s) && hellxState.lastTopic){
+      if(hellxState.lastTopic==='boutique') return 'OK. Tu veux que je te parle des créations ou que je t’indique où acheter ?';
+      if(hellxState.lastTopic==='news') return 'OK. Donne-moi le nom de l’article ou du groupe.';
+      if(hellxState.lastTopic==='jeu') return 'OK. Digicode ou roue ?';
+      if(hellxState.lastTopic==='musique') return 'Balance un groupe ou un style.';
+      if(hellxState.lastTopic==='hellxbone') return 'OK. Boutique, News, DIYOTHE ou jeux ?';
+    }
+
+    if(/non|nan/.test(s) && hellxState.lastTopic){
+      hellxState.lastTopic='';
+      return 'Pas de souci. On peut parler d’autre chose.';
+    }
+
+    if(q.trim().endsWith('?')){
+      return choose([
+        'Je ne suis pas sûr d’avoir assez d’éléments. Tu peux préciser un peu ?',
+        'Je peux te répondre si tu me donnes un peu plus de contexte.',
+        'Explique-moi juste un peu mieux ce que tu veux savoir.'
+      ]);
+    }
+
+    return choose([
+      'Je vois. Et ensuite ?',
+      'D’accord. Dis-m’en un peu plus.',
+      'Je t’écoute.',
+      'Intéressant. Continue.',
+      'OK. Qu’est-ce que tu veux en faire ?'
+    ]);
   }
 
-  async function answer(q){
-    const local=localAnswer(q);
-    if(local)return local;
-    const wiki=await wikiAnswer(q);
-    if(wiki)return wiki;
-    return 'Je n’ai pas trouvé de réponse fiable pour ça. Reformule ta question avec quelques mots-clés précis.';
-  }
-
-  form.addEventListener('submit',async e=>{
+  form.addEventListener('submit',e=>{
     e.preventDefault();
     const q=input.value.trim();
     if(!q)return;
     addMsg(q,'user');
     input.value='';
-    addMsg('Je cherche…','bot');
-    const waiting=messages.lastElementChild;
-    const reply=await answer(q);
-    if(waiting&&waiting.textContent==='Je cherche…')waiting.remove();
-    addMsg(reply,'bot');
+    setTimeout(()=>addMsg(answer(q),'bot'),180);
   });
 })();
 </script></body></html>
