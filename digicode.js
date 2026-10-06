@@ -50,7 +50,14 @@
   function draw(){
     const root=document.getElementById('digicode');if(!root)return;
     let saved;try{saved=read();localStorage.setItem(KEY,localStorage.getItem(KEY)||'null');}catch(e){root.innerHTML='<p role="alert">Active le stockage de ton navigateur pour jouer et conserver ta tentative du jour.</p>';return;}
-    if(saved){root.innerHTML=saved.won?'<div class="code-result victory" role="status">CHAOS</div><p class="code-caption">Code trouvé ! Contacte-moi sur <a href="https://facebook.com/DIYOTHE" target="_blank" rel="noopener noreferrer">Facebook DIYOTHE</a> pour ton tee-shirt.</p>':'<div class="code-result defeat" role="status">Perdu, retente demain.</div>';return;}
+    if(saved){
+      if(saved.won){
+        root.innerHTML='<div class="code-result victory" role="status">CHAOS</div><p class="code-caption">Code trouvé ! Contacte-moi sur <a href="https://facebook.com/DIYOTHE" target="_blank" rel="noopener noreferrer">Facebook DIYOTHE</a> pour ton tee-shirt.</p>';
+      }else{
+        root.innerHTML='<div class="code-poster code-poster-locked"><img class="code-art" src="digicode-art.jpg" alt="Digicode HELLXBONE : chaînes, métal gravé, touches de 0 à 9 et bouton Valider"><div class="code-slots" aria-label="Tentative terminée">'+Array.from({length:4},()=>'<span></span>').join('')+'</div><div class="code-keys">'+[1,2,3,4,5,6,7,8,9,0].map(n=>'<button class="metal-key key-'+n+'" disabled aria-label="Chiffre '+n+'">'+n+'</button>').join('')+'</div><button class="code-validate" disabled aria-label="Tentative utilisée"><span>VALIDER</span></button></div><div class="code-feedback error" role="status"><strong>❌ Mauvais code.</strong><br>Perdu, retente demain.</div><p class="code-small">Nouvelle tentative à minuit, heure de Paris. La tentative est conservée sur cet appareil et ce navigateur.</p>';
+      }
+      return;
+    }
     root.innerHTML='<div class="code-poster"><img class="code-art" src="digicode-art.jpg" alt="Digicode HELLXBONE : chaînes, métal gravé, touches de 0 à 9 et bouton Valider"><div class="code-slots" aria-label="Code saisi : '+code.length+' chiffres sur 4">'+Array.from({length:4},(_,i)=>'<span>'+ (code[i]||'') +'</span>').join('')+'</div><div class="code-keys">'+[1,2,3,4,5,6,7,8,9,0].map(n=>'<button class="metal-key key-'+n+' '+(lit===String(n)?'lit':'')+'" data-digit="'+n+'" '+(busy||code.length===4?'disabled':'')+' aria-label="Chiffre '+n+'">'+n+'</button>').join('')+'</div><button class="code-validate" data-code-action="validate" '+(busy||code.length!==4?'disabled':'')+' aria-label="Valider mon code"><span>'+(busy?'Vérification…':'VALIDER')+'</span></button></div><div class="code-actions"><button class="code-clear" data-code-action="clear" '+(busy||!code?'disabled':'')+'>Effacer le code</button></div><p class="code-notice" role="status">'+notice+'</p><p class="code-small">Nouvelle tentative à minuit, heure de Paris. La tentative est conservée sur cet appareil et ce navigateur. Le gain est confirmé avec moi sur Facebook.</p>';
   }
   async function validate(){
