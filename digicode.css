@@ -27,3 +27,125 @@
   .wheel-seg-text{font-size:12px}
   .wheel-logo{font-size:20px}
 }
+
+
+/* ===== ROUE DU CHAOS — HELLXBONE EXTREME ===== */
+.wheel-zone{
+  margin-top:22px!important;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(143,255,70,.10),transparent 34%),
+    linear-gradient(180deg,#121212 0%,#050505 72%,#000 100%)!important;
+  border:2px solid #242424!important;
+  border-radius:18px!important;
+  padding:20px 16px 18px!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.34),inset 0 0 0 1px rgba(255,255,255,.025)!important;
+  color:#f3e4ad!important;
+  position:relative;
+  overflow:hidden;
+}
+.wheel-zone:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(165deg,transparent 0 13px,rgba(255,255,255,.018) 14px,transparent 15px),
+    linear-gradient(90deg,transparent 49%,rgba(255,255,255,.025) 50%,transparent 51%);
+  background-size:auto,8px 8px;
+  opacity:.7;
+}
+.wheel-head,.wheel-stage,.wheel-button,.wheel-result,.wheel-zone .code-small{position:relative;z-index:1}
+.wheel-head{text-align:center;margin-bottom:14px}
+.wheel-kicker{
+  display:inline-block!important;
+  background:#8fff46!important;
+  color:#050505!important;
+  font-weight:900!important;
+  font-size:12px!important;
+  padding:5px 10px!important;
+  border-radius:999px!important;
+  letter-spacing:.09em!important;
+  text-transform:uppercase!important;
+  box-shadow:0 0 12px rgba(143,255,70,.25)!important;
+}
+.wheel-head h2{
+  margin:10px 0 8px!important;
+  font-size:34px!important;
+  line-height:1!important;
+  color:#f3e4ad!important;
+  text-transform:uppercase!important;
+  letter-spacing:.04em!important;
+  text-shadow:0 0 12px rgba(143,255,70,.18),2px 2px 0 #000!important;
+}
+.wheel-head p{margin:0!important;color:#d8caa2!important;font-size:16px!important;line-height:1.45!important}
+.wheel-stage{display:flex;justify-content:center;align-items:center;margin:20px 0 18px!important}
+.chaos-wheel{
+  width:min(92vw,350px)!important;
+  max-width:350px!important;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.6)) drop-shadow(0 0 16px rgba(143,255,70,.22))!important;
+}
+.wheel-svg{width:100%!important;height:auto!important}
+.wheel-pointer{
+  position:absolute!important;
+  top:-7px!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  width:0!important;height:0!important;
+  border-left:18px solid transparent!important;
+  border-right:18px solid transparent!important;
+  border-bottom:31px solid #8fff46!important;
+  filter:drop-shadow(0 0 12px rgba(143,255,70,.55))!important;
+  z-index:5!important;
+}
+.wheel-seg-text{font-size:14px!important;font-weight:900!important;letter-spacing:.06em!important}
+.wheel-seg-text.light{fill:#f8efcf!important}
+.wheel-seg-text.dark{fill:#050505!important}
+.wheel-logo{fill:#f3e4ad!important;font-size:18px!important;font-weight:900!important;letter-spacing:.09em!important}
+.wheel-button{
+  display:block!important;
+  width:100%!important;
+  max-width:330px!important;
+  margin:0 auto 16px!important;
+  background:linear-gradient(180deg,#9cff58 0%,#6fc32f 100%)!important;
+  color:#050505!important;
+  border:2px solid #b8ff8e!important;
+  border-radius:12px!important;
+  font-weight:900!important;
+  font-size:17px!important;
+  padding:14px 16px!important;
+  text-transform:uppercase!important;
+  letter-spacing:.05em!important;
+  box-shadow:0 7px 0 #355f18,0 0 18px rgba(143,255,70,.28)!important;
+}
+.wheel-button:active{transform:translateY(2px)!important;box-shadow:0 4px 0 #355f18,0 0 14px rgba(143,255,70,.24)!important}
+.wheel-button:disabled{opacity:.7!important;box-shadow:0 4px 0 #355f18!important}
+.wheel-result{
+  min-height:58px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  background:#0d0d0d!important;
+  color:#f3e4ad!important;
+  border:2px solid #292929!important;
+  border-radius:12px!important;
+  padding:13px 14px!important;
+  font-size:17px!important;
+  font-weight:900!important;
+  line-height:1.4!important;
+  text-transform:uppercase!important;
+  letter-spacing:.025em!important;
+}
+.wheel-result.win{
+  background:linear-gradient(180deg,#132609 0%,#081004 100%)!important;
+  color:#a7ff72!important;
+  border-color:#8fff46!important;
+  box-shadow:0 0 18px rgba(143,255,70,.26),inset 0 0 20px rgba(143,255,70,.06)!important;
+  text-shadow:0 0 8px rgba(143,255,70,.3)!important;
+}
+.wheel-zone .code-small{color:#cabf9f!important}
+@media(max-width:640px){
+  .wheel-head h2{font-size:28px!important}
+  .wheel-head p{font-size:15px!important}
+  .wheel-button{font-size:15px!important;padding:13px 14px!important}
+}
