@@ -13,16 +13,6 @@ window.HELLXBONE = {
   ],
   articles: [
     {
-      id: 'test-2026-10-06',
-      category: 'Test',
-      date: '2026-10-06',
-      title: 'Test',
-      excerpt: 'Petit article de test pour vérifier le bon fonctionnement de HELLXBONE.',
-      body: [
-        'Ceci est simplement un test pour vérifier que le nouvel article s’affiche correctement et que les notifications HELLXBONE fonctionnent comme prévu. 🤘'
-      ]
-    },
-    {
       id: 'mauges-pit-fest-v-2026',
       category: 'Festival',
       date: '2026-10-06',
