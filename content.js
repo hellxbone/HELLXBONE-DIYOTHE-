@@ -7,7 +7,7 @@ window.HELLXBONE = {
       title: 'Mes créations HELLXBONE',
       price: 'Prix et tailles sur SumUp',
       description: 'Découvre mes tee-shirts et mes autres créations dans ma boutique en ligne.',
-      image: '',
+      image: 'boutique-hellxbone.png',
       sumupUrl: 'https://hellxbone.sumupstore.com/'
     }
   ],
