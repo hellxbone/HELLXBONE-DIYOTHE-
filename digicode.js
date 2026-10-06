@@ -101,7 +101,7 @@
   function wheelSvg(){
     const cx=160,cy=160,r=136,ri=58;
     const labels=['GAGNÉ','PERDU','GAGNÉ','PERDU','GAGNÉ','PERDU','GAGNÉ','PERDU'];
-    const fills=['#111','#d9c998','#242424','#eee2b6','#111','#d9c998','#242424','#eee2b6'];
+    const fills=['#060606','#cab77d','#171717','#8fff46','#020202','#d7c38a','#202020','#6fd12d'];
     let slices='';
     for(let i=0;i<8;i++){
       const a1=(-90+i*45)*Math.PI/180,a2=(-90+(i+1)*45)*Math.PI/180;
@@ -114,10 +114,10 @@
       slices+='<path d="'+d+'" fill="'+fills[i]+'" stroke="#6f6653" stroke-width="2"/><text x="'+tx+'" y="'+ty+'" text-anchor="middle" dominant-baseline="middle" transform="rotate('+(i*45)+' '+tx+' '+ty+')" class="wheel-seg-text '+(dark?'light':'dark')+'">'+labels[i]+'</text>';
     }
     return '<svg class="wheel-svg" viewBox="0 0 320 320" role="img" aria-label="Roue du Chaos à huit cases">'+
-      '<circle cx="160" cy="160" r="151" fill="#090909" stroke="#5c5548" stroke-width="6"/>'+
-      '<circle cx="160" cy="160" r="143" fill="#191919" stroke="#b6a982" stroke-width="3"/>'+
+      '<circle cx="160" cy="160" r="151" fill="#020202" stroke="#8fff46" stroke-width="6"/>'+
+      '<circle cx="160" cy="160" r="143" fill="#0b0b0b" stroke="#d0be8b" stroke-width="3"/>'+
       slices+
-      '<circle cx="160" cy="160" r="55" fill="#070707" stroke="#8c8065" stroke-width="4"/>'+
+      '<circle cx="160" cy="160" r="55" fill="#030303" stroke="#8fff46" stroke-width="4"/>'+
       '<text x="160" y="153" text-anchor="middle" class="wheel-logo">HELL</text>'+
       '<text x="160" y="177" text-anchor="middle" class="wheel-logo">XBONE</text>'+
       '</svg>';
