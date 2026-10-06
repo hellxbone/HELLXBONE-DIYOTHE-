@@ -1,4 +1,4 @@
-const CACHE_VERSION='hellxbone-share-direct-20261005-v12';
+const CACHE_VERSION='hellxbone-crorif-links-20261006-v4';
 self.addEventListener('install',event=>{
   self.skipWaiting();
 });
