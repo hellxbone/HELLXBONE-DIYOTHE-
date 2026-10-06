@@ -1,4 +1,4 @@
-const CACHE_VERSION='hellxbone-crorif-photo-20261006-v1';
+const CACHE_VERSION='hellxbone-sms-share-20261006-v1';
 self.addEventListener('install',event=>{
   self.skipWaiting();
 });
