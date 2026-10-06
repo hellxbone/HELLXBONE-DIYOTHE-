@@ -374,6 +374,38 @@ footer{border-top:3px solid #8fff46!important}
 .section-head p{font-size:16px!important}
 .magazine-grid .card,.shop-grid .card{transform:none!important;box-shadow:4px 4px 0 rgba(0,0,0,.14)!important}
 }
+</style><style id="hellxbone-menu-rock-v2">
+nav{
+  background:#090909!important;
+  border-top:1px solid #252525!important;
+  border-bottom:2px solid #1b1b1b!important;
+  box-shadow:0 5px 14px rgba(0,0,0,.22)!important;
+}
+nav button{
+  background:transparent!important;
+  color:#eadfb9!important;
+  font-weight:700!important;
+  text-transform:uppercase!important;
+  letter-spacing:.03em!important;
+  border-right:1px solid #222!important;
+  border-bottom:3px solid transparent!important;
+  transition:background .15s ease,color .15s ease,border-color .15s ease!important;
+}
+nav button:last-child{border-right:0!important}
+nav button:hover{background:#151515!important;color:#fff7dc!important}
+nav button[aria-current="page"]{
+  background:#111!important;
+  color:#ffffff!important;
+  border-bottom:3px solid #8fff46!important;
+  box-shadow:inset 0 -6px 14px rgba(143,255,70,.07)!important;
+}
+@media(max-width:700px){
+  nav button{
+    font-size:10px!important;
+    padding:11px 2px!important;
+    letter-spacing:0!important;
+  }
+}
 </style></head><body><header class="hellx-header">
   <div class="hellx-grain" aria-hidden="true"></div>
   <div class="hellx-emblem hellx-emblem-left" aria-hidden="true">✠</div>
@@ -475,7 +507,7 @@ document.addEventListener('click',e=>{const ext=e.target.closest('[data-external
 
 </script><script>
 (function(){
-  const VERSION='hellxbone-global-rock-20261006-v2';
+  const VERSION='hellxbone-menu-rock-20261006-v2';
   function fixMenu(){
     if(window.innerWidth<=700){
       document.querySelectorAll('nav button').forEach(b=>{
