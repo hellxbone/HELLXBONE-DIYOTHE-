@@ -1,25 +1,31 @@
 #hellx-riff-crush[hidden]{display:none!important}
 #hellx-riff-crush{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.96);color:#f5f1e8;overflow:auto;padding:18px 12px 28px;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-.riff-wrap{max-width:520px;margin:0 auto;background:linear-gradient(180deg,#151515,#050505);border:2px solid #8fff46;border-radius:18px;padding:16px;box-shadow:0 0 26px rgba(143,255,70,.22)}
+.riff-wrap{position:relative;z-index:2;max-width:520px;margin:0 auto;background:linear-gradient(180deg,#151515,#050505);border:2px solid #8fff46;border-radius:18px;padding:16px;box-shadow:0 0 26px rgba(143,255,70,.22)}
 .riff-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .riff-title{margin:0;font-size:28px;line-height:1;color:#fff;text-transform:uppercase;letter-spacing:.04em}
 .riff-sub{margin:6px 0 14px;color:#cfcfcf;font-size:13px}
 .riff-close,.riff-restart{border:1px solid #8fff46;background:#0b0b0b;color:#fff;border-radius:10px;min-height:44px;padding:9px 13px;font-weight:800}
-.riff-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 12px}
-.riff-stat{background:#0d0d0d;border:1px solid #333;border-radius:10px;padding:9px;text-align:center}
-.riff-stat b{display:block;color:#8fff46;font-size:22px}.riff-stat span{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.08em}
+.riff-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0 12px}
+.riff-stat{background:#0d0d0d;border:1px solid #333;border-radius:10px;padding:8px 4px;text-align:center}
+.riff-stat b{display:block;color:#8fff46;font-size:20px}.riff-stat span{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.06em}
 .riff-board{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;touch-action:none;user-select:none;-webkit-user-select:none}
-.riff-cell{aspect-ratio:1/1;border:1px solid #303030;background:radial-gradient(circle at 35% 30%,#2b2b2b,#0d0d0d 72%);border-radius:10px;display:grid;place-items:center;font-size:clamp(24px,8vw,38px);padding:0;min-width:0;cursor:pointer;transition:transform .12s ease,border-color .12s ease,background .12s ease}
-.riff-cell.selected{border:2px solid #8fff46;transform:scale(.94);background:#17200f}
+.riff-cell{aspect-ratio:1/1;border:1px solid #303030;background:radial-gradient(circle at 35% 30%,#2b2b2b,#0d0d0d 72%);border-radius:10px;display:grid;place-items:center;font-size:clamp(24px,8vw,38px);padding:0;min-width:0;cursor:pointer;transition:transform .12s ease,border-color .12s ease,background .12s ease,filter .12s ease}
+.riff-cell.selected{border:2px solid #8fff46;transform:scale(.94);background:#17200f;box-shadow:0 0 14px rgba(143,255,70,.45)}
 .riff-cell.match{animation:riff-pop .22s ease}
 .riff-cell:focus-visible,.riff-close:focus-visible,.riff-restart:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .riff-message{min-height:28px;margin:10px 0 8px;text-align:center;font-weight:900;color:#8fff46;letter-spacing:.04em}
 .riff-help{font-size:12px;line-height:1.45;color:#aaa;text-align:center;margin:10px 0 0}
-@keyframes riff-pop{50%{transform:scale(1.16);filter:brightness(1.6)}}
-@media(max-width:390px){.riff-wrap{padding:12px}.riff-board{gap:4px}.riff-cell{border-radius:8px}.riff-title{font-size:24px}}
-@media(prefers-reduced-motion:reduce){.riff-cell{transition:none}.riff-cell.match{animation:none}}
+@keyframes riff-pop{50%{transform:scale(1.2) rotate(-2deg);filter:brightness(1.9)}}
+@media(max-width:390px){.riff-wrap{padding:12px}.riff-board{gap:4px}.riff-cell{border-radius:8px}.riff-title{font-size:23px}.riff-stat b{font-size:18px}.riff-stat span{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.riff-cell{transition:none}.riff-cell.match,.riff-message.hot,.riff-event.show,.riff-flash.go{animation:none!important}}
 .riff-best{text-align:center;margin:8px 0 4px;font-size:12px;letter-spacing:.12em;color:#aaa}.riff-best strong{color:#8fff46;font-size:16px}
-.riff-progress{height:8px;background:#1c1c1c;border:1px solid #333;border-radius:999px;overflow:hidden;margin:0 0 10px}.riff-progress>div{height:100%;width:0;background:linear-gradient(90deg,#8fff46,#f5f1e8);transition:width .22s ease}
+.riff-progress{height:9px;background:#1c1c1c;border:1px solid #333;border-radius:999px;overflow:hidden;margin:0 0 10px}.riff-progress>div{height:100%;width:0;background:linear-gradient(90deg,#8fff46,#f5f1e8);box-shadow:0 0 12px #8fff46;transition:width .22s ease}
 .riff-message.hot{animation:riff-message-hit .28s ease;text-shadow:0 0 12px #8fff46}
 .riff-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}.riff-sound{border:1px solid #555;background:#151515;color:#fff;border-radius:10px;min-height:44px;padding:9px 13px;font-weight:800}
 @keyframes riff-message-hit{50%{transform:scale(1.08)}}
+.riff-flash{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0}.riff-flash.go{animation:riff-screen-flash .68s ease-out}
+.riff-flash.combo{background:radial-gradient(circle,rgba(143,255,70,.48),rgba(0,0,0,0) 65%)}.riff-flash.mega{background:radial-gradient(circle,rgba(255,255,255,.9),rgba(143,255,70,.35) 35%,rgba(0,0,0,0) 75%)}.riff-flash.extra{background:radial-gradient(circle,rgba(255,238,80,.85),rgba(143,255,70,.25) 45%,transparent 75%)}.riff-flash.level{background:linear-gradient(135deg,rgba(143,255,70,.68),rgba(255,255,255,.28),rgba(143,255,70,.68))}.riff-flash.tilt{background:rgba(255,0,0,.45)}
+@keyframes riff-screen-flash{0%{opacity:0}18%{opacity:1}42%{opacity:.22}58%{opacity:.9}100%{opacity:0}}
+.riff-event{position:fixed;z-index:10002;left:50%;top:46%;transform:translate(-50%,-50%) scale(.55) rotate(-5deg);opacity:0;pointer-events:none;width:min(92vw,560px);text-align:center;font-size:clamp(34px,11vw,68px);font-weight:1000;line-height:.95;letter-spacing:.04em;text-transform:uppercase;color:#fff;text-shadow:0 0 10px #000,0 0 20px #8fff46,3px 3px 0 #000}.riff-event.show{animation:riff-event-bang .72s cubic-bezier(.2,.9,.25,1.2)}
+.riff-event.extra{color:#fff36a;text-shadow:0 0 10px #000,0 0 25px #fff36a,3px 3px 0 #000}.riff-event.tilt{color:#ff4545;text-shadow:0 0 10px #000,0 0 30px #ff0000,3px 3px 0 #000}.riff-event.level{color:#8fff46}.riff-event.mega{font-size:clamp(40px,13vw,78px)}
+@keyframes riff-event-bang{0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-10deg)}22%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(2deg)}48%{transform:translate(-50%,-50%) scale(.95) rotate(-2deg)}72%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.25)}}
