@@ -18,3 +18,8 @@
 @keyframes riff-pop{50%{transform:scale(1.16);filter:brightness(1.6)}}
 @media(max-width:390px){.riff-wrap{padding:12px}.riff-board{gap:4px}.riff-cell{border-radius:8px}.riff-title{font-size:24px}}
 @media(prefers-reduced-motion:reduce){.riff-cell{transition:none}.riff-cell.match{animation:none}}
+.riff-best{text-align:center;margin:8px 0 4px;font-size:12px;letter-spacing:.12em;color:#aaa}.riff-best strong{color:#8fff46;font-size:16px}
+.riff-progress{height:8px;background:#1c1c1c;border:1px solid #333;border-radius:999px;overflow:hidden;margin:0 0 10px}.riff-progress>div{height:100%;width:0;background:linear-gradient(90deg,#8fff46,#f5f1e8);transition:width .22s ease}
+.riff-message.hot{animation:riff-message-hit .28s ease;text-shadow:0 0 12px #8fff46}
+.riff-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}.riff-sound{border:1px solid #555;background:#151515;color:#fff;border-radius:10px;min-height:44px;padding:9px 13px;font-weight:800}
+@keyframes riff-message-hit{50%{transform:scale(1.08)}}
