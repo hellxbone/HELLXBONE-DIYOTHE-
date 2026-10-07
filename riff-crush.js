@@ -1,12 +1,49 @@
 (()=>{const ROWS=7,COLS=7,MOVES=30,ICONS=['💀','🎸','🔥','🤘','⚡','☠️'],GOALS=[600,1200,2200];let board=[],score=0,moves=MOVES,combo=0,selected=null,busy=false,pointerStart=null,audio=null,best=Number(localStorage.getItem('hellx-riff-best')||0),streak=0;
 const q=s=>document.querySelector(s),pos=i=>[Math.floor(i/COLS),i%COLS],idx=(r,c)=>r*COLS+c,wait=ms=>new Promise(r=>setTimeout(r,ms));
-function ensureAudio(){try{if(!audio)audio=new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume()}catch(e){}}
-function tone(freq,dur=.08,type='square',vol=.045,delay=0){ensureAudio();if(!audio)return;const t=audio.currentTime+delay,o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g).connect(audio.destination);o.start(t);o.stop(t+dur+.02)}
+function ensureAudio(){
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC)return Promise.resolve(false);
+    if(!audio)audio=new AC();
+    if(audio.state==='suspended'){
+      return audio.resume().then(()=>audio.state==='running').catch(()=>false);
+    }
+    return Promise.resolve(audio.state==='running');
+  }catch(e){return Promise.resolve(false)}
+}
+function unlockAudio(){
+  return ensureAudio().then(ok=>{
+    if(!ok||!audio)return false;
+    try{
+      const b=audio.createBuffer(1,1,22050),src=audio.createBufferSource(),g=audio.createGain();
+      g.gain.value=0.00001;src.buffer=b;src.connect(g).connect(audio.destination);src.start(0);
+      return true;
+    }catch(e){return false}
+  });
+}
+function tone(freq,dur=.08,type='square',vol=.045,delay=0){
+  ensureAudio().then(ok=>{
+    if(!ok||!audio)return;
+    try{
+      const t=audio.currentTime+delay,o=audio.createOscillator(),g=audio.createGain();
+      o.type=type;o.frequency.setValueAtTime(freq,t);
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime(vol,t+.008);
+      g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      o.connect(g).connect(audio.destination);o.start(t);o.stop(t+dur+.02);
+    }catch(e){}
+  });
+}
 function sfx(kind,n=1){if(kind==='tap'){tone(150,.045,'square',.025)}else if(kind==='swap'){tone(110,.05,'sawtooth',.035);tone(180,.05,'square',.025,.035)}else if(kind==='bad'){tone(95,.08,'sawtooth',.03);tone(70,.10,'sawtooth',.025,.06)}else if(kind==='match'){tone(180+Math.min(n,6)*35,.07,'square',.04);tone(270+Math.min(n,6)*45,.09,'triangle',.035,.04)}else if(kind==='combo'){[220,330,440,660].slice(0,Math.min(4,n+1)).forEach((f,i)=>tone(f,.08,'square',.045,i*.045))}else if(kind==='mega'){[110,220,330,440,660,880].forEach((f,i)=>tone(f,.11,i%2?'square':'sawtooth',.05,i*.045))}else if(kind==='end'){[330,260,196,130].forEach((f,i)=>tone(f,.16,'sawtooth',.04,i*.09))}}
 function vibe(p){if(navigator.vibrate)try{navigator.vibrate(p)}catch(e){}}
 function buildShell(){if(q('#hellx-riff-crush'))return;const el=document.createElement('section');el.id='hellx-riff-crush';el.hidden=true;el.setAttribute('aria-label','HELLXBONE Riff Crush');el.innerHTML='<div class="riff-wrap"><div class="riff-top"><div><h2 class="riff-title">HELLXBONE RIFF CRUSH</h2><p class="riff-sub">Aligne, enchaîne, explose le score. 30 coups.</p></div><button type="button" class="riff-close" aria-label="Fermer le jeu">✕</button></div><div class="riff-best">🏆 RECORD <strong id="riff-best">0</strong></div><div class="riff-stats"><div class="riff-stat"><b id="riff-score">0</b><span>Score</span></div><div class="riff-stat"><b id="riff-moves">30</b><span>Coups</span></div><div class="riff-stat"><b id="riff-combo">0</b><span>Combo</span></div></div><div class="riff-progress"><div id="riff-progress-bar"></div></div><div id="riff-message" class="riff-message" aria-live="polite">🤘 RIFF !</div><div id="riff-board" class="riff-board" role="grid" aria-label="Grille du jeu"></div><p class="riff-help">4 alignés = +50 • 5+ = MEGA RIFF +150 • Les cascades multiplient les points.</p><div class="riff-actions"><button type="button" class="riff-restart">↻ Recommencer</button><button type="button" class="riff-sound">🔊 Son ON</button></div></div>';document.body.appendChild(el);q('.riff-close').addEventListener('click',closeGame);q('.riff-restart').addEventListener('click',()=>{sfx('tap');newGame()});q('.riff-sound').addEventListener('click',toggleSound);const b=q('#riff-board');b.addEventListener('click',cellClick);b.addEventListener('pointerdown',pointerDown);b.addEventListener('pointerup',pointerUp);b.addEventListener('pointercancel',()=>pointerStart=null)}
 let muted=localStorage.getItem('hellx-riff-muted')==='1';
-function toggleSound(){muted=!muted;localStorage.setItem('hellx-riff-muted',muted?'1':'0');q('.riff-sound').textContent=muted?'🔇 Son OFF':'🔊 Son ON';if(!muted)sfx('tap')}
+function toggleSound(){
+  muted=!muted;
+  localStorage.setItem('hellx-riff-muted',muted?'1':'0');
+  q('.riff-sound').textContent=muted?'🔇 Son OFF':'🔊 Son ON';
+  if(!muted)unlockAudio().then(()=>sfx('tap'));
+}
 const oldSfx=sfx;sfx=(kind,n=1)=>{if(!muted)oldSfx(kind,n)};
 function randIcon(){return ICONS[Math.floor(Math.random()*ICONS.length)]}
 function hasAt(r,c,v){return (c>=2&&board[idx(r,c-1)]===v&&board[idx(r,c-2)]===v)||(r>=2&&board[idx(r-1,c)]===v&&board[idx(r-2,c)]===v)}
@@ -20,11 +57,11 @@ function gravity(){for(let c=0;c<COLS;c++){let write=ROWS-1;for(let r=ROWS-1;r>=
 function updateBest(){if(score>best){best=score;localStorage.setItem('hellx-riff-best',String(best))}}
 async function resolve(){let chain=0;while(true){const m=matches();if(!m.length)break;chain++;combo=Math.max(combo,chain);render();m.forEach(i=>q('.riff-cell[data-i="'+i+'"]')?.classList.add('match'));if(m.length>=5){sfx('mega');vibe([25,25,45])}else if(chain>1){sfx('combo',chain);vibe([15,20,20])}else{sfx('match',m.length);vibe(18)}await wait(150);let bonus=0,points=m.length*10*chain;if(m.length>=5)bonus=150;else if(m.length===4)bonus=50;score+=points+bonus;updateBest();if(m.length>=5)message('⚡ MEGA RIFF +'+(points+bonus)+' !',true);else if(m.length===4)message('🔥 DOUBLE RIFF +'+(points+bonus)+' !',true);else message(chain>1?'🤘 COMBO x'+chain+'  +'+points:'💀 RIFF +'+points,chain>1);m.forEach(i=>board[i]=null);gravity();render();await wait(90)}streak=Math.max(streak,chain)}
 async function trySwap(a,b){if(busy||moves<=0||!adjacent(a,b))return;busy=true;sfx('swap');swap(a,b);render();let m=matches();if(!m.length){await wait(110);swap(a,b);selected=null;render();message('Pas de riff ici…');sfx('bad');vibe(30);busy=false;return}moves--;selected=null;combo=1;await resolve();if(moves<=0){updateBest();message('☠️ FIN DU SET — '+score+' POINTS',true);sfx('end');vibe([40,60,40])}else if(score>=GOALS[2])message('🔥 MODE CHAOS — '+score+' !',true);busy=false}
-function cellClick(e){const btn=e.target.closest('.riff-cell');if(!btn||busy||moves<=0)return;ensureAudio();sfx('tap');const i=Number(btn.dataset.i);if(selected===null){selected=i;render();return}if(selected===i){selected=null;render();return}if(adjacent(selected,i)){const a=selected;trySwap(a,i)}else{selected=i;render()}}
-function pointerDown(e){const btn=e.target.closest('.riff-cell');if(!btn)return;ensureAudio();pointerStart={i:Number(btn.dataset.i),x:e.clientX,y:e.clientY}}
+function cellClick(e){const btn=e.target.closest('.riff-cell');if(!btn||busy||moves<=0)return;unlockAudio().then(()=>sfx('tap'));const i=Number(btn.dataset.i);if(selected===null){selected=i;render();return}if(selected===i){selected=null;render();return}if(adjacent(selected,i)){const a=selected;trySwap(a,i)}else{selected=i;render()}}
+function pointerDown(e){const btn=e.target.closest('.riff-cell');if(!btn)return;unlockAudio();pointerStart={i:Number(btn.dataset.i),x:e.clientX,y:e.clientY}}
 function pointerUp(e){if(!pointerStart||busy||moves<=0){pointerStart=null;return}const dx=e.clientX-pointerStart.x,dy=e.clientY-pointerStart.y;if(Math.max(Math.abs(dx),Math.abs(dy))<24){pointerStart=null;return}const [r,c]=pos(pointerStart.i);let nr=r,nc=c;if(Math.abs(dx)>Math.abs(dy))nc+=dx>0?1:-1;else nr+=dy>0?1:-1;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS)trySwap(pointerStart.i,idx(nr,nc));pointerStart=null}
 function newGame(){score=0;moves=MOVES;combo=0;streak=0;selected=null;busy=false;fillFresh();render();message('🤘 RIFF !');vibe(12)}
-function openGame(){buildShell();newGame();const el=q('#hellx-riff-crush');el.hidden=false;document.body.style.overflow='hidden';q('.riff-close').focus()}
+function openGame(){buildShell();newGame();const el=q('#hellx-riff-crush');el.hidden=false;document.body.style.overflow='hidden';message('🔊 Touche une case pour activer le son');q('.riff-close').focus()}
 function closeGame(){const el=q('#hellx-riff-crush');if(el)el.hidden=true;document.body.style.overflow=''}
 function armSecret(){const h=document.querySelector('.hellx-header');if(!h)return;let timer=null,startX=0,startY=0;const clear=()=>{if(timer){clearTimeout(timer);timer=null}};h.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;clear();timer=setTimeout(()=>{timer=null;openGame()},5000)});h.addEventListener('pointermove',e=>{if(Math.abs(e.clientX-startX)>18||Math.abs(e.clientY-startY)>18)clear()});['pointerup','pointercancel','pointerleave'].forEach(n=>h.addEventListener(n,clear));h.addEventListener('contextmenu',e=>{if(timer)e.preventDefault()})}
 buildShell();armSecret();window.HellRiffCrush={open:openGame,close:closeGame};})();
