@@ -3,35 +3,38 @@
   const digest='8c40a6d264e529987be355b303cb08181b8595753e3ef3c8f4bdc29859ac5605';
   let code='',busy=false,lit='',notice='';
 
-  // Sons du digicode générés avec Web Audio : aucun fichier audio à télécharger.
+  // Sons du digicode : bips plus forts et vibration de secours sur Android.
   let audioCtx=null;
   function getAudioCtx(){
     try{
-      if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-      if(audioCtx.state==='suspended') audioCtx.resume().catch(()=>{});
+      const Ctx=window.AudioContext||window.webkitAudioContext;
+      if(!Ctx)return null;
+      if(!audioCtx)audioCtx=new Ctx();
       return audioCtx;
     }catch(e){return null;}
   }
-  function tone(freq,duration=0.055,volume=0.035,type='square',delay=0){
+  function vibrate(pattern){try{if(navigator.vibrate)navigator.vibrate(pattern);}catch(e){}}
+  async function tone(freq,duration=0.11,volume=0.16,type='square',delay=0){
     const ctx=getAudioCtx();if(!ctx)return;
-    if(ctx.state==='suspended'){
-      ctx.resume().then(()=>tone(freq,duration,volume,type,delay)).catch(()=>{});
-      return;
-    }
+    try{if(ctx.state==='suspended')await ctx.resume();}catch(e){}
+    if(ctx.state!=='running')return;
     const start=ctx.currentTime+delay;
     const osc=ctx.createOscillator();
     const gain=ctx.createGain();
-    osc.type=type;osc.frequency.setValueAtTime(freq,start);
+    osc.type=type;
+    osc.frequency.setValueAtTime(freq,start);
     gain.gain.setValueAtTime(0.0001,start);
-    gain.gain.exponentialRampToValueAtTime(Math.max(0.0001,volume),start+0.006);
+    gain.gain.linearRampToValueAtTime(volume,start+0.008);
+    gain.gain.setValueAtTime(volume,start+Math.max(0.012,duration-0.025));
     gain.gain.exponentialRampToValueAtTime(0.0001,start+duration);
     osc.connect(gain);gain.connect(ctx.destination);
-    osc.start(start);osc.stop(start+duration+0.01);
+    osc.start(start);osc.stop(start+duration+0.02);
   }
-  function soundDigit(n){tone(620+(Number(n)||0)*18,0.045,0.028,'square');}
-  function soundValidate(){tone(470,0.055,0.03,'square');tone(690,0.06,0.03,'square',0.065);}
-  function soundError(){tone(190,0.11,0.04,'sawtooth');tone(145,0.15,0.04,'sawtooth',0.12);}
-  function soundWin(){tone(520,0.08,0.035,'square');tone(660,0.08,0.035,'square',0.09);tone(880,0.16,0.04,'square',0.18);}
+  function soundDigit(n){tone(850+(Number(n)||0)*24,0.10,0.18,'square');vibrate(28);}
+  function soundValidate(){tone(620,0.12,0.18,'square');tone(940,0.14,0.18,'square',0.14);vibrate([45,45,45]);}
+  function soundError(){tone(220,0.18,0.20,'sawtooth');tone(150,0.22,0.20,'sawtooth',0.20);vibrate([100,70,160]);}
+  function soundWin(){tone(620,0.12,0.18,'square');tone(820,0.12,0.18,'square',0.13);tone(1100,0.25,0.20,'square',0.26);vibrate([60,40,60,40,180]);}
+
   const day=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
   const cookieGet=name=>document.cookie.split('; ').find(v=>v.startsWith(name+'='))?.split('=').slice(1).join('=')||'';
   const cookieSet=(name,value,days=30)=>{
