@@ -436,7 +436,7 @@ nav button[aria-current="page"]{
     window.HELLXBONE.articles.unshift(a);
   }
 })();
-</script><script src="digicode.js?v=20261005-location1"></script><script>const data=window.HELLXBONE;const app=document.querySelector('#app');const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const safeUrl=s=>/^https:\/\//i.test(s||'')?s:'';const linkify=s=>esc(s).replace(/https:\/\/[^\s<]+/gi,u=>{const clean=u.replace(/[.,;:!?…]+$/,'');const tail=u.slice(clean.length);return `<a class="article-link" href="${clean}" data-external-link="1">${clean}</a>${tail}`});
+</script><script src="digicode.js?v=20261007-sound2"></script><script>const data=window.HELLXBONE;const app=document.querySelector('#app');const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const safeUrl=s=>/^https:\/\//i.test(s||'')?s:'';const linkify=s=>esc(s).replace(/https:\/\/[^\s<]+/gi,u=>{const clean=u.replace(/[.,;:!?…]+$/,'');const tail=u.slice(clean.length);return `<a class="article-link" href="${clean}" data-external-link="1">${clean}</a>${tail}`});
 const shareButtons=(title,url,excerpt='')=>`<div class="share-row"><span class="share-label">📣 Partager</span><button class="share-btn facebook" data-share="facebook" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">Facebook</button><button class="share-btn sms" data-share="sms" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">💬 SMS</button><button class="share-btn messenger" data-share="messenger" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">💙 Messenger</button><button class="share-btn whatsapp" data-share="whatsapp" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">🟢 WhatsApp</button></div>`;
 async function doShare(platform,title,url,excerpt=''){
   const link=url||location.href;
@@ -506,7 +506,7 @@ document.addEventListener('click',e=>{const articleLink=e.target.closest('a[data
 
 </script><script>
 (function(){
-  const VERSION='hellxbone-menu-rock-20261006-v2';
+  const VERSION='hellxbone-digicode-sound-20261007-v1';
   function fixMenu(){
     if(window.innerWidth<=700){
       document.querySelectorAll('nav button').forEach(b=>{
