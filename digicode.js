@@ -14,6 +14,10 @@
   }
   function tone(freq,duration=0.055,volume=0.035,type='square',delay=0){
     const ctx=getAudioCtx();if(!ctx)return;
+    if(ctx.state==='suspended'){
+      ctx.resume().then(()=>tone(freq,duration,volume,type,delay)).catch(()=>{});
+      return;
+    }
     const start=ctx.currentTime+delay;
     const osc=ctx.createOscillator();
     const gain=ctx.createGain();
@@ -101,6 +105,10 @@
     }catch(e){notice='Vérification indisponible. Réessaie dans un instant.';}
     busy=false;draw();
   }
+  document.addEventListener('pointerdown',e=>{
+    if(e.target.closest('#digicode button')) getAudioCtx();
+  },true);
+
   document.addEventListener('click',e=>{
     const key=e.target.closest('[data-digit],[data-code-action]');if(!key||!key.closest('#digicode')||key.disabled||busy)return;
     if(key.dataset.digit!==undefined){try{if(read()){draw();return;}}catch(e){draw();return;}if(code.length<4){lit=key.dataset.digit;soundDigit(lit);code+=lit;draw();}}
