@@ -36,12 +36,3 @@
 @keyframes riff-short-strobes{0%,26%,52%,78%,100%{opacity:0}10%,38%,64%{opacity:.62}}
 @media(prefers-reduced-motion:reduce){.riff-flash.atomic.go,.riff-flash.mega.go{animation:none!important}}
 
-/* Plein écran mobile et bureau, sans colonne centrale restrictive */
-#hellx-riff-crush{width:100%;height:100dvh;max-height:100dvh;padding:0;overflow:auto;overscroll-behavior:contain}
-.riff-wrap{width:100%;max-width:none;min-height:100dvh;margin:0;border:0;border-radius:0;padding:clamp(8px,2vw,18px);display:flex;flex-direction:column;box-shadow:none}
-.riff-board{width:min(100%,calc((100dvh - 245px)*1));max-width:850px;margin:auto;flex:0 0 auto;gap:clamp(2px,.7vw,6px)}
-.riff-cell{font-size:clamp(20px,5vmin,54px)}
-.riff-top,.riff-best,.riff-stats,.riff-sixes,.riff-progress,.riff-message,.riff-actions{flex-shrink:0}
-.riff-actions{margin-top:auto;padding-top:6px}
-@media(max-height:740px){.riff-sub{display:none}.riff-stats{margin:5px 0}.riff-message{margin:3px 0}.riff-board{width:min(100%,calc(100dvh - 210px))}.riff-help{font-size:10px;line-height:1.2;margin:4px 0}}
-@media(orientation:landscape) and (max-height:540px){.riff-wrap{padding:5px 12px}.riff-top{gap:6px}.riff-title{font-size:18px}.riff-best{margin:2px 0}.riff-stats{margin:2px 0 4px}.riff-stat{padding:2px}.riff-stat b{font-size:15px}.riff-sixes{margin:2px 0!important}.riff-six{width:28px!important;height:30px!important;font-size:23px!important}.riff-sixes small,.riff-help{display:none}.riff-progress{margin-bottom:3px}.riff-message{min-height:20px;font-size:12px}.riff-board{width:min(100%,calc(100dvh - 145px));max-width:500px}.riff-actions{margin-top:2px}.riff-close,.riff-restart,.riff-sound{min-height:32px;padding:3px 8px}}
