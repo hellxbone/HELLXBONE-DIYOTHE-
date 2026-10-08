@@ -29,7 +29,7 @@ function ghostLaugh(force=false){
  }catch(e){}
 }
 const BELL_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/ClocheCathedraleSoissons.ogg';
-const GUITAR_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Riff_black_metal.ogg';
+const GUITAR_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Double_tracked_distorted_electric_guitar_playing_chords.ogg';
 let bellClip=null,guitarClip=null;
 function recordedSound(kind){if(muted)return;try{const isBell=kind==='bell';const clip=new Audio(isBell?BELL_SRC:GUITAR_SRC);clip.preload='auto';clip.volume=isBell?.18:.72;if(isBell)bellClip=clip;else guitarClip=clip;clip.play().catch(()=>{if(!isBell){sfx('mega')}});}catch(e){}}
 function gainSix(){if(sixes>=3)return;sixMisses++;const threshold=sixes===0?4:8;if(sixMisses<threshold)return;if(sixMisses<threshold+3&&Math.random()>=.35)return;sixMisses=0;sixes++;if(sixes<3)recordedSound('bell');vibe([25,45,35]);eventFlash('666 • '+sixes+'/3','mega');message('🔔 6 BORDEAUX GAGNÉ ! '+sixes+'/3',true);if(sixes===3&&!sixPrizePaid){sixPrizePaid=true;score+=2000;updateBest();recordedSound('guitar');eventFlash('666 JACKPOT +2000','mega');message('🎸 666 ! JACKPOT +2000 POINTS !',true);checkLevel()}render()}
