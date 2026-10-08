@@ -29,3 +29,9 @@
 .riff-event{position:fixed;z-index:10002;left:50%;top:46%;transform:translate(-50%,-50%) scale(.55) rotate(-5deg);opacity:0;pointer-events:none;width:min(92vw,560px);text-align:center;font-size:clamp(34px,11vw,68px);font-weight:1000;line-height:.95;letter-spacing:.04em;text-transform:uppercase;color:#fff;text-shadow:0 0 10px #000,0 0 20px #8fff46,3px 3px 0 #000}.riff-event.show{animation:riff-event-bang .72s cubic-bezier(.2,.9,.25,1.2)}
 .riff-event.extra{color:#fff36a;text-shadow:0 0 10px #000,0 0 25px #fff36a,3px 3px 0 #000}.riff-event.tilt{color:#ff4545;text-shadow:0 0 10px #000,0 0 30px #ff0000,3px 3px 0 #000}.riff-event.level{color:#8fff46}.riff-event.mega{font-size:clamp(40px,13vw,78px)}
 @keyframes riff-event-bang{0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-10deg)}22%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(2deg)}48%{transform:translate(-50%,-50%) scale(.95) rotate(-2deg)}72%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.25)}}
+
+/* Bonus de 4 et 5 motifs : flashs courts et atténués, désactivés si mouvement réduit */
+.riff-flash.atomic{background:radial-gradient(circle,rgba(118,255,0,.58),rgba(32,255,30,.30) 45%,transparent 75%)}
+.riff-flash.atomic.go,.riff-flash.mega.go{animation:riff-short-strobes .65s linear both}
+@keyframes riff-short-strobes{0%,26%,52%,78%,100%{opacity:0}10%,38%,64%{opacity:.62}}
+@media(prefers-reduced-motion:reduce){.riff-flash.atomic.go,.riff-flash.mega.go{animation:none!important}}
