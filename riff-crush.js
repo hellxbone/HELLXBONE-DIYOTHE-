@@ -37,7 +37,7 @@ function vibe(p){if(navigator.vibrate)try{navigator.vibrate(p)}catch(e){}}
 function reportLevel(l){const send=()=>{if(window.goatcounter&&typeof window.goatcounter.count==='function'){window.goatcounter.count({path:'riff-level-'+l,title:'HELLXBONE Riff Crush niveau '+l,event:true});return true}return false};if(!send())setTimeout(send,1200);if(l>globalLevel){globalLevel=l;localStorage.setItem('hellx-riff-global-level',String(l));render()}}
 async function fetchGlobalLevel(){for(let l=LEVEL_GOALS.length;l>=1;l--){try{const u='https://hellxbone.goatcounter.com/counter/'+encodeURIComponent('/riff-level-'+l)+'.json';const r=await fetch(u,{cache:'no-store'});if(!r.ok)continue;const j=await r.json();const n=Number(String(j.count||'0').replace(/[^0-9]/g,''));if(n>0){globalLevel=Math.max(globalLevel,l);localStorage.setItem('hellx-riff-global-level',String(globalLevel));render();return globalLevel}}catch(e){}}return globalLevel}
 const LEADERBOARD_CONFIG=window.HELLXBONE_LEADERBOARD||{};
-const LB_URL=String(LEADERBOARD_CONFIG.url||'').replace(/\\/$/,'');
+const LB_URL=String(LEADERBOARD_CONFIG.url||'').replace(/[/]$/,'');
 const LB_KEY=String(LEADERBOARD_CONFIG.anonKey||'');
 const LB_ENABLED=LB_URL.startsWith('https://')&&!!LB_KEY;
 const LB_ID_KEY='hellx-riff-player-id';
