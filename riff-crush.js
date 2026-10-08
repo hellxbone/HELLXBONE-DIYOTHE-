@@ -1,4 +1,4 @@
-(()=>{const ROWS=7,COLS=7,BASE_MOVES=100,ICONS=['💀','🎸','🔥','🤘','⚡','☠️'],LEVEL_GOALS=[600,1400,2600,4200,6500,9000,12000];let board=[],score=0,moves=BASE_MOVES,combo=0,level=1,selected=null,busy=false,pointerStart=null,audio=null,master=null,audioReady=false,best=Number(localStorage.getItem('hellx-riff-best')||0),globalLevel=Number(localStorage.getItem('hellx-riff-global-level')||1),badMoves=0,lastBadAt=0,extraAwarded=new Set(),bonusBalls=0;
+(()=>{const ROWS=7,COLS=7,BASE_MOVES=100,ICONS=['💀','🎸','🔥','🤘','⚡','☠️'],LEVEL_GOALS=[600,1400,2600,4200,6500,9000,12000];let board=[],score=0,moves=BASE_MOVES,combo=0,level=1,selected=null,busy=false,pointerStart=null,audio=null,master=null,audioReady=false,best=Number(localStorage.getItem('hellx-riff-best')||0),globalLevel=Number(localStorage.getItem('hellx-riff-global-level')||1),badMoves=0,lastBadAt=0,extraAwarded=new Set(),bonusBalls=0,lastLaughAt=0,laughUntil=0,laughTimer=null,roundId=0;
 const q=s=>document.querySelector(s),pos=i=>[Math.floor(i/COLS),i%COLS],idx=(r,c)=>r*COLS+c,wait=ms=>new Promise(r=>setTimeout(r,ms));
 let muted=false;localStorage.setItem('hellx-riff-muted','0');
 function initAudioNow(){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;if(!audio){audio=new AC();master=audio.createGain();master.gain.value=1.35;master.connect(audio.destination)}if(audio.state==='suspended')audio.resume();audioReady=audio.state==='running'||audio.state==='suspended';return audioReady}catch(e){return false}}
@@ -8,6 +8,44 @@ function tone(freq,dur=.08,type='square',vol=.05,delay=0,slide=0){if(muted)retur
 function noise(dur=.09,vol=.025){if(muted||!initAudioNow()||!audio)return;try{const n=Math.max(1,Math.floor(audio.sampleRate*dur)),buf=audio.createBuffer(1,n,audio.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const src=audio.createBufferSource(),g=audio.createGain();src.buffer=buf;g.gain.value=vol;src.connect(g);g.connect(master||audio.destination);src.start()}catch(e){}}
 function sfx(kind,n=1){if(muted)return;unlockAudio();if(kind==='tap'){tone(220,.035,'square',.06)}else if(kind==='swap'){tone(120,.045,'sawtooth',.07);tone(210,.05,'square',.06,.03)}else if(kind==='bad'){tone(110,.1,'sawtooth',.085,0,-40);noise(.08,.04)}else if(kind==='match'){tone(210+Math.min(n,6)*35,.07,'square',.085);tone(330+Math.min(n,6)*40,.1,'triangle',.075,.035)}else if(kind==='combo'){[220,330,440,660,880].slice(0,Math.min(5,n+1)).forEach((f,i)=>tone(f,.075,i%2?'square':'triangle',.10,i*.035));noise(.06,.045)}else if(kind==='mega'){[110,220,330,440,660,880,1100].forEach((f,i)=>tone(f,.1,i%2?'square':'sawtooth',.11,i*.035));noise(.15,.055)}else if(kind==='extra'){[440,660,880,1320].forEach((f,i)=>tone(f,.12,'square',.12,i*.055));noise(.12,.06)}else if(kind==='level'){[262,330,392,523,659,784].forEach((f,i)=>tone(f,.12,'triangle',.11,i*.06))}else if(kind==='tilt'){tone(85,.22,'sawtooth',.13,0,-35);tone(60,.28,'square',.10,.08,-20);noise(.28,.08)}else if(kind==='end'){funeralSong()}}
 function funeralSong(){if(muted)return;unlockAudio();const beat=.70;const melody=[{n:196,d:1},{n:196,d:.5},{n:196,d:.5},{n:196,d:1},{n:233.08,d:1},{n:220,d:1},{n:220,d:.5},{n:220,d:.5},{n:220,d:1},{n:196,d:1},{n:196,d:1},{n:196,d:.5},{n:196,d:.5},{n:174.61,d:1},{n:164.81,d:1},{n:146.83,d:2},{n:130.81,d:2}];let pos=0;for(const note of melody){tone(note.n,note.d*beat*.91,'triangle',.24,pos);tone(note.n/2,note.d*beat*.94,'sine',.14,pos);pos+=note.d*beat}for(let t=0;t<pos;t+=beat){tone(t/beat%4===0?65.41:73.42,beat*.42,'triangle',.12,t);tone(49,beat*.32,'sine',.13,t)}tone(65.41,2,'triangle',.26,pos);tone(32.7,2.1,'sine',.2,pos)}
+
+// Three-second synthetic ghost laugh: voiced "ha" pulses, spectral wobble, cavern echo.
+function ghostLaugh(){
+ if(muted||!initAudioNow()||!audio||moves<=0)return;
+ const now=audio.currentTime;
+ if(now<laughUntil)return;
+ laughUntil=now+3.1;lastLaughAt=Date.now();
+ try{
+  const bus=audio.createGain(),low=audio.createBiquadFilter(),echo=audio.createDelay(1),feedback=audio.createGain(),wet=audio.createGain();
+  low.type='lowpass';low.frequency.value=1150;bus.connect(low);low.connect(master||audio.destination);
+  low.connect(echo);echo.delayTime.value=.24;echo.connect(feedback);feedback.gain.value=.22;feedback.connect(echo);echo.connect(wet);wet.gain.value=.24;wet.connect(master||audio.destination);
+  const pulses=[0,.36,.72,1.13,1.51,1.92,2.31,2.62];
+  pulses.forEach((offset,i)=>{
+   const t=now+offset,d=Math.min(.30,3-offset),freq= i<3?135-i*11:105+(i%3)*13;
+   for(const [mult,vol] of [[1,.19],[1.98,.065],[.51,.045]]){
+    const o=audio.createOscillator(),g=audio.createGain();
+    o.type=mult===1?'sawtooth':'triangle';o.frequency.setValueAtTime(freq*mult,t);
+    o.frequency.exponentialRampToValueAtTime(Math.max(35,freq*mult*.76),t+d);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.035);
+    g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(g);g.connect(bus);o.start(t);o.stop(t+d+.015);
+   }
+  });
+  const stop=now+3;
+  bus.gain.setValueAtTime(1,now);bus.gain.setValueAtTime(1,stop-.16);bus.gain.linearRampToValueAtTime(0,stop);
+  setTimeout(()=>{try{bus.disconnect();low.disconnect();echo.disconnect();feedback.disconnect();wet.disconnect()}catch(e){}},4400);
+ }catch(e){}
+}
+function scheduleRandomLaugh(){
+ if(laughTimer)clearTimeout(laughTimer);
+ const id=roundId;
+ laughTimer=setTimeout(()=>{
+  laughTimer=null;
+  if(id!==roundId||!q('#hellx-riff-crush')||q('#hellx-riff-crush').hidden||moves<=0||muted)return;
+  if(Date.now()-lastLaughAt>12500)ghostLaugh();
+  scheduleRandomLaugh();
+ },14000+Math.random()*17000);
+}
 function vibe(p){if(navigator.vibrate)try{navigator.vibrate(p)}catch(e){}}
 function reportLevel(l){const send=()=>{if(window.goatcounter&&typeof window.goatcounter.count==='function'){window.goatcounter.count({path:'riff-level-'+l,title:'HELLXBONE Riff Crush niveau '+l,event:true});return true}return false};if(!send())setTimeout(send,1200);if(l>globalLevel){globalLevel=l;localStorage.setItem('hellx-riff-global-level',String(l));render()}}
 async function fetchGlobalLevel(){for(let l=LEVEL_GOALS.length;l>=1;l--){try{const u='https://hellxbone.goatcounter.com/counter/'+encodeURIComponent('/riff-level-'+l)+'.json';const r=await fetch(u,{cache:'no-store'});if(!r.ok)continue;const j=await r.json();const n=Number(String(j.count||'0').replace(/[^0-9]/g,''));if(n>0){globalLevel=Math.max(globalLevel,l);localStorage.setItem('hellx-riff-global-level',String(globalLevel));render();return globalLevel}}catch(e){}}return globalLevel}
@@ -35,8 +73,8 @@ async function trySwap(a,b){if(busy||moves<=0||!adjacent(a,b))return;busy=true;s
 function cellClick(e){const btn=e.target.closest('.riff-cell');if(!btn||busy||moves<=0)return;unlockAudio();sfx('tap');const i=Number(btn.dataset.i);if(selected===null){selected=i;render();return}if(selected===i){selected=null;render();return}if(adjacent(selected,i)){const a=selected;trySwap(a,i)}else{selected=i;render()}}
 function pointerDown(e){const btn=e.target.closest('.riff-cell');if(!btn)return;unlockAudio();pointerStart={i:Number(btn.dataset.i),x:e.clientX,y:e.clientY}}
 function pointerUp(e){if(!pointerStart||busy||moves<=0){pointerStart=null;return}const dx=e.clientX-pointerStart.x,dy=e.clientY-pointerStart.y;if(Math.max(Math.abs(dx),Math.abs(dy))<24){pointerStart=null;return}const [r,c]=pos(pointerStart.i);let nr=r,nc=c;if(Math.abs(dx)>Math.abs(dy))nc+=dx>0?1:-1;else nr+=dy>0?1:-1;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS)trySwap(pointerStart.i,idx(nr,nc));pointerStart=null}
-function newGame(){score=0;moves=BASE_MOVES;combo=0;level=1;badMoves=0;extraAwarded.clear();bonusBalls=0;selected=null;busy=false;fillFresh();render();reportLevel(1);fetchGlobalLevel();message('🤘 RIFF !');vibe(12)}
-function openGame(){buildShell();newGame();const el=q('#hellx-riff-crush');el.hidden=false;document.body.style.overflow='hidden';unlockAudio();setTimeout(()=>sfx('level'),60);message('🔊 SON ACTIF • Fais ton premier riff !');q('.riff-close').focus()}
-function closeGame(){const el=q('#hellx-riff-crush');if(el)el.hidden=true;document.body.style.overflow=''}
+function newGame(){roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;score=0;moves=BASE_MOVES;combo=0;level=1;badMoves=0;extraAwarded.clear();bonusBalls=0;selected=null;busy=false;fillFresh();render();reportLevel(1);fetchGlobalLevel();message('🤘 RIFF !');vibe(12);if(q('#hellx-riff-crush')&&!q('#hellx-riff-crush').hidden){ghostLaugh();scheduleRandomLaugh()}}
+function openGame(){buildShell();newGame();const el=q('#hellx-riff-crush');el.hidden=false;document.body.style.overflow='hidden';unlockAudio();setTimeout(()=>{ghostLaugh();scheduleRandomLaugh()},120);message('🔊 SON ACTIF • Fais ton premier riff !');q('.riff-close').focus()}
+function closeGame(){roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;const el=q('#hellx-riff-crush');if(el)el.hidden=true;document.body.style.overflow=''}
 function armSecret(){const h=document.querySelector('.hellx-header');if(!h)return;let timer=null,startX=0,startY=0;const clear=()=>{if(timer){clearTimeout(timer);timer=null}};h.addEventListener('pointerdown',e=>{unlockAudio();if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;clear();timer=setTimeout(()=>{timer=null;openGame()},5000)});h.addEventListener('pointermove',e=>{if(Math.abs(e.clientX-startX)>18||Math.abs(e.clientY-startY)>18)clear()});['pointerup','pointercancel','pointerleave'].forEach(n=>h.addEventListener(n,clear));h.addEventListener('contextmenu',e=>{if(timer)e.preventDefault()})}
 buildShell();armSecret();window.HellRiffCrush={open:openGame,close:closeGame};if(location.hash==='#mega-riff')setTimeout(openGame,120);})();
