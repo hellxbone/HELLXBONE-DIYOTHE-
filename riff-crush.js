@@ -22,11 +22,10 @@ function ghostLaugh(force=false){
   if(laughStopTimer)clearTimeout(laughStopTimer);
   if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}
   else {laughAudio=new Audio(LAUGH_SRC);laughAudio.preload='auto';}
-  laughAudio.volume=1;
+  laughAudio.volume=.65;
   laughAudio.playbackRate=1.08;
-  laughAudio.currentTime=.4;
+  laughAudio.currentTime=0;
   const p=laughAudio.play();if(p&&p.catch)p.catch(()=>{});
-  laughStopTimer=setTimeout(()=>{if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}},3000);
  }catch(e){}
 }
 function scheduleRandomLaugh(){
