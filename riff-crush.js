@@ -22,7 +22,7 @@ function ghostLaugh(force=false){
   if(laughStopTimer)clearTimeout(laughStopTimer);
   if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}
   else {laughAudio=new Audio(LAUGH_SRC);laughAudio.preload='auto';}
-  laughAudio.volume=0.22295;
+  laughAudio.volume=0.13377;
   laughAudio.playbackRate=1.08;
   laughAudio.currentTime=0;
   const p=laughAudio.play();if(p&&p.catch)p.catch(()=>{});
