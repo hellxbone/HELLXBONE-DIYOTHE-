@@ -1,6 +1,5 @@
-// Renseigner l'URL du projet Supabase et sa cle publique (anon/publishable).
-// Ne jamais utiliser ici une cle service_role ou secret.
+// Public browser configuration. Never put private keys in this file.
 window.HELLXBONE_LEADERBOARD={
-  url:'',
-  anonKey:''
+  url:'https://ldibykpitjutratyqqax.supabase.co',
+  anonKey:'sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv'
 };
