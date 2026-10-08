@@ -11,7 +11,7 @@ function funeralSong(){if(muted)return;unlockAudio();const beat=.70;const melody
 
 // Three-second synthetic ghost laugh: voiced "ha" pulses, spectral wobble, cavern echo.
 // Real public-domain beast laughter sample, not synthesized musical tones.
-const LAUGH_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Beast_laughter.ogg';
+const LAUGH_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Evil_laugh_2.oga';
 let laughAudio=null,laughStopTimer=null;
 function ghostLaugh(force=false){
  if(muted||moves<=0)return;
@@ -23,8 +23,8 @@ function ghostLaugh(force=false){
   if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}
   else {laughAudio=new Audio(LAUGH_SRC);laughAudio.preload='auto';}
   laughAudio.volume=1;
-  laughAudio.playbackRate=.85;
-  laughAudio.currentTime=0;
+  laughAudio.playbackRate=1.08;
+  laughAudio.currentTime=.4;
   const p=laughAudio.play();if(p&&p.catch)p.catch(()=>{});
   laughStopTimer=setTimeout(()=>{if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}},3000);
  }catch(e){}
