@@ -36,3 +36,6 @@
 @keyframes riff-short-strobes{0%,26%,52%,78%,100%{opacity:0}10%,38%,64%{opacity:.62}}
 @media(prefers-reduced-motion:reduce){.riff-flash.atomic.go,.riff-flash.mega.go{animation:none!important}}
 
+
+.riff-world-score{text-align:center;margin:7px 0;padding:9px;border:1px solid #866014;border-radius:9px;background:#181309;color:#ffe49a;font-size:13px;font-weight:900}.riff-world-score strong{color:#fff;font-size:20px;margin-left:8px}
+.riff-leaderboard{border:1px solid #72404a;border-radius:10px;background:#170b10;margin:8px 0 12px;padding:8px 10px;color:#eee}.riff-leaderboard summary{cursor:pointer;color:#ffb3c5;font-weight:900;min-height:24px}.riff-rank{display:grid;grid-template-columns:26px 1fr auto;gap:6px;padding:6px 2px;border-bottom:1px solid #44232d;font-size:12px}.riff-rank strong{color:#d6ff8a}.riff-player-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;font-size:12px}.riff-player-label input{width:56%;min-height:34px;border-radius:7px;border:1px solid #777;background:#080808;color:white;padding:5px 8px}.riff-leaderboard p{font-size:11px;color:#aaa;margin:7px 0 0}
