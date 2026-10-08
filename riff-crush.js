@@ -16,27 +16,17 @@ let laughAudio=null,laughStopTimer=null;
 function ghostLaugh(force=false){
  if(muted||moves<=0)return;
  const now=Date.now();
- if(!force && now-lastLaughAt<11500)return;
+ if(!force && now-lastLaughAt<800)return;
  lastLaughAt=now;
  try{
   if(laughStopTimer)clearTimeout(laughStopTimer);
   if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}
   else {laughAudio=new Audio(LAUGH_SRC);laughAudio.preload='auto';}
-  laughAudio.volume=0.3185;
+  laughAudio.volume=0.22295;
   laughAudio.playbackRate=1.08;
   laughAudio.currentTime=0;
   const p=laughAudio.play();if(p&&p.catch)p.catch(()=>{});
  }catch(e){}
-}
-function scheduleRandomLaugh(){
- if(laughTimer)clearTimeout(laughTimer);
- const id=roundId;
- laughTimer=setTimeout(()=>{
-  laughTimer=null;
-  if(id!==roundId||!q('#hellx-riff-crush')||q('#hellx-riff-crush').hidden||moves<=0||muted)return;
-  if(Date.now()-lastLaughAt>12500)ghostLaugh();
-  scheduleRandomLaugh();
- },10000+Math.random()*13000);
 }
 function vibe(p){if(navigator.vibrate)try{navigator.vibrate(p)}catch(e){}}
 function reportLevel(l){const send=()=>{if(window.goatcounter&&typeof window.goatcounter.count==='function'){window.goatcounter.count({path:'riff-level-'+l,title:'HELLXBONE Riff Crush niveau '+l,event:true});return true}return false};if(!send())setTimeout(send,1200);if(l>globalLevel){globalLevel=l;localStorage.setItem('hellx-riff-global-level',String(l));render()}}
@@ -59,14 +49,14 @@ function updateBest(){if(score>best){best=score;localStorage.setItem('hellx-riff
 function awardBalls(amount){const awarded=Math.min(amount,Math.max(0,20-bonusBalls));bonusBalls+=awarded;moves+=awarded;return awarded}
 function checkLevel(){let advanced=false;while(level<LEVEL_GOALS.length&&score>=goalForLevel(level)){level++;reportLevel(level);advanced=true;sfx('level');vibe([20,35,20,35,60]);eventFlash('LEVEL '+level,'level');message('⚡ NIVEAU '+level+' !',true)}return advanced}
 function maybeExtraBall(mLen,chain){const key=Math.floor(score/1800);if((mLen>=5||chain>=3||score>=1800)&&!extraAwarded.has(key)){extraAwarded.add(key);const awarded=awardBalls(1);if(!awarded)return false;sfx('extra');vibe([30,30,30,30,80]);eventFlash('EXTRA BALL +1','extra');message('🎱 EXTRA BALL — +1 BALLE !',true);return true}return false}
-async function resolve(){let chain=0;while(true){const m=matches();if(!m.length)break;const line=longestLine();chain++;combo=Math.max(combo,chain);render();m.forEach(i=>q('.riff-cell[data-i="'+i+'"]')?.classList.add('match'));if(line>=5){sfx('mega');vibe([25,25,45]);eventFlash('MEGA RIFF +1500 • BONUS','mega')}else if(line===4){sfx('extra');vibe([15,20,15]);eventFlash('ATOMIC RIFF +1000 • BONUS','atomic')}else if(chain>1){sfx('combo',chain);vibe([15,20,20]);eventFlash('COMBO x'+chain,'combo')}else{sfx('match',m.length);vibe(18)}await wait(150);let points=m.length*10*chain*(1+Math.floor((level-1)*.15));let awarded=0;if(line>=5){points=1500;awarded=awardBalls(4)}else if(line===4){points=1000;awarded=awardBalls(2)}score+=points;updateBest();if(line>=5)message('⚡ MEGA RIFF +1500 POINTS / +'+awarded+' BALLES !',true);else if(line===4)message('☢️ ATOMIC RIFF +1000 POINTS / +'+awarded+' BALLES !',true);else message(chain>1?'🤘 COMBO x'+chain+'  +'+points:'💀 RIFF +'+points,chain>1);m.forEach(i=>board[i]=null);gravity();render();await wait(95);if(line<4)maybeExtraBall(m.length,chain);checkLevel();render()}return chain}
+async function resolve(){let chain=0;while(true){const m=matches();if(!m.length)break;const line=longestLine();chain++;combo=Math.max(combo,chain);render();m.forEach(i=>q('.riff-cell[data-i="'+i+'"]')?.classList.add('match'));if(line>=5){sfx('mega');vibe([25,25,45]);eventFlash('MEGA RIFF +1500 • BONUS','mega')}else if(line===4){sfx('extra');ghostLaugh(true);vibe([15,20,15]);eventFlash('ATOMIC RIFF +1000 • BONUS','atomic')}else if(chain>1){sfx('combo',chain);vibe([15,20,20]);eventFlash('COMBO x'+chain,'combo')}else{sfx('match',m.length);vibe(18)}await wait(150);let points=m.length*10*chain*(1+Math.floor((level-1)*.15));let awarded=0;if(line>=5){points=1500;awarded=awardBalls(4)}else if(line===4){points=1000;awarded=awardBalls(2)}score+=points;updateBest();if(line>=5)message('⚡ MEGA RIFF +1500 POINTS / +'+awarded+' BALLES !',true);else if(line===4)message('☢️ ATOMIC RIFF +1000 POINTS / +'+awarded+' BALLES !',true);else message(chain>1?'🤘 COMBO x'+chain+'  +'+points:'💀 RIFF +'+points,chain>1);m.forEach(i=>board[i]=null);gravity();render();await wait(95);if(line<4)maybeExtraBall(m.length,chain);checkLevel();render()}return chain}
 function registerBadMove(){const now=Date.now();badMoves=now-lastBadAt<5000?badMoves+1:1;lastBadAt=now;if(badMoves>=3){badMoves=0;sfx('tilt');vibe([90,50,120]);eventFlash('TILT !','tilt');message('☠️ TILT ! Calme le flipper…',true);return true}return false}
 async function trySwap(a,b){if(busy||moves<=0||!adjacent(a,b))return;busy=true;sfx('swap');swap(a,b);render();const m=matches();if(!m.length){await wait(110);swap(a,b);selected=null;render();sfx('bad');vibe(30);const tilted=registerBadMove();if(!tilted)message('Pas de riff ici…');if(tilted)await wait(650);busy=false;return}badMoves=0;moves--;selected=null;combo=1;await resolve();if(moves<=0){updateBest();message('☠️ FIN DU SET — '+score+' POINTS',true);sfx('end');vibe([40,60,40])}else if(level>=5)message('🔥 MODE CHAOS — NIVEAU '+level+' !',true);busy=false}
 function cellClick(e){const btn=e.target.closest('.riff-cell');if(!btn||busy||moves<=0)return;unlockAudio();sfx('tap');const i=Number(btn.dataset.i);if(selected===null){selected=i;render();return}if(selected===i){selected=null;render();return}if(adjacent(selected,i)){const a=selected;trySwap(a,i)}else{selected=i;render()}}
 function pointerDown(e){const btn=e.target.closest('.riff-cell');if(!btn)return;unlockAudio();pointerStart={i:Number(btn.dataset.i),x:e.clientX,y:e.clientY}}
 function pointerUp(e){if(!pointerStart||busy||moves<=0){pointerStart=null;return}const dx=e.clientX-pointerStart.x,dy=e.clientY-pointerStart.y;if(Math.max(Math.abs(dx),Math.abs(dy))<24){pointerStart=null;return}const [r,c]=pos(pointerStart.i);let nr=r,nc=c;if(Math.abs(dx)>Math.abs(dy))nc+=dx>0?1:-1;else nr+=dy>0?1:-1;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS)trySwap(pointerStart.i,idx(nr,nc));pointerStart=null}
-function newGame(){roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;score=0;moves=BASE_MOVES;combo=0;level=1;badMoves=0;extraAwarded.clear();bonusBalls=0;selected=null;busy=false;fillFresh();render();reportLevel(1);fetchGlobalLevel();message('🤘 RIFF !');vibe(12);if(q('#hellx-riff-crush')&&!q('#hellx-riff-crush').hidden){ghostLaugh();scheduleRandomLaugh()}}
-function openGame(){buildShell();newGame();const el=q('#hellx-riff-crush');el.hidden=false;document.body.style.overflow='hidden';unlockAudio();ghostLaugh(true);scheduleRandomLaugh();message('🔊 SON ACTIF • Fais ton premier riff !');q('.riff-close').focus()}
+function newGame(){roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;score=0;moves=BASE_MOVES;combo=0;level=1;badMoves=0;extraAwarded.clear();bonusBalls=0;selected=null;busy=false;fillFresh();render();reportLevel(1);fetchGlobalLevel();message('🤘 RIFF !');vibe(12);}
+function openGame(){buildShell();newGame();const el=q('#hellx-riff-crush');el.hidden=false;document.body.style.overflow='hidden';unlockAudio();message('🔊 SON ACTIF • Fais ton premier riff !');q('.riff-close').focus()}
 function closeGame(){if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}if(laughStopTimer)clearTimeout(laughStopTimer);roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;const el=q('#hellx-riff-crush');if(el)el.hidden=true;document.body.style.overflow=''}
 function armSecret(){const h=document.querySelector('.hellx-header');if(!h)return;let timer=null,startX=0,startY=0;const clear=()=>{if(timer){clearTimeout(timer);timer=null}};h.addEventListener('pointerdown',e=>{unlockAudio();if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;clear();timer=setTimeout(()=>{timer=null;openGame()},5000)});h.addEventListener('pointermove',e=>{if(Math.abs(e.clientX-startX)>18||Math.abs(e.clientY-startY)>18)clear()});['pointerup','pointercancel','pointerleave'].forEach(n=>h.addEventListener(n,clear));h.addEventListener('contextmenu',e=>{if(timer)e.preventDefault()})}
 buildShell();armSecret();window.HellRiffCrush={open:openGame,close:closeGame};if(location.hash==='#mega-riff')setTimeout(openGame,120);})();
