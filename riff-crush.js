@@ -10,30 +10,23 @@ function sfx(kind,n=1){if(muted)return;unlockAudio();if(kind==='tap'){tone(220,.
 function funeralSong(){if(muted)return;unlockAudio();const beat=.70;const melody=[{n:196,d:1},{n:196,d:.5},{n:196,d:.5},{n:196,d:1},{n:233.08,d:1},{n:220,d:1},{n:220,d:.5},{n:220,d:.5},{n:220,d:1},{n:196,d:1},{n:196,d:1},{n:196,d:.5},{n:196,d:.5},{n:174.61,d:1},{n:164.81,d:1},{n:146.83,d:2},{n:130.81,d:2}];let pos=0;for(const note of melody){tone(note.n,note.d*beat*.91,'triangle',.24,pos);tone(note.n/2,note.d*beat*.94,'sine',.14,pos);pos+=note.d*beat}for(let t=0;t<pos;t+=beat){tone(t/beat%4===0?65.41:73.42,beat*.42,'triangle',.12,t);tone(49,beat*.32,'sine',.13,t)}tone(65.41,2,'triangle',.26,pos);tone(32.7,2.1,'sine',.2,pos)}
 
 // Three-second synthetic ghost laugh: voiced "ha" pulses, spectral wobble, cavern echo.
+// Real public-domain beast laughter sample, not synthesized musical tones.
+const LAUGH_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Beast_laughter.ogg';
+let laughAudio=null,laughStopTimer=null;
 function ghostLaugh(force=false){
- if(muted||!initAudioNow()||!audio||moves<=0)return;
- const now=audio.currentTime;
- if(now<laughUntil&&!force)return;
- laughUntil=now+3.1;lastLaughAt=Date.now();
+ if(muted||moves<=0)return;
+ const now=Date.now();
+ if(!force && now-lastLaughAt<11500)return;
+ lastLaughAt=now;
  try{
-  const bus=audio.createGain(),low=audio.createBiquadFilter(),echo=audio.createDelay(1),feedback=audio.createGain(),wet=audio.createGain();
-  low.type='lowpass';low.frequency.value=2300;bus.connect(low);low.connect(master||audio.destination);
-  low.connect(echo);echo.delayTime.value=.24;echo.connect(feedback);feedback.gain.value=.30;feedback.connect(echo);echo.connect(wet);wet.gain.value=.36;wet.connect(master||audio.destination);
-  const pulses=[0,.36,.72,1.13,1.51,1.92,2.31,2.62];
-  pulses.forEach((offset,i)=>{
-   const t=now+offset,d=Math.min(.30,3-offset),freq= i<3?135-i*11:105+(i%3)*13;
-   for(const [mult,vol] of [[1,.45],[1.98,.18],[.51,.13]]){
-    const o=audio.createOscillator(),g=audio.createGain();
-    o.type=mult===1?'sawtooth':'triangle';o.frequency.setValueAtTime(freq*mult,t);
-    o.frequency.exponentialRampToValueAtTime(Math.max(35,freq*mult*.76),t+d);
-    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.035);
-    g.gain.exponentialRampToValueAtTime(.0001,t+d);
-    o.connect(g);g.connect(bus);o.start(t);o.stop(t+d+.015);
-   }
-  });
-  const stop=now+3;
-  bus.gain.setValueAtTime(1,now);bus.gain.setValueAtTime(1,stop-.16);bus.gain.linearRampToValueAtTime(0,stop);
-  setTimeout(()=>{try{bus.disconnect();low.disconnect();echo.disconnect();feedback.disconnect();wet.disconnect()}catch(e){}},4400);
+  if(laughStopTimer)clearTimeout(laughStopTimer);
+  if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}
+  else {laughAudio=new Audio(LAUGH_SRC);laughAudio.preload='auto';}
+  laughAudio.volume=1;
+  laughAudio.playbackRate=.85;
+  laughAudio.currentTime=0;
+  const p=laughAudio.play();if(p&&p.catch)p.catch(()=>{});
+  laughStopTimer=setTimeout(()=>{if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}},3000);
  }catch(e){}
 }
 function scheduleRandomLaugh(){
@@ -75,6 +68,6 @@ function pointerDown(e){const btn=e.target.closest('.riff-cell');if(!btn)return;
 function pointerUp(e){if(!pointerStart||busy||moves<=0){pointerStart=null;return}const dx=e.clientX-pointerStart.x,dy=e.clientY-pointerStart.y;if(Math.max(Math.abs(dx),Math.abs(dy))<24){pointerStart=null;return}const [r,c]=pos(pointerStart.i);let nr=r,nc=c;if(Math.abs(dx)>Math.abs(dy))nc+=dx>0?1:-1;else nr+=dy>0?1:-1;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS)trySwap(pointerStart.i,idx(nr,nc));pointerStart=null}
 function newGame(){roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;score=0;moves=BASE_MOVES;combo=0;level=1;badMoves=0;extraAwarded.clear();bonusBalls=0;selected=null;busy=false;fillFresh();render();reportLevel(1);fetchGlobalLevel();message('🤘 RIFF !');vibe(12);if(q('#hellx-riff-crush')&&!q('#hellx-riff-crush').hidden){ghostLaugh();scheduleRandomLaugh()}}
 function openGame(){buildShell();newGame();const el=q('#hellx-riff-crush');el.hidden=false;document.body.style.overflow='hidden';unlockAudio();ghostLaugh(true);scheduleRandomLaugh();message('🔊 SON ACTIF • Fais ton premier riff !');q('.riff-close').focus()}
-function closeGame(){roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;const el=q('#hellx-riff-crush');if(el)el.hidden=true;document.body.style.overflow=''}
+function closeGame(){if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}if(laughStopTimer)clearTimeout(laughStopTimer);roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;const el=q('#hellx-riff-crush');if(el)el.hidden=true;document.body.style.overflow=''}
 function armSecret(){const h=document.querySelector('.hellx-header');if(!h)return;let timer=null,startX=0,startY=0;const clear=()=>{if(timer){clearTimeout(timer);timer=null}};h.addEventListener('pointerdown',e=>{unlockAudio();if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;clear();timer=setTimeout(()=>{timer=null;openGame()},5000)});h.addEventListener('pointermove',e=>{if(Math.abs(e.clientX-startX)>18||Math.abs(e.clientY-startY)>18)clear()});['pointerup','pointercancel','pointerleave'].forEach(n=>h.addEventListener(n,clear));h.addEventListener('contextmenu',e=>{if(timer)e.preventDefault()})}
 buildShell();armSecret();window.HellRiffCrush={open:openGame,close:closeGame};if(location.hash==='#mega-riff')setTimeout(openGame,120);})();
