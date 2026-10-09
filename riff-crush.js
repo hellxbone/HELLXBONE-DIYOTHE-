@@ -39,7 +39,7 @@ function devilLaugh(){
  try{
   stopDevilLaugh();
   const clip=new Audio(DEVIL_LAUGH_SRC);
-  devilLaughClip=clip;clip.preload='auto';clip.volume=.90;clip.playbackRate=1.20;clip.loop=false;
+  devilLaughClip=clip;clip.preload='auto';clip.volume=.90;clip.playbackRate=1.85;clip.loop=false;
   clip.addEventListener('ended',()=>{if(devilLaughClip===clip)devilLaughClip=null},{once:true});
   clip.play().catch(()=>{});
   devilLaughTimer=setTimeout(()=>{if(devilLaughClip===clip)stopDevilLaugh()},9000);
