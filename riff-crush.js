@@ -28,9 +28,9 @@ function ghostLaugh(force=false){
   const p=laughAudio.play();if(p&&p.catch)p.catch(()=>{});
  }catch(e){}
 }
-const HAUNTED_SCREAM_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Wilhelm_Scream.ogg';
+const HAUNTED_SCREAM_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Nick121087_-_Demonic_Woman_Scream_(cc0)_(freesound).mp3';
 let hauntedScreamClip=null;
-function hauntedScream(){if(muted)return;try{if(hauntedScreamClip){hauntedScreamClip.pause();hauntedScreamClip.currentTime=0}const clip=new Audio(HAUNTED_SCREAM_SRC);hauntedScreamClip=clip;clip.preload='auto';clip.volume=.38;clip.playbackRate=1.35;clip.loop=false;clip.play().catch(()=>{});}catch(e){}}
+function hauntedScream(){if(muted)return;try{if(hauntedScreamClip){hauntedScreamClip.pause();hauntedScreamClip.currentTime=0}const clip=new Audio(HAUNTED_SCREAM_SRC);hauntedScreamClip=clip;clip.preload='auto';clip.volume=.34;clip.playbackRate=1.08;clip.loop=false;clip.play().catch(()=>{});}catch(e){}}
 const BELL_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/ClocheCathedraleSoissons.ogg';
 const GUITAR_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Double_tracked_distorted_electric_guitar_playing_chords.ogg';
 let bellClip=null,guitarClip=null;
