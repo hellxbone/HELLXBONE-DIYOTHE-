@@ -29,21 +29,26 @@ function ghostLaugh(force=false){
  }catch(e){}
 }
 const DEVIL_LAUGH_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Beast_laughter.ogg';
-let devilLaughClip=null,devilLaughTimer=null;
+let devilLaughClips=[],devilLaughTimers=[];
 function stopDevilLaugh(){
- if(devilLaughTimer){clearTimeout(devilLaughTimer);devilLaughTimer=null}
- if(devilLaughClip){devilLaughClip.pause();devilLaughClip.currentTime=0;devilLaughClip=null}
+ devilLaughTimers.forEach(clearTimeout);devilLaughTimers=[];
+ devilLaughClips.forEach(c=>{try{c.pause();c.currentTime=0}catch(e){}});
+ devilLaughClips=[];
 }
 function devilLaugh(){
  if(muted)return;
- try{
-  stopDevilLaugh();
-  const clip=new Audio(DEVIL_LAUGH_SRC);
-  devilLaughClip=clip;clip.preload='auto';clip.volume=.90;clip.playbackRate=2.35;clip.loop=false;
-  clip.addEventListener('ended',()=>{if(devilLaughClip===clip)devilLaughClip=null},{once:true});
-  clip.play().catch(()=>{});
-  devilLaughTimer=setTimeout(()=>{if(devilLaughClip===clip)stopDevilLaugh()},9000);
- }catch(e){}
+ stopDevilLaugh();
+ // Multiple spaced, fading copies create a cavernous echo, including on Android browsers.
+ const echoes=[{delay:0,volume:.88},{delay:340,volume:.58},{delay:740,volume:.39},{delay:1220,volume:.25},{delay:1810,volume:.15}];
+ echoes.forEach(({delay,volume})=>{
+  const play=()=>{if(muted)return;try{
+   const clip=new Audio(DEVIL_LAUGH_SRC);
+   devilLaughClips.push(clip);clip.preload='auto';clip.volume=volume;clip.playbackRate=2.35;clip.loop=false;
+   clip.play().catch(()=>{});
+  }catch(e){}};
+  if(delay===0)play();else devilLaughTimers.push(setTimeout(play,delay));
+ });
+ devilLaughTimers.push(setTimeout(stopDevilLaugh,11000));
 }
 const HAUNTED_SCREAM_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Nick121087_-_Demonic_Woman_Scream_(cc0)_(freesound).mp3';
 let hauntedScreamClip=null;
