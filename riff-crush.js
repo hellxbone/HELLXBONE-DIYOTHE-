@@ -28,21 +28,21 @@ function ghostLaugh(force=false){
   const p=laughAudio.play();if(p&&p.catch)p.catch(()=>{});
  }catch(e){}
 }
-let devilVoice=null,devilRumbleNodes=[];
-function stopDevilRumble(){devilRumbleNodes.forEach(n=>{try{n.stop()}catch(e){}});devilRumbleNodes=[]}
-function devilSpeak(){
+const DEVIL_LAUGH_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Beast_laughter.ogg';
+let devilLaughClip=null,devilLaughTimer=null;
+function stopDevilLaugh(){
+ if(devilLaughTimer){clearTimeout(devilLaughTimer);devilLaughTimer=null}
+ if(devilLaughClip){devilLaughClip.pause();devilLaughClip.currentTime=0;devilLaughClip=null}
+}
+function devilLaugh(){
  if(muted)return;
  try{
-  if(!('speechSynthesis' in window))return;
-  speechSynthesis.cancel();stopDevilRumble();unlockAudio();
-  // Low-frequency rumble under the voice, never replacing the spoken words.
-  if(audio&&master){const t=audio.currentTime;for(const [freq,vol] of [[42,.12],[58,.08]]){const o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(vol,t+.25);g.gain.setValueAtTime(vol,t+2.3);g.gain.exponentialRampToValueAtTime(.0001,t+3.1);o.connect(g);g.connect(master);o.start(t);o.stop(t+3.2);devilRumbleNodes.push(o)}}
-  const utterance=new SpeechSynthesisUtterance('TON ÂME... M’APPARTIENT !');
-  utterance.lang='fr-FR';utterance.pitch=0;utterance.rate=.58;utterance.volume=1;
-  const voices=speechSynthesis.getVoices(),fr=voices.filter(v=>v.lang.toLowerCase().startsWith('fr'));
-  utterance.voice=fr.find(v=>/male|homme|thomas|paul|henri/i.test(v.name))||fr[0]||null;
-  devilVoice=utterance;
-  speechSynthesis.speak(utterance);
+  stopDevilLaugh();
+  const clip=new Audio(DEVIL_LAUGH_SRC);
+  devilLaughClip=clip;clip.preload='auto';clip.volume=.90;clip.playbackRate=.72;clip.loop=false;
+  clip.addEventListener('ended',()=>{if(devilLaughClip===clip)devilLaughClip=null},{once:true});
+  clip.play().catch(()=>{});
+  devilLaughTimer=setTimeout(()=>{if(devilLaughClip===clip)stopDevilLaugh()},9000);
  }catch(e){}
 }
 const HAUNTED_SCREAM_SRC='https://commons.wikimedia.org/wiki/Special:Redirect/file/Nick121087_-_Demonic_Woman_Scream_(cc0)_(freesound).mp3';
@@ -87,7 +87,7 @@ function updateBest(){if(score>best){best=score;localStorage.setItem('hellx-riff
 function awardBalls(amount){const awarded=Math.min(amount,Math.max(0,20-bonusBalls));bonusBalls+=awarded;moves+=awarded;return awarded}
 function checkLevel(){let advanced=false;while(level<LEVEL_GOALS.length&&score>=goalForLevel(level)){level++;reportLevel(level);advanced=true;sfx('level');vibe([20,35,20,35,60]);eventFlash('LEVEL '+level,'level');message('⚡ NIVEAU '+level+' !',true)}return advanced}
 function maybeExtraBall(mLen,chain){const key=Math.floor(score/1800);if((mLen>=5||chain>=3||score>=1800)&&!extraAwarded.has(key)){extraAwarded.add(key);const awarded=awardBalls(1);if(!awarded)return false;sfx('extra');vibe([30,30,30,30,80]);eventFlash('EXTRA BALL +1','extra');message('🎱 EXTRA BALL — +1 BALLE !',true);return true}return false}
-async function resolve(){let chain=0;while(true){const m=matches();if(!m.length)break;const line=longestLine();chain++;combo=Math.max(combo,chain);render();m.forEach(i=>q('.riff-cell[data-i="'+i+'"]')?.classList.add('match'));if(line>=5){sfx('mega');vibe([25,25,45]);eventFlash('MEGA RIFF +2500 • VOIX DU DIABLE','mega')}else if(line===4){sfx('extra');ghostLaugh(true);vibe([15,20,15]);eventFlash('ATOMIC RIFF +1000 • BONUS','atomic')}else if(chain>1){sfx('combo',chain);vibe([15,20,20]);eventFlash('COMBO x'+chain,'combo')}else{sfx('match',m.length);vibe(18)}await wait(150);let points=m.length*10*chain*(1+Math.floor((level-1)*.15));let awarded=0;if(line>=5){points=2500;awarded=awardBalls(4);devilSpeak()}else if(line===4){points=1000;awarded=awardBalls(2)}score+=points;
+async function resolve(){let chain=0;while(true){const m=matches();if(!m.length)break;const line=longestLine();chain++;combo=Math.max(combo,chain);render();m.forEach(i=>q('.riff-cell[data-i="'+i+'"]')?.classList.add('match'));if(line>=5){sfx('mega');vibe([25,25,45]);eventFlash('MEGA RIFF +2500 • VOIX DU DIABLE','mega')}else if(line===4){sfx('extra');ghostLaugh(true);vibe([15,20,15]);eventFlash('ATOMIC RIFF +1000 • BONUS','atomic')}else if(chain>1){sfx('combo',chain);vibe([15,20,20]);eventFlash('COMBO x'+chain,'combo')}else{sfx('match',m.length);vibe(18)}await wait(150);let points=m.length*10*chain*(1+Math.floor((level-1)*.15));let awarded=0;if(line>=5){points=2500;awarded=awardBalls(4);devilLaugh()}else if(line===4){points=1000;awarded=awardBalls(2)}score+=points;
 const hauntedBonus=line===4&&consecutiveFours===1;
 consecutiveFours=line===4?(hauntedBonus?0:consecutiveFours+1):0;
 if(hauntedBonus){score+=3000;hauntedScream();vibe([50,30,90]);eventFlash('CRI HANTÉ +3000','mega')}
@@ -99,7 +99,7 @@ function pointerDown(e){const btn=e.target.closest('.riff-cell');if(!btn)return;
 function pointerUp(e){if(!pointerStart||busy||moves<=0){pointerStart=null;return}const dx=e.clientX-pointerStart.x,dy=e.clientY-pointerStart.y;if(Math.max(Math.abs(dx),Math.abs(dy))<24){pointerStart=null;return}const [r,c]=pos(pointerStart.i);let nr=r,nc=c;if(Math.abs(dx)>Math.abs(dy))nc+=dx>0?1:-1;else nr+=dy>0?1:-1;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS)trySwap(pointerStart.i,idx(nr,nc));pointerStart=null}
 function newGame(){if(score>0)leaderboardSubmit();roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;score=0;moves=BASE_MOVES;combo=0;level=1;badMoves=0;extraAwarded.clear();bonusBalls=0;consecutiveFours=0;sixes=0;sixPrizePaid=false;sixMisses=0;selected=null;busy=false;fillFresh();render();reportLevel(1);fetchGlobalLevel();leaderboardLoad();message('🤘 RIFF !');vibe(12);}
 function openGame(){buildShell();newGame();const el=q('#hellx-riff-crush');el.hidden=false;document.body.style.overflow='hidden';unlockAudio();message('🔊 SON ACTIF • Fais ton premier riff !');q('.riff-close').focus()}
-function closeGame(){if('speechSynthesis' in window)speechSynthesis.cancel();stopDevilRumble()if(hauntedScreamClip){hauntedScreamClip.pause();hauntedScreamClip.currentTime=0}if(score>0)leaderboardEnd();if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}if(laughStopTimer)clearTimeout(laughStopTimer);roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;const el=q('#hellx-riff-crush');if(el)el.hidden=true;document.body.style.overflow=''}
+function closeGame(){stopDevilLaugh()if(hauntedScreamClip){hauntedScreamClip.pause();hauntedScreamClip.currentTime=0}if(score>0)leaderboardEnd();if(laughAudio){laughAudio.pause();laughAudio.currentTime=0}if(laughStopTimer)clearTimeout(laughStopTimer);roundId++;if(laughTimer)clearTimeout(laughTimer);laughTimer=null;const el=q('#hellx-riff-crush');if(el)el.hidden=true;document.body.style.overflow=''}
 function armSecret(){const h=document.querySelector('.hellx-header');if(!h)return;let timer=null,startX=0,startY=0;const clear=()=>{if(timer){clearTimeout(timer);timer=null}};h.addEventListener('pointerdown',e=>{unlockAudio();if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;clear();timer=setTimeout(()=>{timer=null;openGame()},5000)});h.addEventListener('pointermove',e=>{if(Math.abs(e.clientX-startX)>18||Math.abs(e.clientY-startY)>18)clear()});['pointerup','pointercancel','pointerleave'].forEach(n=>h.addEventListener(n,clear));h.addEventListener('contextmenu',e=>{if(timer)e.preventDefault()})}
 const saveStyle=document.createElement('style');saveStyle.textContent='.riff-save-pseudo{display:block;width:100%;margin:12px 0 8px;padding:13px 10px;border:2px solid #99ff55;border-radius:10px;background:linear-gradient(135deg,#1b3711,#0d180b);color:#c7ff8f;font-size:15px;font-weight:900;letter-spacing:.04em;cursor:pointer;box-shadow:0 0 12px #70ff3440}.riff-save-pseudo:disabled{opacity:.65;cursor:wait}#riff-leaderboard-note{line-height:1.4}';document.head.appendChild(saveStyle);const sixStyle=document.createElement('style');sixStyle.textContent='.riff-sixes{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0 12px}.riff-six{display:inline-grid;place-items:center;width:44px;height:48px;background:#26060f;border:2px solid #702539;border-radius:9px;color:#5c2433;font-weight:1000;font-size:36px;text-shadow:0 1px #000;box-shadow:inset 0 0 10px #000}.riff-six.won{background:linear-gradient(135deg,#650b29,#9e2945);color:#fff0f3;border-color:#ff527f;text-shadow:0 0 9px #ff6585;box-shadow:0 0 12px #932341}.riff-sixes small{width:100%;text-align:center;color:#dfabb8;font-size:10px;letter-spacing:.7px}';document.head.appendChild(sixStyle);
 buildShell();armSecret();window.HellRiffCrush={open:openGame,close:closeGame};if(new URLSearchParams(location.search).get('game')==='mega-riff'||location.hash==='#mega-riff')setTimeout(openGame,120);})();
