@@ -32,6 +32,30 @@ window.HellxRSS = {
           p.textContent = item.summary;
           article.append(p);
         }
+        // Use the same share controls and event delegation as HELLXBONE articles.
+        const share = document.createElement('div');
+        share.className = 'share-row';
+        const label = document.createElement('span');
+        label.className = 'share-label';
+        label.textContent = '📣 Partager cette actualité';
+        share.append(label);
+        for (const [platform, title, css] of [
+          ['facebook','Facebook','facebook'],
+          ['sms','💬 SMS','sms'],
+          ['messenger','💙 Messenger','messenger'],
+          ['whatsapp','🟢 WhatsApp','whatsapp']
+        ]) {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'share-btn ' + css;
+          button.dataset.share = platform;
+          button.dataset.shareTitle = item.title || 'Actualité rock & metal';
+          button.dataset.shareUrl = item.url;
+          button.dataset.shareExcerpt = item.summary || '';
+          button.textContent = title;
+          share.append(button);
+        }
+        article.append(share);
         node.append(article);
       }
     } catch (err) {
