@@ -548,6 +548,34 @@ document.addEventListener('click',e=>{const riffOpen=e.target.closest('[data-rif
   }
 })();
 </script><script src="leaderboard-config.js?v=1"></script><script src="riff-crush.js?v=20261010-pseudo-popup"></script><script src="riff-idle.js?v=20261009-1"></script><script>window.addEventListener('load',function(){if(new URLSearchParams(location.search).get('game')==='mega-riff'){const launch=()=>{if(window.HellRiffCrush&&typeof window.HellRiffCrush.open==='function'){window.HellRiffCrush.open();return true}return false};if(!launch())setTimeout(launch,350);}});</script><script data-goatcounter="https://hellxbone.goatcounter.com/count"
-        async src="https://gc.zgo.at/count.js"></script><!-- hellx-removed --></body></html>
+        async src="https://gc.zgo.at/count.js"></script><!-- hellx-removed --><style>
+#hellx-games-pseudo-overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.93);display:flex;align-items:center;justify-content:center;padding:20px}
+#hellx-games-pseudo-overlay[hidden]{display:none}
+#hellx-games-pseudo-overlay form{width:min(100%,390px);background:#151515;border:2px solid #57ff58;border-radius:16px;padding:26px;text-align:center;box-shadow:0 0 28px #39ff5b55;color:white}
+#hellx-games-pseudo-overlay h2{color:#66ff6b;margin:10px 0}
+#hellx-games-pseudo-overlay input{display:block;width:100%;box-sizing:border-box;padding:14px;font-size:18px;background:#050505;color:white;border:1px solid #75ff78;border-radius:8px;margin:16px 0}
+#hellx-games-pseudo-overlay button{background:#52ff59;color:#070707;border:0;border-radius:9px;padding:14px 20px;font-weight:900;cursor:pointer;width:100%}
+</style><script>
+(function(){
+ const KEY='hellx-riff-player-name';
+ function showGamesPseudo(){
+  if((localStorage.getItem(KEY)||'').trim())return;
+  let overlay=document.getElementById('hellx-games-pseudo-overlay');
+  if(!overlay){
+   overlay=document.createElement('div');overlay.id='hellx-games-pseudo-overlay';
+   overlay.innerHTML='<form><div style="font-size:32px">💀 🎸</div><h2>ENTRE DANS L’ARÈNE !</h2><p>Choisis ton pseudo pour le classement MEGA RIFF.</p><label for="hellx-games-pseudo-input">TON PSEUDO DE METALLEUX</label><input id="hellx-games-pseudo-input" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo"><button type="submit">🤘 VALIDER MON PSEUDO</button><small style="display:block;margin-top:12px">Ton pseudo restera enregistré sur cet appareil.</small></form>';
+   document.body.appendChild(overlay);
+   overlay.querySelector('form').addEventListener('submit',function(e){
+    e.preventDefault();const value=overlay.querySelector('input').value.trim().replace(/[<>]/g,'').slice(0,20);
+    if(!value)return;localStorage.setItem(KEY,value);overlay.hidden=true;
+    const gameName=document.getElementById('riff-player-name');if(gameName)gameName.value=value;
+   });
+  }
+  overlay.hidden=false;overlay.querySelector('input').focus();
+ }
+ document.addEventListener('click',function(e){if(e.target.closest('nav [data-page="jeu"]'))setTimeout(showGamesPseudo,0)});
+ if(location.hash==='#jeu')window.addEventListener('load',showGamesPseudo);
+})();
+</script></body></html>
 
 
