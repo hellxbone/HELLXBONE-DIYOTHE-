@@ -637,7 +637,15 @@ document.addEventListener('click',e=>{const riffOpen=e.target.closest('[data-rif
 (function(){
  const KEY='hellx-riff-player-name';
  function showGamesPseudo(){
-  // Afficher la fenêtre à chaque ouverture de l'onglet Jeux, même avec un pseudo mémorisé.
+  // Un pseudo déjà enregistré suffit : ne pas interrompre le joueur.
+  const savedName=(localStorage.getItem(KEY)||'').trim();
+  if(savedName){
+   const existingOverlay=document.getElementById('hellx-games-pseudo-overlay');
+   if(existingOverlay)existingOverlay.hidden=true;
+   const gameName=document.getElementById('riff-player-name');
+   if(gameName)gameName.value=savedName;
+   return;
+  }
   let overlay=document.getElementById('hellx-games-pseudo-overlay');
   if(!overlay){
    overlay=document.createElement('div');overlay.id='hellx-games-pseudo-overlay';
