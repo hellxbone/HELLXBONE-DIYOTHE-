@@ -492,21 +492,9 @@ async function doShare(platform,title,url,excerpt=''){
     return;
   }
   if(platform==='facebook'){
-    if(isGame){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link),'_blank','noopener,noreferrer');return;}
-    try{
-      const res=await fetch('./hellxbone-share-header-v10.png?share=v12',{cache:'no-store'});
-      const blob=await res.blob();
-      const file=new File([blob],'HELLXBONE-share.png',{type:blob.type||'image/png'});
-      if(navigator.canShare && navigator.canShare({files:[file]}) && navigator.share){
-        await navigator.share({title:title,text:text,files:[file]});
-        return;
-      }
-      if(navigator.share){
-        await navigator.share({title:title,text:text});
-        return;
-      }
-    }catch(e){}
-    alert('Le partage direct Facebook n’est pas disponible dans ce navigateur. Ouvre l’application depuis Chrome ou l’icône HELLXBONE installée.');
+    // Use Facebook's link sharer; sharing an arbitrary image through the native sheet is unreliable.
+    const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
+    window.location.assign(fbUrl);
     return;
   }
   if(navigator.share){
@@ -528,7 +516,7 @@ document.addEventListener('click',e=>{const riffOpen=e.target.closest('[data-rif
 
 </script><script>
 (function(){
-  const VERSION='hellxbone-feed-sharing-20261010-v1';
+  const VERSION='hellxbone-facebook-link-share-20261010-v1';
   function fixMenu(){
     if(window.innerWidth<=700){
       document.querySelectorAll('nav button').forEach(b=>{
