@@ -492,8 +492,20 @@ async function doShare(platform,title,url,excerpt=''){
     return;
   }
   if(platform==='facebook'){
-    // Use Facebook's link sharer; sharing an arbitrary image through the native sheet is unreliable.
+    // Facebook does not permit pre-filling the user's post text via the sharer URL.
+    // Copy an engaging caption first, then open the genuine Facebook link preview.
+    const cleanTitle=String(title||'').trim();
+    const hook=/power trip/i.test(cleanTitle)
+      ? '🔥 POWER TRIP FRAPPE FORT : DEUX NOUVEAUX TITRES À DÉCOUVRIR !'
+      : '🔥 ROCK & METAL : '+cleanTitle.toUpperCase().replace(/[!?.]+$/,'')+' !';
+    const caption=hook+'\n\n🤘 Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.\n\n#Rock #Metal #HELLXBONE';
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
+    try{
+      await navigator.clipboard.writeText(caption);
+      alert('Ton titre accrocheur est copié ! Sur Facebook, appuie sur « Quoi de neuf ? » puis sur « Coller ».');
+    }catch(e){
+      window.prompt('Copie ce texte, puis colle-le dans ta publication Facebook :',caption);
+    }
     window.location.assign(fbUrl);
     return;
   }
@@ -516,7 +528,7 @@ document.addEventListener('click',e=>{const riffOpen=e.target.closest('[data-rif
 
 </script><script>
 (function(){
-  const VERSION='hellxbone-facebook-link-share-20261010-v1';
+  const VERSION='hellxbone-facebook-caption-20261010-v1';
   function fixMenu(){
     if(window.innerWidth<=700){
       document.querySelectorAll('nav button').forEach(b=>{
