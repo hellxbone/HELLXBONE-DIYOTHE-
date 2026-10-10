@@ -1,6 +1,10 @@
 name: Actualiser les news metal RSS
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/metal-rss.yml'
+      - 'scripts/update_rss.py'
   schedule:
     - cron: '17 * * * *'
 permissions:
