@@ -50,7 +50,7 @@ window.HellxRSS = {
           button.className = 'share-btn ' + css;
           button.dataset.share = platform;
           button.dataset.shareTitle = item.title || 'Actualité rock & metal';
-          button.dataset.shareUrl = item.url;
+          button.dataset.shareUrl = platform === 'facebook' ? (item.shareUrl || item.url) : item.url;
           button.dataset.shareExcerpt = item.summary || '';
           button.textContent = title;
           share.append(button);
