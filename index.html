@@ -320,7 +320,7 @@ footer{
   .share-row{gap:6px}
   .share-btn{flex:1 1 calc(50% - 6px);padding:10px 6px;font-size:12px}
 }
-</style><style>.share-btn.tiktok{display:none!important}.share-btn.instagram{display:block;flex:0 0 100%;width:100%;background:linear-gradient(110deg,#833ab4,#c13584,#e1306c,#f77737);color:#fff;text-align:center;padding:12px 14px;border:1px solid rgba(255,255,255,.22);font-weight:800}</style><style>.article-link{color:#0645ad!important;text-decoration:underline!important;font-weight:700!important;overflow-wrap:anywhere}.crorif-links{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.crorif-links a{margin:0}</style><style id="hellxbone-shop-card-fix-v1">
+</style><style>.share-btn.tiktok{display:none!important}</style><style>.article-link{color:#0645ad!important;text-decoration:underline!important;font-weight:700!important;overflow-wrap:anywhere}.crorif-links{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.crorif-links a{margin:0}</style><style id="hellxbone-shop-card-fix-v1">
 .shop-card{display:flex!important;flex-direction:column!important;overflow:hidden!important}
 .shop-visual{width:100%!important;background:#111!important;position:static!important}
 .shop-visual img{display:block!important;width:100%!important;height:auto!important;max-height:none!important;object-fit:cover!important}
@@ -526,7 +526,7 @@ footer a{color:#baff8d!important}
   }
 })();
 </script><script src="digicode.js?v=20261008-no-wheel"></script><script>const data=window.HELLXBONE;const app=document.querySelector('#app');const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const safeUrl=s=>/^https:\/\//i.test(s||'')?s:'';const linkify=s=>esc(s).replace(/https:\/\/[^\s<]+/gi,u=>{const clean=u.replace(/[.,;:!?…]+$/,'');const tail=u.slice(clean.length);return `<a class="article-link" href="${clean}" data-external-link="1">${clean}</a>${tail}`});
-const shareButtons=(title,url,excerpt='')=>`<div class="share-row"><span class="share-label">📣 Partager</span><button class="share-btn facebook" data-share="facebook" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">Facebook</button><button class="share-btn sms" data-share="sms" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">💬 SMS</button><button class="share-btn messenger" data-share="messenger" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">💙 Messenger</button><button class="share-btn whatsapp" data-share="whatsapp" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">🟢 WhatsApp</button><button class="share-btn instagram" data-share="instagram" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">📸 Partager sur Instagram</button></div>`;
+const shareButtons=(title,url,excerpt='')=>`<div class="share-row"><span class="share-label">📣 Partager</span><button class="share-btn facebook" data-share="facebook" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">Facebook</button><button class="share-btn sms" data-share="sms" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">💬 SMS</button><button class="share-btn messenger" data-share="messenger" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">💙 Messenger</button><button class="share-btn whatsapp" data-share="whatsapp" data-share-title="${esc(title)}" data-share-url="${esc(url)}" data-share-excerpt="${esc(excerpt)}">🟢 WhatsApp</button></div>`;
 async function doShare(platform,title,url,excerpt=''){
   const link=url||location.href;
   const isGame=link.includes('game=mega-riff')||link.includes('#mega-riff');
@@ -586,14 +586,6 @@ async function doShare(platform,title,url,excerpt=''){
       window.prompt('Copie ce texte, puis colle-le dans ta publication Facebook :',caption);
     }
     window.location.assign(fbUrl);
-    return;
-  }
-  if(platform==='instagram'){
-    // Instagram does not support a regular web URL share endpoint for feed posts.
-    // Copy the caption and provide an explicit path to create a Story or post.
-    try{await navigator.clipboard.writeText(text);alert('Texte et lien copiés ! Ouvre Instagram pour créer une Story ou une publication, puis colle le texte. Pour une Story, ajoute le lien avec le sticker Lien.');}
-    catch(e){window.prompt('Copie ce texte et colle-le dans Instagram :',text);}
-    window.open('https://www.instagram.com/','_blank','noopener,noreferrer');
     return;
   }
   if(navigator.share){
