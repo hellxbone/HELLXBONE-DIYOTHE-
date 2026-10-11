@@ -577,7 +577,7 @@ async function doShare(platform,title,url,excerpt=''){
     if(/black metal/i.test(topic))specificTags.push('#BlackMetal');
     if(/death metal/i.test(topic))specificTags.push('#DeathMetal');
     const hashtags=[...new Set([...baseTags,...specificTags])].join(' ');
-    const caption=hook+'\\n\\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\\n\\n'+hashtags;
+    const caption=hook+'\n\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\n\n'+hashtags;
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
     try{
       await navigator.clipboard.writeText(caption);
