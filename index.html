@@ -567,7 +567,17 @@ async function doShare(platform,title,url,excerpt=''){
     const hook=/power trip/i.test(cleanTitle)
       ? '🔥 POWER TRIP FRAPPE FORT : DEUX NOUVEAUX TITRES À DÉCOUVRIR !'
       : '🔥 ROCK & METAL : '+cleanTitle.toUpperCase().replace(/[!?.]+$/,'')+' !';
-    const caption=hook+'\n\n🤘 Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.\n\n#Rock #Metal #HELLXBONE';
+    const baseTags=['#HELLXBONE','#DIYOTHE','#Rock','#Metal','#MusiqueMetal','#CultureMetal'];
+    const topic=cleanTitle+' '+String(excerpt||'');
+    const specificTags=[];
+    if(/mega.?riff|jeu|game|score|digicode/i.test(topic))specificTags.push('#MegaRiff','#JeuxMetal');
+    if(/concert|festival|fest|live|scène/i.test(topic))specificTags.push('#ConcertMetal','#FestivalMetal');
+    if(/interview|groupe|artiste/i.test(topic))specificTags.push('#SceneMetal','#InterviewMetal');
+    if(/boutique|tee.?shirt|création|shop/i.test(topic))specificTags.push('#ArtRock','#CreationGothique');
+    if(/black metal/i.test(topic))specificTags.push('#BlackMetal');
+    if(/death metal/i.test(topic))specificTags.push('#DeathMetal');
+    const hashtags=[...new Set([...baseTags,...specificTags])].join(' ');
+    const caption=hook+'\\n\\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\\n\\n'+hashtags;
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
     try{
       await navigator.clipboard.writeText(caption);
