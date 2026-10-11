@@ -579,13 +579,54 @@ async function doShare(platform,title,url,excerpt=''){
     const hashtags=[...new Set([...baseTags,...specificTags])].join(' ');
     const caption=hook+'\n\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\n\n'+hashtags;
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
-    try{
-      await navigator.clipboard.writeText(caption);
-      alert('Ton titre accrocheur est copié ! Sur Facebook, appuie sur « Quoi de neuf ? » puis sur « Coller ».');
-    }catch(e){
-      window.prompt('Copie ce texte, puis colle-le dans ta publication Facebook :',caption);
-    }
-    window.location.assign(fbUrl);
+    // Facebook blocks prefilled captions from website share links.
+    // Show the user exactly what will be posted and offer a reliable copy step.
+    document.getElementById('fb-share-helper')?.remove();
+    const dialog=document.createElement('div');
+    dialog.id='fb-share-helper';
+    dialog.setAttribute('role','dialog');
+    dialog.setAttribute('aria-modal','true');
+    dialog.setAttribute('aria-label','Partager sur Facebook');
+    dialog.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.89);display:flex;align-items:center;justify-content:center;padding:18px';
+    const panel=document.createElement('div');
+    panel.style.cssText='width:min(100%,520px);max-height:90vh;overflow:auto;background:#151515;color:#fff;border:1px solid #777;border-radius:14px;padding:20px;font:inherit';
+    const heading=document.createElement('h2');
+    heading.textContent='Partager sur Facebook';
+    const help=document.createElement('p');
+    help.textContent='Facebook ne permet pas de remplir automatiquement le texte. Copie celui-ci (avec ses hashtags), puis colle-le dans ta publication Facebook.';
+    const area=document.createElement('textarea');
+    area.value=caption+'\\n\\n'+link;
+    area.readOnly=true;
+    area.setAttribute('aria-label','Texte du partage et hashtags');
+    area.style.cssText='width:100%;box-sizing:border-box;min-height:190px;background:#080808;color:white;border:1px solid #888;border-radius:8px;padding:12px;font:inherit;resize:vertical';
+    const status=document.createElement('p');
+    status.style.cssText='font-size:13px;min-height:18px';
+    const actions=document.createElement('div');
+    actions.style.cssText='display:flex;gap:10px;flex-wrap:wrap';
+    const copy=document.createElement('button');
+    copy.type='button';copy.textContent='Copier le texte + les hashtags';
+    copy.style.cssText='flex:1;min-width:160px;padding:12px;border:0;border-radius:8px;background:#25d366;color:#071108;font-weight:800';
+    copy.onclick=async()=>{
+      area.focus();area.select();area.setSelectionRange(0,area.value.length);
+      let success=false;
+      try{await navigator.clipboard.writeText(area.value);success=true}catch(e){
+        try{success=document.execCommand('copy')}catch(err){}
+      }
+      status.textContent=success?'Texte copié ! Ouvre Facebook et colle-le dans ta publication.':'Sélectionne et copie le texte ci-dessus manuellement avant de poursuivre.';
+    };
+    const open=document.createElement('button');
+    open.type='button';open.textContent='Ouvrir Facebook';
+    open.style.cssText='flex:1;min-width:130px;padding:12px;border:0;border-radius:8px;background:#1877f2;color:white;font-weight:800';
+    open.onclick=()=>{window.location.href=fbUrl};
+    const close=document.createElement('button');
+    close.type='button';close.textContent='Fermer';
+    close.style.cssText='padding:12px;border:1px solid #888;border-radius:8px;background:#222;color:white';
+    close.onclick=()=>dialog.remove();
+    actions.append(copy,open,close);
+    panel.append(heading,help,area,status,actions);
+    dialog.append(panel);
+    document.body.append(dialog);
+    copy.focus();
     return;
   }
   if(navigator.share){
