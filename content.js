@@ -13,6 +13,28 @@ window.HELLXBONE = {
   ],
   articles: [
     {
+        "id": "topo-concerts-12-18-octobre-2026",
+        "category": "Concerts",
+        "date": "2026-10-11",
+        "title": "🤘🔥 HELLXBONE — LE TOPO CONCERTS DE LA SEMAINE",
+        "excerpt": "Du 12 au 18 octobre 2026 : première partie de la sélection rock, metal, punk et underground, avec les informations PMR disponibles.",
+        "body": [
+            "📅 Du lundi 12 au dimanche 18 octobre 2026",
+            "🇫🇷 France entière + Outre-mer",
+            "☠️ ROCK • METAL • PUNK • HARDCORE • GOTHIQUE • UNDERGROUND",
+            "Salut la horde ! Cette semaine, on sort les vestes à patchs et on fait chauffer les amplis. Entre grosses tournées internationales, festivals et petites scènes underground, voici la sélection HELLXBONE, présentée spécialement pour les smartphones.",
+            "♿ L'accessibilité PMR est indiquée lorsqu'elle est connue. Sinon, il faudra la confirmer directement auprès des organisateurs.",
+            "🔥 Lundi 12 octobre",
+            "📍 PARIS — Petit Bain",
+            "💀 ONSLAUGHT + The Prophecy 23 + Toranaga",
+            "🎸 Thrash Metal",
+            "🕖 19h00",
+            "♿ PMR : salle accessible, conditions à confirmer pour cette soirée.",
+            "Du thrash britannique sans compromis pour démarrer la semaine !",
+            "📌 Première partie du topo : la suite du programme du 13 au 18 octobre reste à compléter."
+        ]
+    },
+    {
         "id": "etats-generaux-metal-4-2026",
         "category": "Festival",
         "date": "2026-10-08",
