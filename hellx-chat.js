@@ -3,8 +3,8 @@
 const cfg=window.HELLXBONE_LEADERBOARD;
 if(!cfg?.url||!cfg?.anonKey)return;
 const styles=`
-#hellx-chat-bubble{position:fixed;right:13px;bottom:84px;z-index:1100;width:56px;height:56px;border-radius:50%;border:2px solid #a1ff5b;background:#101510;color:#a1ff5b;font-size:27px;box-shadow:0 4px 18px #0008;touch-action:none;cursor:grab;display:flex;align-items:center;justify-content:center}
-#hellx-chat-panel{position:fixed;right:10px;bottom:150px;width:min(390px,calc(100vw - 20px));height:min(530px,calc(100dvh - 175px));z-index:1101;background:#131515;color:#f6f5f0;border:1px solid #8aff49;border-radius:16px;box-shadow:0 12px 40px #000b;display:flex;flex-direction:column;overflow:hidden;font:15px system-ui,sans-serif}
+#hellx-chat-bubble{position:fixed;right:13px;bottom:84px;z-index:2147483645;width:56px;height:56px;border-radius:50%;border:2px solid #a1ff5b;background:#101510;color:#a1ff5b;font-size:27px;box-shadow:0 4px 18px #0008;touch-action:none;cursor:grab;display:flex;align-items:center;justify-content:center}
+#hellx-chat-panel{position:fixed;right:10px;bottom:150px;width:min(390px,calc(100vw - 20px));height:min(530px,calc(100dvh - 175px));z-index:2147483646;background:#131515;color:#f6f5f0;border:1px solid #8aff49;border-radius:16px;box-shadow:0 12px 40px #000b;display:flex;flex-direction:column;overflow:hidden;font:15px system-ui,sans-serif}
 #hellx-chat-panel[hidden],#hellx-chat-bubble[hidden]{display:none!important}
 #hellx-chat-panel *{box-sizing:border-box}
 #hellx-chat-panel header{min-height:auto!important;padding:12px!important;background:#111!important;display:flex;align-items:center;justify-content:space-between;color:#a3ff65!important}
