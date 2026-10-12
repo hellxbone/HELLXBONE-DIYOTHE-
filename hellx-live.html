@@ -14,17 +14,19 @@ function distanceKm(a,b){const radians=n=>n*Math.PI/180;const dlat=radians(b.lat
 async function geocode(place){const query=String(place||'').trim();if(!query)return null;const cacheKey=query.toLocaleLowerCase('fr');if(geoCache.has(cacheKey))return geoCache.get(cacheKey);const url='https://data.geopf.fr/geocodage/search/?q='+encodeURIComponent(query)+'&limit=1&type=municipality';const res=await fetch(url);if(!res.ok)throw Error('Géocodage indisponible');const data=await res.json();const point=data.features?.[0]?.geometry?.coordinates;const result=Array.isArray(point)&&point.length===2?{lat:point[1],lon:point[0]}:null;geoCache.set(cacheKey,result);return result}
 const txt=v=>typeof v==='string'?v:(Array.isArray(v)?txt(v[0]):v&&typeof v==='object'?(v.fr||v['fr-FR']||v.value||v.label||''):'');
 function mapTourisme(o){
- const place=o.isLocatedAt||{}, address=place.address||{},geo=place.geo||{},events=o.takesPlaceAt||o.hasEvent||[];
- const period=Array.isArray(events)?events[0]:events;
- const start=period?.startDate||period?.startDateTime||o.startDate||'';
- const city=txt(address.hasAddressCity?.label||address.hasAddressCity?.name||address.city||'');
+ const first=v=>Array.isArray(v)?v[0]:v;
+ const place=first(o.isLocatedAt)||{},address=first(place.address)||{},geo=first(place.geo)||{};
+ const period=first(o.takesPlaceAt||o.hasEvent)||{};
+ const start=period.startDate||period.startDateTime||o.startDate||'';
+ const city=txt(address.hasAddressCity?.label||address.addressLocality||address.city||'');
  const date=start?new Date(start):null;
- const desc=Array.isArray(o.hasDescription)?o.hasDescription[0]:o.hasDescription;const description=txt(desc?.shortDescription||desc?.description||'');
+ const desc=first(o.hasDescription)||{};
+ const description=txt(desc.shortDescription||desc.description||'');
  const title=txt(o.label)||'Événement';
  const genre=txt(o.type)||'Concert';
- const link=o.hasContact?.homepage||o.website||'';
- const latitude=Number(geo.latitude??geo.lat??geo[1]),longitude=Number(geo.longitude??geo.lon??geo.lng??geo[0]);
- return {title,city,venue:txt(place.name||address.label||''),latitude:Number.isFinite(latitude)?latitude:null,longitude:Number.isFinite(longitude)?longitude:null,event_date:date&&!Number.isNaN(date.valueOf())?date.toISOString():'',genre,description,accessibility:'Accès PMR à confirmer',ticket_url:typeof link==='string'?link:'',source:'DATAtourisme'};
+ const link=first(o.hasContact)?.homepage||o.website||'';
+ const latitude=Number(geo.latitude??geo.lat),longitude=Number(geo.longitude??geo.lon??geo.lng);
+ return {title,city,venue:txt(place.name||address.label||address.streetAddress||''),latitude:Number.isFinite(latitude)&&Math.abs(latitude)<=90?latitude:null,longitude:Number.isFinite(longitude)&&Math.abs(longitude)<=180?longitude:null,event_date:date&&!Number.isNaN(date.valueOf())?date.toISOString():'',genre,description,accessibility:'Accès PMR à confirmer',ticket_url:typeof link==='string'?link:'',source:'DATAtourisme'};
 }
 async function fetchLiveConcerts(city){
  liveConcerts=[];liveStatus='Recherche DATAtourisme en cours…';
@@ -40,7 +42,7 @@ async function fetchLiveConcerts(city){
   liveStatus='DATAtourisme : '+liveConcerts.length+' événement(s) musicaux à venir identifiés sur '+(data.objects||[]).length+' résultats Internet'+(data.partial?' (recherche partielle)':'')+'.';
  }catch(err){liveStatus='Recherche Internet indisponible : '+String(err.message||err)+'. Résultats HELLXBONE en complément.'}
 }
-async function concertPoint(c){if(Number.isFinite(c.latitude)&&Number.isFinite(c.longitude))return {lat:c.latitude,lon:c.longitude};return geocode([c.city,c.department].filter(Boolean).join(' '))}
+async function concertPoint(c){if(Number.isFinite(c.latitude)&&Number.isFinite(c.longitude))return {lat:c.latitude,lon:c.longitude};return c.city?geocode([c.city,c.department].filter(Boolean).join(' ')):null}
 async function renderConcerts(){const id=++requestNumber;const el=document.getElementById('concert-list');if(!center){el.innerHTML='<div class="panel">Indique une ville ou utilise ta position pour afficher les concerts dans un rayon de 100 km.</div>';return}el.textContent='Recherche des concerts dans un rayon de 100 km…';let found=[],unknown=0;await Promise.all([...concerts,...liveConcerts].map(async c=>{try{const p=await concertPoint(c);if(!p){unknown++;return}const km=distanceKm(center,p);if(km<=RADIUS_KM)found.push({...c,distance:km})}catch{unknown++}}));if(id!==requestNumber)return;found.sort((a,b)=>a.distance-b.distance||new Date(a.event_date)-new Date(b.event_date));const seen=new Set();found=found.filter(c=>{const k=[c.title,c.city,String(c.event_date).slice(0,10)].join('|').toLowerCase();if(seen.has(k))return false;seen.add(k);return true});el.innerHTML=found.length?found.map(c=>'<article><h3>'+escapeHTML(c.title)+'</h3><p>'+escapeHTML(new Date(c.event_date).toLocaleString('fr-FR',{dateStyle:'full',timeStyle:'short'}))+' — '+escapeHTML(c.venue)+', '+escapeHTML(c.city)+'</p><p class="tag">📍 '+Math.round(c.distance)+' km à vol d’oiseau • '+escapeHTML(c.genre||'Rock / Metal')+' • ♿ '+escapeHTML(c.accessibility||'Accès PMR à confirmer')+'</p>'+(safeUrl(c.ticket_url)?'<a href="'+escapeHTML(safeUrl(c.ticket_url))+'" target="_blank" rel="noopener noreferrer">Billetterie ↗</a>':'')+'</article>').join(''):'<div class="panel">Aucun événement répertorié dans le rayon de 100 km par les sources disponibles. Consulte aussi les recherches externes ci-dessous.</div>';el.insertAdjacentHTML('beforeend','<p class="muted">'+escapeHTML(liveStatus)+'</p>');if(unknown)el.insertAdjacentHTML('beforeend','<p class="muted">'+unknown+' concert(s) sans localisation vérifiable non affiché(s).</p>')}
 async function searchCity(){const note=document.getElementById('near-note'),city=document.getElementById('search').value.trim();if(!city){note.textContent='Indique une ville pour lancer la recherche.';return}note.textContent='Recherche de la ville…';try{const point=await geocode(city);if(!point){note.textContent='Ville introuvable. Précise son nom.';return}center=point;note.textContent='Rayon de 100 km autour de '+city+' (distance à vol d’oiseau).';await fetchLiveConcerts(city);await renderConcerts();const q=encodeURIComponent('concert rock metal punk '+city+' dates 2026');document.getElementById('concert-list').insertAdjacentHTML('beforeend','<p><a target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q='+q+'">🔎 Voir davantage de concerts sur Internet ↗</a></p>')}catch{note.textContent='Service de localisation indisponible. Réessaie.'}}
 async function loadConcerts(){try{const results=await rows('hellx_concerts','select=title,venue,city,department,latitude,longitude,event_date,genre,accessibility,ticket_url&published=eq.true&event_date=gte.'+encodeURIComponent(new Date().toISOString())+'&order=event_date.asc&limit=1000');concerts=results.map(x=>({...x,latitude:x.latitude===null?null:Number(x.latitude),longitude:x.longitude===null?null:Number(x.longitude)}));renderConcerts()}catch(e){document.getElementById('concert-list').textContent='Impossible de récupérer les concerts depuis Supabase. Vérifie la connexion et réessaie.'}}
