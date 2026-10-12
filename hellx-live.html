@@ -28,6 +28,19 @@ function mapTourisme(o){
  const coordinates=geo.coordinates||place.coordinates||[], latitude=Number(geo.latitude??geo.lat??place.latitude??(Array.isArray(coordinates)?coordinates[1]:null)),longitude=Number(geo.longitude??geo.lon??geo.lng??place.longitude??(Array.isArray(coordinates)?coordinates[0]:null));
  return {title,city,venue:txt(place.name||address.label||address.streetAddress||''),latitude:Number.isFinite(latitude)&&Math.abs(latitude)<=90?latitude:null,longitude:Number.isFinite(longitude)&&Math.abs(longitude)<=180?longitude:null,event_date:date&&!Number.isNaN(date.valueOf())?date.toISOString():'',genre,description,accessibility:'Accès PMR à confirmer',ticket_url:typeof link==='string'?link:'',source:'DATAtourisme'};
 }
+async function fetchTicketmaster(){
+ try{
+  const u=new URL('https://ldibykpitjutratyqqax.supabase.co/functions/v1/concerts-ticketmaster');
+  u.searchParams.set('lat',center.lat);u.searchParams.set('lon',center.lon);
+  const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),17000);
+  let r;try{r=await fetch(u,{signal:ctl.signal})}finally{clearTimeout(t)}
+  const d=await r.json();if(!r.ok)throw Error(d.error||'HTTP '+r.status);
+  if(!d.configured)return {events:[],info:'Ticketmaster en attente de sa clé API'};
+  const styles=/rock|metal|métal|punk|hardcore|grunge|goth|alternative|industrial|industriel|thrash|death|black|heavy|stoner|doom/i;
+  const events=(d.events||[]).filter(x=>styles.test(x.genre||'')&&!/jazz|classical|classique|pop(?![ -]punk)/i.test(x.genre||'')).map(x=>({...x,genreConfirmed:true}));
+  return {events,info:'Ticketmaster : '+events.length+' événements rock/metal/punk'};
+ }catch(e){return {events:[],info:'Ticketmaster indisponible : '+String(e.message||e)}}
+}
 async function fetchLiveConcerts(city){
  liveConcerts=[];liveStatus='Recherche DATAtourisme en cours…';
  try{
@@ -41,7 +54,8 @@ async function fetchLiveConcerts(city){
   const excluded=/\b(?:jazz|classique|classical|variété|variete|chanson française|chanson francaise|opéra|opera|musique baroque)\b/i;
   liveConcerts=(data.objects||[]).map(mapTourisme).filter(x=>{const info=[x.title,x.genre,x.description].join(' ');if(!x.event_date||Date.parse(x.event_date)<Date.now()-86400000||excluded.test(info))return false;const confirmed=styles.test(info);const maybe=/\b(?:concert|festival|live|groupe|musique actuelle|musiques actuelles|scène musicale)\b/i.test(info);if(!confirmed&&!maybe)return false;x.genreConfirmed=confirmed;x.genre=confirmed?'Rock / Metal / styles associés':'Concert — style à vérifier';return true});
   liveStatus='DATAtourisme : '+liveConcerts.length+' événement(s) musicaux sélectionnés (styles confirmés ou à vérifier) sur '+(data.objects||[]).length+' résultats Internet'+(data.partial?' (recherche partielle)':'')+'.';
- }catch(err){liveStatus='Recherche Internet indisponible : '+String(err.message||err)+'. Résultats HELLXBONE en complément.'}
+ }catch(err){liveStatus='DATAtourisme indisponible : '+String(err.message||err)}
+ const tm=await fetchTicketmaster();liveConcerts.push(...tm.events);liveStatus+=' • '+tm.info;
 }
 async function concertPoint(c){if(Number.isFinite(c.latitude)&&Number.isFinite(c.longitude))return {lat:c.latitude,lon:c.longitude};return c.city?geocode([c.city,c.department].filter(Boolean).join(' ')):null}
 async function renderConcerts(){const id=++requestNumber;const el=document.getElementById('concert-list');if(!center){el.innerHTML='<div class="panel">Indique une ville ou utilise ta position pour afficher les concerts dans un rayon de 100 km.</div>';return}el.textContent='Recherche des concerts dans un rayon de 100 km…';let found=[],unknown=0;await Promise.all([...concerts,...liveConcerts].map(async c=>{try{const p=await concertPoint(c);if(!p){unknown++;return}const km=distanceKm(center,p);if(km<=RADIUS_KM)found.push({...c,distance:km})}catch{unknown++}}));if(id!==requestNumber)return;found.sort((a,b)=>a.distance-b.distance||new Date(a.event_date)-new Date(b.event_date));const seen=new Set();found=found.filter(c=>{const k=[c.title,c.city,String(c.event_date).slice(0,10)].join('|').toLowerCase();if(seen.has(k))return false;seen.add(k);return true});el.innerHTML=found.length?found.map(c=>'<article><h3>'+escapeHTML(c.title)+'</h3><p>'+escapeHTML(new Date(c.event_date).toLocaleString('fr-FR',{dateStyle:'full',timeStyle:'short'}))+' — '+escapeHTML(c.venue)+', '+escapeHTML(c.city)+'</p><p class="tag">📍 '+Math.round(c.distance)+' km à vol d’oiseau • '+escapeHTML(c.genre||'Rock / Metal')+(c.genreConfirmed===false?' (style non confirmé)':'')+' • ♿ '+escapeHTML(c.accessibility||'Accès PMR à confirmer')+'</p>'+(safeUrl(c.ticket_url)?'<a href="'+escapeHTML(safeUrl(c.ticket_url))+'" target="_blank" rel="noopener noreferrer">Billetterie ↗</a>':'')+'</article>').join(''):'<div class="panel">Aucun événement répertorié dans le rayon de 100 km par les sources disponibles. Consulte aussi les recherches externes ci-dessous.</div>';el.insertAdjacentHTML('beforeend','<p class="muted">'+escapeHTML(liveStatus)+'</p>');if(unknown)el.insertAdjacentHTML('beforeend','<p class="muted">'+unknown+' concert(s) sans localisation vérifiable non affiché(s).</p>')}
