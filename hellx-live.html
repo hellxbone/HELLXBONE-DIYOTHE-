@@ -19,7 +19,7 @@ function mapTourisme(o){
  const start=period?.startDate||period?.startDateTime||o.startDate||'';
  const city=txt(address.hasAddressCity?.label||address.hasAddressCity?.name||address.city||'');
  const date=start?new Date(start):null;
- const description=txt(o.hasDescription?.shortDescription||o.hasDescription?.description||'');
+ const desc=Array.isArray(o.hasDescription)?o.hasDescription[0]:o.hasDescription;const description=txt(desc?.shortDescription||desc?.description||'');
  const title=txt(o.label)||'Événement';
  const genre=txt(o.type)||'Concert';
  const link=o.hasContact?.homepage||o.website||'';
@@ -36,8 +36,8 @@ async function fetchLiveConcerts(city){
   const data=await response.json();
   if(!response.ok)throw Error(data.error||'HTTP '+response.status);
   const music=/concert|rock|metal|métal|punk|hardcore|goth|musique|music|festival/i;
-  liveConcerts=(data.objects||[]).map(mapTourisme).filter(x=>music.test([x.title,x.genre,x.description].join(' '))&&x.event_date&&Date.parse(x.event_date)>=Date.now());
-  liveStatus='DATAtourisme : '+liveConcerts.length+' événement(s) musicaux datés identifiés'+(data.partial?' (résultats partiels)':'')+'.';
+  liveConcerts=(data.objects||[]).map(mapTourisme).filter(x=>music.test([x.title,x.genre,x.description].join(' '))&&x.event_date&&Date.parse(x.event_date)>=Date.now()-86400000);
+  liveStatus='DATAtourisme : '+liveConcerts.length+' événement(s) musicaux à venir identifiés sur '+(data.objects||[]).length+' résultats Internet'+(data.partial?' (recherche partielle)':'')+'.';
  }catch(err){liveStatus='Recherche Internet indisponible : '+String(err.message||err)+'. Résultats HELLXBONE en complément.'}
 }
 async function concertPoint(c){if(Number.isFinite(c.latitude)&&Number.isFinite(c.longitude))return {lat:c.latitude,lon:c.longitude};return geocode([c.city,c.department].filter(Boolean).join(' '))}
