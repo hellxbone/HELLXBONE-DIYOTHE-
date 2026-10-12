@@ -1,0 +1,55 @@
+(function(){
+'use strict';
+const cfg=window.HELLXBONE_LEADERBOARD;
+if(!cfg?.url||!cfg?.anonKey)return;
+const styles=`
+#hellx-chat-bubble{position:fixed;right:13px;bottom:84px;z-index:1100;width:56px;height:56px;border-radius:50%;border:2px solid #a1ff5b;background:#101510;color:#a1ff5b;font-size:27px;box-shadow:0 4px 18px #0008;touch-action:none;cursor:grab;display:flex;align-items:center;justify-content:center}
+#hellx-chat-panel{position:fixed;right:10px;bottom:150px;width:min(390px,calc(100vw - 20px));height:min(530px,calc(100dvh - 175px));z-index:1101;background:#131515;color:#f6f5f0;border:1px solid #8aff49;border-radius:16px;box-shadow:0 12px 40px #000b;display:flex;flex-direction:column;overflow:hidden;font:15px system-ui,sans-serif}
+#hellx-chat-panel[hidden],#hellx-chat-bubble[hidden]{display:none!important}
+#hellx-chat-panel *{box-sizing:border-box}
+#hellx-chat-panel header{min-height:auto!important;padding:12px!important;background:#111!important;display:flex;align-items:center;justify-content:space-between;color:#a3ff65!important}
+#hellx-chat-panel button{cursor:pointer}
+#hellx-chat-close{border:0;background:transparent;color:white;font-size:23px}
+#hellx-chat-content{flex:1;min-height:0;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+#hellx-chat-panel input,#hellx-chat-panel textarea{width:100%;background:#242424!important;color:white!important;border:1px solid #727d70!important;border-radius:9px!important;padding:10px!important;font:inherit!important}
+#hellx-chat-panel .hx-msg{max-width:88%;padding:9px 11px;border-radius:12px;background:#383838;white-space:pre-wrap;overflow-wrap:anywhere;align-self:flex-start}
+#hellx-chat-panel .hx-mine{align-self:flex-end;background:#355323}
+#hellx-chat-panel .hx-small{color:#d9d9d9;font-size:12px}
+#hellx-chat-panel .hx-action{background:#91fa4f;color:#0b0b0b;border:0;border-radius:9px;padding:10px 12px;font-weight:800}
+#hellx-chat-panel .hx-link{border:0;background:none;color:#a6ff76;text-decoration:underline;font-size:12px;margin-top:7px}
+#hellx-chat-compose{display:flex;padding:10px;gap:7px;border-top:1px solid #394338}
+#hellx-chat-compose[hidden]{display:none}
+#hellx-chat-compose input{flex:1;min-width:0}
+#hellx-chat-compose button{background:#94fc57;border:0;border-radius:9px;padding:0 13px;font-size:22px}
+#hellx-chat-content .hx-thread{display:block;width:100%;text-align:left;background:#292929;color:white;border:1px solid #555;border-radius:8px;padding:12px}
+`;
+const st=document.createElement('style');st.textContent=styles;document.head.appendChild(st);
+const bubble=document.createElement('button');bubble.id='hellx-chat-bubble';bubble.type='button';bubble.setAttribute('aria-label','Ouvrir la messagerie HELLXBONE');bubble.textContent='☠';
+const panel=document.createElement('section');panel.id='hellx-chat-panel';panel.hidden=true;panel.setAttribute('aria-label','Messagerie privée HELLXBONE');panel.innerHTML='<header><strong>☠ HELLXBONE • Messages privés</strong><button type="button" id="hellx-chat-close" aria-label="Fermer">×</button></header><div id="hellx-chat-content"></div><form id="hellx-chat-compose" hidden><input id="hellx-chat-input" maxlength="1500" placeholder="Ton message..." aria-label="Écrire un message" required><button type="submit" aria-label="Envoyer">➤</button></form>';
+document.body.append(bubble,panel);
+const content=panel.querySelector('#hellx-chat-content'),compose=panel.querySelector('#hellx-chat-compose'),input=panel.querySelector('#hellx-chat-input');
+let client,session,thread,admin=false,mode='visitor',busy=false,interval;
+function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e}
+function notice(t){content.replaceChildren(el('p',t,'hx-small'));compose.hidden=true}
+function fail(e){notice('Messagerie indisponible : '+(e?.message||'erreur de connexion'))}
+function library(){return new Promise((resolve,reject)=>{if(window.supabase?.createClient)return resolve(window.supabase);let s=document.querySelector('script[data-hx-sb]');if(!s){s=document.createElement('script');s.dataset.hxSb='1';s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js';document.head.append(s)}s.addEventListener('load',()=>resolve(window.supabase),{once:true});s.addEventListener('error',()=>reject(new Error('Chargement du service impossible')),{once:true})})}
+async function setup(){if(!client){const mod=await library();client=mod.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true}})}const {data}=await client.auth.getSession();session=data.session;if(!session){const {data:d,error}=await client.auth.signInAnonymously();if(error)throw error;session=d.session}const {data:a}=await client.from('hellx_chat_admins').select('user_id').eq('user_id',session.user.id).maybeSingle();admin=!!a}
+function gameVisible(){const g=location.hash==='#jeu'||document.querySelector('nav [data-page="jeu"][aria-current="page"]');const overlay=document.querySelector('#riff-crush-overlay, #riff-game-overlay, .riff-overlay');return !!g||!!(overlay&&getComputedStyle(overlay).display!=='none'&&getComputedStyle(overlay).visibility!=='hidden')}
+function visibility(){const hidden=gameVisible();bubble.hidden=hidden;if(hidden)panel.hidden=true}
+const observer=new MutationObserver(()=>visibility());observer.observe(document.querySelector('nav')||document.body,{attributes:true,subtree:true,attributeFilter:['aria-current']});window.addEventListener('hashchange',visibility);
+let sx,sy,moved=false;
+bubble.addEventListener('pointerdown',e=>{sx=e.clientX;sy=e.clientY;moved=false;bubble.setPointerCapture(e.pointerId)});
+bubble.addEventListener('pointermove',e=>{if(sx===undefined)return;if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>7)moved=true;if(moved){bubble.style.left=Math.max(4,Math.min(innerWidth-60,e.clientX-28))+'px';bubble.style.top=Math.max(4,Math.min(innerHeight-60,e.clientY-28))+'px';bubble.style.right='auto';bubble.style.bottom='auto'}});
+bubble.addEventListener('pointerup',()=>{sx=undefined});
+bubble.addEventListener('click',async()=>{if(moved){moved=false;return}panel.hidden=!panel.hidden;if(panel.hidden){clearInterval(interval);return}notice('Connexion…');try{await setup();await home();clearInterval(interval);interval=setInterval(()=>{if(!panel.hidden&&mode!=='login'&&!busy)refresh().catch(()=>{})},6000)}catch(e){fail(e)}});
+panel.querySelector('#hellx-chat-close').onclick=()=>{panel.hidden=true;clearInterval(interval)};
+function action(text,fn,cls='hx-action'){let b=el('button',text,cls);b.type='button';b.addEventListener('click',fn);return b}
+async function home(){if(admin){mode='admin';await inbox()}else{mode='visitor';await visitor()}}
+async function visitor(){busy=true;try{const {data,error}=await client.from('hellx_chat_threads').select('id,pseudo').eq('visitor_id',session.user.id).maybeSingle();if(error)throw error;thread=data?.id||null;if(!thread){compose.hidden=true;content.replaceChildren(el('p','Bienvenue dans l’antre HELLXBONE ! Écris-moi directement ici.','hx-small'));const f=el('form');const nick=el('input');nick.maxLength=32;nick.required=true;nick.placeholder='Ton pseudo';nick.value=(localStorage.getItem('hellx-riff-player-name')||'').slice(0,32);f.append(nick,action('Commencer la discussion',()=>f.requestSubmit()));f.onsubmit=async e=>{e.preventDefault();const pseudo=nick.value.trim().slice(0,32);if(!pseudo)return;const {data:t,error:err}=await client.from('hellx_chat_threads').insert({visitor_id:session.user.id,pseudo}).select('id').single();if(err){fail(err);return}thread=t.id;await messages()};content.append(f,action('Accès administrateur',login,'hx-link'));return}await messages()}finally{busy=false}}
+async function messages(){if(!thread)return;const {data,error}=await client.from('hellx_chat_messages').select('id,body,sender_id,created_at').eq('thread_id',thread).order('created_at',{ascending:true}).limit(150);if(error)throw error;const wasAtEnd=content.scrollHeight-content.scrollTop-content.clientHeight<65;content.replaceChildren();if(admin)content.append(action('← Conversations',inbox,'hx-link'));if(!data.length)content.append(el('p','Envoie ton premier message !','hx-small'));for(const m of data){const x=el('div',m.body,'hx-msg'+(m.sender_id===session.user.id?' hx-mine':''));x.title=new Date(m.created_at).toLocaleString('fr-FR');content.append(x)}compose.hidden=false;if(wasAtEnd)content.scrollTop=content.scrollHeight}
+async function inbox(){mode='admin';compose.hidden=true;const {data,error}=await client.from('hellx_chat_threads').select('id,pseudo,updated_at').order('updated_at',{ascending:false}).limit(100);if(error)throw error;content.replaceChildren(el('strong','Mes conversations'));if(!data.length)content.append(el('p','Aucune conversation pour le moment.','hx-small'));for(const t of data)content.append(action(t.pseudo+' — '+new Date(t.updated_at).toLocaleString('fr-FR'),async()=>{thread=t.id;mode='thread';await messages()},'hx-thread'));content.append(action('Se déconnecter de l’administration',async()=>{await client.auth.signOut();session=null;admin=false;thread=null;await setup();await visitor()},'hx-link'))}
+async function login(){mode='login';compose.hidden=true;content.replaceChildren(el('strong','Accès administrateur'));const f=el('form'),email=el('input'),pass=el('input');email.type='email';email.autocomplete='email';email.placeholder='Email administrateur';email.required=true;pass.type='password';pass.autocomplete='current-password';pass.placeholder='Mot de passe';pass.required=true;f.append(email,pass,action('Connexion',()=>f.requestSubmit()));f.onsubmit=async e=>{e.preventDefault();await client.auth.signOut();const {data,error}=await client.auth.signInWithPassword({email:email.value.trim(),password:pass.value});if(error){fail(error);return}session=data.session;const {data:a}=await client.from('hellx_chat_admins').select('user_id').eq('user_id',session.user.id).maybeSingle();admin=!!a;if(!admin){notice('Compte sans droits administrateur.');return}await inbox()};content.append(f,action('Retour',async()=>{await setup();await home()},'hx-link'))}
+async function refresh(){if(mode==='visitor'||mode==='thread')await messages();else if(mode==='admin')await inbox()}
+compose.onsubmit=async e=>{e.preventDefault();if(!thread||!session||busy)return;const body=input.value.trim().slice(0,1500);if(!body)return;busy=true;try{const {error}=await client.from('hellx_chat_messages').insert({thread_id:thread,sender_id:session.user.id,body});if(error)throw error;input.value='';await client.from('hellx_chat_threads').update({updated_at:new Date().toISOString()}).eq('id',thread);await messages()}catch(err){alert('Message non envoyé : '+err.message)}finally{busy=false}};
+visibility();
+})();
