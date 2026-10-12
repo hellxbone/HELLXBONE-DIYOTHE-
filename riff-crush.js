@@ -91,7 +91,8 @@ function buildShell(){if(q('#hellx-riff-crush'))return;const el=document.createE
 function toggleSound(){muted=!muted;q('.riff-sound').textContent=muted?'🔇 Son OFF':'🔊 Son ON';if(!muted){unlockAudio();sfx('level')}}
 // Les symboles dominants rendent les alignements de 4 et 5 plus accessibles, sans garantir de bonus.
 const RIFF_ICON_WEIGHTS=[2.4,2.4,1,1,1,1];
-function randIcon(){const total=RIFF_ICON_WEIGHTS.reduce((sum,w)=>sum+w,0);let roll=Math.random()*total;for(let i=0;i<ICONS.length;i++){roll-=RIFF_ICON_WEIGHTS[i];if(roll<0)return ICONS[i]}return ICONS[ICONS.length-1]}
+const NINIE_ICON_WEIGHTS=[5.5,5.5,.65,.65,.65,.65];
+function randIcon(){const weights=playerId()===NINIE_PLAYER_ID?NINIE_ICON_WEIGHTS:RIFF_ICON_WEIGHTS;const total=weights.reduce((sum,w)=>sum+w,0);let roll=Math.random()*total;for(let i=0;i<ICONS.length;i++){roll-=weights[i];if(roll<0)return ICONS[i]}return ICONS[ICONS.length-1]}
 function hasAt(r,c,v){return (c>=2&&board[idx(r,c-1)]===v&&board[idx(r,c-2)]===v)||(r>=2&&board[idx(r-1,c)]===v&&board[idx(r-2,c)]===v)}
 function fillFresh(){board=new Array(ROWS*COLS);for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){let v;do{v=randIcon()}while(hasAt(r,c,v));board[idx(r,c)]=v}}
 function goalForLevel(l){return LEVEL_GOALS[Math.min(l-1,LEVEL_GOALS.length-1)]}
