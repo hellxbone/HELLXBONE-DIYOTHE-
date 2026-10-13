@@ -30,7 +30,7 @@ async function discover(){
  }
  throw Error('Aucun titre complet disponible');
 }
-let dialog, angle=0, spinning=false;
+let dialog, spinning=false;
 const css=[
 '#hx-roulette{background:#080908;color:#fff;border:2px solid #81ff8a;border-radius:20px;width:min(96vw,520px);max-width:96vw;max-height:94dvh;overflow:auto;padding:18px;box-sizing:border-box;box-shadow:0 0 45px #358c424f}',
 '#hx-roulette::backdrop{background:rgba(0,0,0,.92)}',
@@ -60,18 +60,14 @@ function setup(){
  if(dialog)return dialog;
  const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
  dialog=document.createElement('dialog');dialog.id='hx-roulette';
- dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">Une découverte metal au hasard. Des morceaux entiers, sans vidéo !</p><div class="hx-wheel"><div class="hx-arrow">▼</div><div class="hx-disc"></div><div class="hx-center">HX</div></div><button class="hx-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des groupes et des morceaux complets publiés sur Audius. Lance la roulette !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><audio class="hx-audio" controls preload="none" playsinline hidden></audio><p class="hx-status" role="status"></p></div></section><p class="hx-note">Seuls les morceaux complets accessibles en streaming sont sélectionnés. Aucun extrait, aucune vidéo.</p>';
+ dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">Une découverte metal au hasard. Des morceaux entiers, sans vidéo !</p><button class="hx-spin" type="button">⚡ UNE AUTRE DÉCOUVERTE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des groupes et des morceaux complets publiés sur Audius. Appuie sur le bouton pour découvrir un morceau !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><audio class="hx-audio" controls preload="none" playsinline hidden></audio><p class="hx-status" role="status"></p></div></section><p class="hx-note">Seuls les morceaux complets accessibles en streaming sont sélectionnés. Aucun extrait, aucune vidéo.</p>';
  document.body.appendChild(dialog);
- const disk=dialog.querySelector('.hx-disc');
  dialog.querySelector('.hx-close').onclick=()=>{dialog.querySelector('.hx-audio').pause();dialog.close();};
  dialog.querySelector('.hx-spin').onclick=()=>{
   if(spinning)return;spinning=true;const btn=dialog.querySelector('.hx-spin');btn.disabled=true;
   const oldAudio=dialog.querySelector('.hx-audio');oldAudio.pause();oldAudio.removeAttribute('src');oldAudio.load();oldAudio.hidden=true;
   dialog.querySelector('.hx-picked').hidden=true;dialog.querySelector('.hx-intro').hidden=false;
-  const target=Math.floor(Math.random()*360);
-  const delta=(target-(angle%360)+360)%360;angle+=1800+delta;
-  disk.style.transform='rotate('+angle+'deg)';
-  setTimeout(async()=>{
+  (async()=>{
    const root=dialog;
    root.querySelector('.hx-intro').textContent='Recherche d’un groupe dans la scène metal mondiale…';
    try{
@@ -88,9 +84,9 @@ function setup(){
     root.querySelector('.hx-intro').textContent='Aucun morceau complet trouvé cette fois. Relance pour une nouvelle découverte.';
    }
    spinning=false;btn.disabled=false;
-  },4200);
+  })();
  };
  return dialog;
 }
-document.addEventListener('click',e=>{if(!e.target.closest('[data-discovery-open]'))return;e.preventDefault();const d=setup();if(!d.open)d.showModal();});
+document.addEventListener('click',e=>{if(!e.target.closest('[data-discovery-open]'))return;e.preventDefault();const d=setup();if(!d.open)d.showModal();d.querySelector('.hx-spin').click();});
 })();
