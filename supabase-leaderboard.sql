@@ -16,9 +16,9 @@ revoke all on public.riff_scores from anon, authenticated;
 grant insert(player_id,player_name,score) on public.riff_scores to anon;
 grant usage,select on sequence public.riff_scores_id_seq to anon;
 create or replace view public.riff_top10 with (security_invoker=false) as
-select distinct on (player_id) player_name, score
+select distinct on (lower(btrim(player_name))) player_name, score
 from public.riff_scores
-order by player_id, score desc, created_at asc;
+order by lower(btrim(player_name)), score desc, created_at asc;
 grant select on public.riff_top10 to anon;
--- Attention: la vue ne limite pas elle-meme les resultats. Le client demande order=score.desc&limit=10.
+-- Une seule entree par pseudo (sans distinction de casse), avec le meilleur score.\n-- La vue ne limite pas les resultats : le client trie et demande jusqu'a 1000 scores.
 -- En production, proteger la soumission via une fonction serveur, anti-spam et validation des parties.
