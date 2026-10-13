@@ -1,9 +1,44 @@
 (()=>{
+// Clips directs de secours : la découverte principale vient de MusicBrainz.
 const bands=[
 {name:'GOJIRA',genre:'Metal progressif',track:'Stranded',video:'FNdC_3LR2AI'},
 {name:'TAGADA JONES',genre:'Punk hardcore',track:'Mort aux cons',video:'pCCiSILIci0'},
 {name:'ALCEST',genre:'Blackgaze',track:'Sapphire',video:'69fnUZhV8SI'},
 {name:'MASS HYSTERIA',genre:'Metal industriel',track:'L’Enfer des Dieux',video:'jsJVmiqf8VA'}];
+const tags=['heavy metal','death metal','black metal','thrash metal','doom metal','metalcore','progressive metal','folk metal','symphonic metal','power metal','sludge metal','post-metal','industrial metal','grindcore','nu metal','hardcore punk'];
+const areas=['FR','ALL','ALL','ALL','ALL'];
+const used=new Set();
+const videoId=url=>{
+ try{const u=new URL(url);const host=u.hostname.replace(/^www\./,'');
+ if(host==='youtu.be')return /^[\w-]{11}$/.test(u.pathname.slice(1))?u.pathname.slice(1):null;
+ if(host==='youtube.com'||host==='m.youtube.com'){const id=u.searchParams.get('v');if(/^[\w-]{11}$/.test(id||''))return id;}
+ }catch(e){}return null;
+};
+const getJSON=async(url,ms=12000)=>{
+ const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),ms);
+ try{const res=await fetch(url,{signal:ctrl.signal,headers:{Accept:'application/json'}});if(!res.ok)throw Error('HTTP '+res.status);return await res.json();}
+ finally{clearTimeout(timer);}
+};
+async function discover(){
+ const tag=tags[Math.floor(Math.random()*tags.length)],country=areas[Math.floor(Math.random()*areas.length)];
+ const q='tag:"'+tag+'" AND type:group'+(country==='FR'?' AND country:FR':'');
+ const offset=Math.floor(Math.random()*120)*25;
+ const url='https://musicbrainz.org/ws/2/artist/?fmt=json&limit=25&offset='+offset+'&query='+encodeURIComponent(q);
+ let data=await getJSON(url);
+ if(!(data.artists||[]).length){data=await getJSON(url.replace(/offset=\d+/,'offset=0'));}
+ let items=(data.artists||[]).filter(a=>a.id&&a.name&&!used.has(a.id)&&a.type==='Group'&&Number(a.score||100)>=60);
+ if(!items.length)throw Error('Catalogue indisponible');
+ const a=items[Math.floor(Math.random()*items.length)];used.add(a.id);
+ if(used.size>120)used.clear();
+ const band={name:a.name,genre:tag.toUpperCase(),track:'Groupe '+(a.country||'international'),video:null,source:'https://musicbrainz.org/artist/'+a.id};
+ // Certaines fiches MusicBrainz référencent un clip YouTube précis.
+ try{
+  const detail=await getJSON('https://musicbrainz.org/ws/2/artist/'+a.id+'?inc=url-rels&fmt=json',8500);
+  const matches=(detail.relations||[]).map(r=>videoId(r.url&&r.url.resource||'')).filter(Boolean);
+  if(matches.length)band.video=matches[Math.floor(Math.random()*matches.length)];
+ }catch(e){}
+ return band;
+}
 let dialog, angle=0, spinning=false;
 const css=[
 '#hx-roulette{background:#080908;color:#fff;border:2px solid #81ff8a;border-radius:20px;width:min(96vw,520px);max-width:96vw;max-height:94dvh;overflow:auto;padding:18px;box-sizing:border-box;box-shadow:0 0 45px #358c424f}',
@@ -34,7 +69,7 @@ function setup(){
  if(dialog)return dialog;
  const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
  dialog=document.createElement('dialog');dialog.id='hx-roulette';
- dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">La roue choisit ton prochain clip metal. Découvre et écoute !</p><div class="hx-wheel"><div class="hx-arrow">▼</div><div class="hx-disc"></div><div class="hx-center">HX</div></div><button class="hx-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">4 groupes et 4 vrais clips officiels. Lance la roulette !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><img class="hx-thumb" alt="Aperçu du clip officiel" loading="lazy"><a class="hx-video" target="_blank" rel="noopener noreferrer">▶ REGARDER LE CLIP SUR YOUTUBE</a></div></section><p class="hx-note">Le bouton ouvre directement la vidéo, pas une recherche YouTube.</p>';
+ dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">La roue choisit ton prochain clip metal. Découvre et écoute !</p><div class="hx-wheel"><div class="hx-arrow">▼</div><div class="hx-disc"></div><div class="hx-center">HX</div></div><button class="hx-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des milliers de groupes français et internationaux via MusicBrainz. Lance la roulette !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><img class="hx-thumb" alt="Aperçu du clip officiel" loading="lazy"><a class="hx-video" target="_blank" rel="noopener noreferrer">▶ REGARDER LE CLIP SUR YOUTUBE</a></div></section><p class="hx-note">Vidéo YouTube directe quand MusicBrainz en référence une ; sinon, fiche du groupe.</p>';
  document.body.appendChild(dialog);
  const disk=dialog.querySelector('.hx-disc');
  bands.forEach((b,i)=>{const mark=document.createElement('span');mark.className='hx-mark';mark.textContent=b.name;
@@ -49,12 +84,23 @@ function setup(){
   const n=Math.floor(Math.random()*bands.length),target=(360-(n+.5)*90)%360;
   const delta=(target-(angle%360)+360)%360;angle+=1800+delta;
   disk.style.transform='rotate('+angle+'deg)';
-  setTimeout(()=>{const b=bands[n],root=dialog;
+  setTimeout(async()=>{
+   const root=dialog;
+   root.querySelector('.hx-intro').textContent='Recherche d’un groupe dans la scène metal mondiale…';
+   let b;try{b=await discover();}catch(e){b=bands[n];}
    root.querySelector('.hx-name').textContent=b.name;
    root.querySelector('.hx-genre').textContent=b.genre;
-   root.querySelector('.hx-track').textContent='🎸 '+b.track;
-   root.querySelector('.hx-thumb').src='https://i.ytimg.com/vi/'+b.video+'/hqdefault.jpg';
-   root.querySelector('.hx-video').href='https://www.youtube.com/watch?v='+b.video;
+   root.querySelector('.hx-track').textContent=b.track;
+   const thumb=root.querySelector('.hx-thumb'),video=root.querySelector('.hx-video');
+   if(b.video){
+    thumb.hidden=false;thumb.src='https://i.ytimg.com/vi/'+b.video+'/hqdefault.jpg';
+    video.hidden=false;video.href='https://www.youtube.com/watch?v='+b.video;
+    video.textContent='▶ REGARDER LA VIDÉO SUR YOUTUBE';
+   }else{
+    thumb.hidden=true;video.hidden=false;
+    video.href=b.source||'https://musicbrainz.org/';
+    video.textContent='♫ DÉCOUVRIR LA FICHE DU GROUPE';
+   }
    root.querySelector('.hx-picked').hidden=false;root.querySelector('.hx-intro').hidden=true;
    spinning=false;btn.disabled=false;
   },4200);
