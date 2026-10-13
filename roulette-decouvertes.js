@@ -13,22 +13,33 @@ const acceptable=t=>{
  const text=genre+' '+tags+' '+title;
  return /metal|rock|punk|hardcore|grind|sludge|doom|goth|thrash|deathcore|blackgaze/.test(text)&&!t.is_stream_gated&&!t.is_delete&&Number(t.duration)>=70&&Number(t.duration)<=1800&&t.id&&t.user?.name;
 };
+// Quatre sélections françaises pour une internationale, sur les lectures réussies.
+let selectionCount=0;
+const frenchLocation=/\\b(france|français|française|paris|lyon|marseille|nantes|lille|bordeaux|toulouse|rennes|strasbourg|montpellier|grenoble|dijon|angers|brest|rouen|reims|clermont.ferrand|saint.etienne|nice|tours|orleans|metz|nancy|limoges|perpignan|caen|le mans|poitiers|la rochelle|avignon|bayonne|annecy|chambery|troyes)\\b/i;
+function isFrench(t){
+ const location=String(t.user?.location||'').trim();
+ // Ni la langue d'un titre ni le nom d'un artiste ne prouvent son origine.
+ return frenchLocation.test(location)||/^(fr|fr-fr)$/i.test(location);
+}
 async function discover(){
- for(let attempt=0;attempt<5;attempt++){
-  const genre=genres[Math.floor(Math.random()*genres.length)];
-  const offset=Math.floor(Math.random()*4)*20;
-  const uri='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(genre)+'&limit=35&offset='+offset+'&app_name=HELLXBONE';
+ const wantFrench=selectionCount%5!==4;
+ const terms=wantFrench?['metal france','french metal','metal français','rock france','punk france',...genres]:genres;
+ for(let attempt=0;attempt<12;attempt++){
+  const genre=terms[Math.floor(Math.random()*terms.length)];
+  const offset=Math.floor(Math.random()*3)*20;
+  const uri='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(genre)+'&limit=50&offset='+offset+'&app_name=HELLXBONE';
   try{
    const result=await getJSON(uri,13000);
-   const tracks=(result.data||[]).filter(t=>acceptable(t)&&!used.has(t.id));
+   const tracks=(result.data||[]).filter(t=>acceptable(t)&&!used.has(t.id)&&isFrench(t)===wantFrench);
    if(!tracks.length)continue;
    const t=tracks[Math.floor(Math.random()*tracks.length)];
    used.add(t.id);if(used.size>150)used.clear();
+   selectionCount++;
    return {name:t.user.name,genre:t.genre||genre,track:t.title,
      stream:'https://api.audius.co/v1/tracks/'+encodeURIComponent(t.id)+'/stream?app_name=HELLXBONE'};
   }catch(e){}
  }
- throw Error('Aucun titre complet disponible');
+ throw Error(wantFrench?'Aucun morceau complet de groupe français identifié dans le catalogue pour le moment. Réessaie.':'Aucun morceau complet international trouvé. Réessaie.');
 }
 let dialog, spinning=false;
 const css=[
@@ -85,7 +96,7 @@ function setup(){
     audio.onerror=()=>{status.textContent='Ce titre ne peut pas être lu. Appuie sur Une autre découverte.';audio.hidden=true;};
     root.querySelector('.hx-picked').hidden=false;root.querySelector('.hx-intro').hidden=true;
    }catch(e){
-    root.querySelector('.hx-intro').textContent='Aucun morceau complet trouvé cette fois. Relance pour une nouvelle découverte.';
+    root.querySelector('.hx-intro').textContent=e.message||'Aucun morceau complet trouvé. Réessaie.';
    }
    spinning=false;btn.disabled=false;
   })();
