@@ -60,8 +60,8 @@ const css=[
 '#hx-roulette .hx-name{font-weight:950;font-size:clamp(29px,8vw,42px);color:#fff;line-height:1.12;margin:9px 0;overflow-wrap:anywhere}',
 '#hx-roulette .hx-genre{color:#ddd;font-size:17px}',
 '#hx-roulette .hx-track{color:#acffb0;font-size:18px;font-weight:850;margin:7px 0}',
-'#hx-roulette .hx-thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:11px;margin:15px auto}',
-'#hx-roulette .hx-video{display:block;background:#ef2626;color:#fff;text-decoration:none;border-radius:11px;font-size:18px;font-weight:950;padding:16px 10px}',
+'#hx-roulette .hx-audio{width:100%;margin:14px auto;display:block;accent-color:#7cff84}',
+'#hx-roulette .hx-status{color:#c7eac7;font-size:14px;margin:12px 0}',
 '#hx-roulette .hx-note{color:#ccc;font-size:12px;text-align:center}',
 '#hx-roulette [hidden]{display:none!important}'
 ].join('');
@@ -69,17 +69,13 @@ function setup(){
  if(dialog)return dialog;
  const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
  dialog=document.createElement('dialog');dialog.id='hx-roulette';
- dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">La roue choisit ton prochain clip metal. Découvre et écoute !</p><div class="hx-wheel"><div class="hx-arrow">▼</div><div class="hx-disc"></div><div class="hx-center">HX</div></div><button class="hx-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des milliers de groupes français et internationaux via MusicBrainz. Lance la roulette !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><img class="hx-thumb" alt="Aperçu du clip officiel" loading="lazy"><a class="hx-video" target="_blank" rel="noopener noreferrer">▶ REGARDER LE CLIP SUR YOUTUBE</a></div></section><p class="hx-note">Vidéo YouTube directe quand MusicBrainz en référence une ; sinon, fiche du groupe.</p>';
+ dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">Une découverte metal au hasard. Écoute un extrait directement ici !</p><div class="hx-wheel"><div class="hx-arrow">▼</div><div class="hx-disc"></div><div class="hx-center">HX</div></div><button class="hx-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des milliers de groupes français et internationaux via MusicBrainz. Lance la roulette !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><audio class="hx-audio" controls preload="none" playsinline hidden></audio><p class="hx-status" role="status"></p></div></section><p class="hx-note">Extraits audio disponibles selon les droits et le catalogue musical. Aucune vidéo.</p>';
  document.body.appendChild(dialog);
  const disk=dialog.querySelector('.hx-disc');
- bands.forEach((b,i)=>{const mark=document.createElement('span');mark.className='hx-mark';mark.textContent=b.name;
- const rad=(i*90+45)*Math.PI/180;
- mark.style.left=(50+Math.sin(rad)*25)+'%';mark.style.top=(50-Math.cos(rad)*25)+'%';
- mark.style.transform='translate(-50%,-50%)';disk.appendChild(mark);
- });
- dialog.querySelector('.hx-close').onclick=()=>dialog.close();
+ dialog.querySelector('.hx-close').onclick=()=>{dialog.querySelector('.hx-audio').pause();dialog.close();};
  dialog.querySelector('.hx-spin').onclick=()=>{
   if(spinning)return;spinning=true;const btn=dialog.querySelector('.hx-spin');btn.disabled=true;
+  const oldAudio=dialog.querySelector('.hx-audio');oldAudio.pause();oldAudio.removeAttribute('src');oldAudio.load();oldAudio.hidden=true;
   dialog.querySelector('.hx-picked').hidden=true;dialog.querySelector('.hx-intro').hidden=false;
   const n=Math.floor(Math.random()*bands.length),target=(360-(n+.5)*90)%360;
   const delta=(target-(angle%360)+360)%360;angle+=1800+delta;
@@ -91,16 +87,22 @@ function setup(){
    root.querySelector('.hx-name').textContent=b.name;
    root.querySelector('.hx-genre').textContent=b.genre;
    root.querySelector('.hx-track').textContent=b.track;
-   const thumb=root.querySelector('.hx-thumb'),video=root.querySelector('.hx-video');
-   if(b.video){
-    thumb.hidden=false;thumb.src='https://i.ytimg.com/vi/'+b.video+'/hqdefault.jpg';
-    video.hidden=false;video.href='https://www.youtube.com/watch?v='+b.video;
-    video.textContent='▶ REGARDER LA VIDÉO SUR YOUTUBE';
-   }else{
-    thumb.hidden=true;video.hidden=false;
-    video.href=b.source||'https://musicbrainz.org/';
-    video.textContent='♫ DÉCOUVRIR LA FICHE DU GROUPE';
-   }
+   const audio=root.querySelector('.hx-audio'),status=root.querySelector('.hx-status');
+   audio.hidden=true;audio.removeAttribute('src');audio.load();
+   status.textContent='Recherche d’un extrait audio…';
+   try{
+    const api='https://itunes.apple.com/search?media=music&entity=song&limit=35&term='+encodeURIComponent(b.name);
+    const response=await getJSON(api,11000);
+    const norm=x=>String(x||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+    const wanted=norm(b.name);
+    const options=(response.results||[]).filter(x=>x.previewUrl&&norm(x.artistName)===wanted);
+    if(options.length){
+     const pick=options[Math.floor(Math.random()*options.length)];
+     audio.src=pick.previewUrl;audio.hidden=false;
+     root.querySelector('.hx-track').textContent=pick.trackName+' — extrait audio';
+     status.textContent='▶ Appuie sur Lecture pour écouter ici, sans vidéo (extrait de 30 secondes environ).';
+    }else{status.textContent='Aucun extrait audio disponible pour ce groupe dans le catalogue. Relance la roue pour une autre découverte.';}
+   }catch(e){status.textContent='Lecteur indisponible pour le moment. Relance la roue.';}
    root.querySelector('.hx-picked').hidden=false;root.querySelector('.hx-intro').hidden=true;
    spinning=false;btn.disabled=false;
   },4200);
