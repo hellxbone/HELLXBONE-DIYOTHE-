@@ -60,7 +60,7 @@ function setup(){
  if(dialog)return dialog;
  const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
  dialog=document.createElement('dialog');dialog.id='hx-roulette';
- dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">Une découverte metal au hasard. Des morceaux entiers, sans vidéo !</p><button class="hx-spin" type="button">⚡ UNE AUTRE DÉCOUVERTE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des groupes et des morceaux complets publiés sur Audius. Appuie sur le bouton pour découvrir un morceau !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><audio class="hx-audio" controls preload="none" playsinline hidden></audio><p class="hx-status" role="status"></p></div></section><p class="hx-note">Seuls les morceaux complets accessibles en streaming sont sélectionnés. Aucun extrait, aucune vidéo.</p>';
+ dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><button class="hx-spin" type="button">⚡ UNE AUTRE DÉCOUVERTE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des groupes et des morceaux complets publiés sur Audius. Appuie sur le bouton pour découvrir un morceau !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><audio class="hx-audio" controls preload="none" playsinline hidden></audio><p class="hx-status" role="status"></p></div></section>';
  document.body.appendChild(dialog);
  dialog.querySelector('.hx-close').onclick=()=>{dialog.querySelector('.hx-audio').pause();dialog.close();};
  dialog.querySelector('.hx-spin').onclick=()=>{
@@ -77,8 +77,12 @@ function setup(){
     root.querySelector('.hx-track').textContent=b.track;
     const audio=root.querySelector('.hx-audio'),status=root.querySelector('.hx-status');
     audio.src=b.stream;audio.hidden=false;
-    status.textContent='Morceau complet — Lecture/Pause dans HELLXBONE, sans vidéo.';
-    audio.onerror=()=>{status.textContent='Ce titre ne peut pas être lu. Relance la roue : ce groupe sera ignoré.';audio.hidden=true;};
+    status.textContent='';
+    audio.autoplay=true;
+    const beginPlayback=()=>audio.play().catch(()=>{status.textContent='Appuie sur Lecture si ton téléphone bloque le démarrage automatique.';});
+    audio.addEventListener('canplay',beginPlayback,{once:true});
+    beginPlayback();
+    audio.onerror=()=>{status.textContent='Ce titre ne peut pas être lu. Appuie sur Une autre découverte.';audio.hidden=true;};
     root.querySelector('.hx-picked').hidden=false;root.querySelector('.hx-intro').hidden=true;
    }catch(e){
     root.querySelector('.hx-intro').textContent='Aucun morceau complet trouvé cette fois. Relance pour une nouvelle découverte.';
