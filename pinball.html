@@ -20,7 +20,7 @@ const ly=652,by=left?614:652,ry=right?614:652;
 if(collisionSegment(b,108,ly,195,by,left?9:2)){if(left){b.vy=-Math.abs(b.vy)-5;b.vx=4+Math.random()*3;points(35,b.x,b.y)}}
 if(collisionSegment(b,312,ly,225,ry,right?9:2)){if(right){b.vy=-Math.abs(b.vy)-5;b.vx=-4-Math.random()*3;points(35,b.x,b.y)}}
 if(b.y>740){balls.splice(balls.indexOf(b),1);if(!balls.length){remaining--;ballsEl.textContent=remaining;launched=false;combo=0;if(remaining<=0){playing=false;overlay.hidden=false;overlay.querySelector('h1').textContent='GAME OVER';overlay.querySelector('p').innerHTML='Score : '+score.toLocaleString('fr-FR')+' points<br>Le trône attend ton retour.';overlay.querySelector('#begin').textContent='REJOUER';}else sound(95,.4)}}}
-b.vx=Math.max(-13,Math.min(13,b.vx));b.vy=Math.max(-21,Math.min(18,b.vy));}b.cooldown=null}}
+b.vx=Math.max(-13,Math.min(13,b.vx));b.vy=Math.max(-21,Math.min(18,b.vy));b.cooldown=null;}}
 function draw(){t++;let sh=shake>0?(Math.random()-.5)*shake:0;shake*=.85;ctx.clearRect(0,0,W,H);ctx.save();ctx.translate(sh,0);
 let grad=ctx.createLinearGradient(0,0,420,730);grad.addColorStop(0,'#35101b');grad.addColorStop(.48,'#130d14');grad.addColorStop(1,'#2e0d08');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
 for(let i=0;i<18;i++){let x=(i*79)%420,y=(i*143)%730;segment(x,y,x+55,y-70,1,'#8b2d1933')}
