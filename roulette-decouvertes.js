@@ -25,30 +25,51 @@ function isFrench(t){
  // Ni la langue d'un titre ni le nom d'un artiste ne prouvent son origine.
  return frenchLocation.test(location)||/^(fr|fr-fr)$/i.test(location);
 }
+// Noms connus américains : ne jamais diffuser une reprise en la présentant comme l'original.
+const usMetalArtists=['Metallica','Slipknot','Korn','System of a Down','Disturbed','Lamb of God','Pantera','Megadeth','Slayer','Anthrax','Deftones','Mastodon','Trivium','Killswitch Engage','Avenged Sevenfold','Five Finger Death Punch','Machine Head','Fear Factory','Whitechapel','Cannibal Corpse','Death','Obituary','Testament','Exodus','Static-X','Mudvayne','Drowning Pool','Sevendust','Godsmack'];
+let catalog=[];
+async function fetchMatches(term,{french=false,artist=null}={}){
+ const uri='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(term)+'&limit=50&app_name=HELLXBONE';
+ const result=await getJSON(uri,7500);
+ return (result.data||[]).filter(t=>{
+  if(!acceptable(t)||used.has(String(t.id))||french&&!isFrench(t))return false;
+  if(artist&&String(t.user?.name||'').trim().toLowerCase()!==artist.toLowerCase())return false;
+  return true;
+ });
+}
 async function discover(){
- const wantFrench=selectionCount%5!==4;
- const frenchTerms=['metal france','french metal','metal français','nu metal france','death metal france','black metal france','metalcore france'];
- const internationalTerms=['metal','nu metal','death metal','black metal','thrash metal','metalcore','heavy metal','doom metal','deathcore','progressive metal'];
- // On privilégie la France sans bloquer tout le lecteur si Audius n'indique pas l'origine.
- const passes=wantFrench?[{terms:frenchTerms,french:true},{terms:internationalTerms,french:false}]:[{terms:internationalTerms,french:false}];
- for(const pass of passes){
-  for(let attempt=0;attempt<5;attempt++){
-   const term=pass.terms[Math.floor(Math.random()*pass.terms.length)];
-   const offset=Math.floor(Math.random()*2)*20;
-   const uri='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(term)+'&limit=50&offset='+offset+'&app_name=HELLXBONE';
+ // Varier les sous-genres et mettre de côté les titres déjà trouvés.
+ const french=selectionCount%5!==4;
+ const frenchTerms=['metal france','metal français','french metal','french death metal','french black metal','french metalcore','nu metal france','thrash metal france'];
+ const searches=french
+   ?[{terms:frenchTerms,french:true,tries:5},{terms:[...genres,'metal underground'],tries:5}]
+   :[{artists:usMetalArtists,tries:7},{terms:[...genres,'american metal','us metal'],tries:5}];
+ // Réserve de pistes pour réduire la répétition.
+ let candidates=catalog.filter(t=>!used.has(String(t.id))&&(!french||isFrench(t)));
+ for(const pass of searches){
+  if(candidates.length)break;
+  for(let i=0;i<pass.tries;i++){
+   const artist=pass.artists?.[Math.floor(Math.random()*pass.artists.length)];
+   const term=artist||pass.terms[Math.floor(Math.random()*pass.terms.length)];
    try{
-    const result=await getJSON(uri,7000);
-    const tracks=(result.data||[]).filter(t=>acceptable(t)&&!used.has(String(t.id))&&(!pass.french||isFrench(t)));
-    if(!tracks.length)continue;
-    const t=tracks[Math.floor(Math.random()*tracks.length)];
-    used.add(String(t.id));if(used.size>150)used.clear();
-    selectionCount++;
-    return {name:t.user.name,genre:t.genre||'Metal',track:t.title,
-      stream:'https://api.audius.co/v1/tracks/'+encodeURIComponent(t.id)+'/stream?app_name=HELLXBONE'};
-   }catch(e){/* Réessayer une recherche différente. */}
+    const found=await fetchMatches(term,{french:!!pass.french,artist:artist||null});
+    if(found.length){catalog.push(...found);candidates=found;break;}
+   }catch(e){/* Une source indisponible ne doit pas bloquer les autres essais. */}
   }
  }
- throw Error('Aucun morceau metal complet disponible sur Audius actuellement. Réessaie.');
+ if(!candidates.length){
+  candidates=catalog.filter(t=>!used.has(String(t.id)));
+ }
+ if(!candidates.length){
+  // Quand tous les morceaux de la réserve ont déjà été joués, on autorise leur redécouverte.
+  used.clear();
+  candidates=catalog.slice();
+ }
+ if(!candidates.length)throw Error('Aucun titre metal complet disponible actuellement dans le catalogue audio. Réessaie.');
+ const t=candidates[Math.floor(Math.random()*candidates.length)];
+ used.add(String(t.id));selectionCount++;
+ if(catalog.length>300)catalog=catalog.slice(-250);
+ return {name:t.user.name,genre:t.genre||'Metal',track:t.title,stream:'https://api.audius.co/v1/tracks/'+encodeURIComponent(t.id)+'/stream?app_name=HELLXBONE'};
 }
 let dialog, spinning=false;
 const css=[
