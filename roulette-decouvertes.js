@@ -1,66 +1,65 @@
-(function(){
-'use strict';
+(()=>{
 const bands=[
-{name:'CRORIF',genre:'Metal underground',query:'CRORIF metal'},
-{name:'Unexpected Calibrations',genre:'Post-djent',query:'Unexpected Calibrations Albatross'},
-{name:'Tagada Jones',genre:'Punk hardcore',query:'Tagada Jones'},
-{name:'LEGBA',genre:'Rock metal',query:'LEGBA rockband Chris Chambers'},
-{name:'Rankken',genre:'Thrash / Death metal',query:'Rankken thrash death'},
-{name:'Yang Yang',genre:'Rock alternatif',query:'Yang Yang groupe rock'},
-{name:'Gojira',genre:'Metal progressif',query:'Gojira metal'},
-{name:'Mass Hysteria',genre:'Metal industriel',query:'Mass Hysteria metal'},
-{name:'Alcest',genre:'Blackgaze',query:'Alcest'},
-{name:'Landmvrks',genre:'Metalcore',query:'LANDMVRKS'},
-{name:'Igorrr',genre:'Metal expérimental',query:'Igorrr'},
-{name:'Heilung',genre:'Folk expérimental',query:'Heilung band'}
-];
-const id='hellx-discovery-dialog';
-const css=`
-#${id}{border:0;max-width:min(96vw,520px);width:100%;max-height:94dvh;overflow:auto;background:#090b09;color:#f4f4f4;border-radius:18px;padding:18px;box-shadow:0 0 0 2px #4dff6a,0 0 50px #1fae4260}
-#${id}::backdrop{background:rgba(0,0,0,.88)}
-#${id} .wheel-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-#${id} h2{font-size:clamp(22px,6vw,34px);margin:6px 0;color:#77ff86}
-#${id} p{color:#ddd;line-height:1.45}
-#${id} button{font:inherit;cursor:pointer}
-#${id} .wheel-close{background:#252525;color:white;border:1px solid #777;border-radius:7px;padding:7px 12px}
-#${id} .wheel-wrap{position:relative;max-width:340px;margin:24px auto 15px}
-#${id} .wheel-pointer{position:absolute;top:-18px;left:50%;transform:translateX(-50%);z-index:2;color:#fff;font-size:34px;text-shadow:0 2px 4px black}
-#${id} .wheel-disk{aspect-ratio:1;border-radius:50%;border:9px solid #171717;box-shadow:0 0 0 3px #6cfa72,0 0 34px #39ef7450;display:grid;place-items:center;transition:transform 4s cubic-bezier(.13,.8,.14,1);background:conic-gradient(#111 0deg 30deg,#7a1221 30deg 60deg,#133c23 60deg 90deg,#111 90deg 120deg,#7a1221 120deg 150deg,#133c23 150deg 180deg,#111 180deg 210deg,#7a1221 210deg 240deg,#133c23 240deg 270deg,#111 270deg 300deg,#7a1221 300deg 330deg,#133c23 330deg 360deg)}
-#${id} .wheel-center{background:#050505;color:#8aff94;border:2px solid #a8ffa3;width:40%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:clamp(16px,5vw,25px);font-weight:900;letter-spacing:1px;box-shadow:0 0 20px #000}
-#${id} .wheel-spin{display:block;width:100%;margin-top:12px;padding:15px;background:#6dff75;color:#051008;border:0;border-radius:9px;font-weight:900;font-size:19px}
-#${id} .wheel-spin:disabled{opacity:.55;cursor:wait}
-#${id} .wheel-result{padding:16px;border:1px solid #396c45;background:#111b13;border-radius:12px;margin-top:16px;text-align:center}
-#${id} .wheel-result[hidden]{display:none}
-#${id} .wheel-result strong{display:block;font-size:25px;color:#8aff93}
-#${id} .wheel-result a{display:inline-block;margin-top:10px;padding:12px 18px;background:#f4f4f4;color:#080808;text-decoration:none;border-radius:8px;font-weight:900}
-#${id} .wheel-hint{font-size:12px;text-align:center}
-`;
-let currentAngle=0,spinning=false;
-function create(){
- let style=document.getElementById('hellx-discovery-style');if(!style){style=document.createElement('style');style.id='hellx-discovery-style';style.textContent=css;document.head.appendChild(style);}
- let d=document.getElementById(id);if(d)return d;
- d=document.createElement('dialog');d.id=id;d.setAttribute('aria-label','Roulette des découvertes rock metal');
- d.innerHTML='<div class="wheel-head"><h2>☠ ROULETTE METAL</h2><button class="wheel-close" type="button" aria-label="Fermer">✕</button></div><p>Fais tourner la roue des enfers et découvre un groupe à écouter !</p><div class="wheel-wrap"><span class="wheel-pointer" aria-hidden="true">▼</span><div class="wheel-disk" id="hellx-discovery-disk"><span class="wheel-center">HELL<br>XBONE</span></div></div><button class="wheel-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><div class="wheel-result" hidden aria-live="polite"><strong class="wheel-band"></strong><span class="wheel-genre"></span><div><a class="wheel-listen" target="_blank" rel="noopener noreferrer">▶ ÉCOUTER LE GROUPE ↗</a></div></div><p class="wheel-hint">Écoute via une recherche YouTube. Aucune publicité ni musique intégrée à l’application.</p>';
- document.body.appendChild(d);
- d.querySelector('.wheel-close').addEventListener('click',()=>d.close());
- d.querySelector('.wheel-spin').addEventListener('click',()=>{
-  if(spinning)return;spinning=true;
-  const btn=d.querySelector('.wheel-spin'),disk=d.querySelector('.wheel-disk'),res=d.querySelector('.wheel-result');
-  btn.disabled=true;res.hidden=true;
-  const n=Math.floor(Math.random()*bands.length);
-  // Le pointeur est en haut : chaque segment fait 30 degrés.
-  const normalized=((currentAngle%360)+360)%360;
-  const target=(360-((n+.5)*30))%360;
-  const delta=(target-normalized+360)%360;
-  currentAngle+=1440+delta;
-  disk.style.transform='rotate('+currentAngle+'deg)';
-  setTimeout(()=>{
-    const b=bands[n];d.querySelector('.wheel-band').textContent=b.name;d.querySelector('.wheel-genre').textContent=b.genre;
-    d.querySelector('.wheel-listen').href='https://www.youtube.com/results?search_query='+encodeURIComponent(b.query);
-    res.hidden=false;btn.disabled=false;spinning=false;
-  },4100);
+{name:'GOJIRA',genre:'Metal progressif',track:'Stranded',video:'FNdC_3LR2AI'},
+{name:'TAGADA JONES',genre:'Punk hardcore',track:'Mort aux cons',video:'pCCiSILIci0'},
+{name:'ALCEST',genre:'Blackgaze',track:'Sapphire',video:'69fnUZhV8SI'},
+{name:'MASS HYSTERIA',genre:'Metal industriel',track:'L’Enfer des Dieux',video:'jsJVmiqf8VA'}];
+let dialog, angle=0, spinning=false;
+const css=[
+'#hx-roulette{background:#080908;color:#fff;border:2px solid #81ff8a;border-radius:20px;width:min(96vw,520px);max-width:96vw;max-height:94dvh;overflow:auto;padding:18px;box-sizing:border-box;box-shadow:0 0 45px #358c424f}',
+'#hx-roulette::backdrop{background:rgba(0,0,0,.92)}',
+'#hx-roulette *{box-sizing:border-box}',
+'#hx-roulette h2{font-size:clamp(26px,7vw,37px);color:#8dff98;margin:6px 0}',
+'#hx-roulette .hx-top{display:flex;align-items:start;justify-content:space-between;gap:10px}',
+'#hx-roulette .hx-close{background:#242424;color:#fff;border:1px solid #777;border-radius:9px;padding:10px 14px}',
+'#hx-roulette .hx-sub{font-size:14px;color:#ddd;margin:8px 0 15px}',
+'#hx-roulette .hx-wheel{position:relative;width:min(74vw,340px);aspect-ratio:1;margin:20px auto}',
+'#hx-roulette .hx-arrow{position:absolute;z-index:2;top:-22px;left:50%;transform:translateX(-50%);color:#fff;font-size:36px;text-shadow:0 1px 5px #000}',
+'#hx-roulette .hx-disc{position:absolute;inset:0;border:9px solid #1b1b1b;border-radius:50%;box-shadow:0 0 0 3px #8cff90,0 0 25px #62ff6a4f;background:conic-gradient(#762033 0 90deg,#174024 90deg 180deg,#762033 180deg 270deg,#174024 270deg 360deg);transition:transform 4.1s cubic-bezier(.11,.82,.13,1)}',
+'#hx-roulette .hx-mark{position:absolute;left:50%;top:50%;font-size:clamp(10px,2.7vw,15px);font-weight:950;color:white;text-shadow:0 1px 5px #000;line-height:1.12;text-align:center;width:39%;overflow-wrap:anywhere}',
+'#hx-roulette .hx-center{position:absolute;inset:38%;display:grid;place-items:center;border-radius:50%;background:#070a07;border:3px solid #91ff94;color:#aaffb0;font-weight:950;font-size:20px}',
+'#hx-roulette .hx-spin{display:block;width:100%;border:0;border-radius:12px;padding:17px 12px;background:#75ff83;color:#061008;font-size:19px;font-weight:950}',
+'#hx-roulette .hx-spin:disabled{opacity:.55}',
+'#hx-roulette .hx-result{margin-top:16px;background:#111b12;border:2px solid #396e40;border-radius:15px;padding:16px;text-align:center}',
+'#hx-roulette .hx-label{font-size:12px;color:#aaffb0;letter-spacing:2px;font-weight:900}',
+'#hx-roulette .hx-name{font-weight:950;font-size:clamp(29px,8vw,42px);color:#fff;line-height:1.12;margin:9px 0;overflow-wrap:anywhere}',
+'#hx-roulette .hx-genre{color:#ddd;font-size:17px}',
+'#hx-roulette .hx-track{color:#acffb0;font-size:18px;font-weight:850;margin:7px 0}',
+'#hx-roulette .hx-thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:11px;margin:15px auto}',
+'#hx-roulette .hx-video{display:block;background:#ef2626;color:#fff;text-decoration:none;border-radius:11px;font-size:18px;font-weight:950;padding:16px 10px}',
+'#hx-roulette .hx-note{color:#ccc;font-size:12px;text-align:center}',
+'#hx-roulette [hidden]{display:none!important}'
+].join('');
+function setup(){
+ if(dialog)return dialog;
+ const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
+ dialog=document.createElement('dialog');dialog.id='hx-roulette';
+ dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">La roue choisit ton prochain clip metal. Découvre et écoute !</p><div class="hx-wheel"><div class="hx-arrow">▼</div><div class="hx-disc"></div><div class="hx-center">HX</div></div><button class="hx-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">4 groupes et 4 vrais clips officiels. Lance la roulette !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><img class="hx-thumb" alt="Aperçu du clip officiel" loading="lazy"><a class="hx-video" target="_blank" rel="noopener noreferrer">▶ REGARDER LE CLIP SUR YOUTUBE</a></div></section><p class="hx-note">Le bouton ouvre directement la vidéo, pas une recherche YouTube.</p>';
+ document.body.appendChild(dialog);
+ const disk=dialog.querySelector('.hx-disc');
+ bands.forEach((b,i)=>{const mark=document.createElement('span');mark.className='hx-mark';mark.textContent=b.name;
+ const rad=(i*90+45)*Math.PI/180;
+ mark.style.left=(50+Math.sin(rad)*25)+'%';mark.style.top=(50-Math.cos(rad)*25)+'%';
+ mark.style.transform='translate(-50%,-50%)';disk.appendChild(mark);
  });
- return d;
+ dialog.querySelector('.hx-close').onclick=()=>dialog.close();
+ dialog.querySelector('.hx-spin').onclick=()=>{
+  if(spinning)return;spinning=true;const btn=dialog.querySelector('.hx-spin');btn.disabled=true;
+  dialog.querySelector('.hx-picked').hidden=true;dialog.querySelector('.hx-intro').hidden=false;
+  const n=Math.floor(Math.random()*bands.length),target=(360-(n+.5)*90)%360;
+  const delta=(target-(angle%360)+360)%360;angle+=1800+delta;
+  disk.style.transform='rotate('+angle+'deg)';
+  setTimeout(()=>{const b=bands[n],root=dialog;
+   root.querySelector('.hx-name').textContent=b.name;
+   root.querySelector('.hx-genre').textContent=b.genre;
+   root.querySelector('.hx-track').textContent='🎸 '+b.track;
+   root.querySelector('.hx-thumb').src='https://i.ytimg.com/vi/'+b.video+'/hqdefault.jpg';
+   root.querySelector('.hx-video').href='https://www.youtube.com/watch?v='+b.video;
+   root.querySelector('.hx-picked').hidden=false;root.querySelector('.hx-intro').hidden=true;
+   spinning=false;btn.disabled=false;
+  },4200);
+ };
+ return dialog;
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-discovery-open]');if(!b)return;e.preventDefault();const d=create();if(!d.open)d.showModal();});
+document.addEventListener('click',e=>{if(!e.target.closest('[data-discovery-open]'))return;e.preventDefault();const d=setup();if(!d.open)d.showModal();});
 })();
