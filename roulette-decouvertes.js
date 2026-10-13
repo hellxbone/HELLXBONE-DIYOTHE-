@@ -1,21 +1,25 @@
 (()=>{
 // Clips directs de secours : la découverte principale vient de MusicBrainz.
 // Découverte de vrais morceaux complets mis en écoute publique sur Audius.
-const genres=['metal','death metal','black metal','thrash metal','doom metal','metalcore','heavy metal','progressive metal','hardcore punk','punk rock','industrial metal','sludge','grindcore','symphonic metal'];
+const genres=['metal','nu metal','death metal','black metal','thrash metal','doom metal','metalcore','heavy metal','progressive metal','industrial metal','sludge metal','grindcore','symphonic metal','deathcore','groove metal','folk metal','power metal','djent','post metal','blackgaze'];
 const used=new Set();
 async function getJSON(url,ms=12000){
  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),ms);
  try{const res=await fetch(url,{signal:ctrl.signal,headers:{Accept:'application/json'}});if(!res.ok)throw Error('HTTP '+res.status);return await res.json();}
  finally{clearTimeout(timer);}
 }
+// Filtre strict : jamais de reggae, rap, pop, electro, punk ou rock sans sous-genre metal.
+const metalPattern=/(?:^|[^a-z])(?:nu[ -]?metal|metal(?:core)?|deathcore|grindcore|djent|blackgaze|death[ -]?metal|black[ -]?metal|thrash|doom[ -]?metal|sludge[ -]?metal|groove[ -]?metal|power[ -]?metal|heavy[ -]?metal|symphonic[ -]?metal|industrial[ -]?metal)(?:$|[^a-z])/i;
+const rejectPattern=/(?:^|[^a-z])(?:reggae|reggaeton|ska|dub|dancehall|afrobeat|hip[ -]?hop|trap|rap|r&b|soul|funk|jazz|pop|house|techno|trance|edm|electronic|ambient|country|folk[ -]?rock|indie[ -]?rock)(?:$|[^a-z])/i;
 const acceptable=t=>{
- const genre=String(t.genre||'').toLowerCase(),tags=String(t.tags||'').toLowerCase(),title=String(t.title||'').toLowerCase();
- const text=genre+' '+tags+' '+title;
- return /metal|rock|punk|hardcore|grind|sludge|doom|goth|thrash|deathcore|blackgaze/.test(text)&&!t.is_stream_gated&&!t.is_delete&&Number(t.duration)>=70&&Number(t.duration)<=1800&&t.id&&t.user?.name;
+ const genre=String(t.genre||'').toLowerCase(),tags=Array.isArray(t.tags)?t.tags.join(' '):String(t.tags||'').toLowerCase();
+ // Ne jamais décider d'un style sur le titre d'une chanson.
+ const hasMetal=metalPattern.test(genre)||metalPattern.test(tags);
+ return hasMetal&&!rejectPattern.test(genre+' '+tags)&&!t.is_stream_gated&&!t.is_delete&&Number(t.duration)>=70&&Number(t.duration)<=1800&&t.id&&t.user?.name;
 };
 // Quatre sélections françaises pour une internationale, sur les lectures réussies.
 let selectionCount=0;
-const frenchLocation=/\\b(france|français|française|paris|lyon|marseille|nantes|lille|bordeaux|toulouse|rennes|strasbourg|montpellier|grenoble|dijon|angers|brest|rouen|reims|clermont.ferrand|saint.etienne|nice|tours|orleans|metz|nancy|limoges|perpignan|caen|le mans|poitiers|la rochelle|avignon|bayonne|annecy|chambery|troyes)\\b/i;
+const frenchLocation=/\bb(france|français|française|paris|lyon|marseille|nantes|lille|bordeaux|toulouse|rennes|strasbourg|montpellier|grenoble|dijon|angers|brest|rouen|reims|clermont.ferrand|saint.etienne|nice|tours|orleans|metz|nancy|limoges|perpignan|caen|le mans|poitiers|la rochelle|avignon|bayonne|annecy|chambery|troyes)\bb/i;
 function isFrench(t){
  const location=String(t.user?.location||'').trim();
  // Ni la langue d'un titre ni le nom d'un artiste ne prouvent son origine.
@@ -23,7 +27,7 @@ function isFrench(t){
 }
 async function discover(){
  const wantFrench=selectionCount%5!==4;
- const terms=wantFrench?['metal france','french metal','metal français','rock france','punk france',...genres]:genres;
+ const terms=wantFrench?['metal france','french metal','metal français','nu metal france','death metal france','black metal france','metalcore france',...genres.map(g=>g+' france')]:genres;
  for(let attempt=0;attempt<12;attempt++){
   const genre=terms[Math.floor(Math.random()*terms.length)];
   const offset=Math.floor(Math.random()*3)*20;
