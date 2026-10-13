@@ -1,43 +1,34 @@
 (()=>{
 // Clips directs de secours : la découverte principale vient de MusicBrainz.
-const bands=[
-{name:'GOJIRA',genre:'Metal progressif',track:'Stranded',video:'FNdC_3LR2AI'},
-{name:'TAGADA JONES',genre:'Punk hardcore',track:'Mort aux cons',video:'pCCiSILIci0'},
-{name:'ALCEST',genre:'Blackgaze',track:'Sapphire',video:'69fnUZhV8SI'},
-{name:'MASS HYSTERIA',genre:'Metal industriel',track:'L’Enfer des Dieux',video:'jsJVmiqf8VA'}];
-const tags=['heavy metal','death metal','black metal','thrash metal','doom metal','metalcore','progressive metal','folk metal','symphonic metal','power metal','sludge metal','post-metal','industrial metal','grindcore','nu metal','hardcore punk'];
-const areas=['FR','ALL','ALL','ALL','ALL'];
+// Découverte de vrais morceaux complets mis en écoute publique sur Audius.
+const genres=['metal','death metal','black metal','thrash metal','doom metal','metalcore','heavy metal','progressive metal','hardcore punk','punk rock','industrial metal','sludge','grindcore','symphonic metal'];
 const used=new Set();
-const videoId=url=>{
- try{const u=new URL(url);const host=u.hostname.replace(/^www\./,'');
- if(host==='youtu.be')return /^[\w-]{11}$/.test(u.pathname.slice(1))?u.pathname.slice(1):null;
- if(host==='youtube.com'||host==='m.youtube.com'){const id=u.searchParams.get('v');if(/^[\w-]{11}$/.test(id||''))return id;}
- }catch(e){}return null;
-};
-const getJSON=async(url,ms=12000)=>{
+async function getJSON(url,ms=12000){
  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),ms);
  try{const res=await fetch(url,{signal:ctrl.signal,headers:{Accept:'application/json'}});if(!res.ok)throw Error('HTTP '+res.status);return await res.json();}
  finally{clearTimeout(timer);}
+}
+const acceptable=t=>{
+ const genre=String(t.genre||'').toLowerCase(),tags=String(t.tags||'').toLowerCase(),title=String(t.title||'').toLowerCase();
+ const text=genre+' '+tags+' '+title;
+ return /metal|rock|punk|hardcore|grind|sludge|doom|goth|thrash|deathcore|blackgaze/.test(text)&&!t.is_stream_gated&&!t.is_delete&&Number(t.duration)>=70&&Number(t.duration)<=1800&&t.id&&t.user?.name;
 };
 async function discover(){
- const tag=tags[Math.floor(Math.random()*tags.length)],country=areas[Math.floor(Math.random()*areas.length)];
- const q='tag:"'+tag+'" AND type:group'+(country==='FR'?' AND country:FR':'');
- const offset=Math.floor(Math.random()*120)*25;
- const url='https://musicbrainz.org/ws/2/artist/?fmt=json&limit=25&offset='+offset+'&query='+encodeURIComponent(q);
- let data=await getJSON(url);
- if(!(data.artists||[]).length){data=await getJSON(url.replace(/offset=\d+/,'offset=0'));}
- let items=(data.artists||[]).filter(a=>a.id&&a.name&&!used.has(a.id)&&a.type==='Group'&&Number(a.score||100)>=60);
- if(!items.length)throw Error('Catalogue indisponible');
- const a=items[Math.floor(Math.random()*items.length)];used.add(a.id);
- if(used.size>120)used.clear();
- const band={name:a.name,genre:tag.toUpperCase(),track:'Groupe '+(a.country||'international'),video:null,source:'https://musicbrainz.org/artist/'+a.id};
- // Certaines fiches MusicBrainz référencent un clip YouTube précis.
- try{
-  const detail=await getJSON('https://musicbrainz.org/ws/2/artist/'+a.id+'?inc=url-rels&fmt=json',8500);
-  const matches=(detail.relations||[]).map(r=>videoId(r.url&&r.url.resource||'')).filter(Boolean);
-  if(matches.length)band.video=matches[Math.floor(Math.random()*matches.length)];
- }catch(e){}
- return band;
+ for(let attempt=0;attempt<5;attempt++){
+  const genre=genres[Math.floor(Math.random()*genres.length)];
+  const offset=Math.floor(Math.random()*4)*20;
+  const uri='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(genre)+'&limit=35&offset='+offset+'&app_name=HELLXBONE';
+  try{
+   const result=await getJSON(uri,13000);
+   const tracks=(result.data||[]).filter(t=>acceptable(t)&&!used.has(t.id));
+   if(!tracks.length)continue;
+   const t=tracks[Math.floor(Math.random()*tracks.length)];
+   used.add(t.id);if(used.size>150)used.clear();
+   return {name:t.user.name,genre:t.genre||genre,track:t.title,
+     stream:'https://api.audius.co/v1/tracks/'+encodeURIComponent(t.id)+'/stream?app_name=HELLXBONE'};
+  }catch(e){}
+ }
+ throw Error('Aucun titre complet disponible');
 }
 let dialog, angle=0, spinning=false;
 const css=[
@@ -69,7 +60,7 @@ function setup(){
  if(dialog)return dialog;
  const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
  dialog=document.createElement('dialog');dialog.id='hx-roulette';
- dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">Une découverte metal au hasard. Écoute un extrait directement ici !</p><div class="hx-wheel"><div class="hx-arrow">▼</div><div class="hx-disc"></div><div class="hx-center">HX</div></div><button class="hx-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des milliers de groupes français et internationaux via MusicBrainz. Lance la roulette !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><audio class="hx-audio" controls preload="none" playsinline hidden></audio><p class="hx-status" role="status"></p></div></section><p class="hx-note">Extraits audio disponibles selon les droits et le catalogue musical. Aucune vidéo.</p>';
+ dialog.innerHTML='<div class="hx-top"><div><div class="hx-label">HELLXBONE • DÉCOUVERTES</div><h2>☠ ROULETTE METAL</h2></div><button type="button" class="hx-close">✕</button></div><p class="hx-sub">Une découverte metal au hasard. Des morceaux entiers, sans vidéo !</p><div class="hx-wheel"><div class="hx-arrow">▼</div><div class="hx-disc"></div><div class="hx-center">HX</div></div><button class="hx-spin" type="button">⚡ FAIRE TOURNER LA ROUE</button><section class="hx-result" aria-live="polite"><div class="hx-label">LE GROUPE À DÉCOUVRIR</div><p class="hx-intro">Des groupes et des morceaux complets publiés sur Audius. Lance la roulette !</p><div class="hx-picked" hidden><div class="hx-name"></div><div class="hx-genre"></div><div class="hx-track"></div><audio class="hx-audio" controls preload="none" playsinline hidden></audio><p class="hx-status" role="status"></p></div></section><p class="hx-note">Seuls les morceaux complets accessibles en streaming sont sélectionnés. Aucun extrait, aucune vidéo.</p>';
  document.body.appendChild(dialog);
  const disk=dialog.querySelector('.hx-disc');
  dialog.querySelector('.hx-close').onclick=()=>{dialog.querySelector('.hx-audio').pause();dialog.close();};
@@ -77,33 +68,25 @@ function setup(){
   if(spinning)return;spinning=true;const btn=dialog.querySelector('.hx-spin');btn.disabled=true;
   const oldAudio=dialog.querySelector('.hx-audio');oldAudio.pause();oldAudio.removeAttribute('src');oldAudio.load();oldAudio.hidden=true;
   dialog.querySelector('.hx-picked').hidden=true;dialog.querySelector('.hx-intro').hidden=false;
-  const n=Math.floor(Math.random()*bands.length),target=(360-(n+.5)*90)%360;
+  const target=Math.floor(Math.random()*360);
   const delta=(target-(angle%360)+360)%360;angle+=1800+delta;
   disk.style.transform='rotate('+angle+'deg)';
   setTimeout(async()=>{
    const root=dialog;
    root.querySelector('.hx-intro').textContent='Recherche d’un groupe dans la scène metal mondiale…';
-   let b;try{b=await discover();}catch(e){b=bands[n];}
-   root.querySelector('.hx-name').textContent=b.name;
-   root.querySelector('.hx-genre').textContent=b.genre;
-   root.querySelector('.hx-track').textContent=b.track;
-   const audio=root.querySelector('.hx-audio'),status=root.querySelector('.hx-status');
-   audio.hidden=true;audio.removeAttribute('src');audio.load();
-   status.textContent='Recherche d’un extrait audio…';
    try{
-    const api='https://itunes.apple.com/search?media=music&entity=song&limit=35&term='+encodeURIComponent(b.name);
-    const response=await getJSON(api,11000);
-    const norm=x=>String(x||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
-    const wanted=norm(b.name);
-    const options=(response.results||[]).filter(x=>x.previewUrl&&norm(x.artistName)===wanted);
-    if(options.length){
-     const pick=options[Math.floor(Math.random()*options.length)];
-     audio.src=pick.previewUrl;audio.hidden=false;
-     root.querySelector('.hx-track').textContent=pick.trackName+' — extrait audio';
-     status.textContent='▶ Appuie sur Lecture pour écouter ici, sans vidéo (extrait de 30 secondes environ).';
-    }else{status.textContent='Aucun extrait audio disponible pour ce groupe dans le catalogue. Relance la roue pour une autre découverte.';}
-   }catch(e){status.textContent='Lecteur indisponible pour le moment. Relance la roue.';}
-   root.querySelector('.hx-picked').hidden=false;root.querySelector('.hx-intro').hidden=true;
+    const b=await discover();
+    root.querySelector('.hx-name').textContent=b.name;
+    root.querySelector('.hx-genre').textContent=b.genre;
+    root.querySelector('.hx-track').textContent=b.track;
+    const audio=root.querySelector('.hx-audio'),status=root.querySelector('.hx-status');
+    audio.src=b.stream;audio.hidden=false;
+    status.textContent='Morceau complet — Lecture/Pause dans HELLXBONE, sans vidéo.';
+    audio.onerror=()=>{status.textContent='Ce titre ne peut pas être lu. Relance la roue : ce groupe sera ignoré.';audio.hidden=true;};
+    root.querySelector('.hx-picked').hidden=false;root.querySelector('.hx-intro').hidden=true;
+   }catch(e){
+    root.querySelector('.hx-intro').textContent='Aucun morceau complet trouvé cette fois. Relance pour une nouvelle découverte.';
+   }
    spinning=false;btn.disabled=false;
   },4200);
  };
