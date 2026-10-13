@@ -676,7 +676,35 @@ document.addEventListener('click',e=>{const riffOpen=e.target.closest('[data-rif
     if('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.update())));
   }
 })();
-</script><script src="roulette-decouvertes.js?v=20261013-v1" defer></script><script src="leaderboard-config.js?v=1"></script><script src="riff-crush.js?v=20261012-ninie-matches"></script><script src="riff-idle.js?v=20261009-1"></script><script>window.addEventListener('load',function(){if(new URLSearchParams(location.search).get('game')==='mega-riff'){const launch=()=>{if(window.HellRiffCrush&&typeof window.HellRiffCrush.open==='function'){window.HellRiffCrush.open();return true}return false};if(!launch())setTimeout(launch,350);}});</script><script data-goatcounter="https://hellxbone.goatcounter.com/count"
+</script><script src="roulette-decouvertes.js?v=20261013-v2" defer></script>
+<script>
+(function(){
+ function ensureWheel(){
+  const game=document.getElementById('digicode');
+  if(!game || !game.parentElement)return;
+  if(document.getElementById('hellx-wheel-visible-entry'))return;
+  const section=document.createElement('section');
+  section.id='hellx-wheel-visible-entry';
+  section.setAttribute('aria-label','Roulette des Découvertes');
+  section.style.cssText='background:#0a170e;color:#fff;border:3px solid #50ff71;border-radius:18px;padding:20px;margin:20px 0;text-align:center;box-shadow:0 0 18px #3cff5744';
+  section.innerHTML='<h2 style="font-size:26px;color:#92ff9e;margin:0 0 10px">☠ ROULETTE DES DÉCOUVERTES</h2><div aria-hidden="true" style="font-size:75px;line-height:1.2">🎡</div><p style="color:white">Un groupe rock ou metal au hasard, à découvrir en musique !</p><button type="button" data-discovery-open="1" style="background:#65ff79;color:#06130a;font-weight:900;font-size:19px;border:0;border-radius:10px;padding:18px 14px;width:100%">⚡ FAIRE TOURNER LA ROUE</button>';
+  game.insertAdjacentElement('afterend',section);
+ }
+ document.addEventListener('click',function(e){
+  if(e.target.closest('[data-page="jeu"],[data-go="jeu"]'))setTimeout(ensureWheel,80);
+ });
+ window.addEventListener('load',function(){
+  if(location.hash==='#jeu'||new URLSearchParams(location.search).has('roulette')){
+   const nav=document.querySelector('nav [data-page="jeu"]');
+   if(nav && new URLSearchParams(location.search).has('roulette'))nav.click();
+   setTimeout(ensureWheel,180);
+   if(new URLSearchParams(location.search).has('roulette'))setTimeout(function(){
+    document.querySelector('#hellx-wheel-visible-entry [data-discovery-open]')?.click();
+   },450);
+  }
+ });
+})();
+</script><script src="leaderboard-config.js?v=1"></script><script src="riff-crush.js?v=20261012-ninie-matches"></script><script src="riff-idle.js?v=20261009-1"></script><script>window.addEventListener('load',function(){if(new URLSearchParams(location.search).get('game')==='mega-riff'){const launch=()=>{if(window.HellRiffCrush&&typeof window.HellRiffCrush.open==='function'){window.HellRiffCrush.open();return true}return false};if(!launch())setTimeout(launch,350);}});</script><script data-goatcounter="https://hellxbone.goatcounter.com/count"
         async src="https://gc.zgo.at/count.js"></script><!-- hellx-removed --><style>
 #hellx-games-pseudo-overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.93);display:flex;align-items:center;justify-content:center;padding:20px}
 #hellx-games-pseudo-overlay[hidden]{display:none}
