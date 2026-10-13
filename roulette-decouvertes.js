@@ -27,23 +27,28 @@ function isFrench(t){
 }
 async function discover(){
  const wantFrench=selectionCount%5!==4;
- const terms=wantFrench?['metal france','french metal','metal français','nu metal france','death metal france','black metal france','metalcore france',...genres.map(g=>g+' france')]:genres;
- for(let attempt=0;attempt<12;attempt++){
-  const genre=terms[Math.floor(Math.random()*terms.length)];
-  const offset=Math.floor(Math.random()*3)*20;
-  const uri='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(genre)+'&limit=50&offset='+offset+'&app_name=HELLXBONE';
-  try{
-   const result=await getJSON(uri,13000);
-   const tracks=(result.data||[]).filter(t=>acceptable(t)&&!used.has(t.id)&&isFrench(t)===wantFrench);
-   if(!tracks.length)continue;
-   const t=tracks[Math.floor(Math.random()*tracks.length)];
-   used.add(t.id);if(used.size>150)used.clear();
-   selectionCount++;
-   return {name:t.user.name,genre:t.genre||genre,track:t.title,
-     stream:'https://api.audius.co/v1/tracks/'+encodeURIComponent(t.id)+'/stream?app_name=HELLXBONE'};
-  }catch(e){}
+ const frenchTerms=['metal france','french metal','metal français','nu metal france','death metal france','black metal france','metalcore france'];
+ const internationalTerms=['metal','nu metal','death metal','black metal','thrash metal','metalcore','heavy metal','doom metal','deathcore','progressive metal'];
+ // On privilégie la France sans bloquer tout le lecteur si Audius n'indique pas l'origine.
+ const passes=wantFrench?[{terms:frenchTerms,french:true},{terms:internationalTerms,french:false}]:[{terms:internationalTerms,french:false}];
+ for(const pass of passes){
+  for(let attempt=0;attempt<5;attempt++){
+   const term=pass.terms[Math.floor(Math.random()*pass.terms.length)];
+   const offset=Math.floor(Math.random()*2)*20;
+   const uri='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(term)+'&limit=50&offset='+offset+'&app_name=HELLXBONE';
+   try{
+    const result=await getJSON(uri,7000);
+    const tracks=(result.data||[]).filter(t=>acceptable(t)&&!used.has(String(t.id))&&(!pass.french||isFrench(t)));
+    if(!tracks.length)continue;
+    const t=tracks[Math.floor(Math.random()*tracks.length)];
+    used.add(String(t.id));if(used.size>150)used.clear();
+    selectionCount++;
+    return {name:t.user.name,genre:t.genre||'Metal',track:t.title,
+      stream:'https://api.audius.co/v1/tracks/'+encodeURIComponent(t.id)+'/stream?app_name=HELLXBONE'};
+   }catch(e){/* Réessayer une recherche différente. */}
+  }
  }
- throw Error(wantFrench?'Aucun morceau complet de groupe français identifié dans le catalogue pour le moment. Réessaie.':'Aucun morceau complet international trouvé. Réessaie.');
+ throw Error('Aucun morceau metal complet disponible sur Audius actuellement. Réessaie.');
 }
 let dialog, spinning=false;
 const css=[
