@@ -19,7 +19,7 @@ const acceptable=t=>{
 };
 // Quatre sélections françaises pour une internationale, sur les lectures réussies.
 let selectionCount=0;
-const frenchLocation=/\bb(france|français|française|paris|lyon|marseille|nantes|lille|bordeaux|toulouse|rennes|strasbourg|montpellier|grenoble|dijon|angers|brest|rouen|reims|clermont.ferrand|saint.etienne|nice|tours|orleans|metz|nancy|limoges|perpignan|caen|le mans|poitiers|la rochelle|avignon|bayonne|annecy|chambery|troyes)\bb/i;
+const frenchLocation=/\b(france|français|française|paris|lyon|marseille|nantes|lille|bordeaux|toulouse|rennes|strasbourg|montpellier|grenoble|dijon|angers|brest|rouen|reims|clermont.ferrand|saint.etienne|nice|tours|orleans|metz|nancy|limoges|perpignan|caen|le mans|poitiers|la rochelle|avignon|bayonne|annecy|chambery|troyes)\b/i;
 function isFrench(t){
  const location=String(t.user?.location||'').trim();
  // Ni la langue d'un titre ni le nom d'un artiste ne prouvent son origine.
