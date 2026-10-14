@@ -1,74 +1,82 @@
 (()=>{
 // Clips directs de secours : la découverte principale vient de MusicBrainz.
 // Découverte de vrais morceaux complets mis en écoute publique sur Audius.
-const genres=['metal','nu metal','death metal','black metal','thrash metal','doom metal','metalcore','heavy metal','progressive metal','industrial metal','sludge metal','grindcore','symphonic metal','deathcore','groove metal','folk metal','power metal','djent','post metal','blackgaze'];
-const used=new Set();
+const genres=['metal','nu metal','death metal','black metal','thrash metal','doom metal','metalcore','heavy metal','progressive metal','industrial metal','sludge metal','grindcore','symphonic metal','deathcore','groove metal','folk metal','power metal','djent','post metal','blackgaze','technical death metal','melodic death metal','brutal death metal','atmospheric black metal','funeral doom','stoner metal','avant garde metal','symphonic black metal'];
+const frenchTerms=['french metal','metal france','metal français','metal paris','metal lyon','metal nantes','metal bordeaux','metal lille','metal marseille','metal toulouse','french death metal','french black metal','french metalcore','french thrash metal','french doom metal','french nu metal','french heavy metal','french progressive metal','french hardcore metal'];
+const usedTracks=new Set(),recentArtists=[];
+const historyKey='hellxbone-metal-history-v2';
+try{const h=JSON.parse(localStorage.getItem(historyKey)||'{}');(h.tracks||[]).forEach(id=>usedTracks.add(id));recentArtists.push(...(h.artists||[]));}catch(_){}
+function saveHistory(){try{localStorage.setItem(historyKey,JSON.stringify({tracks:[...usedTracks].slice(-900),artists:recentArtists.slice(-160)}));}catch(_){}}
 async function getJSON(url,ms=12000){
  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),ms);
  try{const res=await fetch(url,{signal:ctrl.signal,headers:{Accept:'application/json'}});if(!res.ok)throw Error('HTTP '+res.status);return await res.json();}
  finally{clearTimeout(timer);}
 }
-// Filtre strict : jamais de reggae, rap, pop, electro, punk ou rock sans sous-genre metal.
 const metalPattern=/(?:^|[^a-z])(?:nu[ -]?metal|metal(?:core)?|deathcore|grindcore|djent|blackgaze|death[ -]?metal|black[ -]?metal|thrash|doom[ -]?metal|sludge[ -]?metal|groove[ -]?metal|power[ -]?metal|heavy[ -]?metal|symphonic[ -]?metal|industrial[ -]?metal)(?:$|[^a-z])/i;
 const rejectPattern=/(?:^|[^a-z])(?:reggae|reggaeton|ska|dub|dancehall|afrobeat|hip[ -]?hop|trap|rap|r&b|soul|funk|jazz|pop|house|techno|trance|edm|electronic|ambient|country|folk[ -]?rock|indie[ -]?rock)(?:$|[^a-z])/i;
 const acceptable=t=>{
  const genre=String(t.genre||'').toLowerCase(),tags=Array.isArray(t.tags)?t.tags.join(' '):String(t.tags||'').toLowerCase();
- // Ne jamais décider d'un style sur le titre d'une chanson.
- const hasMetal=metalPattern.test(genre)||metalPattern.test(tags);
- return hasMetal&&!rejectPattern.test(genre+' '+tags)&&!t.is_stream_gated&&!t.is_delete&&Number(t.duration)>=70&&Number(t.duration)<=1800&&t.id&&t.user?.name;
+ return (metalPattern.test(genre)||metalPattern.test(tags))&&!rejectPattern.test(genre+' '+tags)&&!t.is_stream_gated&&!t.is_delete&&Number(t.duration)>=70&&Number(t.duration)<=1800&&t.id&&t.user?.name;
 };
-// Quatre sélections françaises pour une internationale, sur les lectures réussies.
-let selectionCount=0;
 const frenchLocation=/\b(france|français|française|paris|lyon|marseille|nantes|lille|bordeaux|toulouse|rennes|strasbourg|montpellier|grenoble|dijon|angers|brest|rouen|reims|clermont.ferrand|saint.etienne|nice|tours|orleans|metz|nancy|limoges|perpignan|caen|le mans|poitiers|la rochelle|avignon|bayonne|annecy|chambery|troyes)\b/i;
-function isFrench(t){
- const location=String(t.user?.location||'').trim();
- // Ni la langue d'un titre ni le nom d'un artiste ne prouvent son origine.
- return frenchLocation.test(location)||/^(fr|fr-fr)$/i.test(location);
+function isFrench(t){const loc=String(t.user?.location||'').trim();return frenchLocation.test(loc)||/^(fr|fr-fr)$/i.test(loc);}
+const usMetalArtists=['Metallica','Slipknot','Korn','System of a Down','Disturbed','Lamb of God','Pantera','Megadeth','Slayer','Anthrax','Deftones','Mastodon','Trivium','Killswitch Engage','Avenged Sevenfold','Machine Head','Fear Factory','Whitechapel','Cannibal Corpse','Death','Obituary','Testament','Exodus','Static-X'];
+// Audius hosts only tracks made available by their uploaders; famous artist names alone do not prove official recordings.
+let catalog=new Map(),pending=null,selectionCount=0,lastRefresh=0;
+function mix(a){return [...a].sort(()=>Math.random()-.5);}
+async function fetchMatches(term,offset=0){
+ const url='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(term)+'&limit=50&offset='+offset+'&app_name=HELLXBONE';
+ const response=await getJSON(url,9000);
+ return (response.data||[]).filter(acceptable);
 }
-// Noms connus américains : ne jamais diffuser une reprise en la présentant comme l'original.
-const usMetalArtists=['Metallica','Slipknot','Korn','System of a Down','Disturbed','Lamb of God','Pantera','Megadeth','Slayer','Anthrax','Deftones','Mastodon','Trivium','Killswitch Engage','Avenged Sevenfold','Five Finger Death Punch','Machine Head','Fear Factory','Whitechapel','Cannibal Corpse','Death','Obituary','Testament','Exodus','Static-X','Mudvayne','Drowning Pool','Sevendust','Godsmack'];
-let catalog=[];
-async function fetchMatches(term,{french=false,artist=null}={}){
- const uri='https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(term)+'&limit=50&app_name=HELLXBONE';
- const result=await getJSON(uri,7500);
- return (result.data||[]).filter(t=>{
-  if(!acceptable(t)||used.has(String(t.id))||french&&!isFrench(t))return false;
-  if(artist&&String(t.user?.name||'').trim().toLowerCase()!==artist.toLowerCase())return false;
-  return true;
- });
+async function refill(){
+ if(pending)return pending;
+ pending=(async()=>{
+  const frenchFirst=selectionCount%5!==4;
+  const terms=mix(frenchFirst?[...frenchTerms,...genres]:[...genres,...frenchTerms]);
+  const chosen=terms.slice(0,12);
+  // Distinct searches and offsets widen the independent-artist catalog.
+  const settled=await Promise.allSettled(chosen.map((term,i)=>fetchMatches(term,[0,25,50,100][(Math.floor(selectionCount/5)+i)%4])));
+  let added=0;
+  for(const result of settled){if(result.status!=='fulfilled')continue;for(const t of result.value){if(!catalog.has(String(t.id)))added++;catalog.set(String(t.id),t);}}
+  lastRefresh=Date.now();
+  // Keep a large rolling reserve instead of recycling the same tiny list.
+  if(catalog.size>2500){const entries=[...catalog.entries()].slice(-2000);catalog=new Map(entries);}
+  return added;
+ })().finally(()=>{pending=null;});
+ return pending;
+}
+function choose(candidates){
+ // Prioritize different groups, not just different songs by the same uploader.
+ const unseenArtist=candidates.filter(t=>!recentArtists.includes(String(t.user.name).toLowerCase()));
+ const pool=unseenArtist.length?unseenArtist:candidates;
+ return pool[Math.floor(Math.random()*pool.length)];
 }
 async function discover(){
- // Varier les sous-genres et mettre de côté les titres déjà trouvés.
- const french=selectionCount%5!==4;
- const frenchTerms=['metal france','metal français','french metal','french death metal','french black metal','french metalcore','nu metal france','thrash metal france'];
- const searches=french
-   ?[{terms:frenchTerms,french:true,tries:5},{terms:[...genres,'metal underground'],tries:5}]
-   :[{artists:usMetalArtists,tries:7},{terms:[...genres,'american metal','us metal'],tries:5}];
- // Réserve de pistes pour réduire la répétition.
- let candidates=catalog.filter(t=>!used.has(String(t.id))&&(!french||isFrench(t)));
- for(const pass of searches){
-  if(candidates.length)break;
-  for(let i=0;i<pass.tries;i++){
-   const artist=pass.artists?.[Math.floor(Math.random()*pass.artists.length)];
-   const term=artist||pass.terms[Math.floor(Math.random()*pass.terms.length)];
-   try{
-    const found=await fetchMatches(term,{french:!!pass.french,artist:artist||null});
-    if(found.length){catalog.push(...found);candidates=found;break;}
-   }catch(e){/* Une source indisponible ne doit pas bloquer les autres essais. */}
-  }
+ const frenchWanted=selectionCount%5!==4;
+ if(catalog.size<120||Date.now()-lastRefresh>4*60*1000)await refill();
+ let options=[...catalog.values()].filter(t=>!usedTracks.has(String(t.id)));
+ if(frenchWanted){
+   const fr=options.filter(isFrench);
+   if(fr.length)options=fr;
  }
- if(!candidates.length){
-  candidates=catalog.filter(t=>!used.has(String(t.id)));
+ if(!options.length){
+   await refill();
+   options=[...catalog.values()].filter(t=>!usedTracks.has(String(t.id)));
+   if(frenchWanted&&options.some(isFrench))options=options.filter(isFrench);
  }
- if(!candidates.length){
-  // Quand tous les morceaux de la réserve ont déjà été joués, on autorise leur redécouverte.
-  used.clear();
-  candidates=catalog.slice();
+ if(!options.length){
+   // Avoid immediate repetition even after the current catalog is exhausted.
+   const reserve=[...catalog.values()].filter(t=>!recentArtists.includes(String(t.user.name).toLowerCase()));
+   if(!reserve.length)throw Error('Pas de nouveau morceau metal disponible pour le moment. Réessaie plus tard.');
+   options=reserve;
  }
- if(!candidates.length)throw Error('Aucun titre metal complet disponible actuellement dans le catalogue audio. Réessaie.');
- const t=candidates[Math.floor(Math.random()*candidates.length)];
- used.add(String(t.id));selectionCount++;
- if(catalog.length>300)catalog=catalog.slice(-250);
+ const t=choose(options);
+ usedTracks.add(String(t.id));
+ recentArtists.push(String(t.user.name).toLowerCase());
+ if(recentArtists.length>160)recentArtists.splice(0,recentArtists.length-160);
+ selectionCount++;
+ saveHistory();
  return {name:t.user.name,genre:t.genre||'Metal',track:t.title,stream:'https://api.audius.co/v1/tracks/'+encodeURIComponent(t.id)+'/stream?app_name=HELLXBONE'};
 }
 let dialog, spinning=false;
