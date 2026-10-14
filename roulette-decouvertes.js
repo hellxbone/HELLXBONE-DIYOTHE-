@@ -14,7 +14,7 @@ async function getJSON(url,ms=12000){
  finally{clearTimeout(timer);}
 }
 const metalPattern=/(?:^|[^a-z])(?:nu[ -]?metal|metal(?:core)?|deathcore|grindcore|djent|blackgaze|death[ -]?metal|black[ -]?metal|thrash|doom[ -]?metal|sludge[ -]?metal|groove[ -]?metal|power[ -]?metal|heavy[ -]?metal|symphonic[ -]?metal|industrial[ -]?metal)(?:$|[^a-z])/i;
-const rejectPattern=/(?:^|[^a-z])(?:reggae|reggaeton|ska|dub|dancehall|afrobeat|hip[ -]?hop|trap|rap|r&b|soul|funk|jazz|pop|house|techno|trance|edm|electronic|ambient|country|folk[ -]?rock|indie[ -]?rock)(?:$|[^a-z])/i;
+const rejectPattern=/(?:^|[^a-z])(?:punk(?:[ -]?rock)?|pop[ -]?punk|punk[ -]?hardcore|hardcore[ -]?punk|post[ -]?punk|crust[ -]?punk|oi!|reggae|reggaeton|ska|dub|dancehall|afrobeat|hip[ -]?hop|trap|rap|r&b|soul|funk|jazz|pop|house|techno|trance|edm|electronic|ambient|country|folk[ -]?rock|indie[ -]?rock)(?:$|[^a-z])/i;
 const acceptable=t=>{
  const genre=String(t.genre||'').toLowerCase(),tags=Array.isArray(t.tags)?t.tags.join(' '):String(t.tags||'').toLowerCase();
  return (metalPattern.test(genre)||metalPattern.test(tags))&&!rejectPattern.test(genre+' '+tags)&&!t.is_stream_gated&&!t.is_delete&&Number(t.duration)>=70&&Number(t.duration)<=1800&&t.id&&t.user?.name;
