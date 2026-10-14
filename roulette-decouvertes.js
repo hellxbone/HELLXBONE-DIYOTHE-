@@ -3,6 +3,7 @@
 // Découverte de vrais morceaux complets mis en écoute publique sur Audius.
 const genres=['metal','nu metal','death metal','black metal','thrash metal','doom metal','metalcore','heavy metal','progressive metal','industrial metal','sludge metal','grindcore','symphonic metal','deathcore','groove metal','folk metal','power metal','djent','post metal','blackgaze','technical death metal','melodic death metal','brutal death metal','atmospheric black metal','funeral doom','stoner metal','avant garde metal','symphonic black metal'];
 const frenchTerms=['french metal','metal france','metal français','metal paris','metal lyon','metal nantes','metal bordeaux','metal lille','metal marseille','metal toulouse','french death metal','french black metal','french metalcore','french thrash metal','french doom metal','french nu metal','french heavy metal','french progressive metal','french hardcore metal'];
+const asianTerms=['japanese metal','japan death metal','japanese black metal','japanese metalcore','japanese power metal','korean metal','south korean metalcore','korean death metal','chinese metal','china black metal','taiwan metal','taiwanese metal','indonesian metal','indonesia death metal','indonesian black metal','indian metal','india folk metal','thai metal','thailand metalcore','philippines metal','filipino metal','malaysian metal','singapore metal','mongolian metal','nepal metal','vietnam metal'];
 const usedTracks=new Set(),recentArtists=[];
 const historyKey='hellxbone-metal-history-v2';
 try{const h=JSON.parse(localStorage.getItem(historyKey)||'{}');(h.tracks||[]).forEach(id=>usedTracks.add(id));recentArtists.push(...(h.artists||[]));}catch(_){}
@@ -33,8 +34,9 @@ async function refill(){
  if(pending)return pending;
  pending=(async()=>{
   const frenchFirst=selectionCount%5!==4;
-  const terms=mix(frenchFirst?[...frenchTerms,...genres]:[...genres,...frenchTerms]);
-  const chosen=terms.slice(0,12);
+  const terms=mix(frenchFirst?[...frenchTerms,...genres,...asianTerms]:[...genres,...asianTerms,...frenchTerms]);
+  // Include Asian searches on every refresh, not only when random selection happens to include them.
+  const chosen=[...mix(asianTerms).slice(0,4),...terms.filter(t=>!asianTerms.includes(t)).slice(0,8)];
   // Distinct searches and offsets widen the independent-artist catalog.
   const settled=await Promise.allSettled(chosen.map((term,i)=>fetchMatches(term,[0,25,50,100][(Math.floor(selectionCount/5)+i)%4])));
   let added=0;
