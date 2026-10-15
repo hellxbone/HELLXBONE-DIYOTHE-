@@ -1,12 +1,42 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><title>Alertes | HELLXBONE</title><style>
 :root{font-family:system-ui,Arial;color:#f5eed7;background:#090909}*{box-sizing:border-box}body{margin:0}header{background:#101010;border-bottom:3px solid #9aff57;padding:22px 16px;text-align:center}h1{margin:0;font-size:32px;letter-spacing:2px}small,.muted{color:#beb9aa}main{max-width:850px;margin:auto;padding:18px 14px 100px}nav{display:flex;gap:7px;margin:20px 0}button,.action{background:#202020;color:white;padding:13px;border:1px solid #525252;border-radius:10px;font:inherit;cursor:pointer}nav button{flex:1;min-width:0;font-size:13px;padding:12px 3px}button[aria-selected=true],.action{background:#8cff48;color:#050505;font-weight:800;border-color:#8cff48}section{display:none}section.active{display:block}.panel{background:#151515;border:1px solid #404040;border-radius:14px;padding:18px;margin:12px 0}h2{color:#a4ff73;margin-top:0}input,select{font:inherit;color:white;background:#161616;border:1px solid #777;border-radius:9px;padding:12px;width:100%;margin:5px 0 12px}a{color:#b9f998}article{background:#1c1c1c;padding:14px;margin:10px 0;border-left:3px solid #8cff48;border-radius:8px}article h3{margin:0 0 8px}.tag{font-size:12px;color:#c8ddaf}.action{display:inline-block;text-decoration:none;margin:7px 0}#status{min-height:20px}.inline{display:flex;gap:8px;flex-wrap:wrap}.inline button{flex:1}footer{text-align:center;color:#aaa;padding:30px}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #f1ffbc;outline-offset:2px}</style></head>
 <body><header><h1>✠ HELLXBONE ✠</h1><small>ALERTES</small></header><main><a href="./index.html" class="action">← Retour à HELLXBONE</a><section id="alertes" class="active"><div class="panel"><h2>Les alertes de l'enfer</h2><p>Retrouve les annonces HELLXBONE : nouveaux articles, concerts et jeux.</p><button id="notify">🔔 Activer les alertes HELLXBONE</button><p class="muted" id="notify-note">Les alertes apparaissent dans cette page. Les notifications système fonctionnent seulement lorsque cette page reste ouverte et que ton navigateur les autorise. Les notifications push en arrière-plan seront une étape distincte.</p></div><div id="alert-list" aria-live="polite">Chargement des alertes…</div></section><p id="status" class="muted" role="status"></p></main><footer>HELLXBONE / DIYOTHE — Art • Rock • Metal</footer>
-<script src="./leaderboard-config.js"></script><script>
+<script src="./leaderboard-config.js"></script><script src="./content.js"></script><script>
 (()=>{'use strict';const cfg=window.HELLXBONE_LEADERBOARD||{};const base=cfg.url;const key=cfg.anonKey;const H={apikey:key,Authorization:'Bearer '+key};let lastSeen=Number(localStorage.getItem('hellx-alert-last-seen')||0),isNotify=localStorage.getItem('hellx-alerts-enabled')==='yes';
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=s=>{try{const u=new URL(s);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}};
 async function rows(table,query){if(!base||!key)throw Error('Configuration Supabase absente');const r=await fetch(base+'/rest/v1/'+table+'?'+query,{headers:H});if(!r.ok)throw Error('Erreur Supabase '+r.status);return r.json()}
-async function loadAlerts(){try{const a=await rows('hellx_alerts','select=id,title,message,url,category,created_at&published=eq.true&order=created_at.desc&limit=40');document.getElementById('alert-list').innerHTML=a.length?a.map(x=>'<article><h3>'+escapeHTML(x.title)+'</h3><p>'+escapeHTML(x.message)+'</p><p class="tag">'+escapeHTML(new Date(x.created_at).toLocaleDateString('fr-FR'))+' • '+escapeHTML(x.category)+'</p>'+(safeUrl(x.url)?'<a target="_blank" rel="noopener noreferrer" href="'+escapeHTML(safeUrl(x.url))+'">En savoir plus ↗</a>':'')+'</article>').join(''):'<div class="panel">Pas de nouvelle alerte pour le moment.</div>';const newest=a.length?Math.max(...a.map(x=>new Date(x.created_at).getTime())):0;if(isNotify&&newest>lastSeen&&lastSeen>0&&document.visibilityState==='visible'&&'Notification' in window&&Notification.permission==='granted'){const x=a[0];new Notification('HELLXBONE — '+x.title,{body:x.message.slice(0,140)})}if(document.visibilityState==='visible'){lastSeen=Math.max(lastSeen,newest);localStorage.setItem('hellx-alert-last-seen',String(lastSeen))}}catch(e){document.getElementById('alert-list').textContent='Impossible de récupérer les alertes.'}}
+function articleAlerts(){
+  const articles=Array.isArray(window.HELLXBONE?.articles)?window.HELLXBONE.articles:[];
+  return articles.filter(a=>a.title&&a.date&&a.id).map(a=>({
+    id:'article-'+a.id,
+    title:a.title,
+    message:a.excerpt||'Nouvel article HELLXBONE à découvrir.',
+    category:a.category||'News',
+    created_at:a.date+'T12:00:00',
+    url:'./news.html',
+    kind:'article'
+  }));
+}
+async function loadAlerts(){
+  const list=document.getElementById('alert-list');
+  const items=articleAlerts();
+  let remoteError=false;
+  try{
+    const remote=await rows('hellx_alerts','select=id,title,message,url,category,created_at&published=eq.true&order=created_at.desc&limit=40');
+    if(Array.isArray(remote))items.push(...remote);
+  }catch(e){remoteError=true;console.warn('Alertes Supabase indisponibles, affichage des news locales.',e)}
+  const unique=[...new Map(items.map(x=>[String(x.id||x.title),x])).values()];
+  unique.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  list.innerHTML=unique.length?unique.slice(0,40).map(x=>'<article><h3>'+escapeHTML(x.title)+'</h3><p>'+escapeHTML(x.message)+'</p><p class="tag">'+escapeHTML(new Date(x.created_at).toLocaleDateString('fr-FR'))+' • '+escapeHTML(x.category)+'</p>'+(safeUrl(x.url)||x.kind==='article'?'<a href="'+escapeHTML(x.kind==='article'?'./news.html':safeUrl(x.url))+'"'+(x.kind==='article'?'':' target="_blank" rel="noopener noreferrer"')+'>Découvrir ↗</a>':'')+'</article>').join(''):'<div class="panel">Pas de nouvelle alerte pour le moment.</div>';
+  if(remoteError&&unique.length===0)list.innerHTML+='<p class="muted">Le service des alertes est actuellement indisponible.</p>';
+  const newest=unique.length?Math.max(...unique.map(x=>new Date(x.created_at).getTime()).filter(Number.isFinite)):0;
+  if(isNotify&&newest>lastSeen&&lastSeen>0&&document.visibilityState==='visible'&&'Notification' in window&&Notification.permission==='granted'){
+    const x=unique[0];
+    try{new Notification('HELLXBONE — '+x.title,{body:String(x.message||'').slice(0,140)})}catch(e){console.warn('Notification non disponible',e)}
+  }
+  if(document.visibilityState==='visible'&&newest>lastSeen){lastSeen=newest;localStorage.setItem('hellx-alert-last-seen',String(lastSeen))}
+}
 const alertButton=document.getElementById('notify'),alertNote=document.getElementById('notify-note');
 function updateAlertUI(){alertButton.textContent=isNotify?'🔕 Désactiver les alertes HELLXBONE':'🔔 Activer les alertes HELLXBONE';alertButton.setAttribute('aria-pressed',String(isNotify));alertNote.textContent=isNotify?'Alertes HELLXBONE activées sur cet appareil. Les annonces sont visibles ici et vérifiées toutes les minutes lorsque la page est ouverte. Les notifications système dépendent du navigateur ; pas de notifications en arrière-plan.':'Les alertes sont désactivées. Tu peux toujours lire les annonces ci-dessous.'}
 alertButton.addEventListener('click',async()=>{
