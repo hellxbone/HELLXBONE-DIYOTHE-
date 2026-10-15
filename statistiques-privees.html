@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#090909">
+<title>Statistiques privées — HELLXBONE</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,Arial;background:#090909;color:#f2f4ef}*{box-sizing:border-box}body{margin:0}main{max-width:760px;margin:auto;padding:24px 15px 50px}
+h1{font-size:clamp(23px,6vw,37px);margin:8px 0 5px;letter-spacing:1.5px}h2{font-size:19px}small,p{color:#c9d1c5}header{padding:10px 0 15px;border-bottom:2px solid #91ff52}.green{color:#91ff52}
+.panel{background:#171a17;border:1px solid #3c4a3b;border-radius:15px;padding:17px;margin:16px 0}
+input{width:100%;font:inherit;background:#0c0d0c;color:white;padding:13px;border:1px solid #8a8a8a;border-radius:9px}button,a.btn{display:inline-block;background:#94ff54;color:#0c110a;border:0;border-radius:10px;font:inherit;font-weight:800;padding:12px 16px;cursor:pointer;margin:9px 0}button:disabled{opacity:.5}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{background:#141914;border:1px solid #475744;border-radius:13px;padding:16px}.metric strong{font-size:clamp(29px,8vw,44px);display:block;color:#aaff7a}.metric span{font-size:13px;color:#cbd6ca}
+.bar{background:#354436;height:8px;border-radius:6px;overflow:hidden;margin:7px 0 14px}.bar i{display:block;height:100%;background:#a1f777}.entry{margin:11px 0;overflow-wrap:anywhere}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+a{color:#b4ff8c}#error{color:#ffa0a0}label{display:block;margin:9px 0;font-weight:700}.sub{font-size:12px}select{font:inherit;padding:9px;background:#222;color:#fff;border-radius:9px}
+</style></head><body><main><header><div class="green">✠ HELLXBONE ✠</div><h1>MES STATISTIQUES</h1><p>Le résumé simple de la fréquentation de mon application.</p></header>
+<section class="panel" id="access"><h2>🔒 Accès personnel</h2><p>Colle ta clé API GoatCounter. Elle reste uniquement en mémoire pendant l'ouverture de cette page, et n'est jamais enregistrée dans GitHub ni dans le navigateur.</p>
+<label for="api">Clé API GoatCounter</label><input id="api" type="password" autocomplete="off" spellcheck="false" placeholder="Clé API GoatCounter">
+<div class="row"><button id="load">Voir mes statistiques</button><a href="https://hellxbone.goatcounter.com/" target="_blank" rel="noopener">Mon compte GoatCounter ↗</a></div>
+<p class="sub">Dans GoatCounter : User / Utilisateur → API → Créer une clé en lecture des statistiques. Ne publie jamais cette clé.</p></section>
+<p id="error" role="status"></p>
+<section id="report" hidden><div class="row"><h2>Vue d'ensemble</h2><select id="period" aria-label="Période"><option value="today">Aujourd'hui</option><option value="week">7 derniers jours</option><option value="month">Ce mois</option><option value="all">Depuis le début</option></select></div>
+<div class="grid"><div class="metric"><strong id="visits">—</strong><span>Consultations de pages</span></div><div class="metric"><strong id="events">—</strong><span>Interactions enregistrées</span></div></div>
+<div class="panel"><h2>📊 Pages les plus consultées</h2><div id="pages"></div></div>
+<p class="sub">GoatCounter mesure des consultations, qui ne représentent pas forcément autant de personnes différentes. Les événements (clics) sont affichés séparément.</p><button id="refresh">Actualiser</button><button id="lock">Fermer l'accès</button></section>
+</main><script>
+(()=>{'use strict';const api=document.getElementById('api'),load=document.getElementById('load'),error=document.getElementById('error'),report=document.getElementById('report'),period=document.getElementById('period');let secret='';
+const fmt=n=>Number(n||0).toLocaleString('fr-FR');
+async function refresh(){if(!secret)return;error.textContent='Récupération des chiffres…';load.disabled=true;
+try{const resp=await fetch('https://ldibykpitjutratyqqax.supabase.co/functions/v1/hellx-private-stats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:secret,period:period.value}),cache:'no-store'});const data=await resp.json();if(!resp.ok)throw Error(data.error||'Accès impossible');
+document.getElementById('visits').textContent=fmt(Math.max(0,data.total-data.events));document.getElementById('events').textContent=fmt(data.events);
+const pages=(data.pages||[]).filter(x=>!x.event).sort((a,b)=>b.count-a.count).slice(0,8);
+const target=document.getElementById('pages');target.replaceChildren();if(!pages.length)target.textContent='Aucune page enregistrée pour cette période.';
+const max=Math.max(1,...pages.map(x=>x.count));
+for(const p of pages){const div=document.createElement('div');div.className='entry';const row=document.createElement('div');row.className='row';const name=document.createElement('span');name.textContent=p.title;const count=document.createElement('strong');count.textContent=fmt(p.count);row.append(name,count);const bar=document.createElement('div');bar.className='bar';const fill=document.createElement('i');fill.style.width=Math.max(2,100*p.count/max)+'%';bar.append(fill);div.append(row,bar);target.append(div)}
+report.hidden=false;error.textContent='Statistiques actualisées.';
+}catch(e){error.textContent=e.message;report.hidden=true}finally{load.disabled=false}}
+load.addEventListener('click',()=>{secret=api.value.trim();api.value='';if(secret)refresh();else error.textContent='Entre ta clé GoatCounter pour accéder aux chiffres.'});
+period.addEventListener('change',refresh);document.getElementById('refresh').addEventListener('click',refresh);
+document.getElementById('lock').addEventListener('click',()=>{secret='';report.hidden=true;error.textContent='Accès fermé.'});
+})();
+</script></body></html>
