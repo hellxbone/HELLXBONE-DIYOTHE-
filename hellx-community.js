@@ -4,6 +4,14 @@ style.textContent='#hellx-club{max-width:900px;margin:8px auto;padding:0 12px;fo
 document.head.appendChild(style);
 const root=document.createElement('section');root.id='hellx-club';root.innerHTML='<div><button type="button" data-hxc="member">☠ CARTE DE MEMBRE</button><button type="button" data-hxc="clock">⏳ TIRAGE DU TEE-SHIRT</button></div>';
 (document.querySelector('#hellx-live-entry')||document.querySelector('header')).insertAdjacentElement('afterend',root);
+const placeClub=()=>{
+ const radio=document.getElementById('hellx-onair');
+ if(radio){if(radio.nextElementSibling!==root)radio.insertAdjacentElement('afterend',root);}
+ else{const anchor=document.querySelector('#hellx-live-entry')||document.querySelector('header');if(anchor&&anchor.nextElementSibling!==root)anchor.insertAdjacentElement('afterend',root);}
+};
+const appRoot=document.getElementById('app');
+if(appRoot)new MutationObserver(placeClub).observe(appRoot,{childList:true});
+placeClub();
 const modal=document.createElement('div');modal.id='hellx-club-dialog';modal.hidden=true;modal.innerHTML='<div id="hellx-club-panel" role="dialog" aria-modal="true"><button type="button" id="hellx-club-close">✕ FERMER</button><div id="hellx-club-body"></div></div>';document.body.appendChild(modal);
 const body=modal.querySelector('#hellx-club-body');let timer;let focusBefore;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
