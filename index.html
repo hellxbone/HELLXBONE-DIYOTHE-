@@ -1,4 +1,56 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050505"><meta name="application-name" content="HELLXBONE"><meta name="apple-mobile-web-app-title" content="HELLXBONE"><meta name="description" content="HELLXBONE — boutique de créations originales rock, metal, gothiques et macabres."><meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"><meta name="author" content="HELLXBONE / DIYOTHE"><link rel="canonical" href="https://hellxbone.github.io/HELLXBONE-DIYOTHE-/"><link rel="alternate" hreflang="fr-FR" href="https://hellxbone.github.io/HELLXBONE-DIYOTHE-/"><link rel="alternate" hreflang="x-default" href="https://hellxbone.github.io/HELLXBONE-DIYOTHE-/"><link rel="sitemap" type="application/xml" title="Sitemap" href="https://hellxbone.github.io/HELLXBONE-DIYOTHE-/sitemap.xml"><link rel="preconnect" href="https://gc.zgo.at" crossorigin><link rel="dns-prefetch" href="//gc.zgo.at"><meta property="og:type" content="website">
+<!doctype html><html lang="fr"><head><script>
+/* Accès HELLXBONE : pseudo gratuit obligatoire, même pseudo pour carte et MEGA RIFF. */
+document.documentElement.classList.add('hellx-gate-pending');
+(function(){
+  'use strict';
+  const MEMBER='hellxbone-member-v1', PLAYER='hellx-riff-player-name';
+  const clean=value=>String(value||'').trim().replace(/[<>]/g,'').slice(0,20);
+  function currentName(){
+    let member=null;
+    try{member=JSON.parse(localStorage.getItem(MEMBER)||'null')}catch(e){}
+    const name=clean(member&&member.name)||clean(localStorage.getItem(PLAYER));
+    if(name){
+      if(!member||!clean(member.name)){
+        localStorage.setItem(MEMBER,JSON.stringify({name,id:'HX-'+Math.random().toString(36).slice(2,10).toUpperCase(),date:new Date().toLocaleDateString('fr-FR')}));
+      }
+      localStorage.setItem(PLAYER,name);
+    }
+    return name;
+  }
+  function unlock(){document.documentElement.classList.remove('hellx-gate-pending');const gate=document.getElementById('hellx-member-gate');if(gate)gate.remove()}
+  document.addEventListener('DOMContentLoaded',function(){
+    try{if(currentName()){unlock();return}}catch(e){/* afficher le formulaire et son erreur si le stockage est bloqué */}
+    const gate=document.createElement('div');gate.id='hellx-member-gate';
+    gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Pour entrer dans la horde, choisis ton pseudo. L\u2019inscription est gratuite.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>Ton pseudo sera conservé sur cet appareil et utilisé pour ta carte de membre et les jeux.</small><p id="hellx-member-error" role="alert" hidden></p></form>';
+    document.body.appendChild(gate);
+    gate.querySelector('form').addEventListener('submit',function(event){
+      event.preventDefault();
+      const name=clean(gate.querySelector('input').value);
+      if(!name)return;
+      try{
+        localStorage.setItem(PLAYER,name);
+        localStorage.setItem(MEMBER,JSON.stringify({name,id:'HX-'+Math.random().toString(36).slice(2,10).toUpperCase(),date:new Date().toLocaleDateString('fr-FR')}));
+        unlock();
+      }catch(e){
+        const error=gate.querySelector('#hellx-member-error');error.hidden=false;
+        error.textContent='Impossible de mémoriser ton pseudo. Autorise le stockage du navigateur puis réessaie.';
+      }
+    });
+    gate.querySelector('input').focus();
+  });
+})();
+</script><style>
+html.hellx-gate-pending body > :not(#hellx-member-gate){visibility:hidden!important}
+#hellx-member-gate{position:fixed;inset:0;z-index:2147483647;overflow-y:auto;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 20%,#17301c 0%,#060806 60%,#000 100%);color:#f3f3f3;font-family:system-ui,sans-serif;visibility:visible!important}
+#hellx-member-entry{width:min(100%,420px);padding:30px 24px;border:2px solid #83ff64;border-radius:16px;background:#111;box-shadow:0 0 42px #49e75133;text-align:center}
+#hellx-member-entry h1{color:#9cff67;font-size:clamp(26px,8vw,38px);letter-spacing:2px;margin:12px 0}
+#hellx-member-entry p{line-height:1.5}
+#hellx-member-entry label{display:block;margin:20px 0 8px;font-weight:800}
+#hellx-member-entry input{width:100%;box-sizing:border-box;border:1px solid #8dff77;border-radius:8px;padding:15px;background:#030303;color:#fff;font:18px system-ui}
+#hellx-member-entry button{width:100%;margin-top:16px;padding:15px;background:#9cff67;color:#080808;font-weight:900;border:0;border-radius:9px;cursor:pointer}
+#hellx-member-entry small{display:block;color:#bbb;margin-top:16px;line-height:1.5}
+#hellx-member-error{color:#ff9898}
+</style><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050505"><meta name="application-name" content="HELLXBONE"><meta name="apple-mobile-web-app-title" content="HELLXBONE"><meta name="description" content="HELLXBONE — boutique de créations originales rock, metal, gothiques et macabres."><meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"><meta name="author" content="HELLXBONE / DIYOTHE"><link rel="canonical" href="https://hellxbone.github.io/HELLXBONE-DIYOTHE-/"><link rel="alternate" hreflang="fr-FR" href="https://hellxbone.github.io/HELLXBONE-DIYOTHE-/"><link rel="alternate" hreflang="x-default" href="https://hellxbone.github.io/HELLXBONE-DIYOTHE-/"><link rel="sitemap" type="application/xml" title="Sitemap" href="https://hellxbone.github.io/HELLXBONE-DIYOTHE-/sitemap.xml"><link rel="preconnect" href="https://gc.zgo.at" crossorigin><link rel="dns-prefetch" href="//gc.zgo.at"><meta property="og:type" content="website">
 <meta property="og:site_name" content="HELLXBONE"><meta property="og:locale" content="fr_FR">
 <meta property="og:title" content="HELLXBONE — Art • Rock • Metal">
 <meta property="og:description" content="Créations HELLXBONE, news rock & metal, mini-jeux et univers DIYOTHE.">
