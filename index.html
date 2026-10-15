@@ -803,7 +803,7 @@ style.textContent=`
 #hellx-onair.hx-playing #hellx-onair-toggle{color:#87ff87!important;text-shadow:0 0 6px #50ff50}
 #hellx-onair .hx-station-wrap{display:flex;min-width:0;flex-direction:column;justify-content:center;gap:3px;color:#c9c9bc;font-size:9px;letter-spacing:1px;text-align:left}
 #hellx-onair select{display:block;width:100%!important;max-width:unset!important;min-width:0;margin:0!important;padding:5px 3px!important;background:#111913!important;color:#bfffbb!important;border:1px solid #777!important;border-radius:5px!important;font-size:11px!important}
-#hellx-onair .hx-bass{display:block;width:100%!important;min-height:30px!important;margin-top:7px!important;color:#d7ffbc!important;font-size:10px!important;letter-spacing:1px}#hellx-onair .hx-bass[aria-pressed="true"]{background:linear-gradient(#24452a,#0f2515)!important;border-color:#71ff71!important;color:#94ff98!important;box-shadow:0 0 9px #27fa5355!important}
+#hellx-onair .hx-bass{display:block;box-sizing:border-box;width:78%!important;justify-self:center;align-self:center;min-height:32px!important;max-height:38px!important;margin:0!important;padding:4px 10px!important;color:#d7ffbc!important;font-size:11px!important;letter-spacing:1px;border-radius:20px!important}#hellx-onair .hx-bass[aria-pressed="true"]{background:linear-gradient(#24452a,#0f2515)!important;border-color:#71ff71!important;color:#94ff98!important;box-shadow:0 0 9px #27fa5355!important}
 #hellx-onair #hx-next-station{font-size:21px!important;line-height:1!important}#hellx-onair #hx-next-station small{display:block;font-size:8px;line-height:1.1;margin:1px 0 0}
 @media(max-width:340px){#hellx-onair .hx-controls{grid-template-columns:75px minmax(0,1fr) 39px;gap:5px}#hellx-onair .hx-brand{letter-spacing:1px}}
 @media(prefers-reduced-motion:reduce){#hellx-onair .hx-vu-bar{transition:none}}
@@ -923,7 +923,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 @keyframes hx-song-scroll{to{transform:translateX(-100%)}}
 @media(prefers-reduced-motion:reduce){#hellx-onair .hx-nowplaying.is-scrolling .hx-nowplaying-text{padding-left:0;max-width:100%;animation:none;overflow:hidden;text-overflow:ellipsis}}
 /* HELLXBONE RADIO: authentic artwork with interactive controls laid on top */
-#hellx-onair{background:#101310 url("hellxbone-radio-vintage.svg") center/100% 100% no-repeat!important;border:0!important;border-radius:16px!important;box-shadow:0 9px 24px #000b!important;aspect-ratio:12/7!important;max-width:520px!important;width:100%!important;padding:0!important;position:relative!important;display:grid!important;grid-template-rows:23% 44% 33%!important;overflow:hidden!important}
+#hellx-onair{background:#101310 url("hellxbone-radio-vintage.svg") center top/100% 85% no-repeat!important;border:0!important;border-radius:16px!important;box-shadow:0 9px 24px #000b!important;aspect-ratio:12/8.25!important;max-width:520px!important;width:100%!important;padding:0!important;position:relative!important;display:grid!important;grid-template-rows:19.5% 37.4% 28.1% 15%!important;overflow:hidden!important}
 #hellx-onair .hx-head{margin:0!important;padding:0 9%!important;align-self:center!important;justify-content:space-between!important}
 #hellx-onair .hx-brand{font-size:clamp(8px,2.2vw,12px)!important;letter-spacing:1px!important;color:#d6ddd1!important}
 #hellx-onair h2{font-size:clamp(20px,5.2vw,31px)!important;letter-spacing:3px!important;color:#e7f9e4!important;text-shadow:0 2px 3px #000!important}
