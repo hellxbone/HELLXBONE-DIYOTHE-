@@ -1,4 +1,4 @@
-const CACHE_VERSION='hellxbone-push-ready-20261015-v1';
+const CACHE_VERSION='hellxbone-neon-icon-20261015-v2';
 self.addEventListener('install',event=>{self.skipWaiting()});
 self.addEventListener('activate',event=>{
  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
@@ -15,7 +15,7 @@ self.addEventListener('push',event=>{
  if(url.origin!==self.location.origin)url.href=new URL('./hellx-live.html',self.registration.scope).href;
  event.waitUntil(self.registration.showNotification(title,{
   body:String(data.body||'Une nouvelle actualité metal t’attend.').slice(0,240),
-  icon:'./icon-192.png',badge:'./icon-192.png',tag:String(data.tag||'hellxbone-news'),
+  icon:new URL('./icon-192.png',self.registration.scope).href,badge:new URL('./notification-badge.png',self.registration.scope).href,tag:String(data.tag||'hellxbone-news'),
   data:{url:url.href}
  }));
 });
