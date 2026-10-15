@@ -4,10 +4,15 @@ style.textContent='#hellx-club{max-width:900px;margin:8px auto;padding:0 12px;fo
 document.head.appendChild(style);
 const root=document.createElement('section');root.id='hellx-club';root.innerHTML='<div><button type="button" data-hxc="member">☠ CARTE DE MEMBRE</button><button type="button" data-hxc="clock">⏳ TIRAGE DU TEE-SHIRT</button></div>';
 (document.querySelector('#hellx-live-entry')||document.querySelector('header')).insertAdjacentElement('afterend',root);
+const art=document.createElement('figure');
+art.id='hellx-home-reaper';
+art.setAttribute('aria-label','Illustration gothique HELLXBONE');
+art.innerHTML='<img src="./hellxbone-faucheuse.png" alt="Faucheuse gothique à la faux, crânes et décor macabre HELLXBONE" loading="lazy" decoding="async">';
+style.textContent+='#hellx-home-reaper{display:block;width:min(100% - 24px,876px);margin:20px auto 32px;padding:0;background:#000;border:1px solid #443e31;border-radius:6px;overflow:hidden}#hellx-home-reaper img{display:block;width:100%;height:auto;object-fit:contain}';
 const placeClub=()=>{
  const radio=document.getElementById('hellx-onair');
- if(radio){if(radio.nextElementSibling!==root)radio.insertAdjacentElement('afterend',root);}
- else{const anchor=document.querySelector('#hellx-live-entry')||document.querySelector('header');if(anchor&&anchor.nextElementSibling!==root)anchor.insertAdjacentElement('afterend',root);}
+ if(radio){if(radio.nextElementSibling!==root)radio.insertAdjacentElement('afterend',root);if(root.nextElementSibling!==art)root.insertAdjacentElement('afterend',art);art.hidden=false;}
+ else{art.remove();const anchor=document.querySelector('#hellx-live-entry')||document.querySelector('header');if(anchor&&anchor.nextElementSibling!==root)anchor.insertAdjacentElement('afterend',root);}
 };
 const appRoot=document.getElementById('app');
 if(appRoot)new MutationObserver(placeClub).observe(appRoot,{childList:true});
