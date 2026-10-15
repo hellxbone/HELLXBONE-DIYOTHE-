@@ -648,7 +648,7 @@ document.addEventListener('click',e=>{const riffOpen=e.target.closest('[data-rif
 
 </script><script>
 (function(){
-  const VERSION='hellxbone-onair-20261015-ticker-v1';
+  const VERSION='hellxbone-onair-20261015-icy-v2';
   function fixMenu(){
     if(window.innerWidth<=700){
       document.querySelectorAll('nav button').forEach(b=>{
@@ -783,6 +783,18 @@ async function updateTrack(){
  const serial=metadataSerial,station=index;
  if(!active||audio.paused)return;
  const urls=metadataUrls[station]||[];
+ // GitHub Actions reads the public ICY metadata server-side so browser CORS cannot block it.
+ try{
+  const response=await fetch('./radio-nowplaying.json?t='+Date.now(),{cache:'no-store'});
+  if(response.ok){
+   const data=await response.json(),entry=data.stations?.[station];
+   if(serial!==metadataSerial||station!==index||!active)return;
+   if(entry&&typeof entry.title==='string'&&entry.title.trim()&&data.updated_at&&Date.now()/1000-data.updated_at<900){
+    showTrack(entry.title);return;
+   }
+  }
+ }catch(e){/* No metadata yet: continue with public station endpoints. */}
+
  for(const url of urls){
   try{
    const ctrl=new AbortController(),timeout=setTimeout(()=>ctrl.abort(),4500);
