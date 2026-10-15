@@ -1,6 +1,6 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><title>Alertes | HELLXBONE</title><style>
 :root{font-family:system-ui,Arial;color:#f5eed7;background:#090909}*{box-sizing:border-box}body{margin:0}header{background:#101010;border-bottom:3px solid #9aff57;padding:22px 16px;text-align:center}h1{margin:0;font-size:32px;letter-spacing:2px}small,.muted{color:#beb9aa}main{max-width:850px;margin:auto;padding:18px 14px 100px}nav{display:flex;gap:7px;margin:20px 0}button,.action{background:#202020;color:white;padding:13px;border:1px solid #525252;border-radius:10px;font:inherit;cursor:pointer}nav button{flex:1;min-width:0;font-size:13px;padding:12px 3px}button[aria-selected=true],.action{background:#8cff48;color:#050505;font-weight:800;border-color:#8cff48}section{display:none}section.active{display:block}.panel{background:#151515;border:1px solid #404040;border-radius:14px;padding:18px;margin:12px 0}h2{color:#a4ff73;margin-top:0}input,select{font:inherit;color:white;background:#161616;border:1px solid #777;border-radius:9px;padding:12px;width:100%;margin:5px 0 12px}a{color:#b9f998}article{background:#1c1c1c;padding:14px;margin:10px 0;border-left:3px solid #8cff48;border-radius:8px}article h3{margin:0 0 8px}.tag{font-size:12px;color:#c8ddaf}.action{display:inline-block;text-decoration:none;margin:7px 0}#status{min-height:20px}.inline{display:flex;gap:8px;flex-wrap:wrap}.inline button{flex:1}footer{text-align:center;color:#aaa;padding:30px}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #f1ffbc;outline-offset:2px}</style></head>
-<body><header><h1>✠ HELLXBONE ✠</h1><small>ALERTES</small></header><main><a href="./index.html" class="action">← Retour à HELLXBONE</a><section id="alertes" class="active"><div class="panel"><h2>Les alertes de l'enfer</h2><p>Retrouve les annonces HELLXBONE : nouveaux articles, concerts et jeux.</p><button id="notify">🔔 Activer les alertes HELLXBONE</button><p class="muted" id="notify-note">Les alertes apparaissent dans cette page. Les notifications système fonctionnent seulement lorsque cette page reste ouverte et que ton navigateur les autorise. Les notifications push en arrière-plan seront une étape distincte.</p></div><div id="alert-list" aria-live="polite">Chargement des alertes…</div></section><p id="status" class="muted" role="status"></p></main><footer>HELLXBONE / DIYOTHE — Art • Rock • Metal</footer>
+<body><header><h1>✠ HELLXBONE ✠</h1><small>ALERTES</small></header><main><a href="./index.html" class="action">← Retour à HELLXBONE</a><section id="alertes" class="active"><div class="panel"><h2>Les alertes de l'enfer</h2><p>Retrouve les annonces HELLXBONE : nouveaux articles, concerts et jeux.</p><button id="notify">🔔 Activer les alertes HELLXBONE</button><p class="muted" id="notify-note">Active les notifications pour recevoir les nouveautés HELLXBONE même lorsque l’application est fermée.</p></div><div id="alert-list" aria-live="polite">Chargement des alertes…</div></section><p id="status" class="muted" role="status"></p></main><footer>HELLXBONE / DIYOTHE — Art • Rock • Metal</footer>
 <script src="./leaderboard-config.js"></script><script src="./content.js"></script><script>
 (()=>{'use strict';const cfg=window.HELLXBONE_LEADERBOARD||{};const base=cfg.url;const key=cfg.anonKey;const H={apikey:key,Authorization:'Bearer '+key};let lastSeen=Number(localStorage.getItem('hellx-alert-last-seen')||0),isNotify=localStorage.getItem('hellx-alerts-enabled')==='yes';
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -38,16 +38,36 @@ async function loadAlerts(){
   if(document.visibilityState==='visible'&&newest>lastSeen){lastSeen=newest;localStorage.setItem('hellx-alert-last-seen',String(lastSeen))}
 }
 const alertButton=document.getElementById('notify'),alertNote=document.getElementById('notify-note');
-function updateAlertUI(){alertButton.textContent=isNotify?'🔕 Désactiver les alertes HELLXBONE':'🔔 Activer les alertes HELLXBONE';alertButton.setAttribute('aria-pressed',String(isNotify));alertNote.textContent=isNotify?'Alertes HELLXBONE activées sur cet appareil. Les annonces sont visibles ici et vérifiées toutes les minutes lorsque la page est ouverte. Les notifications système dépendent du navigateur ; pas de notifications en arrière-plan.':'Les alertes sont désactivées. Tu peux toujours lire les annonces ci-dessous.'}
+const pushEndpoint=base+'/functions/v1/hellx-push';
+function fromBase64(v){const str=atob(v.replace(/-/g,'+').replace(/_/g,'/').padEnd(Math.ceil(v.length/4)*4,'='));return Uint8Array.from(str,c=>c.charCodeAt(0))}
+async function pushCall(action,data){const r=await fetch(pushEndpoint+'?action='+action,{method:data?'POST':'GET',headers:{'Content-Type':'application/json'},body:data?JSON.stringify(data):undefined});if(!r.ok)throw Error('Erreur serveur '+r.status);return r.json()}
+async function enablePush(){
+ if(!('serviceWorker' in navigator)||!('PushManager' in window)||!('Notification' in window))throw Error('Ce navigateur ne prend pas en charge les notifications push.');
+ if(Notification.permission==='denied')throw Error('Notifications bloquées : autorise HELLXBONE dans les paramètres Android.');
+ const perm=await Notification.requestPermission();if(perm!=='granted')throw Error('Autorisation des notifications refusée.');
+ const reg=await navigator.serviceWorker.register('./sw.js',{scope:'./'});await navigator.serviceWorker.ready;
+ const cfg=await pushCall('config');if(!cfg.publicKey)throw Error('Service push indisponible.');
+ let sub=await reg.pushManager.getSubscription();
+ if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:fromBase64(cfg.publicKey)});
+ try{await pushCall('subscribe',{subscription:sub.toJSON()})}
+ catch(e){await sub.unsubscribe();throw e}
+ isNotify=true;localStorage.setItem('hellx-alerts-enabled','yes');
+}
+async function disablePush(){
+ try{const reg=await navigator.serviceWorker.getRegistration('./');const sub=await reg?.pushManager?.getSubscription();
+ if(sub){try{await pushCall('unsubscribe',{subscription:sub.toJSON()})}catch(e){console.warn('Désinscription serveur non confirmée',e)}await sub.unsubscribe()}
+ }finally{isNotify=false;localStorage.setItem('hellx-alerts-enabled','no')}
+}
+function updateAlertUI(){
+ alertButton.textContent=isNotify?'🔕 Désactiver les notifications HELLXBONE':'🔔 Activer les notifications HELLXBONE';
+ alertButton.setAttribute('aria-pressed',String(isNotify));
+ alertNote.textContent=isNotify?'Notifications push activées : tu peux recevoir les nouveautés même lorsque HELLXBONE est fermée, si ton téléphone autorise les notifications.':'Active les notifications pour recevoir les nouveautés même lorsque HELLXBONE est fermée.';
+}
 alertButton.addEventListener('click',async()=>{
-  if(isNotify){isNotify=false;localStorage.setItem('hellx-alerts-enabled','no');updateAlertUI();return}
-  isNotify=true;localStorage.setItem('hellx-alerts-enabled','yes');updateAlertUI();loadAlerts();
-  if('Notification' in window && window.isSecureContext && Notification.permission==='default'){
-    try{const permission=await Notification.requestPermission();if(permission!=='granted')alertNote.textContent+=' Ton navigateur ne permet pas les notifications système : les alertes restent activées dans HELLXBONE.'}
-    catch{alertNote.textContent+=' Notifications système indisponibles sur ce navigateur.'}
-  }else if(!('Notification' in window)||Notification.permission==='denied'){
-    alertNote.textContent+=' Les notifications système ne sont pas autorisées sur ce navigateur.'
-  }
+ alertButton.disabled=true;alertNote.textContent='Configuration des notifications…';
+ try{if(isNotify)await disablePush();else await enablePush();updateAlertUI();loadAlerts()}
+ catch(e){alertNote.textContent='Activation impossible : '+e.message;isNotify=false;localStorage.setItem('hellx-alerts-enabled','no')}
+ finally{alertButton.disabled=false}
 });
 updateAlertUI();
 loadAlerts();setInterval(()=>{if(document.visibilityState==='visible')loadAlerts()},60000);
