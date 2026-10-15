@@ -1,6 +1,6 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><title>Alertes | HELLXBONE</title><style>
 :root{font-family:system-ui,Arial;color:#f5eed7;background:#090909}*{box-sizing:border-box}body{margin:0}header{background:#101010;border-bottom:3px solid #9aff57;padding:22px 16px;text-align:center}h1{margin:0;font-size:32px;letter-spacing:2px}small,.muted{color:#beb9aa}main{max-width:850px;margin:auto;padding:18px 14px 100px}nav{display:flex;gap:7px;margin:20px 0}button,.action{background:#202020;color:white;padding:13px;border:1px solid #525252;border-radius:10px;font:inherit;cursor:pointer}nav button{flex:1;min-width:0;font-size:13px;padding:12px 3px}button[aria-selected=true],.action{background:#8cff48;color:#050505;font-weight:800;border-color:#8cff48}section{display:none}section.active{display:block}.panel{background:#151515;border:1px solid #404040;border-radius:14px;padding:18px;margin:12px 0}h2{color:#a4ff73;margin-top:0}input,select{font:inherit;color:white;background:#161616;border:1px solid #777;border-radius:9px;padding:12px;width:100%;margin:5px 0 12px}a{color:#b9f998}article{background:#1c1c1c;padding:14px;margin:10px 0;border-left:3px solid #8cff48;border-radius:8px}article h3{margin:0 0 8px}.tag{font-size:12px;color:#c8ddaf}.action{display:inline-block;text-decoration:none;margin:7px 0}#status{min-height:20px}.inline{display:flex;gap:8px;flex-wrap:wrap}.inline button{flex:1}footer{text-align:center;color:#aaa;padding:30px}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #f1ffbc;outline-offset:2px}</style></head>
-<body><header><h1>✠ HELLXBONE ✠</h1><small>ALERTES</small></header><main><a href="./index.html" class="action">← Retour à HELLXBONE</a><section id="alertes" class="active"><div class="panel"><h2>Les alertes de l'enfer</h2><p>Retrouve les annonces HELLXBONE : nouveaux articles, concerts et jeux.</p><button id="notify">🔔 Activer les alertes HELLXBONE</button><p class="muted" id="notify-note">Active les notifications pour recevoir les nouveautés HELLXBONE même lorsque l’application est fermée.</p></div><div id="alert-list" aria-live="polite">Chargement des alertes…</div></section><p id="status" class="muted" role="status"></p></main><footer>HELLXBONE / DIYOTHE — Art • Rock • Metal</footer>
+<body><header><h1>✠ HELLXBONE ✠</h1><small>ALERTES</small></header><main><a href="./index.html" class="action">← Retour à HELLXBONE</a><section id="alertes" class="active"><div class="panel"><h2>Les alertes de l'enfer</h2><p>Retrouve les annonces HELLXBONE : nouveaux articles, concerts et jeux.</p><button id="notify">🔔 Activer les alertes HELLXBONE</button><button id="test-notification" type="button" style="margin-left:6px;background:#272b26;color:#baff8e;border:1px solid #91ff52">Tester ma notification</button><p class="muted" id="notify-note">Active les notifications pour recevoir les nouveautés HELLXBONE même lorsque l’application est fermée.</p></div><div id="alert-list" aria-live="polite">Chargement des alertes…</div></section><p id="status" class="muted" role="status"></p></main><footer>HELLXBONE / DIYOTHE — Art • Rock • Metal</footer>
 <script src="./leaderboard-config.js"></script><script src="./content.js"></script><script>
 (()=>{'use strict';const cfg=window.HELLXBONE_LEADERBOARD||{};const base=cfg.url;const key=cfg.anonKey;const H={apikey:key,Authorization:'Bearer '+key};let lastSeen=Number(localStorage.getItem('hellx-alert-last-seen')||0),isNotify=localStorage.getItem('hellx-alerts-enabled')==='yes';
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -58,6 +58,27 @@ async function disablePush(){
  if(sub){try{await pushCall('unsubscribe',{subscription:sub.toJSON()})}catch(e){console.warn('Désinscription serveur non confirmée',e)}await sub.unsubscribe()}
  }finally{isNotify=false;localStorage.setItem('hellx-alerts-enabled','no')}
 }
+const testButton=document.getElementById('test-notification');
+testButton.addEventListener('click',async()=>{
+ testButton.disabled=true;
+ const state=document.getElementById('status');
+ try{
+  if(!('serviceWorker' in navigator)||!('Notification' in window))throw Error('Les notifications ne sont pas disponibles sur ce navigateur.');
+  if(Notification.permission!=='granted')throw Error('Active d’abord les notifications HELLXBONE et accepte la demande Android.');
+  const registration=await navigator.serviceWorker.register('./sw.js',{scope:'./'});
+  await navigator.serviceWorker.ready;
+  await registration.update();
+  await registration.showNotification('HELLXBONE — TEST ICÔNE',{
+   body:'Voici le test de la croix HELLXBONE vert néon. Vérifie son affichage dans la notification.',
+   icon:new URL('./icon-192.png',location.href).href,
+   badge:new URL('./notification-badge.png',location.href).href,
+   tag:'hellxbone-local-icon-test-'+Date.now(),
+   data:{url:new URL('./hellx-live.html',location.href).href}
+  });
+  state.textContent='Notification de test affichée. Vérifie son icône dans les notifications Android.';
+ }catch(e){state.textContent='Test impossible : '+e.message}
+ finally{testButton.disabled=false}
+});
 function updateAlertUI(){
  alertButton.textContent=isNotify?'🔕 Désactiver les notifications HELLXBONE':'🔔 Activer les notifications HELLXBONE';
  alertButton.setAttribute('aria-pressed',String(isNotify));
