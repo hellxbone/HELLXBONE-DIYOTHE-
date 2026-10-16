@@ -658,7 +658,8 @@ async function doShare(platform,title,url,excerpt=''){
     if(/death metal/i.test(topic))specificTags.push('#DeathMetal');
     const hashtags=[...new Set([...baseTags,...specificTags])].join(' ');
     const appUrl='https://hellxbone.github.io/HELLXBONE-DIYOTHE-/';
-    const caption=hook+'\n\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\n\n🔥 Deviens membre gratuitement du HELLXBONE CLUB ! Dans mon appli underground, retrouve des news rock & metal, de la musique en continu même quand ton téléphone passe en veille, des tee-shirts à gagner, des jeux et bien plus encore !\n👉 Installe-la ici : '+appUrl+'\n\n'+hashtags;
+    const promo='🔥 Deviens membre gratuitement du HELLXBONE CLUB ! Découvre mon appli underground : news rock & metal, radio live même quand le téléphone est en veille, tee-shirts à gagner, jeux et bien plus encore !';
+    const caption=promo+'\n\n'+hook+'\n\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\n\n👉 Installe l’application gratuite : '+appUrl+'\n\n'+hashtags;
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
     // Facebook blocks prefilled captions from website share links.
     // Show the user exactly what will be posted and offer a reliable copy step.
@@ -676,7 +677,7 @@ async function doShare(platform,title,url,excerpt=''){
     const help=document.createElement('p');
     help.textContent='Facebook ne permet pas de remplir automatiquement le texte. Copie celui-ci (avec ses hashtags), puis colle-le dans ta publication Facebook.';
     const area=document.createElement('textarea');
-    area.value=caption+'\\n\\n'+link;
+    area.value=caption+'\n\n'+link;
     area.readOnly=true;
     area.setAttribute('aria-label','Texte du partage et hashtags');
     area.style.cssText='width:100%;box-sizing:border-box;min-height:190px;background:#080808;color:white;border:1px solid #888;border-radius:8px;padding:12px;font:inherit;resize:vertical';
