@@ -1,43 +1,67 @@
 <!doctype html><html lang="fr"><head><script>
-/* Accès HELLXBONE : pseudo gratuit obligatoire, même pseudo pour carte et MEGA RIFF. */
+/* HELLXBONE CLUB — inscription gratuite synchronisee avec Supabase */
 document.documentElement.classList.add('hellx-gate-pending');
 (function(){
-  'use strict';
-  const MEMBER='hellxbone-member-v1', PLAYER='hellx-riff-player-name';
-  const clean=value=>String(value||'').trim().replace(/[<>]/g,'').slice(0,20);
-  function currentName(){
-    let member=null;
-    try{member=JSON.parse(localStorage.getItem(MEMBER)||'null')}catch(e){}
-    const name=clean(member&&member.name)||clean(localStorage.getItem(PLAYER));
-    if(name){
-      if(!member||!clean(member.name)){
-        localStorage.setItem(MEMBER,JSON.stringify({name,id:'HX-'+Math.random().toString(36).slice(2,10).toUpperCase(),date:new Date().toLocaleDateString('fr-FR')}));
-      }
-      localStorage.setItem(PLAYER,name);
-    }
-    return name;
-  }
-  function unlock(){document.documentElement.classList.remove('hellx-gate-pending');const gate=document.getElementById('hellx-member-gate');if(gate)gate.remove()}
-  document.addEventListener('DOMContentLoaded',function(){
-    try{if(currentName()){unlock();return}}catch(e){/* afficher le formulaire et son erreur si le stockage est bloqué */}
-    const gate=document.createElement('div');gate.id='hellx-member-gate';
-    gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour accéder à l\u2019univers HELLXBONE et devenir membre.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>100 % GRATUIT — UN SEUL PSEUDO — ACCÈS IMMÉDIAT. Ton pseudo reste enregistré sur cet appareil.</small><p id="hellx-member-error" role="alert" hidden></p></form>';
-    document.body.appendChild(gate);
-    gate.querySelector('form').addEventListener('submit',function(event){
-      event.preventDefault();
-      const name=clean(gate.querySelector('input').value);
-      if(!name)return;
-      try{
-        localStorage.setItem(PLAYER,name);
-        localStorage.setItem(MEMBER,JSON.stringify({name,id:'HX-'+Math.random().toString(36).slice(2,10).toUpperCase(),date:new Date().toLocaleDateString('fr-FR')}));
-        unlock();
-      }catch(e){
-        const error=gate.querySelector('#hellx-member-error');error.hidden=false;
-        error.textContent='Impossible de mémoriser ton pseudo. Autorise le stockage du navigateur puis réessaie.';
-      }
-    });
-    gate.querySelector('input').focus();
-  });
+'use strict';
+const STORAGE='hellxbone-member-v1',PLAYER='hellx-riff-player-name',DEVICE='hellx-club-device-v1';
+const URL='https://ldibykpitjutratyqqax.supabase.co/rest/v1/rpc/';
+const APIKEY='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv';
+const clean=v=>String(v||'').trim().replace(/[<>]/g,'').slice(0,20);
+const get=key=>{try{return localStorage.getItem(key)}catch(e){return null}};
+const put=(key,value)=>localStorage.setItem(key,value);
+let current=null;
+try{current=JSON.parse(get(STORAGE)||'null')}catch(e){}
+let existingName=clean(current&&current.name)||clean(get(PLAYER));
+function deviceId(){
+let value=get(DEVICE);
+if(!value){value=crypto.randomUUID();put(DEVICE,value)}
+return value;
+}
+async function rpc(method,body){
+const response=await fetch(URL+method,{
+ method:'POST',headers:{'apikey':APIKEY,'Content-Type':'application/json'},
+ body:JSON.stringify(body||{})
+});
+const json=await response.json().catch(()=>null);
+if(!response.ok)throw Error(json&&json.message?json.message:'Erreur reseau ('+response.status+')');
+return json;
+}
+function unlock(){
+document.documentElement.classList.remove('hellx-gate-pending');
+document.getElementById('hellx-member-gate')?.remove();
+}
+async function enroll(name){
+const result=await rpc('hellx_club_register',{p_member_id:deviceId(),p_pseudo:name});
+const m=Array.isArray(result)?result[0]:result;
+if(!m||!m.member_no)throw Error('Inscription non confirmee.');
+const formatted='HX-'+String(m.member_no).padStart(6,'0');
+put(STORAGE,JSON.stringify({name:m.member_pseudo,id:formatted,member_number:m.member_no,date:(current&&current.date)||new Date().toLocaleDateString('fr-FR'),synced:true}));
+put(PLAYER,m.member_pseudo);
+window.dispatchEvent(new CustomEvent('hellx-member-synced',{detail:{pseudo:m.member_pseudo,number:m.member_no}}));
+return m;
+}
+document.addEventListener('DOMContentLoaded',async function(){
+if(existingName){
+unlock();
+enroll(existingName).catch(e=>{console.warn('HELLXBONE: synchronisation en attente',e);});
+return;
+}
+const gate=document.createElement('div');gate.id='hellx-member-gate';
+gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p id="hellx-club-live-count" aria-live="polite"></p></form>';
+document.body.appendChild(gate);
+rpc('hellx_club_count',{}).then(n=>{const el=gate.querySelector('#hellx-club-live-count');if(el)el.textContent=n+' membre'+(n===1?'':'s')+' dans le club';}).catch(()=>{});
+gate.querySelector('form').addEventListener('submit',async function(event){
+event.preventDefault();const name=clean(gate.querySelector('input').value);
+const error=gate.querySelector('#hellx-member-error'),button=gate.querySelector('button');
+error.hidden=true;
+if(name.length<2||!/^[a-zA-ZÀ-ÿ0-9 _.-]+$/.test(name)){error.textContent='Choisis un pseudo de 2 a 20 caracteres (lettres, chiffres, espaces, tirets).';error.hidden=false;return}
+button.disabled=true;button.textContent='INSCRIPTION EN COURS…';
+try{await enroll(name);unlock()}
+catch(e){error.textContent=/duplicate key|unique constraint|hellx_club_pseudo_unique/i.test(e.message)?'Ce pseudo est deja pris. Choisis-en un autre.':'Inscription impossible pour le moment. Verifie ta connexion et reessaie.';error.hidden=false;}
+finally{button.disabled=false;button.textContent='ENTRER DANS HELLXBONE'}
+});
+gate.querySelector('input').focus();
+});
 })();
 </script><style>
 html.hellx-gate-pending body > :not(#hellx-member-gate){visibility:hidden!important}
