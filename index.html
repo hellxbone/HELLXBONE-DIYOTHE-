@@ -658,7 +658,7 @@ async function doShare(platform,title,url,excerpt=''){
     if(/death metal/i.test(topic))specificTags.push('#DeathMetal');
     const hashtags=[...new Set([...baseTags,...specificTags])].join(' ');
     const appUrl='https://hellxbone.github.io/HELLXBONE-DIYOTHE-/';
-    const caption=hook+'\n\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\n\n🔥 Retrouve les actus metal, la radio live et les jeux sur l’application gratuite HELLXBONE !\n👉 Installe-la ici : '+appUrl+'\n\n'+hashtags;
+    const caption=hook+'\n\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\n\n🔥 Deviens membre gratuitement du HELLXBONE CLUB ! Dans mon appli underground, retrouve des news rock & metal, de la musique en continu même quand ton téléphone passe en veille, des tee-shirts à gagner, des jeux et bien plus encore !\n👉 Installe-la ici : '+appUrl+'\n\n'+hashtags;
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
     // Facebook blocks prefilled captions from website share links.
     // Show the user exactly what will be posted and offer a reliable copy step.
