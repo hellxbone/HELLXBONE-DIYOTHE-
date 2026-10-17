@@ -6,7 +6,7 @@ const p=document.createElement('section');p.id='hellx-ai-panel';p.innerHTML='<he
 const log=p.querySelector('#hellx-ai-log'),form=p.querySelector('form'),inp=form.querySelector('input'),send=form.querySelector('button');let history=[],busy=false;
 function add(v,me){const d=document.createElement('div');d.textContent=v;if(me)d.className='me';log.append(d);log.scrollTop=log.scrollHeight;return d}
 function memberPseudo(){try{const member=JSON.parse(localStorage.getItem('hellxbone-member-v1')||'null');return String(member?.name||localStorage.getItem('hellx-riff-player-name')||'').trim().slice(0,20)}catch(e){return ''}}
-function greeting(){const pseudo=memberPseudo();return api?'Hey'+(pseudo?' '+pseudo:'')+' ! Ici HELLX, maître de cet antre. Direct de Clisson, aux portes de l’Enfer. Qu’est-ce qui t’amène, brebis égarée ?':'HELLX attend sa connexion à Cloudflare pour pouvoir discuter.'}
+function greeting(){const pseudo=memberPseudo();return api?'Hey'+(pseudo?' '+pseudo:'')+' ! Ici HELLX, maître de cet antre. Je suis le portail vers le monde du bas, l’Enfer. Qu’est-ce qui t’amène, brebis égarée ?':'HELLX attend sa connexion à Cloudflare pour pouvoir discuter.'}
 add(greeting(),false);
 window.addEventListener('hellx-member-synced',()=>{if(!history.length&&log.children.length===1)log.firstElementChild.textContent=greeting()});
 let startX=0,startY=0,dragging=false,suppressClick=false;
