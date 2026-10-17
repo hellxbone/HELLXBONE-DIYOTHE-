@@ -1,0 +1,7 @@
+{
+  "name": "hellxbone-hellx-chat",
+  "main": "hellx-worker.js",
+  "compatibility_date": "2026-10-01",
+  "ai": {"binding":"AI"},
+  "vars": {"ALLOWED_ORIGIN":"https://hellxbone.github.io"}
+}
