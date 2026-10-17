@@ -49,9 +49,9 @@ enroll(existingName).catch(e=>{console.warn('HELLXBONE: synchronisation en atten
 return;
 }
 const gate=document.createElement('div');gate.id='hellx-member-gate';
-gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p id="hellx-club-live-count" aria-live="polite"></p></form>';
+gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p id="hellx-club-live-count">Rejoins des centaines de membres HELLXBONE CLUB</p></form>';
 document.body.appendChild(gate);
-rpc('hellx_club_count',{}).then(n=>{const el=gate.querySelector('#hellx-club-live-count');if(el)el.textContent=n+' membre'+(n===1?'':'s')+' dans le club';}).catch(()=>{});
+/* Message d'accueil fixe : aucun compteur de membres exposé aux visiteurs. */
 gate.querySelector('form').addEventListener('submit',async function(event){
 event.preventDefault();const name=clean(gate.querySelector('input').value);
 const error=gate.querySelector('#hellx-member-error'),button=gate.querySelector('button');
