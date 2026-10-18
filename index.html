@@ -42,11 +42,12 @@ put(PLAYER,m.member_pseudo);
 window.dispatchEvent(new CustomEvent('hellx-member-synced',{detail:{pseudo:m.member_pseudo,number:m.member_no}}));
 return m;
 }
-function isFacebook(){return /FBAN|FBAV|FB_IAB|FB4A|FBIOS|Instagram/i.test(navigator.userAgent)}
+function socialBrowser(){const ua=navigator.userAgent;return /Instagram/i.test(ua)?'Instagram':(/FBAN|FBAV|FB_IAB|FB4A|FBIOS/i.test(ua)?'Facebook':null)}
 document.addEventListener('DOMContentLoaded',async function(){
-if(isFacebook()){
+const social=socialBrowser();
+if(social){
  const gate=document.createElement('div');gate.id='hellx-member-gate';
- gate.innerHTML='<form id="hellx-member-entry"><h1>HELLXBONE CLUB</h1><p>Pour installer HELLXBONE sans perdre ton pseudo, ouvre ce lien dans <strong>Chrome</strong> (Android) ou <strong>Safari</strong> (iPhone) depuis le menu ⋯ de Facebook. Puis inscris-toi et installe l’application dans ce navigateur.</p><small>Ne crée pas ton pseudo dans le navigateur intégré à Facebook : il ne sera pas automatiquement reconnu par l’application installée.</small></form>';
+ gate.innerHTML='<form id="hellx-member-entry"><h1>HELLXBONE CLUB</h1><p>Pour installer HELLXBONE sans perdre ton pseudo, ouvre ce lien dans <strong>Chrome</strong> (Android) ou <strong>Safari</strong> (iPhone) depuis le menu ⋯ de '+social+'. Puis inscris-toi et installe l’application dans ce navigateur.</p><small>Ne crée pas ton pseudo dans le navigateur intégré à '+social+' : il ne sera pas automatiquement reconnu par l’application installée.</small></form>';
  document.body.appendChild(gate);
  return;
 }
