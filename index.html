@@ -42,28 +42,14 @@ put(PLAYER,m.member_pseudo);
 window.dispatchEvent(new CustomEvent('hellx-member-synced',{detail:{pseudo:m.member_pseudo,number:m.member_no}}));
 return m;
 }
-function isFacebook(){return /FBAN|FBAV|FB_IAB|FB4A|FBIOS|Instagram/i.test(navigator.userAgent)&&!/\bwv-no-facebook\b/.test(location.search)}
-function launchExternal(){
- const u=new URL(location.href);u.searchParams.delete('hellx_import');
- if(existingName){u.searchParams.set('hellx_import',deviceId())}
- const intent='intent://'+u.host+u.pathname+u.search+'#Intent;scheme=https;package=com.android.chrome;end';
- if(/Android/i.test(navigator.userAgent))location.href=intent;
- else alert('Dans Facebook, appuie sur les trois points, puis Ouvrir dans le navigateur. Ensuite installe HELLXBONE depuis ce navigateur.');
-}
+function isFacebook(){return /FBAN|FBAV|FB_IAB|FB4A|FBIOS|Instagram/i.test(navigator.userAgent)}
 document.addEventListener('DOMContentLoaded',async function(){
-const importId=new URL(location.href).searchParams.get('hellx_import');
-if(importId && /^[0-9a-f]{8}-[0-9a-f-]{27,36}$/i.test(importId)){
- history.replaceState(null,'',location.pathname+location.search.replace(/([?&])hellx_import=[^&]*&?/,'$1').replace(/[?&]$/,''));
- if(!get(DEVICE))put(DEVICE,importId);
-}
 if(isFacebook()){
- const g=document.createElement('div');g.id='hellx-member-gate';
- g.innerHTML='<form id="hellx-member-entry"><h1>HELLXBONE CLUB</h1><p>Pour conserver ton pseudo après installation, ouvre HELLXBONE dans Chrome avant de rejoindre le club.</p><button type="button" id="hellx-open-browser">OUVRIR DANS CHROME</button><small>Une seule inscription, un seul pseudo.</small></form>';
- document.body.appendChild(g);
- g.querySelector('button').addEventListener('click',launchExternal);
+ const gate=document.createElement('div');gate.id='hellx-member-gate';
+ gate.innerHTML='<form id="hellx-member-entry"><h1>HELLXBONE CLUB</h1><p>Pour installer HELLXBONE sans perdre ton pseudo, ouvre ce lien dans <strong>Chrome</strong> (Android) ou <strong>Safari</strong> (iPhone) depuis le menu ⋯ de Facebook. Puis inscris-toi et installe l’application dans ce navigateur.</p><small>Ne crée pas ton pseudo dans le navigateur intégré à Facebook : il ne sera pas automatiquement reconnu par l’application installée.</small></form>';
+ document.body.appendChild(gate);
  return;
 }
-
 if(existingName){
 unlock();
 enroll(existingName).catch(e=>{console.warn('HELLXBONE: synchronisation en attente',e);});
