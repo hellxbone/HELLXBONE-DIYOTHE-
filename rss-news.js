@@ -7,8 +7,14 @@ window.HellxRSS = {
       const res = await fetch('./metal-news.json?ts=' + Date.now(), {cache:'no-store'});
       if (!res.ok) throw new Error('Flux indisponible');
       const feed = await res.json();
-      const items = Array.isArray(feed.items) ? feed.items.slice(0,12) : [];
-      if (!items.length) throw new Error('Flux vide');
+      const parisDay = new Intl.DateTimeFormat('en-CA', {timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit'});
+      const today = parisDay.format(new Date());
+      const items = Array.isArray(feed.items) ? feed.items.filter(item => {
+        if (!item.date) return false;
+        const published = new Date(item.date);
+        return !Number.isNaN(published.getTime()) && parisDay.format(published) === today;
+      }).slice(0,12) : [];
+      if (!items.length) { node.innerHTML = '<p>Aucun nouvel article Metalorgie publié aujourd’hui.</p>'; return; }
       const escapeHTML = (s) => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       node.replaceChildren();
       for (const item of items) {
