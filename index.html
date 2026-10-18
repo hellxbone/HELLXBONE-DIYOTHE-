@@ -28,9 +28,22 @@ const json=await response.json().catch(()=>null);
 if(!response.ok){const msg=String(json&&json.message||'');if(/duplicate key|unique constraint|hellx_club_pseudo_unique/i.test(msg))throw Error('PSEUDO_PRIS');if(/PSEUDO_INVALIDE|invalid/i.test(msg))throw Error('PSEUDO_INVALIDE');throw Error('Erreur du serveur ('+response.status+'). Réessaie.')} 
 return json;
 }
+function showTransferCode(){
+ if(document.getElementById('hellx-transfer-code'))return;
+ const btn=document.createElement('button');
+ btn.id='hellx-transfer-code';btn.type='button';btn.textContent='CODE DE TRANSFERT';
+ btn.style.cssText='position:fixed;bottom:10px;right:10px;z-index:2147483600;padding:9px;border:1px solid #6eff44;border-radius:7px;background:#080808;color:#6eff44;font:700 11px system-ui;opacity:.9';
+ btn.addEventListener('click',async()=>{
+  const code=deviceId();
+  try{await navigator.clipboard.writeText(code);alert('Code personnel copié : '+code+'. Garde-le privé. Dans l’application installée, clique sur DÉJÀ MEMBRE.');}
+  catch(e){prompt('Copie ton code personnel de transfert :',code);}
+ });
+ document.body.appendChild(btn);
+}
 function unlock(){
 document.documentElement.classList.remove('hellx-gate-pending');
 document.getElementById('hellx-member-gate')?.remove();
+showTransferCode();
 }
 async function enroll(name){
 const result=await rpc('hellx_club_register',{p_member_id:deviceId(),p_pseudo:name});
@@ -49,7 +62,7 @@ enroll(existingName).catch(e=>{console.warn('HELLXBONE: synchronisation en atten
 return;
 }
 const gate=document.createElement('div');gate.id='hellx-member-gate';
-gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p id="hellx-club-live-count">Rejoins des centaines de membres HELLXBONE CLUB</p></form>';
+gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><button type="button" id="hellx-member-recover" style="margin-top:12px;background:#151515;border:1px solid #6eff44;color:#6eff44;font-size:13px;padding:12px">DÉJÀ MEMBRE ? RÉCUPÉRER MON ACCÈS</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p id="hellx-club-live-count">Rejoins des centaines de membres HELLXBONE CLUB</p></form>';
 document.body.appendChild(gate);
 /* Message d'accueil fixe : aucun compteur de membres exposé aux visiteurs. */
 gate.querySelector('form').addEventListener('submit',async function(event){
@@ -61,6 +74,26 @@ button.disabled=true;button.textContent='INSCRIPTION EN COURS…';
 try{await enroll(name);unlock()}
 catch(e){error.textContent=e.message==='PSEUDO_PRIS'?'Ce pseudo est déjà pris. Essaie-en un autre.':e.message==='PSEUDO_INVALIDE'?'Pseudo refusé : essaie des lettres, chiffres, espaces ou tirets.':e.message;error.hidden=false;error.scrollIntoView({block:'nearest',behavior:'smooth'});}
 finally{button.disabled=false;button.textContent='ENTRER DANS HELLXBONE'}
+});
+gate.querySelector('#hellx-member-recover').addEventListener('click',async()=>{
+ const error=gate.querySelector('#hellx-member-error');error.hidden=true;
+ const name=clean(gate.querySelector('input').value);
+ if(!name){error.textContent='Écris ton pseudo existant avant de récupérer ton accès.';error.hidden=false;return}
+ const code=prompt('Ouvre HELLXBONE dans ton navigateur où tu es déjà membre. Clique sur CODE DE TRANSFERT puis colle ici le code obtenu :');
+ if(code===null)return;
+ const value=code.trim().toLowerCase();
+ if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value)){error.textContent='Code invalide. Récupère ton code dans ton ancien navigateur.';error.hidden=false;return}
+ const previous=get(DEVICE);
+ try{
+  const result=await rpc('hellx_club_register',{p_member_id:value,p_pseudo:name});
+  const m=Array.isArray(result)?result[0]:result;
+  if(!m||!m.member_no||m.member_pseudo.toLocaleLowerCase('fr')!==name.toLocaleLowerCase('fr'))throw Error('Pseudo ou code de transfert incorrect.');
+  put(DEVICE,value);
+  await enroll(name);unlock();
+ }catch(e){
+  if(previous)put(DEVICE,previous);else try{localStorage.removeItem(DEVICE)}catch(_){}
+  error.textContent=e.message||'Récupération impossible';error.hidden=false;
+ }
 });
 gate.querySelector('input').focus();
 });
