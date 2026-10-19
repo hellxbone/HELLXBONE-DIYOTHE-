@@ -9,12 +9,20 @@ window.HellxRSS = {
       const feed = await res.json();
       const parisDay = new Intl.DateTimeFormat('en-CA', {timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit'});
       const today = parisDay.format(new Date());
-      const items = Array.isArray(feed.items) ? feed.items.filter(item => {
-        if (!item.date) return false;
-        const published = new Date(item.date);
-        return !Number.isNaN(published.getTime()) && parisDay.format(published) === today;
-      }).slice(0,20) : [];
-      if (!items.length) { node.innerHTML = '<p>Aucun nouvel article externe publié aujourd’hui.</p>'; return; }
+      const all = Array.isArray(feed.items) ? feed.items : [];
+      const now = Date.now();
+      const perSource = ['Metalorgie', 'MetalZone'].map(source => {
+        const valid = all.filter(item => {
+          if (item.source !== source || !item.date) return false;
+          const ms = new Date(item.date).getTime();
+          return Number.isFinite(ms) && ms <= now + 3600000 && ms >= now - 48*3600000;
+        });
+        const todayItems = valid.filter(item => parisDay.format(new Date(item.date)) === today);
+        return (todayItems.length ? todayItems : valid).slice(0, 6);
+      });
+      const items = [];
+      for (let n = 0; n < 6; n++) for (const bucket of perSource) if (bucket[n]) items.push(bucket[n]);
+      if (!items.length) { node.innerHTML = '<p>Aucune actualité récente disponible pour le moment.</p>'; return; }
       const escapeHTML = (s) => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       node.replaceChildren();
       for (const item of items) {
