@@ -11,7 +11,7 @@ window.HellxRSS = {
       const today = parisDay.format(new Date());
       const all = Array.isArray(feed.items) ? feed.items : [];
       const now = Date.now();
-      const perSource = ['Metalorgie', 'MetalZone'].map(source => {
+      const perSource = ['Metalorgie', 'MetalZone', 'InfoLux'].map(source => {
         const valid = all.filter(item => {
           if (item.source !== source || !item.date) return false;
           const ms = new Date(item.date).getTime();
@@ -26,7 +26,7 @@ window.HellxRSS = {
       const escapeHTML = (s) => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       node.replaceChildren();
       for (const item of items) {
-        if (!/^https:\/\/(www\.)?(metalorgie\.com|metalzone\.fr)\//.test(item.url || '')) continue;
+        if (!/^https:\/\/(www\.)?(metalorgie\.com|metalzone\.fr|info-lux\.com)\//.test(item.url || '')) continue;
         const article = document.createElement('article');
         article.className = 'card hellx-rss-entry';
         const h = document.createElement('h3');
@@ -39,7 +39,7 @@ window.HellxRSS = {
         const meta = document.createElement('p');
         meta.className = 'hellx-rss-meta';
         const date = item.date ? new Date(item.date) : null;
-        meta.textContent = (item.source === 'MetalZone' ? 'MetalZone' : 'Metalorgie') + (date && !isNaN(date.valueOf()) ? ' · ' + date.toLocaleDateString('fr-FR') : '');
+        meta.textContent = (['Metalorgie', 'MetalZone', 'InfoLux'].includes(item.source) ? item.source : 'Metalorgie') + (date && !isNaN(date.valueOf()) ? ' · ' + date.toLocaleDateString('fr-FR') : '');
         article.append(h,meta);
         if (item.summary) {
           const p = document.createElement('p');
