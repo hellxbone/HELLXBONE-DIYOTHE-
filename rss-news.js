@@ -77,16 +77,17 @@ window.HellxRSS = {
     if (!external.length) return;
     const own = [...grid.children];
     // Prioritize the original HELLXBONE stories, then weave in Metalorgie updates.
-    let offset = 0;
+    let lastInserted = null;
     for (let n=0; n<external.length; n++) {
       const item = external[n];
       item.setAttribute('aria-label','Actualité externe Metalorgie');
       const meta = item.querySelector('.hellx-rss-meta');
       if (meta) meta.textContent = 'SOURCE : METALORGIE · ' + meta.textContent.replace(/^Metalorgie\s*·?\s*/, '');
       const anchor = own[Math.min(own.length - 1, Math.floor(n / 2))];
-      if (anchor) anchor.after(item);
+      if (n % 2 === 1 && lastInserted) lastInserted.after(item);
+      else if (anchor) anchor.after(item);
       else grid.append(item);
-      offset++;
+      lastInserted = item;
     }
   }
 };
