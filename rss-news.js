@@ -13,12 +13,12 @@ window.HellxRSS = {
         if (!item.date) return false;
         const published = new Date(item.date);
         return !Number.isNaN(published.getTime()) && parisDay.format(published) === today;
-      }).slice(0,12) : [];
-      if (!items.length) { node.innerHTML = '<p>Aucun nouvel article Metalorgie publié aujourd’hui.</p>'; return; }
+      }).slice(0,20) : [];
+      if (!items.length) { node.innerHTML = '<p>Aucun nouvel article externe publié aujourd’hui.</p>'; return; }
       const escapeHTML = (s) => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       node.replaceChildren();
       for (const item of items) {
-        if (!/^https:\/\/(www\.)?metalorgie\.com\//.test(item.url || '')) continue;
+        if (!/^https:\/\/(www\.)?(metalorgie\.com|metalzone\.fr)\//.test(item.url || '')) continue;
         const article = document.createElement('article');
         article.className = 'card hellx-rss-entry';
         const h = document.createElement('h3');
@@ -31,7 +31,7 @@ window.HellxRSS = {
         const meta = document.createElement('p');
         meta.className = 'hellx-rss-meta';
         const date = item.date ? new Date(item.date) : null;
-        meta.textContent = 'Metalorgie' + (date && !isNaN(date.valueOf()) ? ' · ' + date.toLocaleDateString('fr-FR') : '');
+        meta.textContent = (item.source === 'MetalZone' ? 'MetalZone' : 'Metalorgie') + (date && !isNaN(date.valueOf()) ? ' · ' + date.toLocaleDateString('fr-FR') : '');
         article.append(h,meta);
         if (item.summary) {
           const p = document.createElement('p');
@@ -80,9 +80,9 @@ window.HellxRSS = {
     let lastInserted = null;
     for (let n=0; n<external.length; n++) {
       const item = external[n];
-      item.setAttribute('aria-label','Actualité externe Metalorgie');
+      item.setAttribute('aria-label','Actualité externe ' + (item.querySelector('.hellx-rss-meta')?.textContent.split(' · ')[0] || 'metal'));
       const meta = item.querySelector('.hellx-rss-meta');
-      if (meta) meta.textContent = 'SOURCE : METALORGIE · ' + meta.textContent.replace(/^Metalorgie\s*·?\s*/, '');
+      if (meta) meta.textContent = 'SOURCE : ' + meta.textContent;
       const anchor = own[Math.min(own.length - 1, Math.floor(n / 2))];
       if (n % 2 === 1 && lastInserted) lastInserted.after(item);
       else if (anchor) anchor.after(item);
