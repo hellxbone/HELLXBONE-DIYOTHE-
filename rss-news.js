@@ -20,7 +20,7 @@ window.HellxRSS = {
       for (const item of items) {
         if (!/^https:\/\/(www\.)?metalorgie\.com\//.test(item.url || '')) continue;
         const article = document.createElement('article');
-        article.className = 'hellx-rss-entry';
+        article.className = 'card hellx-rss-entry';
         const h = document.createElement('h3');
         const a = document.createElement('a');
         a.href = item.url;
@@ -66,6 +66,27 @@ window.HellxRSS = {
       }
     } catch (err) {
       node.innerHTML = '<p>Les dernières news ne sont pas disponibles pour le moment. <a href="https://www.metalorgie.com/" target="_blank" rel="noopener noreferrer">Voir les actualités sur Metalorgie ↗</a></p>';
+    }
+  },
+  async mountMixed(feedId, gridId) {
+    await this.mount(feedId);
+    const source = document.getElementById(feedId);
+    const grid = document.getElementById(gridId);
+    if (!source || !grid) return;
+    const external = [...source.querySelectorAll('.hellx-rss-entry')];
+    if (!external.length) return;
+    const own = [...grid.children];
+    // Prioritize the original HELLXBONE stories, then weave in Metalorgie updates.
+    let offset = 0;
+    for (let n=0; n<external.length; n++) {
+      const item = external[n];
+      item.setAttribute('aria-label','Actualité externe Metalorgie');
+      const meta = item.querySelector('.hellx-rss-meta');
+      if (meta) meta.textContent = 'SOURCE : METALORGIE · ' + meta.textContent.replace(/^Metalorgie\s*·?\s*/, '');
+      const anchor = own[Math.min(own.length - 1, Math.floor(n / 2))];
+      if (anchor) anchor.after(item);
+      else grid.append(item);
+      offset++;
     }
   }
 };
