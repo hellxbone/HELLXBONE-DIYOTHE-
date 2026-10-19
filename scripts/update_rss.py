@@ -10,7 +10,7 @@ from html import unescape
 from html.parser import HTMLParser
 from urllib.parse import urlparse
 
-FEEDS = [("Metalorgie", "https://www.metalorgie.com/feed/news", ("metalorgie.com", "www.metalorgie.com")), ("MetalZone", "https://www.metalzone.fr/feed/", ("metalzone.fr", "www.metalzone.fr"))]
+FEEDS = [("Metalorgie", "https://www.metalorgie.com/feed/news", ("metalorgie.com", "www.metalorgie.com")), ("MetalZone", "https://www.metalzone.fr/feed/", ("metalzone.fr", "www.metalzone.fr")), ("InfoLux", "https://www.info-lux.com/category/themes/musique/rock-metal/feed/", ("info-lux.com", "www.info-lux.com"))]
 OUTPUT = pathlib.Path("metal-news.json")
 
 class StripHTML(HTMLParser):
