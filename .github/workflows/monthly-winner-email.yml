@@ -1,7 +1,7 @@
 name: HELLXBONE monthly winner email
 on:
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '17 8 * * *'
   workflow_dispatch:
 permissions:
   contents: read
@@ -9,12 +9,14 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Check email integration
+      - uses: actions/checkout@v4
+      - name: Email pending winner
         env:
+          SUPABASE_URL: https://ldibykpitjutratyqqax.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GMAIL_ADDRESS: diyothe@gmail.com
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: |
-          if [ -z "$GMAIL_APP_PASSWORD" ]; then
-            echo "Gmail is not configured yet."
-            exit 1
-          fi
-          echo "Gmail configuration exists."
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "Missing SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
+          test -n "$GMAIL_APP_PASSWORD" || { echo "Missing GMAIL_APP_PASSWORD"; exit 1; }
+          python scripts/monthly_winner_email.py
