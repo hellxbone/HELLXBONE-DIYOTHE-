@@ -31,7 +31,7 @@ function effect(){
  let wrap=document.createElement('div');
  wrap.className='hellx-shake-portal';
  wrap.setAttribute('role','status');wrap.setAttribute('aria-live','polite');
- wrap.innerHTML='<div class="hellx-shake-lightning" aria-hidden="true"></div><div class="hellx-shake-inner"><div class="hellx-shake-skull" aria-hidden="true">☠</div><div class="hellx-shake-title">HELLXBONE CLUB</div><div class="hellx-shake-sub">TU VIENS DE RÉVEILLER L’ENFER</div></div>';
+ wrap.innerHTML='<div class="hellx-shake-lightning" aria-hidden="true"></div><div class="hellx-shake-inner"><img class="hellx-shake-logo" src="hellxbone-shake-neon.webp" alt="HELLXBONE 666 CLUB"><div class="hellx-shake-title">HELLXBONE CLUB</div><div class="hellx-shake-sub">TU VIENS DE RÉVEILLER L’ENFER</div></div>';
  document.body.appendChild(wrap);
  try{if(navigator.vibrate)navigator.vibrate([100,65,180,65,280])}catch(e){}
  rumble();
@@ -57,11 +57,12 @@ css.id='hellx-shake-style';
 css.textContent=`
 .hellx-shake-portal{position:fixed;inset:0;z-index:2147483646;background:radial-gradient(ellipse at center,#163219 0%,#020702 62%,#000 100%);color:#a7ff5b;display:grid;place-items:center;overflow:hidden;pointer-events:none;animation:hellx-portal-in .22s ease-out both}
 .hellx-shake-inner{text-align:center;padding:22px;position:relative;z-index:2;max-width:95vw;text-shadow:0 0 15px #69ff4b}
-.hellx-shake-skull{font-size:clamp(130px,47vw,250px);line-height:1;color:#c5ffc0;filter:drop-shadow(0 0 24px #37ff27);animation:hellx-skull-rise .65s cubic-bezier(.18,1.5,.35,1) both}
+.hellx-shake-logo{display:block;width:min(88vw,460px);max-height:68vh;object-fit:contain;margin:0 auto 8px;filter:drop-shadow(0 0 16px #38ff2e) drop-shadow(0 0 32px #3f6);animation:hellx-skull-rise .65s cubic-bezier(.18,1.5,.35,1) both,hellx-neon-pulse 1.3s ease-in-out .65s infinite alternate}.hellx-shake-skull{font-size:clamp(130px,47vw,250px);line-height:1;color:#c5ffc0;filter:drop-shadow(0 0 24px #37ff27);animation:hellx-skull-rise .65s cubic-bezier(.18,1.5,.35,1) both}
 .hellx-shake-title{font-weight:1000;font-size:clamp(24px,8vw,40px);letter-spacing:2px;color:#aaff8a}
 .hellx-shake-sub{font-weight:900;font-size:clamp(16px,5.7vw,27px);letter-spacing:1px;color:white;margin-top:14px}
 .hellx-shake-lightning{position:absolute;inset:0;background:repeating-linear-gradient(118deg,transparent 0 16%,#42ff6444 17%,transparent 19% 39%);mix-blend-mode:screen;opacity:.7;animation:hellx-lightning .35s steps(2,end) 8}
 .hellx-shake-portal.hellx-shake-out{opacity:0;transition:opacity .35s ease}
+@keyframes hellx-neon-pulse{from{filter:drop-shadow(0 0 9px #39ff14);transform:scale(.98)}to{filter:drop-shadow(0 0 22px #39ff14) drop-shadow(0 0 42px #39ff14);transform:scale(1.03)}}
 @keyframes hellx-portal-in{from{opacity:0}to{opacity:1}}
 @keyframes hellx-skull-rise{from{transform:scale(.2) rotate(-14deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
 @keyframes hellx-lightning{0%,100%{opacity:.1}35%{opacity:.9}55%{opacity:.2}80%{opacity:1}}
