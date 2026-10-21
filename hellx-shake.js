@@ -13,13 +13,14 @@ function unlockAudio(){
 }
 document.addEventListener('pointerdown',unlockAudio,{passive:true});
 document.addEventListener('keydown',unlockAudio,{passive:true});
-// Cri humain réel (Wilhelm scream), domaine public CC0, Wikimedia Commons.
-// Les navigateurs Android peuvent bloquer le son avant une première interaction.
-const scream=new Audio('https://commons.wikimedia.org/wiki/Special:Redirect/file/Wilhelm_Scream.ogg');
-scream.preload='auto';scream.volume=0.75;
+// Cri horrifique enregistré, CC0 (nick121087 via Wikimedia Commons)
+// Fichier MP3 direct pour Android, lecture sous réserve des autorisations navigateur.
+const scream=new Audio('https://upload.wikimedia.org/wikipedia/commons/e/e6/Nick121087_-_Demonic_Woman_Scream_%28cc0%29_%28freesound%29.mp3');
+scream.preload='auto';scream.volume=0.9;
 function rumble(){
  try{
    scream.pause();scream.currentTime=0;
+   scream.playbackRate=0.86;
    const playback=scream.play();if(playback&&playback.catch)playback.catch(()=>{});
  }catch(e){}
 }
