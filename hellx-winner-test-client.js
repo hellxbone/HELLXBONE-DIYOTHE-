@@ -11,7 +11,7 @@ async function auth(path,body){
  return result;
 }
 $('request').onclick=async()=>{
- try{await auth('otp',{email:'diyothe@gmail.com',create_user:false});note('Vérifie ta boîte Gmail pour le code.')}
+ try{await auth('otp',{email:'diyothe@gmail.com',create_user:true});note('Vérifie ta boîte Gmail pour le code.')}
  catch(e){note(e.message)}
 };
 $('verify').onclick=async()=>{
