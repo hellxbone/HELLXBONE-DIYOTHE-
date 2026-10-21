@@ -3,6 +3,7 @@ const base='https://ldibykpitjutratyqqax.supabase.co';
 const key='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv';
 const $=id=>document.getElementById(id);
 let accessToken='';
+const callback=location.origin+location.pathname;
 const note=s=>$('status').textContent=s;
 async function auth(path,body){
  const r=await fetch(base+'/auth/v1/'+path,{method:'POST',headers:{apikey:key,'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -11,7 +12,7 @@ async function auth(path,body){
  return result;
 }
 $('request').onclick=async()=>{
- try{await auth('otp',{email:'diyothe@gmail.com',create_user:true});note('Vérifie ta boîte Gmail pour le code.')}
+ try{await auth('otp',{email:'diyothe@gmail.com',create_user:true,email_redirect_to:callback});note('Ouvre le lien reçu dans Gmail. Si un code est indiqué, tu peux aussi le saisir ici.')}
  catch(e){note(e.message)}
 };
 $('verify').onclick=async()=>{
@@ -21,6 +22,10 @@ $('verify').onclick=async()=>{
   accessToken=result.access_token;$('login').hidden=true;$('details').hidden=false;note('Accès validé.');
  }catch(e){note(e.message)}
 };
+const hash=new URLSearchParams(location.hash.slice(1));
+if(hash.get('access_token')){
+ accessToken=hash.get('access_token');$('login').hidden=true;$('details').hidden=false;note('Adresse confirmée. Tu peux remplir tes coordonnées.');history.replaceState(null,'',location.pathname);
+}
 $('details').onsubmit=async e=>{
  e.preventDefault();if(!accessToken)return;
  const data=Object.fromEntries(new FormData($('details')).entries());data.consent=$('consent').checked;
