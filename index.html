@@ -585,42 +585,32 @@ footer a{color:#baff8d!important}
 }
 @media(prefers-reduced-motion:reduce){.card,.button,nav button{transition:none!important}.section-head-game .riff-launch-button{animation:none!important}}
 </style><script>
-/* HELLXBONE : accès local au tableau privé du gagnant ; aucune donnée personnelle n'est accessible sans connexion Supabase. */
+/* Raccourci organisateur : aucune coordonnée révélée sans authentification Supabase. */
 (function(){
- const key='hellxbone-private-winner-shortcut-v1';
- const adminUrl='https://supabase.com/dashboard/project/ldibykpitjutratyqqax/editor';
- const params=new URLSearchParams(location.search);
- const mode=params.get('hellx_admin_setup');
- if(mode==='1'||mode==='off'){
-   try{if(mode==='1')localStorage.setItem(key,'1');else localStorage.removeItem(key)}catch(e){}
-   params.delete('hellx_admin_setup');
-   history.replaceState(null,'',location.pathname+(params.toString()?'?'+params.toString():'')+location.hash);
- }
- function render(){
-   const old=document.getElementById('hellx-admin-winner-link');if(old)old.remove();
-   try{if(localStorage.getItem(key)!=='1')return}catch(e){return}
-   const link=document.createElement('a');link.id='hellx-admin-winner-link';
-   link.href=adminUrl;link.target='_blank';link.rel='noopener noreferrer';
-   link.textContent='☠ COORDONNÉES DU GAGNANT';
-   link.title='Accès privé Supabase, connexion administrateur obligatoire';
-   link.style.cssText='position:fixed;right:10px;bottom:90px;z-index:2147483001;max-width:calc(100vw - 20px);padding:11px 14px;background:#210909;color:#fff;border:2px solid #e34335;border-radius:11px;font:700 12px system-ui,sans-serif;text-decoration:none;box-shadow:0 5px 24px #000c';
-   document.body.appendChild(link);
+ const key='hellxbone-private-winner-shortcut-v1',url='https://supabase.com/dashboard/project/ldibykpitjutratyqqax/editor';
+ function put(){try{localStorage.setItem(key,'1')}catch(e){} show()}
+ function show(){
+  const on=(()=>{try{return localStorage.getItem(key)==='1'}catch(e){return false}})();
+  let btn=document.getElementById('hellx-admin-winner-link');
+  if(!on){if(btn)btn.remove();return}
+  if(btn)return;
+  btn=document.createElement('a');btn.id='hellx-admin-winner-link';btn.href=url;btn.target='_blank';btn.rel='noopener noreferrer';
+  btn.textContent='☠ COORDONNÉES DU GAGNANT';
+  btn.style.cssText='position:fixed;right:12px;bottom:95px;z-index:2147483001;padding:13px;background:#321010;color:white;border:2px solid #f33;border-radius:10px;font:800 12px system-ui;text-decoration:none;box-shadow:0 0 25px #000';
+  document.body.appendChild(btn)
  }
  function setup(){
-  render();
-  // Appui long sur À propos : active uniquement le raccourci sur cette installation de la PWA.
-  const nav=[...document.querySelectorAll('nav button')].find(b=>/à propos/i.test(b.textContent||''));
+  show();
+  const nav=[...document.querySelectorAll('nav button')].find(x=>/à propos/i.test(x.textContent||''));
   if(!nav)return;
-  let timer=null,activated=false;
-  const cancel=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
-  nav.addEventListener('pointerdown',()=>{activated=false;cancel();timer=setTimeout(()=>{
-    timer=null;activated=true;
-    try{localStorage.setItem(key,'1')}catch(e){}
-    render();alert('Accès aux coordonnées du gagnant activé sur cette installation. Connexion Supabase requise.');
-  },2800)});
-  for(const e of ['pointerup','pointercancel','pointerleave'])nav.addEventListener(e,cancel);
-  nav.addEventListener('click',e=>{if(activated){e.preventDefault();e.stopImmediatePropagation();activated=false}},true);
-  nav.addEventListener('contextmenu',e=>e.preventDefault());
+  nav.addEventListener('click',()=>setTimeout(()=>{
+    const app=document.getElementById('app')||document.querySelector('main');
+    if(!app||document.getElementById('hellx-admin-activate'))return;
+    const btn=document.createElement('button');btn.id='hellx-admin-activate';btn.type='button';btn.textContent='☠ ACTIVER MON ACCÈS ORGANISATEUR';
+    btn.style.cssText='display:block;margin:18px auto;padding:17px;background:#351010;color:#fff;border:2px solid #f33;border-radius:12px;font:bold 15px system-ui';
+    btn.onclick=()=>{put();btn.textContent='ACCÈS ACTIVÉ SUR CET APPAREIL';};
+    app.appendChild(btn)
+  },150));
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();</script></head><body><header class="hellx-header">
