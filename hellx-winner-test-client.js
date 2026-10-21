@@ -6,7 +6,7 @@ let accessToken='';
 const callback=location.origin+location.pathname;
 const note=s=>$('status').textContent=s;
 async function auth(path,body){
- const r=await fetch(base+'/auth/v1/'+path,{method:'POST',headers:{apikey:key,'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const r=await fetch(base+'/auth/v1/'+path+(path==='otp'?'?redirect_to='+encodeURIComponent(location.origin+location.pathname):''),{method:'POST',headers:{apikey:key,'Content-Type':'application/json'},body:JSON.stringify(body)});
  const result=await r.json();
  if(!r.ok)throw Error(result.msg||result.error_description||result.message||'Opération impossible');
  return result;
