@@ -31,7 +31,7 @@ function effect(){
  let wrap=document.createElement('div');
  wrap.className='hellx-shake-portal';
  wrap.setAttribute('role','status');wrap.setAttribute('aria-live','polite');
- wrap.innerHTML='<div class="hellx-shake-lightning" aria-hidden="true"></div><div class="hellx-shake-inner"><img class="hellx-shake-logo" src="hellxbone-shake-neon.webp" alt="HELLXBONE 666 CLUB"><div class="hellx-shake-title">HELLXBONE CLUB</div><div class="hellx-shake-sub">TU VIENS DE RÉVEILLER L’ENFER</div></div>';
+ wrap.innerHTML='<div class="hellx-shake-lightning" aria-hidden="true"></div><div class="hellx-shake-inner"><img class="hellx-shake-logo" src="hellxbone-shake-neon.webp" alt="HELLXBONE 666 CLUB" onerror="this.outerHTML=\u0027<div class=&quot;hellx-shake-skull&quot; aria-hidden=&quot;true&quot;>☠</div>\u0027"><div class="hellx-shake-title">HELLXBONE CLUB</div><div class="hellx-shake-sub">TU VIENS DE RÉVEILLER L’ENFER</div></div>';
  document.body.appendChild(wrap);
  try{if(navigator.vibrate)navigator.vibrate([100,65,180,65,280])}catch(e){}
  rumble();
