@@ -597,7 +597,15 @@ footer a{color:#baff8d!important}
   btn=document.createElement('a');btn.id='hellx-admin-winner-link';btn.href=url;btn.target='_blank';btn.rel='noopener noreferrer';
   btn.textContent='☠ COORDONNÉES DU GAGNANT';
   btn.style.cssText='position:fixed;right:12px;bottom:95px;z-index:2147483001;padding:13px;background:#321010;color:white;border:2px solid #f33;border-radius:10px;font:800 12px system-ui;text-decoration:none;box-shadow:0 0 25px #000';
-  document.body.appendChild(btn)
+  document.body.appendChild(btn);
+  if(!document.getElementById('hellx-admin-test-link')){
+   const test=document.createElement('a');
+   test.id='hellx-admin-test-link';
+   test.href='./champion-test.html';
+   test.textContent='☠ TEST CHAMPION';
+   test.style.cssText='position:fixed;right:12px;bottom:155px;z-index:2147483002;padding:12px;background:#144c29;color:white;border:2px solid #77df92;border-radius:9px;font:bold 12px system-ui;text-decoration:none';
+   document.body.appendChild(test);
+  }
  }
  function setup(){
   show();
