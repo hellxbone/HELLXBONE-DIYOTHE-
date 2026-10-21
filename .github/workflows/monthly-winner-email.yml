@@ -1,0 +1,20 @@
+name: HELLXBONE monthly winner email
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check email integration
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          if [ -z "$GMAIL_APP_PASSWORD" ]; then
+            echo "Gmail is not configured yet."
+            exit 1
+          fi
+          echo "Gmail configuration exists."
