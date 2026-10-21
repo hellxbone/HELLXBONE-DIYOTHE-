@@ -3,7 +3,7 @@
 'use strict';
 if(window.__hellxShakeInstalled)return;
 window.__hellxShakeInstalled=true;
-const COOLDOWN=25000, DURATION=3600;
+const COOLDOWN=25000, DURATION=4500;
 let last=0, peaks=[], gravity={x:0,y:0,z:0}, initialized=false, active=false;
 let audioCtx=null, audioUnlocked=false;
 const reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -13,16 +13,24 @@ function unlockAudio(){
 }
 document.addEventListener('pointerdown',unlockAudio,{passive:true});
 document.addEventListener('keydown',unlockAudio,{passive:true});
+// Captations réelles, domaine public : Wikimedia Commons / PDSounds.
+const soundFiles=[
+ 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Open_metallic_door.ogg',
+ 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Rusty_metal_door_clasp.ogg'
+];
+const samples=soundFiles.map(url=>{const a=new Audio();a.preload='auto';a.src=url;return a;});
 function rumble(){
-  if(!audioUnlocked||!audioCtx)return;
-  try{
-    if(audioCtx.state!=='running')return;
-    const t=audioCtx.currentTime, osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
-    osc.type='sawtooth';osc.frequency.setValueAtTime(83,t);osc.frequency.exponentialRampToValueAtTime(31,t+0.9);
-    gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(0.075,t+0.06);gain.gain.exponentialRampToValueAtTime(0.0001,t+1.1);
-    osc.connect(gain);gain.connect(audioCtx.destination);osc.start(t);osc.stop(t+1.15);
-  }catch(e){}
+ if(!audioUnlocked)return; // les navigateurs peuvent exiger une première interaction
+ samples.forEach((a,i)=>{
+   try{
+     a.pause();a.currentTime=i?0.7:0;
+     a.volume=i?0.55:0.95;
+     const p=a.play();if(p&&p.catch)p.catch(()=>{});
+     setTimeout(()=>{a.pause();a.currentTime=0},4700);
+   }catch(e){}
+ });
 }
+
 function effect(){
  if(active||document.hidden||document.documentElement.classList.contains('hellx-gate-pending'))return;
  active=true;last=Date.now();
