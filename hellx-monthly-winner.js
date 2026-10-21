@@ -1,0 +1,23 @@
+(()=>{'use strict';
+const endpoint='https://ldibykpitjutratyqqax.supabase.co/functions/v1/hellx-monthly-winner';
+const playerKey='hellx-riff-player-id',nameKey='hellx-riff-player-name';
+const css=document.createElement('style');
+css.textContent='#hellx-winner-modal[hidden]{display:none!important}#hellx-winner-modal{position:fixed;inset:0;z-index:2147483600;background:#000e;display:grid;place-items:center;overflow:auto;padding:16px;color:#fff;font-family:system-ui,sans-serif}#hellx-winner-modal form{width:min(100%,430px);background:linear-gradient(135deg,#220909,#080808);border:2px solid #d53221;border-radius:16px;padding:20px;box-sizing:border-box;box-shadow:0 0 35px #a11a1688;text-align:center}#hellx-winner-modal h2{color:#ff4c35;font-size:24px;margin:0 0 10px}#hellx-winner-modal label{display:block;text-align:left;margin-top:10px;font-weight:700}#hellx-winner-modal input:not([type=checkbox]){box-sizing:border-box;width:100%;font-size:16px;padding:11px;background:#111;color:#fff;border:1px solid #9d4238;border-radius:7px}#hellx-winner-modal button{margin:12px 4px 0;padding:12px 14px;background:#be231c;color:white;border:0;border-radius:6px;font-weight:800}#hellx-winner-modal .minor{background:#444}#hellx-winner-modal small{display:block;margin-top:12px;line-height:1.4}';
+document.head.appendChild(css);
+let checkedMonth='',opened=false;
+async function api(body){const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error||'Service indisponible');return data}
+async function check(){
+const id=localStorage.getItem(playerKey),pseudo=localStorage.getItem(nameKey);if(!id||!pseudo)return;
+const now=new Date(),month=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit'}).format(now);
+if(checkedMonth===month||opened)return;checkedMonth=month;
+try{const result=await api({player_id:id,action:'check'});if(result.eligible)show(result,id)}catch(e){console.warn('Champion HELLXBONE : vérification indisponible',e);checkedMonth=''}
+}
+function show(winner,id){if(opened)return;opened=true;
+const root=document.createElement('div');root.id='hellx-winner-modal';
+root.innerHTML='<form><h2>☠ CHAMPION MÉGA RIFF ☠</h2><p>Tu as remporté le classement du mois dernier ! Complète tes coordonnées pour que HELLXBONE puisse te contacter.</p><p id="hellx-winner-score"></p><label>Nom et prénom<input name="full_name" autocomplete="name" required maxlength="120"></label><label>Adresse postale<input name="address" autocomplete="street-address" required maxlength="200"></label><label>Code postal<input name="postal_code" autocomplete="postal-code" required maxlength="12"></label><label>Ville<input name="city" autocomplete="address-level2" required maxlength="100"></label><label>Téléphone<input type="tel" name="phone" autocomplete="tel" required maxlength="25"></label><label><input type="checkbox" name="consent" required> J’autorise HELLXBONE à utiliser ces coordonnées exclusivement pour me contacter au sujet du prix.</label><small>Les coordonnées restent privées et seront supprimées lorsqu’elles ne seront plus nécessaires.</small><p id="hellx-winner-status" role="alert"></p><button type="submit">ENVOYER MES COORDONNÉES</button><button type="button" class="minor" id="hellx-winner-later">PLUS TARD</button></form>';
+root.querySelector('#hellx-winner-score').textContent='Pseudo : '+winner.pseudo+' — Score : '+Number(winner.score).toLocaleString('fr-FR');
+document.body.appendChild(root);root.querySelector('#hellx-winner-later').onclick=()=>{root.remove();opened=false};
+root.querySelector('form').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget,submit=f.querySelector('[type=submit]'),note=f.querySelector('#hellx-winner-status');submit.disabled=true;note.textContent='Transmission en cours…';const form=new FormData(f);
+try{const result=await api({action:'submit',player_id:id,full_name:form.get('full_name'),address:form.get('address'),postal_code:form.get('postal_code'),city:form.get('city'),phone:form.get('phone'),consent:form.get('consent')==='on'});if(!result.success)throw Error('Transmission non confirmée');note.textContent='Coordonnées bien transmises !';setTimeout(()=>{root.remove();opened=false},2400)}catch(err){note.textContent=err.message;submit.disabled=false}});
+}
+window.addEventListener('load',()=>{setTimeout(check,1600)});document.addEventListener('visibilitychange',()=>{if(!document.hidden)check()});window.addEventListener('hellx-member-synced',()=>setTimeout(check,2000));})();
