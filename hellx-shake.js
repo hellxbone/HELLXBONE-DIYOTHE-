@@ -13,22 +13,15 @@ function unlockAudio(){
 }
 document.addEventListener('pointerdown',unlockAudio,{passive:true});
 document.addEventListener('keydown',unlockAudio,{passive:true});
-// Captations réelles, domaine public : Wikimedia Commons / PDSounds.
-const soundFiles=[
- 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Open_metallic_door.ogg',
- 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Rusty_metal_door_clasp.ogg'
-];
-const samples=soundFiles.map(url=>{const a=new Audio();a.preload='auto';a.src=url;return a;});
+// Cri humain réel (Wilhelm scream), domaine public CC0, Wikimedia Commons.
+// Les navigateurs Android peuvent bloquer le son avant une première interaction.
+const scream=new Audio('https://commons.wikimedia.org/wiki/Special:Redirect/file/Wilhelm_Scream.ogg');
+scream.preload='auto';scream.volume=0.75;
 function rumble(){
- if(!audioUnlocked)return; // les navigateurs peuvent exiger une première interaction
- samples.forEach((a,i)=>{
-   try{
-     a.pause();a.currentTime=i?0.7:0;
-     a.volume=i?0.55:0.95;
-     const p=a.play();if(p&&p.catch)p.catch(()=>{});
-     setTimeout(()=>{a.pause();a.currentTime=0},4700);
-   }catch(e){}
- });
+ try{
+   scream.pause();scream.currentTime=0;
+   const playback=scream.play();if(playback&&playback.catch)playback.catch(()=>{});
+ }catch(e){}
 }
 
 function effect(){
