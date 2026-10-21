@@ -585,34 +585,45 @@ footer a{color:#baff8d!important}
 }
 @media(prefers-reduced-motion:reduce){.card,.button,nav button{transition:none!important}.section-head-game .riff-launch-button{animation:none!important}}
 </style><script>
-/* HELLXBONE: raccourci administrateur local. La sécurité des coordonnées reste assurée par l'authentification Supabase. */
+/* HELLXBONE : accès local au tableau privé du gagnant ; aucune donnée personnelle n'est accessible sans connexion Supabase. */
 (function(){
-  const key='hellxbone-private-winner-shortcut-v1';
-  const params=new URLSearchParams(location.search);
-  if(params.get('hellx_admin_setup')==='1'){
+ const key='hellxbone-private-winner-shortcut-v1';
+ const adminUrl='https://supabase.com/dashboard/project/ldibykpitjutratyqqax/editor';
+ const params=new URLSearchParams(location.search);
+ const mode=params.get('hellx_admin_setup');
+ if(mode==='1'||mode==='off'){
+   try{if(mode==='1')localStorage.setItem(key,'1');else localStorage.removeItem(key)}catch(e){}
+   params.delete('hellx_admin_setup');
+   history.replaceState(null,'',location.pathname+(params.toString()?'?'+params.toString():'')+location.hash);
+ }
+ function render(){
+   const old=document.getElementById('hellx-admin-winner-link');if(old)old.remove();
+   try{if(localStorage.getItem(key)!=='1')return}catch(e){return}
+   const link=document.createElement('a');link.id='hellx-admin-winner-link';
+   link.href=adminUrl;link.target='_blank';link.rel='noopener noreferrer';
+   link.textContent='☠ COORDONNÉES DU GAGNANT';
+   link.title='Accès privé Supabase, connexion administrateur obligatoire';
+   link.style.cssText='position:fixed;right:10px;bottom:90px;z-index:2147483001;max-width:calc(100vw - 20px);padding:11px 14px;background:#210909;color:#fff;border:2px solid #e34335;border-radius:11px;font:700 12px system-ui,sans-serif;text-decoration:none;box-shadow:0 5px 24px #000c';
+   document.body.appendChild(link);
+ }
+ function setup(){
+  render();
+  // Appui long sur À propos : active uniquement le raccourci sur cette installation de la PWA.
+  const nav=[...document.querySelectorAll('nav button')].find(b=>/à propos/i.test(b.textContent||''));
+  if(!nav)return;
+  let timer=null,activated=false;
+  const cancel=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
+  nav.addEventListener('pointerdown',()=>{activated=false;cancel();timer=setTimeout(()=>{
+    timer=null;activated=true;
     try{localStorage.setItem(key,'1')}catch(e){}
-    params.delete('hellx_admin_setup');
-    history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);
-  }
-  if(params.get('hellx_admin_setup')==='off'){
-    try{localStorage.removeItem(key)}catch(e){}
-    params.delete('hellx_admin_setup');
-    history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);
-  }
-  window.addEventListener('DOMContentLoaded',function(){
-    try{if(localStorage.getItem(key)!=='1')return}catch(e){return}
-    const link=document.createElement('a');
-    link.id='hellx-admin-winner-link';
-    link.href='https://supabase.com/dashboard/project/ldibykpitjutratyqqax/editor';
-    link.target='_blank';
-    link.rel='noopener noreferrer';
-    link.textContent='☠ COORDONNÉES DU GAGNANT';
-    link.title='Connexion Supabase obligatoire · table hellx_monthly_winner_contacts';
-    link.style.cssText='position:fixed;right:12px;bottom:78px;z-index:9999;max-width:calc(100vw - 24px);padding:10px 13px;background:#170b0b;color:#fff;border:1px solid #c53c35;border-radius:11px;font:700 12px system-ui,sans-serif;text-decoration:none;box-shadow:0 4px 16px #000a';
-    document.body.appendChild(link);
-  });
-})();
-</script></head><body><header class="hellx-header">
+    render();alert('Accès aux coordonnées du gagnant activé sur cette installation. Connexion Supabase requise.');
+  },2800)});
+  for(const e of ['pointerup','pointercancel','pointerleave'])nav.addEventListener(e,cancel);
+  nav.addEventListener('click',e=>{if(activated){e.preventDefault();e.stopImmediatePropagation();activated=false}},true);
+  nav.addEventListener('contextmenu',e=>e.preventDefault());
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();</script></head><body><header class="hellx-header">
   <div class="hellx-grain" aria-hidden="true"></div>
   <div class="hellx-emblem hellx-emblem-left" aria-hidden="true">✠</div>
   <div class="hellx-title-wrap">
