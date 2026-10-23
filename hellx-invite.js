@@ -8,7 +8,7 @@ css.textContent='#hellx-invite-home{max-width:650px;margin:16px auto 20px;paddin
 document.head.append(css);
 async function invite(){
 try{
-if(navigator.share){await navigator.share({title:'HELLXBONE CLUB',text:MESSAGE,url:URL});return}
+if(navigator.share){await navigator.share({title:'HELLXBONE CLUB',text:MESSAGE});return}
 if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(MESSAGE);feedback('Invitation copiée ! Colle-la dans un message à tes potes.');return}
 fallback();
 }catch(e){if(e?.name!=='AbortError')fallback()}
