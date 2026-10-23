@@ -80,7 +80,9 @@ testButton.addEventListener('click',async()=>{
  finally{testButton.disabled=false}
 });
 function updateAlertUI(){
- alertButton.textContent=isNotify?'🔕 Désactiver les notifications HELLXBONE':'🔔 Activer les notifications HELLXBONE';
+ alertButton.hidden=isNotify;
+ alertButton.style.display=isNotify?'none':'';
+ alertButton.textContent=isNotify?'🔕 Désactiver les notifications HELLXBONE':'🔔 Autoriser les notifications HELLXBONE';
  alertButton.setAttribute('aria-pressed',String(isNotify));
  alertNote.textContent=isNotify?'Notifications push activées : tu peux recevoir les nouveautés même lorsque HELLXBONE est fermée, si ton téléphone autorise les notifications.':'Active les notifications pour recevoir les nouveautés même lorsque HELLXBONE est fermée.';
 }
@@ -91,6 +93,10 @@ alertButton.addEventListener('click',async()=>{
  finally{alertButton.disabled=false}
 });
 updateAlertUI();
+if('Notification' in window&&Notification.permission==='granted'){
+ alertNote.textContent='Synchronisation automatique des alertes en cours…';
+ enablePush().then(()=>{updateAlertUI()}).catch(e=>{alertNote.textContent='Synchronisation impossible : '+e.message;updateAlertUI()});
+}
 loadAlerts();setInterval(()=>{if(document.visibilityState==='visible')loadAlerts()},60000);
 })();
 </script></body></html>
