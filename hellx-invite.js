@@ -24,7 +24,7 @@ const wrap=document.createElement('section');wrap.id='hellx-invite-home';
 const button=document.createElement('button');button.id='hellx-invite-button';button.type='button';button.textContent='☠ INVITER MES POTES 🤘';button.addEventListener('click',invite);
 const hint=document.createElement('p');hint.id='hellx-invite-feedback';hint.textContent='Fais entrer tes amis dans HELLXBONE CLUB — gratuit.';
 wrap.append(button,hint);
-radio.insertAdjacentElement('afterend',wrap);
+app.insertBefore(wrap,app.firstElementChild);
 }
 function init(){const app=document.getElementById('app');if(!app)return;mount();new MutationObserver(()=>mount()).observe(app,{childList:true});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
