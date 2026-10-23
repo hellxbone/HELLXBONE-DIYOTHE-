@@ -2,7 +2,9 @@
 (()=>{'use strict';
 if(window.__hellxCurseLoaded)return;window.__hellxCurseLoaded=true;
 const PREF='hellx-curse-settings-v1',DAY='hellx-curse-day-v1';
-const defaults={enabled:false,sound:false};
+const defaults={enabled:true,sound:true};
+const AUTO='hellx-curse-auto-v2';
+try{if(localStorage.getItem(AUTO)!=='1'){localStorage.removeItem(PREF);localStorage.setItem(AUTO,'1')}}catch{}
 function read(k,fallback){try{return JSON.parse(localStorage.getItem(k))||fallback}catch{return fallback}}
 function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 let settings={...defaults,...read(PREF,{})},pending=null,showing=false,last=0,interacted=false;
@@ -56,9 +58,10 @@ else{const img=document.createElement('img');img.alt='Créature HELLXBONE';img.s
 const title=document.createElement('div');title.className='hx-words';title.textContent=(pseudo&&index===0?pseudo.toUpperCase()+'… ':'')+scene[0];body.append(title);
 const caption=document.createElement('p');caption.textContent=scene[1];body.append(caption);stage.append(body);
 const close=document.createElement('button');close.className='hx-close';close.textContent='FERMER ×';close.setAttribute('aria-label','Fermer l’apparition');stage.append(close);
+const optout=document.createElement('button');optout.className='hx-curse-optout';optout.textContent='Ne plus afficher ces apparitions';optout.style.cssText='position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:3;background:#111;color:#d6e4d3;border:1px solid #777;border-radius:7px;padding:10px;font-size:12px;max-width:90vw';stage.append(optout);
 document.body.append(stage);sound();if(!reduced)try{navigator.vibrate?.([75,60,130])}catch{}
 let done=false;const finish=()=>{if(done)return;done=true;scream?.pause();stage.classList.add('hx-fade');setTimeout(()=>{stage.remove();showing=false},350)};
-close.addEventListener('click',finish);setTimeout(finish,reduced?1600:4500);
+close.addEventListener('click',finish);optout.addEventListener('click',()=>{settings.enabled=false;write(PREF,settings);clearTimeout(pending);finish()});setTimeout(finish,reduced?1600:4500);
 }
 function schedule(){clearTimeout(pending);pending=null;if(!settings.enabled)return;
 pending=setTimeout(()=>{if(eligible())apparition();schedule()},(4+Math.random()*12)*60000)}
@@ -74,11 +77,9 @@ on.onclick=()=>{settings={enabled:true,sound:check.checked};write(PREF,settings)
 off.onclick=()=>{settings={enabled:false,sound:false};write(PREF,settings);overlay.remove();clearTimeout(pending)};
 }
 function init(){
-const control=document.createElement('button');control.id='hx-curse-settings';control.textContent='☠ MODE HORREUR';control.title='Activer ou désactiver les apparitions aléatoires';
-control.addEventListener('click',()=>dialog(false));document.body.append(control);
-document.addEventListener('pointerdown',()=>{interacted=true},{passive:true});document.addEventListener('keydown',()=>{interacted=true},{passive:true});
-if(localStorage.getItem(PREF)===null){setTimeout(()=>{if(!document.documentElement.classList.contains('hellx-gate-pending'))dialog(true)},14000)}
-else schedule();
+document.addEventListener('pointerdown',()=>{interacted=true},{passive:true});
+document.addEventListener('keydown',()=>{interacted=true},{passive:true});
+schedule();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!showing)schedule()});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
