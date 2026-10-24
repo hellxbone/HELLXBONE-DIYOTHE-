@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
  private void updateUi(){toggle.setText(enabled()?"ARRÊTER MA PRÉSENCE RADAR":"ACTIVER MA PRÉSENCE RADAR");
   hint.setText(enabled()?"Radar natif actif : présence envoyée avec une notification permanente. Arrêt possible ici ou depuis la notification.":"Radar inactif : appuie ici pour participer, après autorisation GPS. Le mode natif fonctionne écran éteint.");}
  private void toggleRadar(){
-  if(enabled()){stopService(new Intent(this,RadarService.class));getSharedPreferences("radar",MODE_PRIVATE).edit().putBoolean("enabled",false).apply();updateUi();return;}
+  if(enabled()){startService(new Intent(this,RadarService.class).setAction(RadarService.STOP));getSharedPreferences("radar",MODE_PRIVATE).edit().putBoolean("enabled",false).apply();updateUi();return;}
   if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED &&
      checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},GPS);return;
@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
    checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)==PackageManager.PERMISSION_GRANTED))startWithMember();
  }
  private void startWithMember(){
-  if(!web.getUrl().startsWith(HOME)){hint.setText("Ouvre d’abord HELLXBONE et inscris ton pseudo.");return;}
+  if(web.getUrl()==null || !web.getUrl().startsWith(HOME)){hint.setText("Ouvre d’abord HELLXBONE et inscris ton pseudo.");return;}
   web.evaluateJavascript("(function(){return localStorage.getItem('hellx-club-device-v1')||''})()",json->{
    String member=json==null?"":json.replace("\\\"","").trim();
    if(!member.matches("[0-9a-fA-F-]{36}")){hint.setText("Connecte ton pseudo HELLXBONE, puis active le radar.");return;}
