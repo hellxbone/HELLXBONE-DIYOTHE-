@@ -4,6 +4,9 @@
 const BASE='https://ldibykpitjutratyqqax.supabase.co/rest/v1/rpc/';
 const KEY='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv';
 const DEVICE='hellx-club-device-v1';
+const PREFERENCE='hellx-radar-consent-v1';
+function enabledBefore(){try{return localStorage.getItem(PREFERENCE)==='yes'}catch{return false}}
+function savePreference(value){try{if(value)localStorage.setItem(PREFERENCE,'yes');else localStorage.removeItem(PREFERENCE)}catch{}}
 let active=false,timer=null,busy=false;
 const css=document.createElement('style');
 css.textContent=`
@@ -106,8 +109,8 @@ async function pulse(){
  const location=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:false,timeout:13000,maximumAge:20000}));
  if(!active)return;
  const rows=await rpc('hellx_radar_ping',{p_member_id:member,p_latitude:location.coords.latitude,p_longitude:location.coords.longitude});
- if(active)display(rows);
- }catch(e){if(active)status(e.code===1?'Localisation refusée : autorise le GPS pour utiliser le radar.':'Radar inaccessible : '+(e.message||'Réessaie.'))}
+ if(active){savePreference(true);display(rows);}
+ }catch(e){if(active){if(e.code===1){savePreference(false);stop(false);status('Autorisation GPS refusée ou retirée. Active le radar pour réessayer.')}else status('Radar inaccessible : '+(e.message||'Réessaie.'))}}
  finally{busy=false}
 }
 function start(){
@@ -117,7 +120,8 @@ function start(){
  status('Recherche des métalleux et demande de localisation…');
  pulse();timer=setInterval(pulse,35000);
 }
-function stop(){
+function stop(forget=true){
+ if(forget)savePreference(false);
  active=false;document.getElementById('hellx-radar')?.classList.remove('hx-scanning');clearInterval(timer);timer=null;
  const b=document.getElementById('hellx-radar-toggle');if(b){b.textContent='ACTIVER MON RADAR';b.classList.remove('hx-off')}
  document.getElementById('hellx-radar-list')?.replaceChildren();
@@ -125,6 +129,6 @@ function stop(){
  status('Radar désactivé. Ta position n’est pas partagée.');
  const member=id();if(member)rpc('hellx_radar_off',{p_member_id:member}).catch(()=>{});
 }
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&active)stop()});
-document.addEventListener('DOMContentLoaded',ui);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&active)stop(false);else if(!document.hidden&&enabledBefore()&&!active)start()});
+document.addEventListener('DOMContentLoaded',()=>{ui();if(enabledBefore())start()});
 })();
