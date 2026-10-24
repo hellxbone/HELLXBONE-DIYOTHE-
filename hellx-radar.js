@@ -30,6 +30,26 @@ css.textContent=`
 #hellx-radar .hx-radar-range{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);font:700 11px system-ui;color:#91ff9f}
 #hellx-radar #hellx-radar-toggle{display:block;margin:12px auto!important}
 #hellx-radar #hellx-radar-status{text-align:center!important}
+
+/* HELLXBONE TACTICAL CRT / military-inspired radar */
+#hellx-radar{background:linear-gradient(160deg,#28342b,#0b100c 23%,#101b12 75%,#050907)!important;border:5px ridge #536a50!important;border-radius:12px!important;box-shadow:inset 0 2px 4px #c5d6c333,inset 0 -8px 22px #000,0 8px 26px #000a!important;padding:16px!important}
+#hellx-radar h2{font:900 20px/1.2 monospace!important;color:#bbefad!important;letter-spacing:2px!important;text-shadow:0 0 10px #65ff7188}
+#hellx-radar .hx-radar-screen{width:min(79vw,370px)!important;border:11px solid #24382c!important;outline:2px solid #728b6b!important;box-shadow:0 0 0 5px #111b14,0 0 0 7px #586e59,inset 0 0 26px #000,0 8px 24px #000b!important;background:repeating-radial-gradient(circle at center,transparent 0 19.6%,#57c76e55 19.8% 20%,transparent 20.2% 20%),linear-gradient(90deg,transparent 49.85%,#68ce7050 50%,transparent 50.15%),linear-gradient(0deg,transparent 49.85%,#68ce7050 50%,transparent 50.15%),radial-gradient(circle,#123c22 0%,#082712 38%,#04190d 66%,#020903 100%)!important}
+#hellx-radar .hx-radar-screen::before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:50%;background:repeating-linear-gradient(0deg,#03100425 0px,#03100425 1px,transparent 2px,transparent 5px),radial-gradient(circle,transparent 47%,#0009 99%);opacity:.66}
+#hellx-radar .hx-radar-screen::after{content:"000°        090°        180°        270°";position:absolute;top:46%;left:5%;right:5%;z-index:1;white-space:nowrap;font:9px monospace;color:#8feaa06b;letter-spacing:1px;pointer-events:none}
+#hellx-radar .hx-radar-sweep{background:conic-gradient(from 0deg,transparent 0deg,transparent 290deg,#22b34a09 305deg,#42da602d 332deg,#6cff766e 351deg,#b0ffc0d9 359deg,transparent 360deg)!important;animation-duration:4.2s!important}
+#hellx-radar .hx-radar-sweep::after{height:1px!important;background:#b5fbb9!important;box-shadow:0 0 6px 2px #75ec80!important}
+#hellx-radar .hx-radar-dot{width:9px!important;height:9px!important;border:1px solid #d5f8c6!important;background:#bbffac!important;box-shadow:0 0 5px 2px #a1ff9c!important}
+#hellx-radar .hx-radar-center{width:8px!important;height:8px!important;background:#a4dca5!important}
+#hellx-radar .hx-radar-label{font:700 10px monospace!important;letter-spacing:2px!important;color:#9fd89f!important;top:12%!important}
+#hellx-radar .hx-radar-range{font:700 10px monospace!important;color:#9fd89f!important;bottom:11%!important}
+#hellx-radar .hx-mil-heading{display:flex;justify-content:space-between;align-items:center;margin:7px 0 14px;border-block:1px solid #577254;padding:8px 1px;color:#a8caaa;font:700 11px monospace;letter-spacing:1px}
+#hellx-radar .hx-mil-led{display:inline-block;width:8px;height:8px;border-radius:50%;background:#526954;box-shadow:inset 0 0 3px #000}
+#hellx-radar.hx-scanning .hx-mil-led{background:#9dff9a;box-shadow:0 0 9px #67ff68}
+#hellx-radar #hellx-radar-toggle{background:linear-gradient(#839a7f,#4c674b)!important;color:#09160a!important;border:2px solid #b7c8ad!important;border-radius:4px!important;font:900 13px monospace!important;letter-spacing:1px!important;box-shadow:inset 0 1px 0 #e6ffdf70,0 3px 0 #152719}
+#hellx-radar #hellx-radar-toggle.hx-off{background:linear-gradient(#485849,#29392a)!important;color:#e3ffe2!important}
+#hellx-radar #hellx-radar-status,#hellx-radar-list{font-family:monospace!important}
+
 @keyframes hellx-radar-rotate{to{transform:rotate(360deg)}}
 @keyframes hellx-radar-pulse{50%{opacity:.35;box-shadow:0 0 18px 7px #47ff73}}
 @media(prefers-reduced-motion:reduce){#hellx-radar .hx-radar-sweep,#hellx-radar .hx-radar-dot{animation:none!important}}
@@ -46,7 +66,7 @@ function ui(){
  const main=document.querySelector('main');
  if(!main)return null;
  node=document.createElement('section');node.id='hellx-radar';node.setAttribute('aria-label','Radar à métalleux');
- node.innerHTML='<h2>☠ RADAR À MÉTALLEUX</h2><p>Repère les membres HELLXBONE volontaires à moins de 5 km. Seuls les pseudos et des distances approximatives apparaissent.</p><div class="hx-radar-screen" role="img" aria-label="Radar circulaire animé, points représentant les membres détectés, position indicative uniquement"><div class="hx-radar-sweep"></div><div class="hx-radar-label">HELLXBONE</div><div class="hx-radar-dots" id="hellx-radar-dots"></div><div class="hx-radar-center"></div><div class="hx-radar-range">PORTÉE 5 KM</div></div><button id="hellx-radar-toggle" type="button">ACTIVER MON RADAR</button><p id="hellx-radar-status" role="status">Radar désactivé. Ta position n’est pas partagée.</p><ul id="hellx-radar-list" aria-live="polite"></ul><p style="font-size:12px!important">GPS sur accord. La position est arrondie à environ 1 km, masquée aux autres et expire après 2 minutes. Fonctionne uniquement pendant l’ouverture de l’application. Coupe le radar quand tu veux.</p>';
+ node.innerHTML='<h2>☠ RADAR À MÉTALLEUX</h2><div class="hx-mil-heading"><span>HX-666 / SURVEILLANCE</span><span><i class="hx-mil-led"></i> &nbsp;SCAN LOCAL</span></div><p>Repère les membres HELLXBONE volontaires à moins de 5 km. Seuls les pseudos et des distances approximatives apparaissent.</p><div class="hx-radar-screen" role="img" aria-label="Radar circulaire animé, points représentant les membres détectés, position indicative uniquement"><div class="hx-radar-sweep"></div><div class="hx-radar-label">HELLXBONE</div><div class="hx-radar-dots" id="hellx-radar-dots"></div><div class="hx-radar-center"></div><div class="hx-radar-range">PORTÉE 5 KM</div></div><button id="hellx-radar-toggle" type="button">ACTIVER MON RADAR</button><p id="hellx-radar-status" role="status">Radar désactivé. Ta position n’est pas partagée.</p><ul id="hellx-radar-list" aria-live="polite"></ul><p style="font-size:12px!important">GPS sur accord. La position est arrondie à environ 1 km, masquée aux autres et expire après 2 minutes. Fonctionne uniquement pendant l’ouverture de l’application. Coupe le radar quand tu veux.</p>';
  main.prepend(node);node.querySelector('#hellx-radar-toggle').addEventListener('click',()=>active?stop():start());
  return node;
 }
@@ -93,12 +113,12 @@ async function pulse(){
 function start(){
  if(active)return;
  if(!id()){status('Choisis d’abord ton pseudo de membre HELLXBONE.');return}
- active=true;const b=document.getElementById('hellx-radar-toggle');b.textContent='COUPER MON RADAR';b.classList.add('hx-off');
+ active=true;document.getElementById('hellx-radar')?.classList.add('hx-scanning');const b=document.getElementById('hellx-radar-toggle');b.textContent='COUPER MON RADAR';b.classList.add('hx-off');
  status('Recherche des métalleux et demande de localisation…');
  pulse();timer=setInterval(pulse,35000);
 }
 function stop(){
- active=false;clearInterval(timer);timer=null;
+ active=false;document.getElementById('hellx-radar')?.classList.remove('hx-scanning');clearInterval(timer);timer=null;
  const b=document.getElementById('hellx-radar-toggle');if(b){b.textContent='ACTIVER MON RADAR';b.classList.remove('hx-off')}
  document.getElementById('hellx-radar-list')?.replaceChildren();
  document.getElementById('hellx-radar-dots')?.replaceChildren();
