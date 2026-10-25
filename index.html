@@ -42,6 +42,38 @@ put(PLAYER,m.member_pseudo);
 window.dispatchEvent(new CustomEvent('hellx-member-synced',{detail:{pseudo:m.member_pseudo,number:m.member_no}}));
 return m;
 }
+
+function saveMember(m){
+ const formatted='HX-'+String(m.member_no).padStart(6,'0');
+ put(STORAGE,JSON.stringify({name:m.member_pseudo,id:formatted,member_number:m.member_no,date:new Date().toLocaleDateString('fr-FR'),synced:true}));
+ put(PLAYER,m.member_pseudo);
+ window.dispatchEvent(new CustomEvent('hellx-member-synced',{detail:{pseudo:m.member_pseudo,number:m.member_no}}));
+}
+async function redeemTransfer(raw){
+ const token=String(raw||'').toLowerCase().replace(/[^a-f0-9]/g,'');
+ const result=await rpc('hellx_transfer_redeem',{p_token:token});
+ const m=Array.isArray(result)?result[0]:result;
+ if(!m||!m.member_id||!m.member_no)throw Error('Code invalide ou expiré. Génère un nouveau code depuis ton ancienne session.');
+ put(DEVICE,m.member_id);saveMember(m);unlock();
+}
+async function showTransferCode(){
+ let pop=document.getElementById('hellx-transfer-popup');
+ if(pop)return;
+ pop=document.createElement('div');pop.id='hellx-transfer-popup';
+ pop.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#000e;display:grid;place-items:center;padding:20px;color:white;font-family:system-ui';
+ pop.innerHTML='<section style="max-width:450px;width:100%;padding:23px;border:2px solid #51ff72;background:#0c0c0c;text-align:center;border-radius:12px"><h2>RETROUVE TON PSEUDO</h2><p>Pour retrouver ton compte dans Chrome ou l’application installée, copie ce code. Il est valable 15 minutes et une seule fois.</p><strong id="hellx-transfer-code" style="display:block;font-size:20px;overflow-wrap:anywhere;color:#7fff8f;margin:20px 0">Création du code…</strong><button type="button" id="hellx-transfer-copy" style="padding:13px;margin:5px;background:#72fa85;color:#000;border:0;font-weight:800">COPIER LE CODE</button><button type="button" id="hellx-transfer-close" style="padding:13px;margin:5px;background:#333;color:#fff;border:0">FERMER</button><p style="font-size:12px">Garde ce code privé : il donne accès à ton compte HELLXBONE.</p></section>';
+ document.body.appendChild(pop);
+ pop.querySelector('#hellx-transfer-close').onclick=()=>pop.remove();
+ const codeEl=pop.querySelector('#hellx-transfer-code'),copy=pop.querySelector('#hellx-transfer-copy');
+ copy.disabled=true;
+ try{
+  const bytes=new Uint8Array(16);crypto.getRandomValues(bytes);const token=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+  await rpc('hellx_transfer_create',{p_member_id:deviceId(),p_token:token});
+  codeEl.textContent=token.match(/.{1,4}/g).join('-');
+  copy.disabled=false;
+  copy.onclick=async()=>{try{await navigator.clipboard.writeText(codeEl.textContent);copy.textContent='CODE COPIÉ';}catch(e){copy.textContent='SÉLECTIONNE LE CODE POUR LE COPIER';}};
+ }catch(e){codeEl.textContent='Impossible de créer le code. Réessaie plus tard.';console.warn(e);}
+}
 function socialBrowser(){const ua=navigator.userAgent;return /Instagram/i.test(ua)?'Instagram':(/FBAN|FBAV|FB_IAB|FB4A|FBIOS/i.test(ua)?'Facebook':null)}
 document.addEventListener('DOMContentLoaded',async function(){
 const social=socialBrowser();
@@ -51,11 +83,11 @@ const social=socialBrowser();
 
 if(existingName){
 unlock();
-enroll(existingName).catch(e=>{console.warn('HELLXBONE: synchronisation en attente',e);});
+enroll(existingName).then(()=>{if(social)showTransferCode();}).catch(e=>{console.warn('HELLXBONE: synchronisation en attente',e);});
 return;
 }
 const gate=document.createElement('div');gate.id='hellx-member-gate';
-gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p id="hellx-club-live-count">Rejoins des centaines de membres HELLXBONE CLUB</p></form>';
+gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p><a href="#" id="hellx-transfer-recover" style="color:#7fff8f">J’ai déjà un pseudo : récupérer mon compte</a></p><p id="hellx-club-live-count">Rejoins des centaines de membres HELLXBONE CLUB</p></form>';
 document.body.appendChild(gate);
 /* Message d'accueil fixe : aucun compteur de membres exposé aux visiteurs. */
 gate.querySelector('form').addEventListener('submit',async function(event){
@@ -64,9 +96,19 @@ const error=gate.querySelector('#hellx-member-error'),button=gate.querySelector(
 error.hidden=true;
 if(name.length<2||!/^[a-zA-ZÀ-ÿ0-9 _.-]+$/.test(name)){error.textContent='Choisis un pseudo de 2 a 20 caracteres (lettres, chiffres, espaces, tirets).';error.hidden=false;return}
 button.disabled=true;button.textContent='INSCRIPTION EN COURS…';
-try{await enroll(name);unlock()}
+try{await enroll(name);unlock();if(social)showTransferCode()}
 catch(e){error.textContent=e.message==='PSEUDO_PRIS'?'Ce pseudo est déjà pris. Essaie-en un autre.':e.message==='PSEUDO_INVALIDE'?'Pseudo refusé : essaie des lettres, chiffres, espaces ou tirets.':e.message;error.hidden=false;error.scrollIntoView({block:'nearest',behavior:'smooth'});}
 finally{button.disabled=false;button.textContent='ENTRER DANS HELLXBONE'}
+});
+gate.querySelector('#hellx-transfer-recover').addEventListener('click',event=>{
+ event.preventDefault();
+ const form=gate.querySelector('form');
+ form.innerHTML='<h1>RÉCUPÉRATION HELLXBONE</h1><p>Depuis ta session Facebook ou Instagram, récupère le code de transfert. Colle-le ici pour retrouver ton pseudo et ta carte de membre.</p><input id="hellx-transfer-input" autocomplete="one-time-code" placeholder="Code de transfert" aria-label="Code de transfert"><button type="submit">RÉCUPÉRER MON COMPTE</button><p id="hellx-member-error" role="alert" hidden></p><small>Code valable 15 minutes, à usage unique.</small>';
+ form.onsubmit=async e=>{
+  e.preventDefault();const button=form.querySelector('button'),error=form.querySelector('#hellx-member-error');button.disabled=true;error.hidden=true;
+  try{await redeemTransfer(form.querySelector('input').value);}catch(ex){error.textContent=ex.message;error.hidden=false;}finally{button.disabled=false;}
+ };
+ form.querySelector('input').focus();
 });
 gate.querySelector('input').focus();
 });
