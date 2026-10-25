@@ -109,10 +109,7 @@ function avalancheIcon(r,c){
  for(const [a,b] of [[[r+1,c],[r+2,c]],[[r,c-1],[r,c-2]],[[r,c+1],[r,c+2]],[[r,c-1],[r,c+1]]]){
   const x=at(...a),y=at(...b);if(x!==null&&x===y)options.push(x);
  }
- if(options.length&&Math.random()<.78)return options[Math.floor(Math.random()*options.length)];
- // Occasion supplémentaire d'alignement au tour suivant, sans résultat garanti.
- const neighbors=[at(r+1,c),at(r,c-1),at(r,c+1)].filter(v=>v!==null);
- if(neighbors.length&&Math.random()<.45)return neighbors[Math.floor(Math.random()*neighbors.length)];
+ if(options.length&&Math.random()<.40)return options[Math.floor(Math.random()*options.length)];
  return randIcon();
 }
 function gravity(){for(let c=0;c<COLS;c++){let write=ROWS-1;for(let r=ROWS-1;r>=0;r--){const v=board[idx(r,c)];if(v!==null){board[idx(write,c)]=v;if(write!==r)board[idx(r,c)]=null;write--}}while(write>=0){board[idx(write,c)]=avalancheIcon(write,c);write--}}}
