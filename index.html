@@ -622,10 +622,10 @@ async function doShare(platform,title,url,excerpt=''){
   const isGame=link.includes('game=mega-riff')||link.includes('#mega-riff');
   const appUrl='https://hellxbone.github.io/HELLXBONE-DIYOTHE-/';
   const cleanTitle=String(title||'').trim();
-  const brief=String(excerpt||'').replace(/\\s+/g,' ').trim().slice(0,220);
+  const brief=String(excerpt||'').replace(/\s+/g,' ').trim().slice(0,220);
   const intro=isGame?'🎸 Viens tester MEGA RIFF !':'🤘 '+(brief||'Découvre cette actualité rock et metal.');
   const invite=isGame?'🔥 Rejoins gratuitement le HELLXBONE CLUB pour jouer et profiter des autres fonctionnalités !':'🔥 Envie de découvrir davantage d’actus rock et metal ? Rejoins gratuitement le HELLXBONE CLUB !';
-  const text='🔥 '+cleanTitle+'\\n\\n'+intro+'\\n\\n'+invite+'\\n👉 Application gratuite : '+appUrl+(link!==appUrl?'\\n\\n📰 Source / article : '+link:'');
+  const text='🔥 '+cleanTitle+'\n\n'+intro+'\n\n'+invite+'\n👉 Application gratuite : '+appUrl+(link!==appUrl?'\n\n📰 Source / article : '+link:'');
   if(platform==='sms'){
     const smsText=text;
     try{ await navigator.clipboard.writeText(smsText); }catch(e){}
@@ -658,7 +658,7 @@ async function doShare(platform,title,url,excerpt=''){
   if(platform==='facebook'){
     // Facebook does not permit pre-filling the user's post text via the sharer URL.
     // Copy an engaging caption first, then open the genuine Facebook link preview.
-    const caption=text+'\\n\\n#HELLXBONE #DIYOTHE #Rock #Metal';
+    const caption=text+'\n\n#HELLXBONE #DIYOTHE #Rock #Metal';
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
     // Facebook blocks prefilled captions from website share links.
     // Show the user exactly what will be posted and offer a reliable copy step.
