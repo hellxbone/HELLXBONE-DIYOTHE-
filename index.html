@@ -622,10 +622,19 @@ async function doShare(platform,title,url,excerpt=''){
   const isGame=link.includes('game=mega-riff')||link.includes('#mega-riff');
   const appUrl='https://hellxbone.github.io/HELLXBONE-DIYOTHE-/';
   const cleanTitle=String(title||'').trim();
+  // Titre accrocheur qui reste fidèle au sujet : priorité à l'artiste et au fait annoncé.
+  const clickTitle=(function(){
+    const t=cleanTitle.replace(/^[🔥🤘💀\s]+/u,'').replace(/[!?.\s]+$/,'');
+    if(isGame)return 'MEGA RIFF : PRÊT À FAIRE EXPLOSER LE SCORE ?';
+    if(!t)return 'ROCK & METAL : DÉCOUVRE CE QUI SE PASSE !';
+    if(/^(?:attention|incroyable|exclusif|alerte|choc|à découvrir|ne ratez pas)/i.test(t))return t.toUpperCase()+' !';
+    if(t.length>100)return 'ÇA BOUGE DANS LE METAL : '+t.slice(0,100).toUpperCase()+'…';
+    return 'ÇA VA FAIRE DU BRUIT : '+t.toUpperCase()+' !';
+  })();
   const brief=String(excerpt||'').replace(/\s+/g,' ').trim().slice(0,220);
   const intro=isGame?'🎸 Viens tester MEGA RIFF !':'🤘 '+(brief||'Découvre cette actualité rock et metal.');
   const invite=isGame?'🔥 Rejoins gratuitement le HELLXBONE CLUB pour jouer et profiter des autres fonctionnalités !':'🔥 Envie de découvrir davantage d’actus rock et metal ? Rejoins gratuitement le HELLXBONE CLUB !';
-  const text='🔥 '+cleanTitle+'\n\n'+intro+'\n\n'+invite+'\n👉 Application gratuite : '+appUrl+(link!==appUrl?'\n\n📰 Source / article : '+link:'');
+  const text='🔥 '+clickTitle+'\n\n'+intro+'\n\n'+invite+'\n👉 Application gratuite : '+appUrl+(link!==appUrl?'\n\n📰 Source / article : '+link:'');
   if(platform==='sms'){
     const smsText=text;
     try{ await navigator.clipboard.writeText(smsText); }catch(e){}
