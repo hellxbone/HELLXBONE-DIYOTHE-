@@ -620,7 +620,12 @@ const shareButtons=(title,url,excerpt='')=>`<div class="share-row"><span class="
 async function doShare(platform,title,url,excerpt=''){
   const link=url||location.href;
   const isGame=link.includes('game=mega-riff')||link.includes('#mega-riff');
-  const text=`🤘 ${title}\n\n${excerpt?excerpt+'\n\n':''}${isGame?'🎸 Joue directement à MEGA RIFF sur HELLXBONE :':'🔥 Lire l’article complet sur HELLXBONE :'}\n${link}`;
+  const appUrl='https://hellxbone.github.io/HELLXBONE-DIYOTHE-/';
+  const cleanTitle=String(title||'').trim();
+  const brief=String(excerpt||'').replace(/\\s+/g,' ').trim().slice(0,220);
+  const intro=isGame?'🎸 Viens tester MEGA RIFF !':'🤘 '+(brief||'Découvre cette actualité rock et metal.');
+  const invite=isGame?'🔥 Rejoins gratuitement le HELLXBONE CLUB pour jouer et profiter des autres fonctionnalités !':'🔥 Envie de découvrir davantage d’actus rock et metal ? Rejoins gratuitement le HELLXBONE CLUB !';
+  const text='🔥 '+cleanTitle+'\\n\\n'+intro+'\\n\\n'+invite+'\\n👉 Application gratuite : '+appUrl+(link!==appUrl?'\\n\\n📰 Source / article : '+link:'');
   if(platform==='sms'){
     const smsText=text;
     try{ await navigator.clipboard.writeText(smsText); }catch(e){}
@@ -653,23 +658,7 @@ async function doShare(platform,title,url,excerpt=''){
   if(platform==='facebook'){
     // Facebook does not permit pre-filling the user's post text via the sharer URL.
     // Copy an engaging caption first, then open the genuine Facebook link preview.
-    const cleanTitle=String(title||'').trim();
-    const hook=/power trip/i.test(cleanTitle)
-      ? '🔥 POWER TRIP FRAPPE FORT : DEUX NOUVEAUX TITRES À DÉCOUVRIR !'
-      : '🔥 ROCK & METAL : '+cleanTitle.toUpperCase().replace(/[!?.]+$/,'')+' !';
-    const baseTags=['#HELLXBONE','#DIYOTHE','#Rock','#Metal','#MusiqueMetal','#CultureMetal'];
-    const topic=cleanTitle+' '+String(excerpt||'');
-    const specificTags=[];
-    if(/mega.?riff|jeu|game|score|digicode/i.test(topic))specificTags.push('#MegaRiff','#JeuxMetal');
-    if(/concert|festival|fest|live|scène/i.test(topic))specificTags.push('#ConcertMetal','#FestivalMetal');
-    if(/interview|groupe|artiste/i.test(topic))specificTags.push('#SceneMetal','#InterviewMetal');
-    if(/boutique|tee.?shirt|création|shop/i.test(topic))specificTags.push('#ArtRock','#CreationGothique');
-    if(/black metal/i.test(topic))specificTags.push('#BlackMetal');
-    if(/death metal/i.test(topic))specificTags.push('#DeathMetal');
-    const hashtags=[...new Set([...baseTags,...specificTags])].join(' ');
-    const appUrl='https://hellxbone.github.io/HELLXBONE-DIYOTHE-/';
-    const promo='🔥 Deviens membre gratuitement du HELLXBONE CLUB ! Découvre mon appli underground : news rock & metal, radio live même quand le téléphone est en veille, tee-shirts à gagner, jeux et bien plus encore !';
-    const caption=promo+'\n\n'+hook+'\n\n🤘 '+(excerpt?String(excerpt).trim().slice(0,230):'Une actu qui mérite le détour ! Découvre les détails et dis-moi ce que tu en penses en commentaire.')+'\n\n👉 Installe l’application gratuite : '+appUrl+'\n\n'+hashtags;
+    const caption=text+'\\n\\n#HELLXBONE #DIYOTHE #Rock #Metal';
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
     // Facebook blocks prefilled captions from website share links.
     // Show the user exactly what will be posted and offer a reliable copy step.
@@ -687,7 +676,7 @@ async function doShare(platform,title,url,excerpt=''){
     const help=document.createElement('p');
     help.textContent='Facebook ne permet pas de remplir automatiquement le texte. Copie celui-ci (avec ses hashtags), puis colle-le dans ta publication Facebook.';
     const area=document.createElement('textarea');
-    area.value=caption+'\n\n'+link;
+    area.value=caption;
     area.readOnly=true;
     area.setAttribute('aria-label','Texte du partage et hashtags');
     area.style.cssText='width:100%;box-sizing:border-box;min-height:190px;background:#080808;color:white;border:1px solid #888;border-radius:8px;padding:12px;font:inherit;resize:vertical';
