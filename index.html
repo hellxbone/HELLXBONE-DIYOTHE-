@@ -625,11 +625,22 @@ async function doShare(platform,title,url,excerpt=''){
   // Titre accrocheur qui reste fidèle au sujet : priorité à l'artiste et au fait annoncé.
   const clickTitle=(function(){
     const t=cleanTitle.replace(/^[🔥🤘💀\s]+/u,'').replace(/[!?.\s]+$/,'');
-    if(isGame)return 'MEGA RIFF : PRÊT À FAIRE EXPLOSER LE SCORE ?';
-    if(!t)return 'ROCK & METAL : DÉCOUVRE CE QUI SE PASSE !';
-    if(/^(?:attention|incroyable|exclusif|alerte|choc|à découvrir|ne ratez pas)/i.test(t))return t.toUpperCase()+' !';
-    if(t.length>100)return 'ÇA BOUGE DANS LE METAL : '+t.slice(0,100).toUpperCase()+'…';
-    return 'ÇA VA FAIRE DU BRUIT : '+t.toUpperCase()+' !';
+    if(isGame)return 'MEGA RIFF : PRÊT À EXPLOSER TON RECORD ?';
+    if(!t)return 'LE RADAR ROCK & METAL S’EMBALLE !';
+    // Accroches variées et pertinentes : le thème détermine le vocabulaire,
+    // le titre détermine une variation stable pour éviter le même slogan.
+    const topic=(t+' '+String(excerpt||'')).toLocaleLowerCase('fr');
+    const seed=[...t].reduce((v,ch)=>((v*31+ch.charCodeAt(0))>>>0),7);
+    const pick=arr=>arr[seed%arr.length];
+    const short=t.length>105?t.slice(0,105).trim()+'…':t;
+    const subject=short.toLocaleUpperCase('fr');
+    let intros;
+    if(/clip|vidéo|video|youtube/.test(topic))intros=['À VOIR ABSOLUMENT','LE NOUVEAU CLIP DÉBARQUE','DU LOURD EN IMAGES','MONTE LE SON'];
+    else if(/album|disque|ep |single|titre|sortie/.test(topic))intros=['NOUVELLE DÉCHARGE SONORE','ÇA VIENT DE TOMBER','À ÉCOUTER SANS MODÉRATION','LE SON DU JOUR'];
+    else if(/concert|festival|live|tournée|tournee|scène|scene/.test(topic))intros=['LA SCÈNE VA TREMBLER','RENDEZ-VOUS DANS LE PIT','ÇA SE PRÉPARE SUR SCÈNE','LES AMPLIS CHAUFFENT'];
+    else if(/interview|entretien|confidences/.test(topic))intros=['DANS LES COULISSES','PAROLES SANS FILTRE','FACE AUX QUESTIONS','RENCONTRE METAL'];
+    else intros=['SOUS LES PROJECTEURS','À NE PAS RATER','LE RADAR METAL A REPÉRÉ','ÇA MÉRITE LE DÉTOUR','LA HORDE, REGARDE ÇA','SUR LE DEVANT DE LA SCÈNE','LE METAL EN ÉBULLITION'];
+    return pick(intros)+' : '+subject+' !';
   })();
   const brief=String(excerpt||'').replace(/\s+/g,' ').trim().slice(0,220);
   const intro=isGame?'🎸 Viens tester MEGA RIFF !':'🤘 '+(brief||'Découvre cette actualité rock et metal.');
