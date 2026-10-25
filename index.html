@@ -91,7 +91,8 @@ gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.sv
 document.body.appendChild(gate);
 /* Message d'accueil fixe : aucun compteur de membres exposé aux visiteurs. */
 gate.querySelector('form').addEventListener('submit',async function(event){
-event.preventDefault();const name=clean(gate.querySelector('input').value);
+event.preventDefault();if(gate.querySelector('#hellx-transfer-input'))return;
+const name=clean(gate.querySelector('input').value);
 const error=gate.querySelector('#hellx-member-error'),button=gate.querySelector('button');
 error.hidden=true;
 if(name.length<2||!/^[a-zA-ZÀ-ÿ0-9 _.-]+$/.test(name)){error.textContent='Choisis un pseudo de 2 a 20 caracteres (lettres, chiffres, espaces, tirets).';error.hidden=false;return}
