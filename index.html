@@ -45,12 +45,10 @@ return m;
 function socialBrowser(){const ua=navigator.userAgent;return /Instagram/i.test(ua)?'Instagram':(/FBAN|FBAV|FB_IAB|FB4A|FBIOS/i.test(ua)?'Facebook':null)}
 document.addEventListener('DOMContentLoaded',async function(){
 const social=socialBrowser();
-if(social){
- const gate=document.createElement('div');gate.id='hellx-member-gate';
- gate.innerHTML='<form id="hellx-member-entry"><h1>HELLXBONE CLUB</h1><p>Pour installer HELLXBONE sans perdre ton pseudo, ouvre ce lien dans <strong>Chrome</strong> (Android) ou <strong>Safari</strong> (iPhone) depuis le menu ⋯ de '+social+'. Puis inscris-toi et installe l’application dans ce navigateur.</p><small>Ne crée pas ton pseudo dans le navigateur intégré à '+social+' : il ne sera pas automatiquement reconnu par l’application installée.</small></form>';
- document.body.appendChild(gate);
- return;
-}
+/* Les navigateurs intégrés Facebook/Instagram accèdent désormais directement à l'application.
+   Les données locales restent isolées entre navigateurs : aucune identité n'est déduite
+   d'un pseudo seul, pour éviter toute usurpation de compte. */
+
 if(existingName){
 unlock();
 enroll(existingName).catch(e=>{console.warn('HELLXBONE: synchronisation en attente',e);});
