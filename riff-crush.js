@@ -102,16 +102,62 @@ function eventFlash(text,type='combo'){const f=q('#riff-flash'),e=q('#riff-event
 function hasPlayableMove(){for(let a=0;a<board.length;a++){const row=Math.floor(a/COLS),col=a%COLS;for(const b of [col+1<COLS?a+1:-1,row+1<ROWS?a+COLS:-1]){if(b<0||board[a]===board[b])continue;swap(a,b);const found=matches().length>=3;swap(a,b);if(found)return true}}return false}
 function ensurePlayable(){if(hasPlayableMove())return false;let attempts=0;do{fillFresh();attempts++}while(!hasPlayableMove()&&attempts<200);if(!hasPlayableMove()){fillFresh();board[0]=ICONS[0];board[1]=ICONS[1];board[2]=ICONS[0];board[COLS+1]=ICONS[0]}selected=null;return true}
 function finishIfBlocked(){if(gameLost||moves<=0)return false;if(ensurePlayable()){render();eventFlash('NOUVEAU RIFF !','combo');message('🤘 GRILLE REMIXÉE — UN ALIGNEMENT EST POSSIBLE !',true)}return false}
-function gravity(){for(let c=0;c<COLS;c++){let write=ROWS-1;for(let r=ROWS-1;r>=0;r--){const v=board[idx(r,c)];if(v!==null){board[idx(write,c)]=v;if(write!==r)board[idx(r,c)]=null;write--}}while(write>=0){board[idx(write,c)]=randIcon();write--}}}
+function avalancheIcon(r,c){
+ // Les nouveaux symboles favorisent les trios en chute, surtout lors des cascades.
+ const options=[];
+ const at=(rr,cc)=>rr>=0&&rr<ROWS&&cc>=0&&cc<COLS?board[idx(rr,cc)]:null;
+ for(const [a,b] of [[[r+1,c],[r+2,c]],[[r,c-1],[r,c-2]],[[r,c+1],[r,c+2]],[[r,c-1],[r,c+1]]]){
+  const x=at(...a),y=at(...b);if(x!==null&&x===y)options.push(x);
+ }
+ if(options.length&&Math.random()<.78)return options[Math.floor(Math.random()*options.length)];
+ // Occasion supplémentaire d'alignement au tour suivant, sans résultat garanti.
+ const neighbors=[at(r+1,c),at(r,c-1),at(r,c+1)].filter(v=>v!==null);
+ if(neighbors.length&&Math.random()<.45)return neighbors[Math.floor(Math.random()*neighbors.length)];
+ return randIcon();
+}
+function gravity(){for(let c=0;c<COLS;c++){let write=ROWS-1;for(let r=ROWS-1;r>=0;r--){const v=board[idx(r,c)];if(v!==null){board[idx(write,c)]=v;if(write!==r)board[idx(r,c)]=null;write--}}while(write>=0){board[idx(write,c)]=avalancheIcon(write,c);write--}}}
+const avalancheStyle=document.createElement('style');
+avalancheStyle.textContent=`
+#riff-board{position:relative;isolation:isolate}
+#riff-board .riff-cell.match{animation:hellxBlast .24s ease-out both!important;filter:brightness(2.1) drop-shadow(0 0 12px #8bff39)}
+@keyframes hellxBlast{0%{transform:scale(1);opacity:1}55%{transform:scale(1.38) rotate(-7deg);filter:brightness(3)}100%{transform:scale(.1) rotate(20deg);opacity:0}}
+#riff-board.riff-avalanche-shake{animation:hellxQuake .26s linear}
+@keyframes hellxQuake{0%,100%{transform:translateX(0)}25%{transform:translate(-4px,2px)}50%{transform:translate(5px,-2px)}75%{transform:translate(-3px,1px)}}
+.riff-avalanche-particle{position:absolute;z-index:8;left:var(--x);top:var(--y);width:7px;height:7px;border-radius:50%;background:var(--h);pointer-events:none;box-shadow:0 0 10px var(--h);animation:hellxSpark .62s ease-out forwards}
+@keyframes hellxSpark{0%{opacity:1;transform:translate(-50%,-50%) scale(1.5)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.15)}}
+.riff-avalanche-caption{position:absolute;left:50%;top:45%;z-index:15;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;font-size:clamp(18px,5vw,36px);font-weight:1000;letter-spacing:1px;color:#e8ffb6;text-shadow:0 0 9px #4f0,0 0 25px #2f0,2px 3px #000;animation:hellxCaption .72s ease-out forwards}
+@keyframes hellxCaption{0%{opacity:0;transform:translate(-50%,-20%) scale(.5)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}100%{opacity:0;transform:translate(-50%,-115%) scale(1)}}
+@media(prefers-reduced-motion:reduce){#riff-board .riff-cell.match,.riff-avalanche-particle,.riff-avalanche-caption,#riff-board.riff-avalanche-shake{animation-duration:.01ms!important}}
+`;
+document.head.appendChild(avalancheStyle);
+function avalancheBurst(indices,chain){
+ const b=q('#riff-board');if(!b)return;
+ b.querySelectorAll('.riff-avalanche-particle,.riff-avalanche-caption').forEach(el=>el.remove());
+ const rect=b.getBoundingClientRect(),frag=document.createDocumentFragment();
+ const colors=['#a2ff35','#f0ff71','#ffffff','#ff335e','#68ffda'];
+ for(const i of indices.slice(0,25)){
+  const cell=b.querySelector('.riff-cell[data-i="'+i+'"]');if(!cell)continue;
+  const cr=cell.getBoundingClientRect(),x=cr.left-rect.left+cr.width/2,y=cr.top-rect.top+cr.height/2;
+  for(let j=0;j<4;j++){
+   const dot=document.createElement('i');dot.className='riff-avalanche-particle';
+   const angle=Math.random()*Math.PI*2,dist=18+Math.random()*55;
+   dot.style.setProperty('--x',x+'px');dot.style.setProperty('--y',y+'px');
+   dot.style.setProperty('--dx',Math.cos(angle)*dist+'px');dot.style.setProperty('--dy',Math.sin(angle)*dist+'px');
+   dot.style.setProperty('--h',colors[(i+j)%colors.length]);frag.appendChild(dot);
+  }
+ }
+ if(chain>1){const title=document.createElement('strong');title.className='riff-avalanche-caption';title.textContent=chain>=5?'☠️ APOCALYPSE ×'+chain:chain>=3?'⚡ AVALANCHE ×'+chain:'🔥 DOUBLE RIFF !';frag.appendChild(title)}
+ b.appendChild(frag);setTimeout(()=>{b.querySelectorAll('.riff-avalanche-particle,.riff-avalanche-caption').forEach(el=>el.remove())},760);
+}
 function updateBest(){if(score>best){best=score;localStorage.setItem('hellx-riff-best',String(best))}}
 function awardBalls(amount){const awarded=Math.min(amount,Math.max(0,20-bonusBalls));bonusBalls+=awarded;moves+=awarded;return awarded}
 function checkLevel(){let advanced=false;while(level<LEVEL_GOALS.length&&score>=goalForLevel(level)){level++;reportLevel(level);advanced=true;sfx('level');vibe([20,35,20,35,60]);eventFlash('LEVEL '+level,'level');message('⚡ NIVEAU '+level+' !',true)}return advanced}
 function maybeExtraBall(mLen,chain){const key=Math.floor(score/1800);if((mLen>=5||chain>=3||score>=1800)&&!extraAwarded.has(key)){extraAwarded.add(key);const awarded=awardBalls(1);if(!awarded)return false;sfx('extra');vibe([30,30,30,30,80]);eventFlash('EXTRA BALL +1','extra');message('🎱 EXTRA BALL — +1 BALLE !',true);return true}return false}
-async function resolve(){let chain=0;while(true){const m=matches();if(!m.length)break;const line=longestLine();chain++;combo=Math.max(combo,chain);render();m.forEach(i=>q('.riff-cell[data-i="'+i+'"]')?.classList.add('match'));if(line>=5){if(!trainActive())startTrain();sfx('mega');vibe([25,25,45]);eventFlash('LE TRAIN DE LA MORT +2500','mega')}else if(line===4){sfx('extra');ghostLaugh(true);vibe([15,20,15]);eventFlash('ATOMIC RIFF +1000 • BONUS','atomic')}else if(chain>1){sfx('combo',chain);vibe([15,20,20]);eventFlash('COMBO x'+chain,'combo')}else{sfx('match',m.length);vibe(18)}await wait(150);let points=m.length*10*chain*(1+Math.floor((level-1)*.15));let awarded=0;if(line>=5){points=2500;awarded=awardBalls(4);devilLaugh()}else if(line===4){points=1000;awarded=awardBalls(2)}const basePoints=points;const appliedMultiplier=activeMultiplier();points*=appliedMultiplier;score+=points;
+async function resolve(){let chain=0;while(chain<18){const m=matches();if(!m.length)break;const line=longestLine();chain++;combo=Math.max(combo,chain);render();m.forEach(i=>q('.riff-cell[data-i="'+i+'"]')?.classList.add('match'));avalancheBurst(m,chain);if(chain>=2){q('#riff-board')?.classList.add('riff-avalanche-shake');setTimeout(()=>q('#riff-board')?.classList.remove('riff-avalanche-shake'),260)}if(line>=5){if(!trainActive())startTrain();sfx('mega');vibe([25,25,45]);eventFlash('LE TRAIN DE LA MORT +2500','mega')}else if(line===4){sfx('extra');ghostLaugh(true);vibe([15,20,15]);eventFlash('ATOMIC RIFF +1000 • BONUS','atomic')}else if(chain>1){sfx('combo',chain);vibe([15,20,20]);eventFlash('COMBO x'+chain,'combo')}else{sfx('match',m.length);vibe(18)}await wait(chain>1?240:190);let points=m.length*10*chain*(1+Math.floor((level-1)*.15));let awarded=0;if(line>=5){points=2500;awarded=awardBalls(4);devilLaugh()}else if(line===4){points=1000;awarded=awardBalls(2)}const basePoints=points;const appliedMultiplier=activeMultiplier();points*=appliedMultiplier;score+=points;
 const hauntedBonus=line===4&&consecutiveFours===1;
 consecutiveFours=line===4?(hauntedBonus?0:consecutiveFours+1):0;
 if(hauntedBonus){score+=3000;hauntedScream();vibe([50,30,90]);eventFlash('CRI HANTÉ +3000','mega')}
-updateBest();if(hauntedBonus)message('👻 DOUBLE ATOMIC RIFF ! +1000 +3000 POINTS !',true);else if(line>=5)message('☠️ LE TRAIN DE LA MORT +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else if(line===4)message('☢️ ATOMIC RIFF +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else message(chain>1?'🤘 COMBO x'+chain+'  +'+points:'💀 RIFF +'+points,chain>1);m.forEach(i=>board[i]=null);gravity();render();await wait(95);if(line<4)maybeExtraBall(m.length,chain);checkLevel();if(chain>=1)gainSix();render()}return chain}
+updateBest();if(hauntedBonus)message('👻 DOUBLE ATOMIC RIFF ! +1000 +3000 POINTS !',true);else if(line>=5)message('☠️ LE TRAIN DE LA MORT +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else if(line===4)message('☢️ ATOMIC RIFF +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else message(chain>1?'🤘 COMBO x'+chain+'  +'+points:'💀 RIFF +'+points,chain>1);m.forEach(i=>board[i]=null);gravity();render();await wait(chain>1?155:110);if(line<4)maybeExtraBall(m.length,chain);checkLevel();if(chain>=1)gainSix();render()}if(chain>=18&&matches().length){fillFresh();ensurePlayable();render();message('⚡ TEMPÊTE DE RIFFS ! GRILLE REMIXÉE',true)}return chain}
 function registerBadMove(){const now=Date.now();badMoves=now-lastBadAt<5000?badMoves+1:1;lastBadAt=now;if(badMoves>=3){badMoves=0;sfx('tilt');vibe([90,50,120]);eventFlash('TILT !','tilt');message('☠️ TILT ! Calme le flipper…',true);return true}return false}
 async function trySwap(a,b){if(busy||gameLost||moves<=0||!adjacent(a,b))return;busy=true;sfx('swap');swap(a,b);render();const m=matches();if(!m.length){consecutiveFours=0;streak=0;multiplier=1;await wait(110);swap(a,b);moves--;selected=null;render();sfx('bad');vibe(30);const tilted=registerBadMove();if(!tilted)message('Pas de riff ici… −1 balle');if(tilted)await wait(650);if(moves<=0){leaderboardEnd();message('☠️ FIN DU SET — '+score+' POINTS',true);sfx('end')}else finishIfBlocked();busy=false;return}badMoves=0;moves--;selected=null;combo=1;streak++;const previousMultiplier=multiplier;multiplier=streak>=12?5:streak>=8?3:streak>=5?2:1;if(multiplier>previousMultiplier){eventFlash('MULTIPLICATEUR ×'+multiplier+' !','mega');message('🔥 MULTIPLICATEUR ×'+multiplier+' ACTIVÉ !',true);vibe([20,30,50])}render();await resolve();if(moves<=0){leaderboardEnd();message('☠️ FIN DU SET — '+score+' POINTS',true);sfx('end');vibe([40,60,40])}else if(!finishIfBlocked()&&level>=5)message('🔥 MODE CHAOS — NIVEAU '+level+' !',true);busy=false}
 function cellClick(e){const btn=e.target.closest('.riff-cell');if(!btn||busy||gameLost||moves<=0)return;unlockAudio();sfx('tap');const i=Number(btn.dataset.i);if(selected===null){selected=i;render();return}if(selected===i){selected=null;render();return}if(adjacent(selected,i)){const a=selected;trySwap(a,i)}else{selected=i;render()}}
