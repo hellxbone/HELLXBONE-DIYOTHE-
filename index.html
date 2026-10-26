@@ -74,6 +74,34 @@ async function showTransferCode(){
   copy.onclick=async()=>{try{await navigator.clipboard.writeText(codeEl.textContent);copy.textContent='CODE COPIÉ';}catch(e){copy.textContent='SÉLECTIONNE LE CODE POUR LE COPIER';}};
  }catch(e){codeEl.textContent='Impossible de créer le code. Réessaie plus tard.';console.warn(e);}
 }
+function showSocialHint(){
+ if(document.getElementById('hellx-social-hint'))return;
+ const el=document.createElement('aside');el.id='hellx-social-hint';
+ el.style.cssText='position:fixed;left:12px;right:12px;bottom:14px;z-index:2147483646;max-width:480px;margin:auto;background:#0a0a0a;color:#f5f5f5;border:2px solid #51ff72;border-radius:12px;padding:14px;font:14px system-ui;box-shadow:0 4px 24px #000a';
+ el.innerHTML='<strong style="color:#7fff8f">TON COMPTE HELLXBONE</strong><p>Tu viens de Facebook ou Instagram ? Ton compte n’est pas automatiquement partagé avec Chrome ou l’application installée. Récupère-le une seule fois grâce à un code sécurisé.</p><button type="button" id="hellx-social-transfer" style="padding:10px;background:#72fa85;color:#000;border:0;font-weight:bold">RÉCUPÉRER MON CODE</button> <button type="button" id="hellx-social-dismiss" style="padding:10px;background:#333;color:#fff;border:0">PLUS TARD</button>';
+ document.body.appendChild(el);
+ el.querySelector('#hellx-social-transfer').onclick=()=>{el.remove();showTransferCode()};
+ el.querySelector('#hellx-social-dismiss').onclick=()=>el.remove();
+}
+function showRetryGate(name){
+ const gate=document.createElement('div');gate.id='hellx-member-gate';
+ gate.innerHTML='<form id="hellx-member-entry"><h1>CONNEXION HELLXBONE</h1><p>Ton pseudo <strong id="hellx-retry-name"></strong> est enregistré sur ce téléphone. Impossible de vérifier le compte pour le moment.</p><p>Vérifie ta connexion puis réessaie : aucune nouvelle inscription n’est nécessaire.</p><button type="button" id="hellx-retry-sync">RÉESSAYER</button><p id="hellx-member-error" role="alert"></p><p><a href="#" id="hellx-retry-recover" style="color:#7fff8f">Utiliser mon code de récupération</a></p></form>';
+ document.body.appendChild(gate);
+ gate.querySelector('#hellx-retry-name').textContent=name;
+ gate.querySelector('#hellx-retry-sync').onclick=async()=>{
+  const btn=gate.querySelector('#hellx-retry-sync'),err=gate.querySelector('#hellx-member-error');
+  btn.disabled=true;err.textContent='';
+  try{await enroll(name);unlock();if(socialBrowser())showSocialHint()}catch(e){err.textContent=e.message==='PSEUDO_PRIS'?'Compte à récupérer avec ton code : ce pseudo appartient déjà à un autre identifiant.':e.message}finally{btn.disabled=false}
+ };
+ gate.querySelector('#hellx-retry-recover').onclick=e=>{
+  e.preventDefault();
+  gate.querySelector('form').innerHTML='<h1>RÉCUPÉRATION HELLXBONE</h1><p>Colle le code créé depuis ton ancien navigateur Facebook ou Instagram.</p><input id="hellx-transfer-input" autocomplete="one-time-code" placeholder="Code de transfert" aria-label="Code de transfert"><button type="submit">RÉCUPÉRER MON COMPTE</button><p id="hellx-member-error" role="alert"></p>';
+  gate.querySelector('form').onsubmit=async ev=>{
+   ev.preventDefault();const btn=gate.querySelector('button'),err=gate.querySelector('#hellx-member-error');btn.disabled=true;err.textContent='';
+   try{await redeemTransfer(gate.querySelector('input').value)}catch(ex){err.textContent=ex.message}finally{btn.disabled=false}
+  };
+ };
+}
 function socialBrowser(){const ua=navigator.userAgent;return /Instagram/i.test(ua)?'Instagram':(/FBAN|FBAV|FB_IAB|FB4A|FBIOS/i.test(ua)?'Facebook':null)}
 document.addEventListener('DOMContentLoaded',async function(){
 const social=socialBrowser();
@@ -82,9 +110,17 @@ const social=socialBrowser();
    d'un pseudo seul, pour éviter toute usurpation de compte. */
 
 if(existingName){
-unlock();
-enroll(existingName).then(()=>{if(social)showTransferCode();}).catch(e=>{console.warn('HELLXBONE: synchronisation en attente',e);});
-return;
+  // Valider le compte coté serveur avant d'ouvrir le club.
+  // Une erreur réseau ne doit pas déclencher la création d'un second pseudo.
+  try{
+    await enroll(existingName);
+    unlock();
+    if(social)showSocialHint();
+  }catch(e){
+    console.warn('HELLXBONE: vérification de compte impossible',e);
+    showRetryGate(existingName);
+  }
+  return;
 }
 const gate=document.createElement('div');gate.id='hellx-member-gate';
 gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p><a href="#" id="hellx-transfer-recover" style="color:#7fff8f">J’ai déjà un pseudo : récupérer mon compte</a></p><p id="hellx-club-live-count">Rejoins des centaines de membres HELLXBONE CLUB</p></form>';
@@ -97,7 +133,7 @@ const error=gate.querySelector('#hellx-member-error'),button=gate.querySelector(
 error.hidden=true;
 if(name.length<2||!/^[a-zA-ZÀ-ÿ0-9 _.-]+$/.test(name)){error.textContent='Choisis un pseudo de 2 a 20 caracteres (lettres, chiffres, espaces, tirets).';error.hidden=false;return}
 button.disabled=true;button.textContent='INSCRIPTION EN COURS…';
-try{await enroll(name);unlock();if(social)showTransferCode()}
+try{await enroll(name);unlock();if(social)showSocialHint()}
 catch(e){error.textContent=e.message==='PSEUDO_PRIS'?'Ce pseudo est déjà pris. Essaie-en un autre.':e.message==='PSEUDO_INVALIDE'?'Pseudo refusé : essaie des lettres, chiffres, espaces ou tirets.':e.message;error.hidden=false;error.scrollIntoView({block:'nearest',behavior:'smooth'});}
 finally{button.disabled=false;button.textContent='ENTRER DANS HELLXBONE'}
 });
