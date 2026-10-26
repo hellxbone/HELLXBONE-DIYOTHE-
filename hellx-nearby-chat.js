@@ -72,6 +72,7 @@ function sync(){view();const radar=document.getElementById('hellx-radar');const 
 setInterval(()=>{sync();if(active&&!document.hidden)scan()},35000);
 setInterval(()=>{if(active&&!document.hidden){loadInbox().catch(()=>{});if(current)renderMessages()}},12000);
 document.addEventListener('visibilitychange',sync);
-new MutationObserver(sync).observe(document.body,{childList:true,subtree:false});
+new MutationObserver(sync).observe(document.getElementById('app')||document.body,{childList:true,subtree:false});
+setInterval(sync,1500);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
 })();
