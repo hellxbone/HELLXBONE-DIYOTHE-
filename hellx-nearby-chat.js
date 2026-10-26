@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const ROOT='https://ldibykpitjutratyqqax.supabase.co',KEY='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv';
 const STORE='hellx-nearby-auth-v1';
-let token=null,expires=0,refresh=null,active=false,working=false,tick=null,current=null,known=[],inbox=[],panel=null;
+let token=null,expires=0,refresh=null,active=false,working=false,tick=null,current=null,currentName='',known=[],inbox=[],panel=null;
 const style=document.createElement('style');
 style.textContent=`
 #hellx-radar .hx-nearby-chat{margin:14px 0;padding:12px;border:1px solid #56895c;background:#06170d;color:#d6ffe0;border-radius:8px;font:14px monospace}
@@ -58,8 +58,8 @@ function draw(){
  });
 }
 async function loadInbox(){inbox=await rpc('hellx_nearby_inbox')||[];draw();if(current)await renderMessages()}
-async function openChat(id,name){current=id;view();panel.querySelector('[data-hx-conversation]').replaceChildren();const cont=panel.querySelector('[data-hx-conversation]');cont.append(el('h3','CHAT PRIVÉ · '+name));const msg=el('div',null,'hx-chat-box');msg.dataset.hxMessages='1';cont.append(msg);const form=el('form');const input=el('input');input.maxLength=500;input.required=true;input.placeholder='Ton message (500 caractères max)';input.setAttribute('aria-label','Écrire un message');const button=el('button','ENVOYER');button.type='submit';form.append(input,button);form.onsubmit=async e=>{e.preventDefault();const body=input.value.trim();if(!body)return;button.disabled=true;try{await rpc('hellx_nearby_send',{p_to:id,p_body:body});input.value='';await renderMessages()}catch(err){note(err.message)}finally{button.disabled=false}};cont.append(form);await renderMessages()}
-async function renderMessages(){if(!current||!panel)return;const box=panel.querySelector('[data-hx-messages]');if(!box)return;try{const messages=await rpc('hellx_nearby_history',{p_with:current})||[];box.replaceChildren();messages.forEach(m=>box.append(el('div',(m.mine?'Moi : ':'Métalleux : ')+m.body,'hx-msg'+(m.mine?' mine':''))));box.scrollTop=box.scrollHeight}catch(e){note(e.message)}}
+async function openChat(id,name){current=id;currentName=String(name||'').trim();view();panel.querySelector('[data-hx-conversation]').replaceChildren();const cont=panel.querySelector('[data-hx-conversation]');cont.append(el('h3','CHAT PRIVÉ · '+name));const msg=el('div',null,'hx-chat-box');msg.dataset.hxMessages='1';cont.append(msg);const form=el('form');const input=el('input');input.maxLength=500;input.required=true;input.placeholder='Ton message (500 caractères max)';input.setAttribute('aria-label','Écrire un message');const button=el('button','ENVOYER');button.type='submit';form.append(input,button);form.onsubmit=async e=>{e.preventDefault();const body=input.value.trim();if(!body)return;button.disabled=true;try{await rpc('hellx_nearby_send',{p_to:id,p_body:body});input.value='';await renderMessages()}catch(err){note(err.message)}finally{button.disabled=false}};cont.append(form);await renderMessages()}
+async function renderMessages(){if(!current||!panel)return;const box=panel.querySelector('[data-hx-messages]');if(!box)return;try{const messages=await rpc('hellx_nearby_history',{p_with:current})||[];box.replaceChildren();messages.forEach(m=>{const sender=String(m.mine?pseudo():(m.sender_pseudo||m.pseudo||currentName||inbox.find(x=>(x.direction==='sent'?x.recipient:x.sender)===current)?.pseudo||known.find(x=>x.user_id===current)?.pseudo||'Membre HELLXBONE')).trim();box.append(el('div',sender+' : '+m.body,'hx-msg'+(m.mine?' mine':'')))});box.scrollTop=box.scrollHeight}catch(e){note(e.message)}}
 async function scan(){
  if(!active||working||document.hidden)return;working=true;
  try{const geo=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:false,maximumAge:25000,timeout:14000}));if(!active)return;
@@ -67,7 +67,7 @@ async function scan(){
  await loadInbox();note('Canal sécurisé actif · '+known.length+' membre(s) à moins de 500 m.');
  }catch(e){note(e.code===1?'Autorisation GPS nécessaire pour chatter.':e.message)}finally{working=false}
 }
-async function stop(){if(!active)return;active=false;known=[];current=null;draw();panel?.querySelector('[data-hx-conversation]')?.replaceChildren();try{await rpc('hellx_nearby_off')}catch{}}
+async function stop(){if(!active)return;active=false;known=[];current=null;currentName='';draw();panel?.querySelector('[data-hx-conversation]')?.replaceChildren();try{await rpc('hellx_nearby_off')}catch{}}
 function sync(){view();const radar=document.getElementById('hellx-radar');const wanted=!!radar?.classList.contains('hx-scanning')&&!document.hidden;if(wanted&&!active){active=true;scan()}else if(!wanted&&active)stop()}
 setInterval(()=>{sync();if(active&&!document.hidden)scan()},35000);
 setInterval(()=>{if(active&&!document.hidden){loadInbox().catch(()=>{});if(current)renderMessages()}},12000);
