@@ -67,12 +67,12 @@ async function rpc(method,body){
 function ui(){
  let node=document.getElementById('hellx-radar');if(node)return node;
  const app=document.getElementById('app');
- const radio=app?.querySelector('#hellx-onair');
- if(!radio)return null;
+ const anchor=app?.querySelector('#hellx-home-anchor');
+ if(!anchor)return null;
  node=document.createElement('section');node.id='hellx-radar';node.setAttribute('aria-label','Radar à métalleux');
  node.innerHTML='<h2>☠ RADAR À MÉTALLEUX</h2><div class="hx-mil-heading"><span>HX-666 / SURVEILLANCE</span><span><i class="hx-mil-led"></i> &nbsp;SCAN LOCAL</span></div><p>Repère les membres HELLXBONE volontaires à moins de 5 km. Seuls les pseudos et des distances approximatives apparaissent.</p><div class="hx-radar-screen" role="img" aria-label="Radar circulaire animé, points représentant les membres détectés, position indicative uniquement"><div class="hx-radar-sweep"></div><div class="hx-radar-label">HELLXBONE</div><div class="hx-radar-dots" id="hellx-radar-dots"></div><div class="hx-radar-center"></div><div class="hx-radar-range">PORTÉE 5 KM</div></div><button id="hellx-radar-toggle" type="button">ACTIVER MON RADAR</button><p id="hellx-radar-status" role="status">Radar désactivé. Ta position n’est pas partagée.</p><ul id="hellx-radar-list" aria-live="polite"></ul><p style="font-size:12px!important">GPS sur accord. La position est arrondie à environ 1 km, masquée aux autres et expire après 2 minutes. Fonctionne uniquement pendant l’ouverture de l’application. Coupe le radar quand tu veux.</p>';
  // Accueil : invitation en premier, radio ensuite, radar juste en dessous.
- radio.insertAdjacentElement('afterend',node);
+ anchor.insertAdjacentElement('afterend',node);
  node.querySelector('#hellx-radar-toggle').addEventListener('click',()=>active?stop():start());
  return node;
 }
