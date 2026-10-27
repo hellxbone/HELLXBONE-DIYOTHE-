@@ -2,8 +2,8 @@
 (()=>{'use strict';
 const style=document.createElement('style');
 style.textContent=`
-nav[aria-label="Navigation principale"]{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:2px!important;padding:5px!important;overflow:visible!important;background:#080e0a!important;position:sticky!important;top:0!important;z-index:90!important}
-nav[aria-label="Navigation principale"] button{display:flex!important;align-items:center!important;justify-content:center!important;padding:4px!important;min-width:0!important;min-height:62px!important;font:900 clamp(30px,7vw,40px)/1 system-ui!important;border-radius:10px!important}
+nav[aria-label="Navigation principale"]{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:7px!important;padding:8px!important;overflow:visible!important;background:#080e0a!important;position:sticky!important;top:0!important;z-index:90!important;align-items:stretch!important}
+nav[aria-label="Navigation principale"] button{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:64px!important;min-height:64px!important;padding:0!important;margin:0!important;min-width:0!important;font-family:"Noto Color Emoji","Segoe UI Emoji",system-ui!important;font-size:clamp(31px,8.5vw,42px)!important;font-weight:400!important;line-height:1!important;letter-spacing:0!important;text-indent:0!important;transform:none!important;border-radius:12px!important;flex:1!important}
 #hx-quick-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 12px;background:#0a160e;border-bottom:1px solid #39784c}
 #hx-quick-nav button{display:flex;align-items:center;justify-content:center;min-height:62px;padding:4px;border:1px solid #4ed66f;background:#15321c;color:#d3ffe0;border-radius:10px;font:900 clamp(34px,8vw,44px)/1 system-ui;cursor:pointer}
 #hx-quick-nav button[aria-pressed=true]{background:#59e479;color:#03200b}
