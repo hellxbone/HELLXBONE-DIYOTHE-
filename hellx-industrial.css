@@ -30,3 +30,30 @@ main#app input,main#app textarea,main#app select{border-radius:5px!important}
 #hellx-onair{box-shadow:inset 0 0 18px #000,0 8px 22px #000b!important;border-color:#647064!important}
 footer{background:#0c100d!important;color:#bfcbbb!important;border-top:1px solid #556359!important}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* HELLXBONE — zine grunge, ripped posters v2 */
+:root{--hx-torn-paper:#d6d0ba;--hx-spray:#80f693;--hx-ash:#141615}
+body{background-color:#080908!important;background-image:radial-gradient(ellipse at 16% 8%,#61735b24,transparent 52%),repeating-linear-gradient(13deg,#ffffff0a 0px,#ffffff0a 1px,transparent 1px,transparent 9px),repeating-linear-gradient(93deg,#0000 0 27px,#00000032 28px 29px),linear-gradient(130deg,#141714,#080a08 80%)!important}
+header{position:relative;background:repeating-linear-gradient(111deg,#20241e 0 5px,#10140f 5px 9px)!important;border-bottom:5px solid #b4ae9b!important}
+header::after{content:"";position:absolute;bottom:-8px;left:0;right:0;height:6px;background:repeating-linear-gradient(95deg,#a9a18b 0 7px,#121812 7px 10px,#d0c9b5 10px 15px);clip-path:polygon(0 20%,4% 85%,9% 22%,14% 76%,20% 7%,26% 90%,35% 12%,43% 88%,54% 20%,62% 75%,72% 15%,81% 90%,91% 25%,100% 70%,100% 100%,0 100%);pointer-events:none}
+nav[aria-label="Navigation principale"] button,#hx-quick-nav button,#hx-home-actions button,main#app .riff-launch-button,#hellx-meet button:not(.hx-off){
+  background:repeating-linear-gradient(160deg,#dfdac8 0 10px,#c9c2ad 11px 20px)!important;
+  color:#111710!important;
+  border:0!important;
+  border-radius:0!important;
+  min-height:50px;
+  box-shadow:3px 5px 0 #000b,0 7px 15px #0009!important;
+  clip-path:polygon(0 5%,5% 0,11% 4%,17% 1%,24% 5%,31% 0,40% 3%,49% 0,57% 4%,65% 1%,73% 5%,82% 0,89% 4%,96% 0,100% 7%,98% 20%,100% 33%,98% 50%,100% 66%,98% 79%,100% 94%,93% 100%,85% 96%,76% 100%,67% 97%,58% 100%,48% 96%,38% 100%,30% 97%,21% 100%,13% 96%,5% 100%,0 92%,2% 79%,0 66%,2% 50%,0 32%,2% 18%)!important;
+  text-shadow:none!important;
+  transition:filter .12s ease,transform .12s ease;
+}
+nav[aria-label="Navigation principale"] button[aria-current="page"],#hx-quick-nav button[aria-pressed="true"],#hx-home-actions button[aria-pressed="true"]{background:repeating-linear-gradient(160deg,#afffc0 0 13px,#7fdd92 14px 24px)!important;color:#101d14!important}
+#hx-home-hub,.section-head,main#app .card,#hellx-meet{border-radius:2px!important;background:linear-gradient(145deg,#292a25,#151815 65%)!important;border:2px solid #8c897b!important;box-shadow:5px 7px 0 #030503,0 0 0 1px #000!important}
+main#app h2,main#app h3{letter-spacing:.045em}
+.hx-grunge-icon{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;width:23px;height:23px;margin-right:4px;color:currentColor;flex:none}
+.hx-grunge-icon svg{width:100%;height:100%;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linejoin:round;stroke-linecap:round}
+nav[aria-label="Navigation principale"] .hx-grunge-icon{display:flex;margin:0 auto 3px;width:22px;height:22px}
+#hx-quick-nav .hx-grunge-icon{width:25px;height:25px}
+#hx-home-actions .hx-grunge-icon{width:28px;height:28px}
+nav[aria-label="Navigation principale"] button{font-size:clamp(10px,2.6vw,13px)!important;overflow:visible!important}
+@media(prefers-reduced-motion:reduce){nav button,#hx-quick-nav button,#hx-home-actions button{transition:none!important}}
