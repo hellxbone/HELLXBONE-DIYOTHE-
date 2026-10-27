@@ -21,7 +21,7 @@ function invitation(){const m=new URLSearchParams(location.hash.replace(/^#/,'')
 const API='https://ldibykpitjutratyqqax.supabase.co/rest/v1/rpc/';
 const KEY='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv';
 async function rpc(name,params){const r=await fetch(API+name,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify(params)});if(!r.ok)throw Error('Impossible d’enregistrer le rendez-vous ('+r.status+').');return r.json()}
-function shareUrl(v){return location.origin+location.pathname+'#meet='+encodeURIComponent(v.id)}
+function shareUrl(v){return location.origin+location.pathname.replace(/[^/]*$/,'')+'invite.html?meet='+encodeURIComponent(v.id)}
 async function share(v,box){
  if(!v.id){box.textContent='Lien court indisponible : réessaie de créer le rendez-vous.';return}
  const url=shareUrl(v);
