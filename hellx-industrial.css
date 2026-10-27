@@ -1,0 +1,32 @@
+/* HELLXBONE — GRUNGE INDUSTRIEL v1. Pure visual layer; no layout relocation. */
+:root{--hx-iron:#171b19;--hx-steel:#313a35;--hx-neon:#8dfa9e;--hx-rust:#92513e;--hx-paper:#e5e8df;--hx-line:#65746a}
+html,body{background:#090c0a!important;color:var(--hx-paper)!important}
+body{background-image:repeating-linear-gradient(0deg,transparent 0 3px,#c3d3c205 4px 5px),radial-gradient(circle at 18% 12%,#30403955,transparent 43%),linear-gradient(145deg,#101512,#050706 70%)!important;background-attachment:fixed!important}
+header{background:repeating-linear-gradient(95deg,#171c19 0px,#121714 3px,#222924 5px,#111512 9px)!important;border-bottom:3px solid #57675a!important;box-shadow:inset 0 -7px 17px #0009,0 5px 14px #0009!important}
+header h1,.hellx-brand,.hx-brand{color:#e7e9e3!important;text-shadow:2px 2px #030503,0 0 13px #72ff7359!important;letter-spacing:.075em!important}
+header small{color:#a9c3ab!important}
+nav[aria-label="Navigation principale"]{background:linear-gradient(#1e2520,#0c100d)!important;border-bottom:2px solid #667268!important;box-shadow:inset 0 2px #a6b5a124!important}
+nav[aria-label="Navigation principale"] button{color:#e1e8dd!important;background:linear-gradient(160deg,#303a33,#151a16)!important;border:1px solid #57665b!important;box-shadow:inset 0 1px #b0b9ab38,0 2px 4px #0008!important;text-transform:uppercase!important}
+nav[aria-label="Navigation principale"] button[aria-current="page"]{color:#081609!important;background:linear-gradient(#b5ffc0,#62c77b)!important;border-color:#b1ffc2!important;text-shadow:none!important}
+#hx-quick-nav{background:#111913!important;border-bottom:2px solid #556956!important}
+#hx-quick-nav button,#hx-home-actions button{background:linear-gradient(150deg,#354238,#171d19)!important;color:#ecf7e9!important;border:1px solid #7b9780!important;box-shadow:inset 0 2px #ffffff16,0 3px 8px #000a!important;letter-spacing:.025em!important}
+#hx-quick-nav button[aria-pressed=true],#hx-home-actions button[aria-pressed=true]{background:linear-gradient(#adffb5,#59ce78)!important;color:#0b210e!important}
+#hx-home-hub{background:repeating-linear-gradient(135deg,#ffffff06 0 1px,transparent 1px 9px),linear-gradient(145deg,#242d27,#101612)!important;border:2px solid #67776b!important;border-radius:8px!important;box-shadow:inset 0 0 0 2px #0009,0 7px 20px #0008!important}
+#hx-home-hub h2{color:#adffb9!important;text-shadow:0 0 10px #45e46c66!important}
+#hx-home-hub p,#hx-home-hub small{color:#dbedda!important}
+main#app{color:#e9eee6!important}
+main#app > section:not(#hellx-onair),main#app .card,.section-head,#hx-horde-panel #hellx-meet,#hx-horde-panel #hellx-radar,#hellx-ghost,#hellx-radar .hx-nearby-chat{box-shadow:inset 0 1px #ffffff19,0 6px 18px #0008!important}
+main#app .card{background:linear-gradient(155deg,#252b26,#131713)!important;border:1px solid #617066!important;border-radius:7px!important}
+main#app .card h3,.section-title,.section-head h2{color:#baffc5!important}
+main#app .card p,.section-head p{color:#e2e6df!important}
+main#app .button,main#app button:not(#hellx-onair-toggle):not(#hellx-radar-toggle):not(.hx-off),#hellx-meet button{border-radius:6px!important;text-shadow:none!important;box-shadow:inset 0 1px #ffffff23,0 3px 6px #0008!important}
+main#app button:focus-visible,nav button:focus-visible,#hx-quick-nav button:focus-visible,a:focus-visible{outline:3px solid #b4ffc0!important;outline-offset:3px!important}
+main#app input,main#app textarea,main#app select{border-radius:5px!important}
+#hellx-meet{background:repeating-linear-gradient(0deg,#ffffff04 0 1px,transparent 2px 6px),linear-gradient(130deg,#1e2a20,#0b130e)!important;border-color:#65886b!important}
+#hellx-meet h2{color:#b5ffc1!important}
+#hellx-meet .meet-invite{background:#1b2c20!important;border-color:#607e65!important}
+#hellx-radar{box-shadow:inset 0 2px #a6beac21,0 10px 23px #000b!important}
+#hellx-ghost{background:#101a14!important;border-color:#67866a!important}
+#hellx-onair{box-shadow:inset 0 0 18px #000,0 8px 22px #000b!important;border-color:#647064!important}
+footer{background:#0c100d!important;color:#bfcbbb!important;border-top:1px solid #556359!important}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
