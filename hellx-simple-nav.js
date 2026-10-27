@@ -3,9 +3,9 @@
 const style=document.createElement('style');
 style.textContent=`
 nav[aria-label="Navigation principale"]{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:2px!important;padding:5px!important;overflow:visible!important;background:#080e0a!important;position:sticky!important;top:0!important;z-index:90!important}
-nav[aria-label="Navigation principale"] button{padding:11px 2px!important;min-width:0!important;font:700 clamp(10px,2.7vw,13px) system-ui!important;white-space:normal!important;line-height:1.2!important;border-radius:8px!important}
+nav[aria-label="Navigation principale"] button{display:flex!important;align-items:center!important;justify-content:center!important;padding:4px!important;min-width:0!important;min-height:62px!important;font:900 clamp(30px,7vw,40px)/1 system-ui!important;border-radius:10px!important}
 #hx-quick-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 12px;background:#0a160e;border-bottom:1px solid #39784c}
-#hx-quick-nav button{padding:12px 6px;border:1px solid #4ed66f;background:#15321c;color:#d3ffe0;border-radius:10px;font:800 14px system-ui;cursor:pointer}
+#hx-quick-nav button{display:flex;align-items:center;justify-content:center;min-height:62px;padding:4px;border:1px solid #4ed66f;background:#15321c;color:#d3ffe0;border-radius:10px;font:900 clamp(34px,8vw,44px)/1 system-ui;cursor:pointer}
 #hx-quick-nav button[aria-pressed=true]{background:#59e479;color:#03200b}
 #hx-home-hub{font:15px system-ui;color:#e7ffed;background:linear-gradient(160deg,#07180d,#0c100d);border-radius:14px;border:1px solid #39784c;padding:14px;margin-bottom:16px}
 #hx-home-hub h2{color:#97ffae!important;font:900 25px system-ui!important;text-align:center;margin:5px 0}
@@ -23,7 +23,7 @@ let selected='home';
 function nav(){const main=document.querySelector('nav[aria-label="Navigation principale"]');if(!main)return;
  let bar=document.getElementById('hx-quick-nav');if(bar)return;
  bar=document.createElement('div');bar.id='hx-quick-nav';bar.setAttribute('aria-label','Accès rapides');
- bar.innerHTML='<button type="button" data-hx-section="horde">☠ RENCONTRES</button><button type="button" data-hx-section="radio">📻 RADIOS LIVE</button>';
+ bar.innerHTML='<button type="button" data-hx-section="horde" aria-label="Rencontres" title="Rencontres">☠️</button><button type="button" data-hx-section="radio" aria-label="Radios live" title="Radios live">📻</button>';
  main.insertAdjacentElement('afterend',bar);
  bar.addEventListener('click',e=>{const b=e.target.closest('[data-hx-section]');if(!b)return;selected=b.dataset.hxSection;const home=main.querySelector('[data-page="accueil"]');const app=document.getElementById('app');if(!app?.querySelector('#hellx-onair'))home?.click();setTimeout(()=>{sync();document.getElementById('hx-horde-panel')?.scrollIntoView({behavior:'smooth',block:'start'});},150);});
 }
