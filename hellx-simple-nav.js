@@ -15,17 +15,17 @@ nav[aria-label="Navigation principale"] button{padding:11px 2px!important;min-wi
 #hx-home-actions button small{font:12px system-ui;color:#bfe7c9}
 #hx-home-actions button[aria-pressed=true]{background:#4fe378;color:#092311}
 #hx-home-actions button[aria-pressed=true] small{color:#103d20}
-#hx-radio-panel,#hx-horde-panel{min-width:0}
+#hx-radio-panel,#hx-horde-panel{min-width:0}\n#hx-radio-panel[hidden],#hx-horde-panel[hidden]{display:none!important}
 #hx-horde-panel #hellx-meet,#hx-horde-panel #hellx-radar{margin:12px auto!important}
 @media(max-width:380px){#hx-home-actions button{font-size:13px}}
 `;document.head.appendChild(style);
-let selected='horde';
+let selected='home';
 function nav(){const main=document.querySelector('nav[aria-label="Navigation principale"]');if(!main)return;
  let bar=document.getElementById('hx-quick-nav');if(bar)return;
  bar=document.createElement('div');bar.id='hx-quick-nav';bar.setAttribute('aria-label','Accès rapides');
  bar.innerHTML='<button type="button" data-hx-section="horde">☠ RENCONTRES</button><button type="button" data-hx-section="radio">📻 RADIOS LIVE</button>';
  main.insertAdjacentElement('afterend',bar);
- bar.addEventListener('click',e=>{const b=e.target.closest('[data-hx-section]');if(!b)return;selected=b.dataset.hxSection;const home=main.querySelector('[data-page="accueil"]');const app=document.getElementById('app');if(!app?.querySelector('#hellx-onair'))home?.click();setTimeout(sync,50);});
+ bar.addEventListener('click',e=>{const b=e.target.closest('[data-hx-section]');if(!b)return;selected=b.dataset.hxSection;const home=main.querySelector('[data-page="accueil"]');const app=document.getElementById('app');if(!app?.querySelector('#hellx-onair'))home?.click();setTimeout(()=>{sync();document.getElementById('hx-horde-panel')?.scrollIntoView({behavior:'smooth',block:'start'});},150);});
 }
 function sync(){
  nav();const app=document.getElementById('app');if(!app)return;
@@ -37,7 +37,7 @@ function sync(){
   horde=document.createElement('div');horde.id='hx-horde-panel';
   radioPanel=document.createElement('div');radioPanel.id='hx-radio-panel';
   app.prepend(hub,horde,radioPanel);
-  hub.addEventListener('click',e=>{const button=e.target.closest('[data-hx-section]');if(!button)return;selected=button.dataset.hxSection;sync()});
+  hub.addEventListener('click',e=>{const button=e.target.closest('[data-hx-section]');if(!button)return;selected=button.dataset.hxSection;sync();if(selected==='horde')document.getElementById('hx-horde-panel')?.scrollIntoView({behavior:'smooth',block:'start'})});
  }
  if(radio.parentElement!==radioPanel)radioPanel.appendChild(radio);
  const meet=app.querySelector('#hellx-meet'),radar=app.querySelector('#hellx-radar');
@@ -45,6 +45,14 @@ function sync(){
  if(radar&&radar.parentElement!==horde)horde.appendChild(radar);
  // Les autres outils non concernés restent en place ; aucun lecteur audio n'est recréé.
  horde.hidden=selected!=='horde';radioPanel.hidden=selected!=='radio';
+ // Afficher aussi le radar et ses chats (enfants du radar) dès que Rencontres est choisi.
+ if(selected==='horde'){
+  const radarNode=document.getElementById('hellx-radar');
+  const meetNode=document.getElementById('hellx-meet');
+  if(meetNode&&meetNode.parentElement!==horde)horde.prepend(meetNode);
+  if(radarNode&&radarNode.parentElement!==horde)horde.append(radarNode);
+ }
+
  hub.querySelectorAll('[data-hx-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hxSection===selected)));
  document.querySelectorAll('#hx-quick-nav [data-hx-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hxSection===selected)));
 }
