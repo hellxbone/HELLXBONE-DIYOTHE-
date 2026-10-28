@@ -1271,7 +1271,7 @@ function draw(time){
  // Bande de balayage laser horizontale traversant tout l'afficheur.
  const sweep=(t*26)%(h+28)-14;
  const beam=ctx.createLinearGradient(0,sweep-9,0,sweep+9);
- beam.addColorStop(0,'rgba(0,255,125,0)');beam.addColorStop(.5,'rgba(100,255,175,'+(foreground?.08:.2')+')');beam.addColorStop(1,'rgba(0,255,125,0)');
+ beam.addColorStop(0,'rgba(0,255,125,0)');beam.addColorStop(.5,'rgba(100,255,175,'+(foreground ? .08 : .2)+')');beam.addColorStop(1,'rgba(0,255,125,0)');
  ctx.fillStyle=beam;ctx.fillRect(0,sweep-9,w,18);
 }
 requestAnimationFrame(draw);
