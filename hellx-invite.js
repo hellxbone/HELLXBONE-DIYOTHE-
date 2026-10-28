@@ -5,7 +5,7 @@ const URL='https://hellxbone.github.io/HELLXBONE-DIYOTHE-/';
 const MESSAGE='☠️🔥 Rejoins-moi dans HELLXBONE CLUB ! 🤘 Club rock & metal gratuit : radio, news, mini-jeux, carte de membre et surprises infernales. Entre dans l’enfer : '+URL;
 const css=document.createElement('style');
 css.textContent='#hellx-invite-home{max-width:650px;margin:16px auto 20px;padding:0 12px;box-sizing:border-box;text-align:center}#hellx-invite-button{display:block;width:100%;padding:17px 16px;border:2px solid #9dff68;border-radius:13px;background:linear-gradient(135deg,#0c1c0d,#285426 55%,#09140a);color:#eeffe6;font:900 clamp(16px,4.4vw,21px)/1.35 system-ui;letter-spacing:.6px;box-shadow:0 0 20px #4cff4a55;cursor:pointer}#hellx-invite-button:focus-visible{outline:3px solid #fff;outline-offset:4px}#hellx-invite-feedback{font:13px system-ui;color:#a8ff86;min-height:18px;margin:8px 0 0}';
-document.head.append(css);
+css.textContent+='#hx-home-hub #hellx-invite-button{background:#14351e!important;border:1px solid #5ce67c!important;color:#e3ffea!important;box-shadow:none!important;font-weight:900!important}#hx-home-hub #hellx-invite-feedback:empty{display:none!important}';document.head.append(css);
 async function invite(){
 try{
 if(navigator.share){await navigator.share({title:'HELLXBONE CLUB',text:MESSAGE});return}
@@ -24,7 +24,7 @@ let wrap=document.getElementById('hellx-invite-home');
 if(!wrap){
  wrap=document.createElement('section');wrap.id='hellx-invite-home';
  const button=document.createElement('button');button.id='hellx-invite-button';button.type='button';button.textContent='☠ INVITER MES POTES 🤘';button.addEventListener('click',invite);
- const hint=document.createElement('p');hint.id='hellx-invite-feedback';hint.textContent='Fais entrer tes amis dans HELLXBONE CLUB — gratuit.';
+ const hint=document.createElement('p');hint.id='hellx-invite-feedback';hint.textContent='';
  wrap.append(button,hint);
 }
 if(group&&wrap.parentElement!==group)group.appendChild(wrap);
