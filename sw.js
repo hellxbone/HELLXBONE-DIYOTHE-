@@ -1,4 +1,4 @@
-const CACHE_VERSION='hellxbone-radio-eq-20261028-v1';
+const CACHE_VERSION='hellxbone-facebook-entry-20261028-v3';
 self.addEventListener('install',event=>{self.skipWaiting()});
 self.addEventListener('activate',event=>{
  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
