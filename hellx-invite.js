@@ -19,12 +19,16 @@ function mount(){
 const app=document.getElementById('app');if(!app)return;
 const radio=app.querySelector('#hellx-onair');
 if(!radio){document.getElementById('hellx-invite-home')?.remove();return}
-if(document.getElementById('hellx-invite-home'))return;
-const wrap=document.createElement('section');wrap.id='hellx-invite-home';
-const button=document.createElement('button');button.id='hellx-invite-button';button.type='button';button.textContent='☠ INVITER MES POTES 🤘';button.addEventListener('click',invite);
-const hint=document.createElement('p');hint.id='hellx-invite-feedback';hint.textContent='Fais entrer tes amis dans HELLXBONE CLUB — gratuit.';
-wrap.append(button,hint);
-app.insertBefore(wrap,app.firstElementChild);
+const group=app.querySelector('#hellx-club > div');
+let wrap=document.getElementById('hellx-invite-home');
+if(!wrap){
+ wrap=document.createElement('section');wrap.id='hellx-invite-home';
+ const button=document.createElement('button');button.id='hellx-invite-button';button.type='button';button.textContent='☠ INVITER MES POTES 🤘';button.addEventListener('click',invite);
+ const hint=document.createElement('p');hint.id='hellx-invite-feedback';hint.textContent='Fais entrer tes amis dans HELLXBONE CLUB — gratuit.';
+ wrap.append(button,hint);
+}
+if(group&&wrap.parentElement!==group)group.appendChild(wrap);
+else if(!group&&wrap.parentElement!==app)app.insertBefore(wrap,app.firstElementChild);
 }
 function init(){const app=document.getElementById('app');if(!app)return;mount();new MutationObserver(()=>mount()).observe(app,{childList:true});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
