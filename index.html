@@ -1399,7 +1399,7 @@ const film=document.createElement('video');
 film.muted=true;film.loop=true;film.playsInline=true;film.preload='metadata';
 film.setAttribute('aria-hidden','true');
 film.style.cssText='position:absolute;left:-9999px;width:1px;height:1px;pointer-events:none';
-film.src='assets/hellxbone-cemetery.webm';
+film.src='assets/101588-video-720.mp4';
 let filmReady=false,filmChecked=false,filmStarted=false;
 film.addEventListener('loadeddata',()=>{filmReady=true;});
 film.addEventListener('error',()=>{filmReady=false;filmChecked=true;});
@@ -1462,7 +1462,12 @@ function render(ms){
  // Genuine footage gets full display resolution: no 128x53 pixel-grid pass.
  if(filmReady&&film.videoWidth&&film.readyState>=2){
   ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
-  ctx.drawImage(film,0,0,w,h);
+  const sourceRatio=film.videoWidth/film.videoHeight, targetRatio=w/h;
+  let sx=0,sy=0,sw=film.videoWidth,sh=film.videoHeight;
+  if(sourceRatio>targetRatio){sw=sh*targetRatio;sx=(film.videoWidth-sw)/2;}
+  else{sh=sw/targetRatio;sy=(film.videoHeight-sh)/2;}
+  ctx.save();ctx.filter='grayscale(1) sepia(1) hue-rotate(65deg) saturate(3) contrast(1.3) brightness(.85)';
+  ctx.drawImage(film,sx,sy,sw,sh,0,0,w,h);ctx.restore();
   return;
  }
  const dx=w/DW,dy=h/DH;
