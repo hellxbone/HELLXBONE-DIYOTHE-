@@ -1287,6 +1287,15 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  object-fit:cover!important;
 }
 #hellx-onair.hx-radio-standby .hx-display{background:#020803!important}
+</style><style id="hx-radio-final-state-fix">
+/* Priorité définitive aux états réels de la radio (ancien style écrasait OFF). */
+#hellx-onair.hx-radio-standby .hx-display #hx-dot-matrix{display:none!important;visibility:hidden!important}
+#hellx-onair.hx-radio-standby .hx-display::before{display:none!important}
+#hellx-onair.hx-radio-standby .hx-display #hx-standby-marquee{display:flex!important;visibility:visible!important}
+#hellx-onair:not(.hx-radio-standby) .hx-display #hx-dot-matrix{display:block!important;visibility:visible!important}
+/* Retirer l'ancienne marge interne et couvrir toute la zone lumineuse. */
+#hellx-onair .hx-display{padding:0!important;background:#000!important}
+#hellx-onair .hx-display #hx-dot-matrix{inset:-2px!important;width:calc(100% + 4px)!important;height:calc(100% + 4px)!important}
 </style><style id="hx-radio-title-style">#hellx-onair .hx-head h2{font-size:clamp(11px,2.7vw,16px)!important;letter-spacing:.4px!important;white-space:nowrap!important;line-height:1.4!important}</style><script defer src="hellx-analytics.js?v=20261025-member-stats"></script><script>window.HELLX_CHAT_ENDPOINT="https://muddy-moon-76da.diyothe.workers.dev";</script><script defer src="hellx-ai-chat.js?v=20261017-persona-v1"></script><script defer src="hellx-shake.js?v=20261021-neon-v5"></script><script defer src="hellx-curse.js?v=20261023-v2"></script><script defer src="hellx-invite.js?v=20261023-v3"></script><script defer src="hellx-auto-alerts.js?v=20261023"></script><script defer src="hellx-radar.js?v=20261024-order-v5"></script><script defer src="hellx-nearby-chat.js?v=20261026-pseudos-v2"></script><script defer src="hellx-ghost-chat.js?v=20261026-ghost-v1"></script><script defer src="hellx-meet.js?v=20261027-preview-v3"></script><script defer src="hellx-simple-nav.js?v=20261028-home-only-club-v1"></script><script>
 /* HELLXBONE CINEMA — cinematic point-cloud graveyard with textured stone and depth */
 (()=>{'use strict';
