@@ -1389,6 +1389,35 @@ function graveyard(t){
   c.fillStyle=gr;c.fillRect(x,y,115,3);
  }
 }
+/* HELLXBONE DMD — film en images pré-rendues, interpolation fluide à 30 fps.
+   Cache 12 images/s sur 43 s, chaque image convertie en luminance phosphore.
+   Pendant la préparation, la scène reste visible sans attendre l'ancien écran radio. */
+const FPS=12,DURATION=43,FRAME_COUNT=FPS*DURATION;
+const DW=128,DH=53,FRAMES=new Array(FRAME_COUNT);
+const samples=new Uint8Array(DW*DH),offPixels=DW*DH;
+let produced=0,ready=false,buildQueued=false;
+function extract(image){
+ const data=image.data,frame=new Uint8Array(offPixels);
+ for(let y=0;y<DH;y++)for(let x=0;x<DW;x++){
+  const i=(((y*2)*W+x*2)*4);
+  frame[y*DW+x]=Math.round(data[i+1]*.9+data[i+2]*.1);
+ }
+ return frame;
+}
+function buildBatch(){
+ buildQueued=false;
+ for(let n=0;n<3&&produced<FRAME_COUNT;n++){
+  graveyard(produced/FPS);
+  FRAMES[produced]=extract(c.getImageData(0,0,W,H));produced++;
+ }
+ if(produced===FRAME_COUNT){ready=true;return;}
+ // Build only a few frames per animation tick to avoid blocking radio controls.
+ buildQueued=true;requestAnimationFrame(buildBatch);
+}
+function startBuild(){
+ if(produced||buildQueued)return;
+ buildQueued=true;requestAnimationFrame(buildBatch);
+}
 function render(ms){
  requestAnimationFrame(render);
  if(ms-last<33)return;last=ms;
@@ -1398,19 +1427,25 @@ function render(ms){
  const ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(w*ratio),ch=Math.round(h*ratio);
  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
  if(!begin)begin=ms;
- graveyard((ms-begin)/750);
- const pixels=c.getImageData(0,0,W,H).data;
+ startBuild();
+ const movieSeconds=((ms-begin)/750)%DURATION;
+ const position=movieSeconds*FPS,i0=Math.floor(position)%FRAME_COUNT,i1=(i0+1)%FRAME_COUNT,blend=position-Math.floor(position);
+ // Playback draws stored frames instead of rerunning shapes, with temporal blending.
+ const first=FRAMES[i0],second=FRAMES[i1];
+ let frame=first;
+ if(!frame||!ready){
+  graveyard(movieSeconds);
+  frame=extract(c.getImageData(0,0,W,H));
+ }
  ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle='#000802';ctx.fillRect(0,0,w,h);
- // Dense phosphor dot matrix: every 1.6 px in source, variable luminance and fine shadows.
- const step=1,dx=w/W,dy=h/H;
- for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step){
-  const idx=(y*W+x)*4,lum=(pixels[idx+1]*.92+pixels[idx+2]*.08);
-  const threshold=8+noise(x,y)*15;
-  if(lum<threshold)continue;
-  const bright=clamp(lum/190),v=Math.floor(45+bright*210);
-  ctx.fillStyle='rgba('+Math.floor(v*.34)+','+v+','+Math.floor(v*.55)+','+clamp(.3+bright*.7).toFixed(2)+')';
-  const dotX=x*dx,dotY=y*dy;
-  ctx.fillRect(dotX,dotY,Math.max(.7,dx*1.13),Math.max(.7,dy*1.13));
+ const dx=w/DW,dy=h/DH;
+ for(let y=0;y<DH;y++)for(let x=0;x<DW;x++){
+  const k=y*DW+x;
+  const lum=ready?first[k]*(1-blend)+second[k]*blend:frame[k];
+  if(lum<11)continue;
+  const bright=clamp(lum/190),v=Math.floor(28+bright*226);
+  ctx.fillStyle='rgba('+Math.floor(v*.34)+','+v+','+Math.floor(v*.53)+','+(.32+bright*.68).toFixed(2)+')';
+  ctx.fillRect(x*dx,y*dy,Math.max(.8,dx*.74),Math.max(.8,dy*.78));
  }
 }
 requestAnimationFrame(render);
