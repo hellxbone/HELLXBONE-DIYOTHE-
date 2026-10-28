@@ -1109,7 +1109,41 @@ function updateBeatLed(){
   led.style.boxShadow='0 0 '+Math.round(3+10*decay)+'px #55ff66';
  }
 }
-function meter(){updateStandbyMarquee();updateBeatLed();const bars=el('hellx-vu-meter')?.children;const radio=el('hellx-onair');if(!bars||!radio)return;const playing=active&&!audio.paused;vuTick++;const level=playing?Math.max(2,Math.min(18,Math.round(5+6*Math.abs(Math.sin(vuTick*0.67))+Math.random()*7))):0;Array.from(bars).forEach((bar,i)=>{bar.className='hx-vu-bar';if(i<level){bar.classList.add(i>15?'hot':i>12?'warn':'lit');bar.style.height=(6+Math.min(23,Math.floor((level-i)*1.5)+Math.random()*4))+'px'}else bar.style.height='5px'});}
+const hxPeakHeights=new Float32Array(18),hxPeakHolds=new Uint8Array(18);
+let hxVisualLevels=new Float32Array(18),hxPhase=0;
+function meter(){
+ updateStandbyMarquee();
+ const bars=el('hellx-vu-meter')?.children,radio=el('hellx-onair');
+ if(!bars||!radio)return;
+ const playing=active&&!audio.paused;
+ const realAudio=playing&&beatAnalyser&&beatBuffer;
+ if(realAudio)beatAnalyser.getByteFrequencyData(beatBuffer);
+ hxPhase+=.24;
+ const now=performance.now();
+ const energyPulse=(Math.sin(hxPhase*1.8)+1)/2;
+ let strongest=0;
+ Array.from(bars).forEach((bar,i)=>{
+  if(!playing){hxVisualLevels[i]=0;hxPeakHeights[i]=0;hxPeakHolds[i]=0;bar.style.height='5px';bar.className='hx-vu-bar';bar.style.removeProperty('--hx-peak');return}
+  let target=0;
+  if(realAudio){
+   const bin=Math.min(beatBuffer.length-1,Math.floor((45+Math.pow(i/17,1.6)*6200)/((beatCtx?.sampleRate||surroundCtx?.sampleRate||44100)/beatAnalyser.fftSize)));
+   target=Math.min(1,beatBuffer[bin]/215);
+  }else{
+   // Visualisation décorative lorsque le flux interdit l'analyse audio.
+   target=Math.min(1,.14+.44*Math.abs(Math.sin(hxPhase*.83+i*.47))+.28*Math.abs(Math.sin(hxPhase*1.67-i*.32))+.18*energyPulse);
+  }
+  const previous=hxVisualLevels[i],value=previous+(target-previous)*(target>previous?.65:.24);
+  hxVisualLevels[i]=value;strongest=Math.max(strongest,value);
+  const height=Math.round(5+value*27);
+  bar.className='hx-vu-bar'+(value>.85?' hot':value>.65?' warn':' lit');
+  bar.style.height=height+'px';
+  if(height>=hxPeakHeights[i]){hxPeakHeights[i]=height;hxPeakHolds[i]=8}
+  else if(hxPeakHolds[i]>0)hxPeakHolds[i]--;
+  else hxPeakHeights[i]=Math.max(height,hxPeakHeights[i]-1.3);
+  bar.style.setProperty('--hx-peak',Math.round(hxPeakHeights[i])+'px');
+ });
+ radio.style.setProperty('--hx-metal-flash',playing?String(Math.max(0,(strongest-.68)*.5)):'0');
+}
 function animation(){meter();if(active&&!audio.paused)frame=window.setTimeout(animation,110);else frame=0}
 function refreshMeter(){if(frame)clearTimeout(frame);frame=0;ui();animation()}
 async function start(){clearRecovery();retryCount=0;playSerial++;const serial=playSerial;if(stations[index].externalPlayer){stop();status('Ouverture du lecteur officiel de '+stations[index].name+'…');window.open(stations[index].url,'_blank','noopener,noreferrer');return}if(active&&!audio.paused)return;active=true;audio.src=stations[index].url;status('Connexion au direct…');try{if(surroundEnabled)await activateSurround();await audio.play();if(serial!==playSerial)return;status('EN DIRECT · '+stations[index].name);refreshMeter();startMetadata()}catch(e){if(serial!==playSerial)return;status('Flux interrompu · tentative de reconnexion');recover();refreshMeter()}}
@@ -1158,6 +1192,21 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #hellx-onair .hx-standby-marquee span{display:inline-block;white-space:nowrap;flex-shrink:0;font:900 clamp(21px,5.8vw,32px)/1.1 "DSEG14 Classic","DSEG14", "Digital-7", "Courier New",monospace;letter-spacing:2px;color:#91ff95;text-shadow:0 0 5px #49ff59,0 0 14px #49ff5970;animation:hx-radio-scroll 15s linear infinite}
 @keyframes hx-radio-scroll{from{transform:translateX(115%)}to{transform:translateX(-115%)}}
 @media(prefers-reduced-motion:reduce){#hellx-onair .hx-standby-marquee span{animation:none}}
+/* HELLXBONE METAL ENERGIQUE : VU-mètre lumineux et crêtes persistantes. */
+#hellx-onair .hx-leds{position:relative;isolation:isolate;overflow:visible!important}
+#hellx-onair .hx-vu-bar{position:relative!important;border-radius:2px 2px 0 0!important;
+ background:linear-gradient(to top,#19a638 0%,#64ff73 58%,#d6ff59 78%,#ffcb46 89%,#fa3d36 100%)!important;
+ filter:drop-shadow(0 0 3px #4dff64);transition:height 95ms ease-out!important;
+ box-shadow:inset 0 1px 1px #ffffff88,0 0 6px #38ff6850!important}
+#hellx-onair .hx-vu-bar.warn{filter:drop-shadow(0 0 5px #ffdf58)}
+#hellx-onair .hx-vu-bar.hot{filter:drop-shadow(0 0 7px #ff6559)}
+#hellx-onair .hx-vu-bar::after{content:"";position:absolute;bottom:calc(var(--hx-peak,5px) - 5px);left:0;right:0;height:2px;
+ background:#edffac;box-shadow:0 0 5px #d8ff75;pointer-events:none;opacity:.92}
+#hellx-onair .hx-display{box-shadow:inset 0 0 calc(10px + 14px * var(--hx-metal-flash,0)) #50ff4d30!important}
+@media(prefers-reduced-motion:reduce){
+ #hellx-onair .hx-vu-bar{transition:none!important;filter:none!important}
+ #hellx-onair .hx-display{box-shadow:none!important}
+}
 </style><style id="hx-radio-title-style">#hellx-onair .hx-head h2{font-size:clamp(11px,2.7vw,16px)!important;letter-spacing:.4px!important;white-space:nowrap!important;line-height:1.4!important}</style><script defer src="hellx-analytics.js?v=20261025-member-stats"></script><script>window.HELLX_CHAT_ENDPOINT="https://muddy-moon-76da.diyothe.workers.dev";</script><script defer src="hellx-ai-chat.js?v=20261017-persona-v1"></script><script defer src="hellx-shake.js?v=20261021-neon-v5"></script><script defer src="hellx-curse.js?v=20261023-v2"></script><script defer src="hellx-invite.js?v=20261023-v3"></script><script defer src="hellx-auto-alerts.js?v=20261023"></script><script defer src="hellx-radar.js?v=20261024-order-v5"></script><script defer src="hellx-nearby-chat.js?v=20261026-pseudos-v2"></script><script defer src="hellx-ghost-chat.js?v=20261026-ghost-v1"></script><script defer src="hellx-meet.js?v=20261027-preview-v3"></script><script defer src="hellx-simple-nav.js?v=20261028-home-only-club-v1"></script></body></html>
 
 
