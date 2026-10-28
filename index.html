@@ -1392,6 +1392,23 @@ function graveyard(t){
 /* HELLXBONE DMD — film en images pré-rendues, interpolation fluide à 30 fps.
    Cache 12 images/s sur 43 s, chaque image convertie en luminance phosphore.
    Pendant la préparation, la scène reste visible sans attendre l'ancien écran radio. */
+/* Lecteur dédié aux séquences filmées : un vrai film dans
+   assets/hellxbone-cemetery.webm sera utilisé automatiquement.
+   En son absence, conservation du scénario intégré (aucun écran noir). */
+const film=document.createElement('video');
+film.muted=true;film.loop=true;film.playsInline=true;film.preload='metadata';
+film.setAttribute('aria-hidden','true');
+film.style.cssText='position:absolute;left:-9999px;width:1px;height:1px;pointer-events:none';
+film.src='assets/hellxbone-cemetery.webm';
+let filmReady=false,filmChecked=false,filmStarted=false;
+film.addEventListener('loadeddata',()=>{filmReady=true;});
+film.addEventListener('error',()=>{filmReady=false;filmChecked=true;});
+document.body.appendChild(film);
+function syncFilm(){
+ if(!filmReady||filmStarted)return;
+ filmStarted=true;
+ film.play().catch(()=>{filmStarted=false;});
+}
 const FPS=12,DURATION=43,FRAME_COUNT=FPS*DURATION;
 const DW=128,DH=53,FRAMES=new Array(FRAME_COUNT);
 const samples=new Uint8Array(DW*DH),offPixels=DW*DH;
@@ -1427,13 +1444,17 @@ function render(ms){
  const ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(w*ratio),ch=Math.round(h*ratio);
  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
  if(!begin)begin=ms;
- startBuild();
+ if(filmReady)syncFilm();else startBuild();
  const movieSeconds=((ms-begin)/750)%DURATION;
  const position=movieSeconds*FPS,i0=Math.floor(position)%FRAME_COUNT,i1=(i0+1)%FRAME_COUNT,blend=position-Math.floor(position);
  // Playback draws stored frames instead of rerunning shapes, with temporal blending.
  const first=FRAMES[i0],second=FRAMES[i1];
  let frame=first;
- if(!frame||!ready){
+ if(filmReady&&film.videoWidth&&film.readyState>=2){
+  c.clearRect(0,0,W,H);
+  c.drawImage(film,0,0,W,H);
+  frame=extract(c.getImageData(0,0,W,H));
+ }else if(!frame||!ready){
   graveyard(movieSeconds);
   frame=extract(c.getImageData(0,0,W,H));
  }
@@ -1441,7 +1462,7 @@ function render(ms){
  const dx=w/DW,dy=h/DH;
  for(let y=0;y<DH;y++)for(let x=0;x<DW;x++){
   const k=y*DW+x;
-  const lum=ready?first[k]*(1-blend)+second[k]*blend:frame[k];
+  const lum=(ready&&!filmReady)?first[k]*(1-blend)+second[k]*blend:frame[k];
   if(lum<11)continue;
   const bright=clamp(lum/190),v=Math.floor(28+bright*226);
   ctx.fillStyle='rgba('+Math.floor(v*.34)+','+v+','+Math.floor(v*.53)+','+(.32+bright*.68).toFixed(2)+')';
