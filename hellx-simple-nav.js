@@ -20,7 +20,8 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 #hx-radio-panel,#hx-horde-panel{min-width:0}
 html:not(.hx-radio-selected) #hellx-onair,
 html:not(.hx-radio-selected) #hx-radio-panel{display:none!important}
-html:not(.hx-radio-selected) #hx-radio-panel *{visibility:hidden!important}\n#hx-radio-panel[hidden],#hx-horde-panel[hidden]{display:none!important}
+html:not(.hx-radio-selected) #hx-radio-panel *{visibility:hidden!important}
+#hx-radio-panel[hidden],#hx-horde-panel[hidden]{display:none!important}
 #hx-horde-panel #hellx-meet,#hx-horde-panel #hellx-radar{margin:12px auto!important}
 @media(max-width:380px){#hx-home-actions button{font-size:13px}}
 `;document.head.appendChild(style);
@@ -29,7 +30,7 @@ document.documentElement.classList.remove('hx-radio-selected');
 // L'accueil ne doit jamais conserver le lecteur radio affiché après un retour par la maison.
 document.addEventListener('click',event=>{
  const home=event.target.closest('nav[aria-label="Navigation principale"] [data-page="accueil"]');
- if(home){selected='home';setTimeout(sync,0)}
+ if(home){selected='home';document.documentElement.classList.remove('hx-radio-selected');document.getElementById('hx-radio-panel')?.setAttribute('hidden','');setTimeout(sync,0)}
 },true);
 function nav(){
  // Les deux raccourcis crâne/radio sous le menu sont supprimés.
@@ -50,6 +51,7 @@ function sync(){
   hub.addEventListener('click',e=>{const button=e.target.closest('[data-hx-section]');if(!button)return;selected=button.dataset.hxSection;sync();if(selected==='horde')document.getElementById('hx-horde-panel')?.scrollIntoView({behavior:'smooth',block:'start'})});
  }
  if(radio.parentElement!==radioPanel)radioPanel.appendChild(radio);
+ radioPanel.style.setProperty('display',selected==='radio'?'':'none','important');
  const meet=app.querySelector('#hellx-meet'),radar=app.querySelector('#hellx-radar');
  if(meet&&meet.parentElement!==horde)horde.appendChild(meet);
  if(radar&&radar.parentElement!==horde)horde.appendChild(radar);
