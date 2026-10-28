@@ -33,17 +33,7 @@ document.documentElement.classList.remove('hellx-gate-pending');
 document.getElementById('hellx-member-gate')?.remove();
 mountTransferButton();
 }
-function mountTransferButton(){
- if(document.getElementById('hellx-account-transfer-button'))return;
- const button=document.createElement('button');
- button.id='hellx-account-transfer-button';
- button.type='button';
- button.textContent='MON CODE DE TRANSFERT';
- button.setAttribute('aria-label','Générer mon code de transfert HELLXBONE');
- button.style.cssText='position:fixed!important;right:12px!important;top:190px!important;z-index:2147483000!important;display:block!important;visibility:visible!important;opacity:1!important;max-width:48vw!important;border:2px solid #7bff84!important;border-radius:10px!important;background:#111!important;color:#fff!important;padding:10px 12px!important;font:800 12px system-ui!important;line-height:1.3!important;box-shadow:0 4px 22px #000c!important;cursor:pointer!important';
- button.onclick=showTransferCode;
- document.body.appendChild(button);
-}
+function mountTransferButton(){ /* Bouton flottant retiré : accès existant conservé. */ }
 
 async function enroll(name){
 const result=await rpc('hellx_club_register',{p_member_id:deviceId(),p_pseudo:name});
