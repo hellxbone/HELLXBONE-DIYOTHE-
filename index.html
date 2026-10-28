@@ -1211,82 +1211,130 @@ function skull(x,y,s){
  for(let i=-2;i<=2;i++)c.fillRect(x+i*1.4*s,y+7*s,.45*s,2*s);
 }
 function graveyard(t){
- const q=t%45, lift=ease((q-17)/10), enter=ease((q-27)/9);
-// Flight path: erratic yet smooth insect flight, not a straight drone rail.
-const flutter=Math.sin(t*1.75)*2.4+Math.sin(t*3.15+.8)*.9;
-const drift=Math.sin(t*.43)*19+Math.sin(t*.97+1)*9+flutter;
-const bank=Math.sin(t*.69)*.13+Math.sin(t*1.44)*.055;
-const dive=Math.sin(t*.57)*.11+Math.sin(t*1.37)*.06;
-const surge=1+Math.sin(t*.82)*.2;
+ const q=t%43; // Faster continuous pinball sequence, ~43 s.
  c.fillStyle='#010702';c.fillRect(0,0,W,H);
- // Surface texture, moon reflections and extremely subtle illumination.
- const sky=c.createRadialGradient(195,19,0,195,19,135);
- sky.addColorStop(0,'#19492a');sky.addColorStop(.55,'#092012');sky.addColorStop(1,'#010702');
- c.fillStyle=sky;c.fillRect(0,0,W,H);
- ellipse(196,19,14,14,green(86));ellipse(200,17,12,13,'#08210f');
- c.save();c.beginPath();c.rect(0,0,W,H);c.clip();
- if(q<32){
-  const zoom=(1.82-1.32*lift)*(1+dive*.43), travel=q*12+Math.sin(q*.78)*9,center=128+drift;
-  c.save();c.translate(center,53+Math.sin(t*.89)*7);c.rotate(bank);c.transform(1,Math.sin(t*.51)*.05,Math.sin(t*.74)*.09,1,0,0);c.scale(zoom*surge,zoom/surge);c.translate(-128,-53);
-  // Drone tilted top-down: central avenue, aerial parallax and edges.
-  poly([[101,-200],[155,-200],[159,260],[98,260]],'#0c2515');
-  stroke([[99,-190],[98,260]],green(46));stroke([[157,-190],[160,260]],green(43));
-  for(let i=-24;i<37;i++){
-   const y=((i*16+travel+600)%620)-245;
-   const depth=.55+.5*(y+245)/620;
+ const glow=c.createRadialGradient(175,25,1,128,53,155);
+ glow.addColorStop(0,'#195934');glow.addColorStop(.6,'#082514');glow.addColorStop(1,'#010602');
+ c.fillStyle=glow;c.fillRect(0,0,W,H);
+ const shift=Math.sin(t*.92)*19+Math.sin(t*2.3)*7;
+ const bank=Math.sin(t*1.3)*.13;
+ function fly(){c.translate(128+shift,53+Math.sin(t*2.2)*6);c.rotate(bank);c.scale(1.25+Math.sin(t*1.1)*.08,1.23);c.translate(-128,-53);}
+ function tombs(progress,fade){
+  c.save();fly();c.globalAlpha=fade;
+  const speed=progress*28;
+  for(let i=-17;i<26;i++){
+   const y=((i*17+speed+550)%530)-175;
    for(const side of [-1,1]){
-    const x=128+side*(45+noise(i,side)*30);
-    // Cast shadow behind raised tombstones: aerial depth.
-    ellipse(x+4,y+5,9*depth,3*depth,'#020a05');
-    stone(x,y,8*depth,13*depth,i%4===0);
-    if(i%4===0)stone(x+side*18,y+8,5*depth,8*depth,true);
-    if(i%9===0){stroke([[x+side*14,y],[x+side*13,y-18],[x+side*2,y-31]],green(72),1.8);
-       stroke([[x+side*13,y-18],[x+side*22,y-24]],green(65));}
+    const x=128+side*(30+noise(i,side)*47);
+    ellipse(x+4,y+4,10,4,'#010702');
+    stone(x,y,8+noise(i,7)*5,12+noise(i,8)*7,i%3===0);
+    if(i%7===0)stroke([[x+8,y],[x+10,y-19],[x+20,y-27]],green(89),2);
    }
-   // Une rangée de dalles et de marches, granuleuses.
-   if(i%3===0)stroke([[113,y],[145,y+2]],green(26),1);
-  }
-  if(q>13){
-   const approach=ease((q-13)/14),cy=-96+approach*151+Math.sin(t*1.1)*8,scale=.5+approach*1.16;
-   c.save();c.translate(128+Math.sin(t*.7)*14,cy);c.rotate(Math.sin(t*.9)*.08);c.scale(scale,scale);
-   // Crypt in aerial view: bevelled roof, shadows, carved stone outline.
-   poly([[-36,-31],[34,-31],[49,-15],[49,27],[-39,27]],'#06130b');
-   poly([[-35,-27],[26,-27],[37,-17],[37,23],[-35,23]],green(47));
-   poly([[-35,-27],[26,-27],[5,-7],[-18,-7]],green(106));
-   poly([[26,-27],[37,-17],[37,23],[5,6],[5,-7]],green(40));
-   poly([[-18,-7],[5,-7],[5,6],[-18,6]],green(61));
-   stroke([[-35,-27],[26,-27],[37,-17],[37,23],[-35,23],[-35,-27]],green(170),1.5);
-   for(let k=0;k<5;k++)stroke([[-35+k*11,-27],[5+k*6,-7]],green(80),.7);
-   poly([[-12,9],[10,9],[10,24],[-12,24]],'#000500');
-   stroke([[-13,23],[-13,8],[-8,3],[7,3],[11,8],[11,23]],green(160),1.2);
-   for(let j=0;j<5;j++)stroke([[-20-j*2,26+j*4],[20+j*2,26+j*4]],green(50+j*11),1);
-   c.restore();
   }
   c.restore();
  }
- if(q>=29){
-  // Descent into crypt: stone archways accelerate past camera.
-  const z=ease((q-29)/9), wide=18+z*165;
-  poly([[0,0],[W,0],[W,H],[0,H]],'rgba(0,6,2,'+(z*.92)+')');
-  for(let j=5;j>=0;j--){
-   const depth=((j/6+z*2)%1),r=10+depth*145;
-   const light=30+depth*115;
-   const sway=Math.sin(t*.9+depth*3)*13;stroke([[128-r+sway,106],[128-r+sway,53-r*.6],[128-r*.65+sway,53-r],[128+r*.65+sway,53-r],[128+r+sway,53-r*.6],[128+r+sway,106]],green(light),1+depth*2);
-   stroke([[128-r*.78,105],[128-r*.75,70]],green(light*.65),.8);
+ function devil(x,y,scale,alpha){
+  c.save();c.globalAlpha=alpha;c.translate(x,y);c.scale(scale,scale);
+  ellipse(0,9,15,18,green(48));
+  ellipse(0,-13,17,19,green(103));
+  poly([[-14,-23],[-23,-43],[-5,-34]],green(122));
+  poly([[14,-23],[23,-43],[5,-34]],green(122));
+  ellipse(-7,-14,3.2,2.7,green(228));ellipse(7,-14,3.2,2.7,green(228));
+  stroke([[-9,-3],[0,2],[9,-3]],green(175),1.7);
+  stroke([[-13,8],[-26,24]],green(130),3);
+  stroke([[13,8],[26,24]],green(130),3);
+  c.restore();
+ }
+ function stage(t,alpha){
+  c.save();c.globalAlpha=alpha;
+  // Raised concert platform, drumkit, musicians and moving crowd.
+  poly([[48,45],[197,45],[211,71],[33,71]],'#07170d');
+  stroke([[48,45],[197,45],[211,71],[33,71]],green(180),2);
+  for(let j=0;j<4;j++){
+   const x=67+j*36;
+   const bounce=Math.sin(t*7+j*2)*2;
+   ellipse(x,30+bounce,6,7,green(137));
+   stroke([[x,38+bounce],[x-2,52],[x-8,60]],green(175),2.6);
+   stroke([[x-2,52],[x+6,60]],green(160),2.6);
+   stroke([[x,42+bounce],[x+13,48+bounce]],green(172),2);
+   if(j===1||j===3)stroke([[x-9,43+bounce],[x+12,49+bounce]],green(230),2.3);
   }
-  // A dark stone sarcophagus and the skull hidden in the crypt.
-  if(q>35){const v=ease((q-35)/6);c.globalAlpha=v;
-   poly([[78,89],[102,71],[158,71],[180,89],[174,105],[83,105]],green(43));
-   stroke([[78,89],[102,71],[158,71],[180,89]],green(143),1.5);
-   skull(129,77,.9+v*.8);c.globalAlpha=1;}
+  ellipse(127,48,15,12,green(105));ellipse(127,48,9,8,'#031207');
+  stroke([[111,35],[102,28],[108,46]],green(145),2);
+  for(let i=0;i<25;i++){
+   const x=15+(i%13)*19+Math.sin(i*9)*5,y=77+Math.floor(i/13)*17+Math.sin(i*3+t*5)*2;
+   ellipse(x,y,3.8,4.2,green(50+Math.floor(noise(i,2)*85)));
+   stroke([[x,y+4],[x+Math.sin(t*3+i)*4,y+12]],green(69),2);
+   if(i%4===0)stroke([[x+1,y+6],[x+7,y-7+Math.sin(t*4+i)*3]],green(128),1.5);
+  }
+  // Real beams crossing the crowd: moving-head stage lighting.
+  c.globalCompositeOperation='screen';
+  for(let j=0;j<4;j++){
+   const source=51+j*50,angle=Math.sin(t*2.1+j*1.7)*.72;
+   const target=source+Math.sin(angle)*90;
+   const gradient=c.createLinearGradient(source,35,target,104);
+   gradient.addColorStop(0,'rgba(91,255,133,.34)');
+   gradient.addColorStop(1,'rgba(39,255,100,.01)');
+   poly([[source-3,37],[source+3,37],[target+21,106],[target-21,106]],gradient);
+   stroke([[source,37],[target,102]],green(155),.7);
+  }
+  c.restore();
  }
- // Fine moving mist, distinct planes.
- for(let k=0;k<7;k++){
-  const y=15+k*16+Math.sin(t*.25+k)*3,x=((t*(4+k*.5)+k*56)%320)-65;
-  const fog=c.createLinearGradient(x,0,x+105,0);fog.addColorStop(0,'#08211200');fog.addColorStop(.5,'#24583a24');fog.addColorStop(1,'#08211200');
-  c.fillStyle=fog;c.fillRect(x,y,105,3+k*.4);
+ function cryptExterior(progress){
+  const z=.5+progress*2.2,x=128+Math.sin(t*.8)*10,y=42+Math.sin(t*1.2)*4;
+  c.save();c.translate(x,y);c.rotate(Math.sin(t*.65)*.06);c.scale(z,z);
+  // Grand mausoleum: columns, gargoyles, gothic pointed arch, sculpted facade.
+  poly([[-50,38],[-50,-21],[-32,-45],[32,-45],[50,-21],[50,38]],green(40));
+  poly([[-54,-18],[0,-65],[54,-18]],green(95));
+  stroke([[-54,-18],[0,-65],[54,-18]],green(218),2);
+  stroke([[-46,-18],[0,-56],[46,-18]],green(106),1);
+  for(const side of [-1,1]){
+   const x=side*38;
+   poly([[x-7,38],[x-7,-25],[x+7,-25],[x+7,38]],green(109));
+   for(let k=0;k<5;k++)stroke([[x-6,-21+k*12],[x+6,-21+k*12]],green(41),.8);
+   poly([[x-10,-25],[x,-43],[x+10,-25]],green(139));
+   skull(side*47,-35,.55);
+  }
+  // sculpted rose window and stone reliefs.
+  ellipse(0,-37,10,10,green(151));ellipse(0,-37,7,7,'#082416');
+  for(let i=0;i<8;i++){let ang=i*Math.PI/4;stroke([[Math.cos(ang)*3,-37+Math.sin(ang)*3],[Math.cos(ang)*9,-37+Math.sin(ang)*9]],green(209),1);}
+  poly([[-18,38],[-18,2],[0,-18],[18,2],[18,38]],'#000601');
+  stroke([[-18,38],[-18,2],[0,-18],[18,2],[18,38]],green(215),2);
+  for(let i=0;i<9;i++)stroke([[-48,33-i*6],[-28,33-i*6]],green(70),.6);
+  c.restore();
  }
- c.restore();
+ function interior(progress){
+  const depth=progress*4,swirl=Math.sin(t*1.8)*12;
+  c.save();
+  for(let i=6;i>=0;i--){
+   const d=((i/7+depth)%1),r=12+d*150;
+   const x=128+swirl*d,y=58+Math.sin(t*1.2)*4*d;
+   const l=45+d*150;
+   stroke([[x-r,106],[x-r,y-r*.65],[x-r*.65,y-r],[x+r*.65,y-r],[x+r,y-r*.65],[x+r,106]],green(l),1+d*2.5);
+   for(let k=0;k<3;k++)stone(x-r+7+k*11,y+26,4+d*5,6+d*8,true);
+  }
+  // Sarcophagus, guardian skull and supernatural portal.
+  const fade=ease((progress-.35)/.35);
+  c.globalAlpha=fade;
+  poly([[75,89],[100,64],[158,64],[184,89],[176,105],[83,105]],green(54));
+  stroke([[75,89],[100,64],[158,64],[184,89]],green(194),2);
+  skull(127,72,1.4);
+  ellipse(129,34,20+Math.sin(t*4)*2,28,green(66));
+  ellipse(129,34,13,22,'#000600');
+  c.restore();
+ }
+ if(q<13){tombs(q,1);if(q>5){let alpha=ease((q-5)/2)*(1-ease((q-10)/3));devil(125+Math.sin(t*2)*14,49,1.1+alpha*.55,alpha);}}
+ else if(q<24){tombs(q*.35,.38);const fade=ease((q-13)/2)*(1-ease((q-22)/2));stage(t,fade);}
+ else if(q<32){tombs(q*.5,.23);cryptExterior(ease((q-24)/8));}
+ else if(q<41){interior(ease((q-32)/7));}
+ else{interior(1-ease((q-41)/2));}
+ // Gliding phosphor mist.
+ for(let i=0;i<6;i++){
+  const y=14+i*17+Math.sin(t*.8+i)*4,x=((t*(7+i*.6)+i*45)%340)-80;
+  const gr=c.createLinearGradient(x,0,x+115,0);
+  gr.addColorStop(0,'rgba(20,90,44,0)');gr.addColorStop(.5,'rgba(28,120,56,.16)');gr.addColorStop(1,'rgba(20,90,44,0)');
+  c.fillStyle=gr;c.fillRect(x,y,115,3);
+ }
 }
 function render(ms){
  requestAnimationFrame(render);
@@ -1297,7 +1345,7 @@ function render(ms){
  const ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(w*ratio),ch=Math.round(h*ratio);
  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
  if(!begin)begin=ms;
- graveyard((ms-begin)/1000);
+ graveyard((ms-begin)/750);
  const pixels=c.getImageData(0,0,W,H).data;
  ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle='#000802';ctx.fillRect(0,0,w,h);
  // Dense phosphor dot matrix: every 1.6 px in source, variable luminance and fine shadows.
