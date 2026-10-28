@@ -1233,7 +1233,7 @@ function graveyard(t){
   }
   c.restore();
  }
- function devil(x,y,scale,alpha){
+ function devil(x,y,scale,alpha,t){
   // Cinematic close-up with sculpted horns, jaw, cheek shadows and redoubled eye glow.
   c.save();c.globalAlpha=alpha;c.translate(x,y);c.scale(scale,scale);
   const body=c.createLinearGradient(-25,-35,27,34);
@@ -1362,7 +1362,7 @@ function graveyard(t){
   ellipse(129,34,13,22,'#000600');
   c.restore();
  }
- if(q<13){tombs(q,1);if(q>5){let alpha=ease((q-5)/2)*(1-ease((q-10)/3));devil(125+Math.sin(t*2)*14,49,1.1+alpha*.55,alpha);}}
+ if(q<13){tombs(q,1);if(q>5){let alpha=ease((q-5)/2)*(1-ease((q-10)/3));devil(125+Math.sin(t*2)*14,49,1.1+alpha*.55,alpha,t);}}
  else if(q<24){tombs(q*.35,.38);const fade=ease((q-13)/2)*(1-ease((q-22)/2));stage(t,fade);}
  else if(q<32){tombs(q*.5,.23);cryptExterior(ease((q-24)/8));}
  else if(q<41){interior(ease((q-32)/7));}
