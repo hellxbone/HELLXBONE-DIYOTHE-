@@ -22,6 +22,11 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 @media(max-width:380px){#hx-home-actions button{font-size:13px}}
 `;document.head.appendChild(style);
 let selected='home';
+// L'accueil ne doit jamais conserver le lecteur radio affiché après un retour par la maison.
+document.addEventListener('click',event=>{
+ const home=event.target.closest('nav[aria-label="Navigation principale"] [data-page="accueil"]');
+ if(home){selected='home';setTimeout(sync,0)}
+},true);
 function nav(){
  // Les deux raccourcis crâne/radio sous le menu sont supprimés.
  // Les accès RENCONTRES et RADIOS LIVE du panneau HELLXBONE CLUB restent disponibles.
@@ -45,6 +50,8 @@ function sync(){
  if(radar&&radar.parentElement!==horde)horde.appendChild(radar);
  // Les autres outils non concernés restent en place ; aucun lecteur audio n'est recréé.
  horde.hidden=selected!=='horde';radioPanel.hidden=selected!=='radio';
+// La radio ne s'affiche que sur demande via RADIOS LIVE, pas sur l'accueil.
+if(selected==='home'){radioPanel.hidden=true;horde.hidden=true}
  // Afficher aussi le radar et ses chats (enfants du radar) dès que Rencontres est choisi.
  if(selected==='horde'){
   const radarNode=document.getElementById('hellx-radar');
