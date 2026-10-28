@@ -1230,7 +1230,7 @@ let last=0,mode=0,previous=-1,modeAt=0,duration=9000;
 const random=(x,y,s)=>{const z=Math.sin(x*127.1+y*311.7+s*74.7)*43758.5453;return z-Math.floor(z)};
 function draw(time){
  requestAnimationFrame(draw);
- if(time-last<45)return;last=time;
+ if(time-last<38)return;last=time;
  if(!ctx||!canvas||!radio)return;
  const visible=radio.classList.contains('hx-playing')&&!radio.classList.contains('hx-radio-standby')&&!document.hidden&&!reduced.matches;
  if(!visible)return;
@@ -1239,28 +1239,39 @@ function draw(time){
  const dpr=Math.min(window.devicePixelRatio||1,2);
  if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr)}
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
- if(!modeAt||time-modeAt>duration){previous=mode;do{mode=Math.floor(Math.random()*5)}while(mode===previous);modeAt=time;duration=8000+Math.random()*5000}
+ if(!modeAt||time-modeAt>duration){previous=mode;do{mode=Math.floor(Math.random()*5)}while(mode===previous);modeAt=time;duration=6100+Math.random()*3800}
  const age=(time-modeAt)/duration;
- const reveal=Math.min(1,age/.24),exit=Math.min(1,(1-age)/.17),fade=Math.min(reveal,exit);
+ const reveal=Math.min(1,age/.19),exit=Math.min(1,(1-age)/.13),fade=Math.min(reveal,exit);
  const title=radio.querySelector('#hx-nowplaying:not([hidden])');
- const alpha=title? .34:.87;
- const t=time/1000,spacing=5;
- const scale=Math.min(w/160,h/80)*.94,ox=(w-160*scale)/2,oy=(h-80*scale)/2;
+ const alpha=title? .29:1;
+ const t=time/1000,spacing=4;
+ const scale=Math.min(w/160,h/80)*1.14,ox=(w-160*scale)/2,oy=(h-80*scale)/2;
  const mask=masks[mode];
  for(let y=3;y<77;y+=spacing)for(let x=3;x<157;x+=spacing){
   const i=(y*160+x)*4,hit=mask[i+3]/255;
   if(hit<.4)continue;
   const noise=random(x,y,mode);
-  if(noise>fade*.98)continue;
-  const shimmer=.62+.38*Math.sin(t*2.7+x*.11+y*.14);
+  if(noise>Math.max(.03,fade)*.99)continue;
+  const shimmer=.82+.18*Math.sin(t*3.4+x*.11+y*.14);
   const sx=ox+(x+Math.sin(t*1.1+y*.13)*.75)*scale;
   const sy=oy+(y+Math.cos(t*.9+x*.08)*.55)*scale;
-  const radius=Math.max(.65,Math.min(2.2,scale*1.75));
-  ctx.fillStyle='rgba(85,255,126,'+(alpha*shimmer).toFixed(3)+')';
-  ctx.shadowColor='#4bff71';ctx.shadowBlur=shimmer>.8?4:1;
+  const radius=Math.max(1.05,Math.min(2.65,scale*2.1));
+  ctx.fillStyle='rgba(124,255,146,'+(Math.min(1,alpha*shimmer)).toFixed(3)+')';
+  ctx.shadowColor='#50ff76';ctx.shadowBlur=shimmer>.8?7:3;
   ctx.fillRect(sx-radius/2,sy-radius/2,radius,radius);
  }
  ctx.shadowBlur=0;
+ // Éclairage de scène discret et mouvant : faisceaux doux sans flash agressif.
+ const beamAlpha=(title?.055:.13)*(.75+.25*Math.sin(t*1.45));
+ ctx.save();ctx.globalCompositeOperation='screen';
+ for(let k=0;k<2;k++){
+  const cx=w*(.27+k*.46)+Math.sin(t*.4+k*2)*w*.12;
+  const grad=ctx.createRadialGradient(cx,h*.53,0,cx,h*.53,Math.max(w*.38,h*.8));
+  grad.addColorStop(0,'rgba(70,255,110,'+beamAlpha.toFixed(3)+')');
+  grad.addColorStop(1,'rgba(70,255,110,0)');
+  ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+ }
+ ctx.restore();
 }
 requestAnimationFrame(draw);
 })();
