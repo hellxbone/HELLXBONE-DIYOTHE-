@@ -1296,6 +1296,39 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 /* Retirer l'ancienne marge interne et couvrir toute la zone lumineuse. */
 #hellx-onair .hx-display{padding:0!important;background:#000!important}
 #hellx-onair .hx-display #hx-dot-matrix{inset:-2px!important;width:calc(100% + 4px)!important;height:calc(100% + 4px)!important}
+</style><style id="hx-radio-screen-aligned-to-svg">
+/* Écran du poste SVG : x=98..862 sur 960, y=153..361 sur 560.
+   Fond SVG affiché en 100% largeur / 85% hauteur de l'autoradio. */
+#hellx-onair .hx-display{
+ position:absolute!important;
+ left:10.21%!important;
+ top:23.23%!important;
+ width:79.58%!important;
+ height:31.57%!important;
+ min-width:0!important;
+ max-width:none!important;
+ margin:0!important;
+ padding:0!important;
+ box-sizing:border-box!important;
+ overflow:hidden!important;
+ border:0!important;
+ border-radius:5px!important;
+ background:#000!important;
+ display:block!important;
+ z-index:2!important;
+}
+#hellx-onair .hx-display #hx-dot-matrix{
+ position:absolute!important;
+ inset:0!important;
+ width:100%!important;
+ height:100%!important;
+ margin:0!important;
+ padding:0!important;
+ display:block!important;
+ object-fit:fill!important;
+}
+#hellx-onair.hx-radio-standby .hx-display #hx-dot-matrix{display:none!important}
+#hellx-onair.hx-radio-standby .hx-display #hx-standby-marquee{display:flex!important}
 </style><style id="hx-radio-title-style">#hellx-onair .hx-head h2{font-size:clamp(11px,2.7vw,16px)!important;letter-spacing:.4px!important;white-space:nowrap!important;line-height:1.4!important}</style><script defer src="hellx-analytics.js?v=20261025-member-stats"></script><script>window.HELLX_CHAT_ENDPOINT="https://muddy-moon-76da.diyothe.workers.dev";</script><script defer src="hellx-ai-chat.js?v=20261017-persona-v1"></script><script defer src="hellx-shake.js?v=20261021-neon-v5"></script><script defer src="hellx-curse.js?v=20261023-v2"></script><script defer src="hellx-invite.js?v=20261023-v3"></script><script defer src="hellx-auto-alerts.js?v=20261023"></script><script defer src="hellx-radar.js?v=20261024-order-v5"></script><script defer src="hellx-nearby-chat.js?v=20261026-pseudos-v2"></script><script defer src="hellx-ghost-chat.js?v=20261026-ghost-v1"></script><script defer src="hellx-meet.js?v=20261027-preview-v3"></script><script defer src="hellx-simple-nav.js?v=20261028-home-only-club-v1"></script><script>
 /* HELLXBONE CINEMA — cinematic point-cloud graveyard with textured stone and depth */
 (()=>{'use strict';
