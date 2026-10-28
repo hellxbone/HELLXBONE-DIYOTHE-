@@ -22,12 +22,10 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 @media(max-width:380px){#hx-home-actions button{font-size:13px}}
 `;document.head.appendChild(style);
 let selected='home';
-function nav(){const main=document.querySelector('nav[aria-label="Navigation principale"]');if(!main)return;
- let bar=document.getElementById('hx-quick-nav');if(bar)return;
- bar=document.createElement('div');bar.id='hx-quick-nav';bar.setAttribute('aria-label','Accès rapides');
- bar.innerHTML='<button type="button" data-hx-section="horde" aria-label="Rencontres" title="Rencontres">☠️</button><button type="button" data-hx-section="radio" aria-label="Radios live" title="Radios live">📻</button>';
- main.insertAdjacentElement('afterend',bar);
- bar.addEventListener('click',e=>{const b=e.target.closest('[data-hx-section]');if(!b)return;selected=b.dataset.hxSection;const home=main.querySelector('[data-page="accueil"]');const app=document.getElementById('app');if(!app?.querySelector('#hellx-onair'))home?.click();setTimeout(()=>{sync();document.getElementById('hx-horde-panel')?.scrollIntoView({behavior:'smooth',block:'start'});},150);});
+function nav(){
+ // Les deux raccourcis crâne/radio sous le menu sont supprimés.
+ // Les accès RENCONTRES et RADIOS LIVE du panneau HELLXBONE CLUB restent disponibles.
+ document.getElementById('hx-quick-nav')?.remove();
 }
 function sync(){
  nav();const app=document.getElementById('app');if(!app)return;
