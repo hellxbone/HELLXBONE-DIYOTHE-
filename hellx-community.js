@@ -18,7 +18,7 @@ const placeClub=()=>{
  // Les boutons sont réservés à l'accueil et jamais à la rubrique radios.
  if(!radio||!hub){root.remove();art.remove();return}
  if(root.parentElement!==hub)hub.appendChild(root);
- if(art.parentElement!==app||art.previousElementSibling!==hub)hub.insertAdjacentElement('afterend',art);
+ art.remove(); // Ancienne illustration supprimée : la nouvelle image est gérée par l'accueil.
  const onHome=!document.documentElement.classList.contains('hx-radio-selected')&&!document.querySelector('#hx-home-actions [data-hx-section="horde"][aria-pressed="true"]');
  root.hidden=!onHome;
  art.hidden=!onHome;
