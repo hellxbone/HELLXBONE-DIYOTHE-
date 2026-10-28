@@ -1092,9 +1092,12 @@ let hxBassAverage=0,hxBassLast=0,hxBassSamples=0;
 function updateBassLed(){
  const led=el('hx-bass-led');if(!led)return;
  const playing=active&&!audio.paused;
+ led.classList.toggle('hx-bass-on',playing);
+ if(playing&&!beatAnalyser)tryBeatCapture();
  if(!playing||!beatAnalyser||!beatBuffer){
   led.classList.remove('hx-bass-beat','hx-bass-ready');
-  led.setAttribute('aria-label',playing?'Analyse des basses indisponible':'Radio arrêtée');
+  led.setAttribute('aria-label',playing?'Radio en lecture : analyse des basses indisponible':'Radio arrêtée');
+  led.title=playing?'Radio en direct · synchronisation aux basses indisponible':'Radio arrêtée';
   return;
  }
  beatAnalyser.getByteFrequencyData(beatBuffer);
@@ -1200,6 +1203,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  #hellx-onair .hx-display{box-shadow:none!important}
 }
 #hellx-onair #hx-bass-led{position:absolute!important;top:18px;right:8px;width:9px;height:9px;border-radius:50%;background:#511412;border:1px solid #8b3530;z-index:5;box-shadow:inset 0 0 2px #000}
+#hellx-onair #hx-bass-led.hx-bass-on{background:#be2520;border-color:#ff544e;box-shadow:0 0 5px #ed201e}
 #hellx-onair #hx-bass-led.hx-bass-ready{background:#9f1a13;border-color:#cb544b}
 #hellx-onair #hx-bass-led.hx-bass-beat{background:#ff2f24;box-shadow:0 0 8px 3px #ff3927,0 0 15px #c3221d}
 @media(prefers-reduced-motion:reduce){#hellx-onair .hx-demon-horns{animation:none!important}}
