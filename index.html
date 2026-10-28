@@ -974,13 +974,17 @@ function activateSurround(){
  }
  return surroundCtx.resume();
 }
-function bindAudioEvents(a){
- a.addEventListener('playing',()=>{if(a!==audio)return;clearRecovery();retryCount=0;
- if(!introShown){introShown=true;introPlaying=true;clearTimeout(introTimer);
+function startRadioMarquee(){
+ if(!active||audio.paused)return;
+ introPlaying=true;clearTimeout(introTimer);
  const marquee=el('hx-standby-marquee')?.querySelector('span');
  if(marquee){marquee.style.animation='none';void marquee.offsetWidth;marquee.style.animation='hx-radio-scroll 15s linear 1 forwards'}
+ updateStandbyMarquee();
  introTimer=setTimeout(()=>{introPlaying=false;updateStandbyMarquee()},15000);
- }
+}
+function bindAudioEvents(a){
+ a.addEventListener('playing',()=>{if(a!==audio)return;clearRecovery();retryCount=0;
+ if(!introShown){introShown=true;startRadioMarquee();clearInterval(introInterval);introInterval=setInterval(()=>{if(active&&!audio.paused)startRadioMarquee()},60000)}
  ui();refreshMeter();startMetadata()});
  a.addEventListener('error',()=>{if(a===audio&&active)recover()});
  a.addEventListener('stalled',()=>{if(a===audio)monitorStall()});
@@ -1000,7 +1004,7 @@ function resetAudioForSurround(enabled){
  else{status(enabled?'Surround prêt · active POWER':'Son stéréo normal');refreshMeter()}
 }
 
-let active=false,index=0,frame=0,vuTick=0,introShown=false,introPlaying=false,introTimer=0;
+let active=false,index=0,frame=0,vuTick=0,introShown=false,introPlaying=false,introTimer=0,introInterval=0;
 function el(id){return document.getElementById(id)}
 function status(message){const x=el('hellx-onair-status');if(x)x.textContent=message}
 function ui(){const radio=el('hellx-onair'),button=el('hellx-onair-toggle'),led=el('hellx-led-power'),tune=el('hx-tuning');if(radio)radio.classList.toggle('hx-playing',active&&!audio.paused);if(button){button.textContent=active&&!audio.paused?'■ STOP':'⏻ POWER';button.setAttribute('aria-pressed',String(active&&!audio.paused))}if(led)led.setAttribute('aria-label',active&&!audio.paused?'Radio en lecture':'Radio arrêtée');if(tune)tune.textContent=active&&!audio.paused?'LIVE':'STANDBY';updateStandbyMarquee()}
@@ -1071,8 +1075,8 @@ function meter(){updateStandbyMarquee();const bars=el('hellx-vu-meter')?.childre
 function animation(){meter();if(active&&!audio.paused)frame=window.setTimeout(animation,110);else frame=0}
 function refreshMeter(){if(frame)clearTimeout(frame);frame=0;ui();animation()}
 async function start(){clearRecovery();retryCount=0;playSerial++;const serial=playSerial;if(stations[index].externalPlayer){stop();status('Ouverture du lecteur officiel de '+stations[index].name+'…');window.open(stations[index].url,'_blank','noopener,noreferrer');return}if(active&&!audio.paused)return;active=true;audio.src=stations[index].url;status('Connexion au direct…');try{if(surroundEnabled)await activateSurround();await audio.play();if(serial!==playSerial)return;status('EN DIRECT · '+stations[index].name);refreshMeter();startMetadata()}catch(e){if(serial!==playSerial)return;status('Flux interrompu · tentative de reconnexion');recover();refreshMeter()}}
-function stop(){clearTimeout(introTimer);introPlaying=false;introShown=false;el('hx-standby-marquee')?.querySelector('span')?.style.removeProperty('animation');playSerial++;clearRecovery();retryCount=0;active=false;audio.pause();audio.removeAttribute('src');audio.load();status('Radio arrêtée');stopMetadata();refreshMeter()}
-function changeStation(n){introShown=false;clearTimeout(introTimer);introPlaying=false;index=(n+stations.length)%stations.length;const sel=el('hellx-onair-station');if(sel)sel.value=String(index);if(active){stop();start()}else {status('Prêt · '+stations[index].name);showTrack(stations[index].name)}}
+function stop(){clearTimeout(introTimer);clearInterval(introInterval);introInterval=0;introPlaying=false;introShown=false;el('hx-standby-marquee')?.querySelector('span')?.style.removeProperty('animation');playSerial++;clearRecovery();retryCount=0;active=false;audio.pause();audio.removeAttribute('src');audio.load();status('Radio arrêtée');stopMetadata();refreshMeter()}
+function changeStation(n){introShown=false;clearInterval(introInterval);introInterval=0;clearTimeout(introTimer);introPlaying=false;index=(n+stations.length)%stations.length;const sel=el('hellx-onair-station');if(sel)sel.value=String(index);if(active){stop();start()}else {status('Prêt · '+stations[index].name);showTrack(stations[index].name)}}
 function mount(){const radio=el('hellx-onair');if(!radio||radio.dataset.radioBound==='yes')return;const selector=el('hellx-onair-station');if(selector){selector.replaceChildren(...stations.map((station,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=station.name;return option}));selector.value=String(index)}radio.dataset.radioBound='yes';el('hellx-onair-toggle')?.addEventListener('click',()=>active?stop():start());el('hellx-onair-station')?.addEventListener('change',e=>changeStation(Number(e.target.value)||0));el('hx-next-station')?.addEventListener('click',()=>changeStation(index+1));el('hx-bass')?.addEventListener('click',()=>resetAudioForSurround(!surroundEnabled));
  refreshMeter()}
 bindAudioEvents(audio);
