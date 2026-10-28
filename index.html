@@ -1135,6 +1135,32 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #hellx-onair .hx-station-wrap{color:#d8e2d3!important;text-align:center!important;font-size:9px!important}
 #hellx-onair .hx-station-wrap select{width:100%!important;min-height:28px!important;background:#0b1c0c!important;border:1px solid #518a54!important;color:#baffae!important;font-size:clamp(10px,2.5vw,13px)!important}
 @media(max-width:360px){#hellx-onair .hx-controls{padding:0 11%!important;gap:4px!important}#hellx-onair .hx-controls button{min-height:33px!important}}
+/* Égaliseur visible sous le boîtier vintage : ne plus couper la cinquième rangée. */
+#hellx-onair{
+ aspect-ratio:auto!important;
+ grid-template-rows:clamp(55px,13.4vw,87px) clamp(110px,25.7vw,167px) clamp(80px,19.3vw,125px) clamp(58px,10.3vw,67px) auto!important;
+ overflow:visible!important;
+ background-size:100% auto!important;
+ background-repeat:no-repeat!important;
+}
+#hellx-onair .hx-eq{
+ grid-row:5!important;
+ display:block!important;
+ min-height:140px!important;
+ width:100%!important;
+ box-sizing:border-box!important;
+ margin:8px auto 4px!important;
+ border:2px solid #63f477!important;
+ border-radius:10px!important;
+ padding:12px!important;
+ position:relative!important;
+ z-index:2!important;
+ visibility:visible!important;
+ opacity:1!important;
+ background:#0b1d10!important;
+}
+#hellx-onair .hx-eq-sliders{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+#hellx-onair .hx-eq-sliders input{display:block!important;width:100%!important}
 </style><style id="hx-radio-title-style">#hellx-onair .hx-head h2{font-size:clamp(11px,2.7vw,16px)!important;letter-spacing:.4px!important;white-space:nowrap!important;line-height:1.4!important}</style><script defer src="hellx-analytics.js?v=20261025-member-stats"></script><script>window.HELLX_CHAT_ENDPOINT="https://muddy-moon-76da.diyothe.workers.dev";</script><script defer src="hellx-ai-chat.js?v=20261017-persona-v1"></script><script defer src="hellx-shake.js?v=20261021-neon-v5"></script><script defer src="hellx-curse.js?v=20261023-v2"></script><script defer src="hellx-invite.js?v=20261023-v3"></script><script defer src="hellx-auto-alerts.js?v=20261023"></script><script defer src="hellx-radar.js?v=20261024-order-v5"></script><script defer src="hellx-nearby-chat.js?v=20261026-pseudos-v2"></script><script defer src="hellx-ghost-chat.js?v=20261026-ghost-v1"></script><script defer src="hellx-meet.js?v=20261027-preview-v3"></script><script defer src="hellx-simple-nav.js?v=20261028-eq-visible-v5"></script></body></html>
 
 
