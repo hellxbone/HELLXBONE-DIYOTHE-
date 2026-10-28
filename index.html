@@ -1239,28 +1239,42 @@ function draw(time){
  const dpr=Math.min(window.devicePixelRatio||1,2);
  if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr)}
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
- if(!modeAt||time-modeAt>duration){previous=mode;do{mode=Math.floor(Math.random()*5)}while(mode===previous);modeAt=time;duration=6100+Math.random()*3800}
+ if(!modeAt||time-modeAt>duration){previous=mode;do{mode=Math.floor(Math.random()*5)}while(mode===previous);modeAt=time;duration=4600+Math.random()*2400}
  const age=(time-modeAt)/duration;
  const reveal=Math.min(1,age/.19),exit=Math.min(1,(1-age)/.13),fade=Math.min(reveal,exit);
  const title=radio.querySelector('#hx-nowplaying:not([hidden])');
  const alpha=title? .29:1;
- const t=time/1000,spacing=4;
- const scale=Math.min(w/160,h/80)*1.14,ox=(w-160*scale)/2,oy=(h-80*scale)/2;
+ const t=time/1000,spacing=3;
+ const scaleX=w/160*.96,scaleY=h/80*.92,ox=w*.02,oy=h*.04;
  const mask=masks[mode];
  for(let y=3;y<77;y+=spacing)for(let x=3;x<157;x+=spacing){
   const i=(y*160+x)*4,hit=mask[i+3]/255;
   if(hit<.4)continue;
   const noise=random(x,y,mode);
   if(noise>Math.max(.03,fade)*.99)continue;
-  const shimmer=.82+.18*Math.sin(t*3.4+x*.11+y*.14);
-  const sx=ox+(x+Math.sin(t*1.1+y*.13)*.75)*scale;
-  const sy=oy+(y+Math.cos(t*.9+x*.08)*.55)*scale;
-  const radius=Math.max(1.05,Math.min(2.65,scale*2.1));
+  const shimmer=.78+.22*Math.sin(t*4.3+x*.19+y*.14);
+  const sx=ox+(x+Math.sin(t*2.1+y*.13)*1.7)*scaleX;
+  const sy=oy+(y+Math.cos(t*1.55+x*.08)*.85)*scaleY;
+  const radius=Math.max(1.1,Math.min(2.9,Math.min(scaleX,scaleY)*2.7));
   ctx.fillStyle='rgba(124,255,146,'+(Math.min(1,alpha*shimmer)).toFixed(3)+')';
   ctx.shadowColor='#50ff76';ctx.shadowBlur=shimmer>.8?7:3;
   ctx.fillRect(sx-radius/2,sy-radius/2,radius,radius);
  }
  ctx.shadowBlur=0;
+ // Balayages horizontaux laser et trainées lumineuses, limités à l'écran.
+ ctx.save();ctx.globalCompositeOperation='screen';
+ const sweep=((t*.23)%1)*w;
+ const band=ctx.createLinearGradient(sweep-40,0,sweep+40,0);
+ band.addColorStop(0,'rgba(60,255,95,0)');
+ band.addColorStop(.5,'rgba(100,255,145,'+(title?'.055':'.19')+')');
+ band.addColorStop(1,'rgba(60,255,95,0)');
+ ctx.fillStyle=band;ctx.fillRect(0,0,w,h);
+ for(let j=0;j<3;j++){
+  const yy=h*(.16+j*.33)+Math.sin(t*1.7+j*2.1)*h*.09;
+  ctx.fillStyle='rgba(88,255,137,'+(title?'.08':'.20')+')';
+  ctx.fillRect(0,yy,w,Math.max(1,h*.028));
+ }
+ ctx.restore();
  // Éclairage de scène discret et mouvant : faisceaux doux sans flash agressif.
  const beamAlpha=(title?.055:.13)*(.75+.25*Math.sin(t*1.45));
  ctx.save();ctx.globalCompositeOperation='screen';
