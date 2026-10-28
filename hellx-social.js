@@ -25,14 +25,34 @@ function close(){modal.hidden=true;document.body.classList.remove('hx-social-ope
 modal.addEventListener('click',e=>{if(e.target===modal)close()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)close()});
 function banner(){return document.querySelector('header.hellx-header')||document.querySelector('.hellx-header')}
-function bindBanner(){const b=banner();if(!b||b.dataset.socialLongpress)return;b.dataset.socialLongpress='yes';
-b.style.touchAction='pan-y';b.setAttribute('title','Maintiens 5 secondes pour ouvrir HELLXBONE UNDERGROUND');
-const cancel=()=>{clearTimeout(timer);timer=null;started=0};
-b.addEventListener('pointerdown',e=>{if(e.button!==0)return;started=Date.now();clearTimeout(timer);timer=setTimeout(()=>{timer=null;started=0;open()},5000)});
-['pointerup','pointercancel','pointerleave','contextmenu'].forEach(ev=>b.addEventListener(ev,cancel));
-b.addEventListener('pointermove',e=>{if(e.buttons===0)cancel()});
+function bindBanner(){
+ const b=banner();if(!b||b.dataset.socialLongpress)return;
+ b.dataset.socialLongpress='yes';b.style.touchAction='none';
+ b.setAttribute('title','Maintiens 5 secondes pour ouvrir HELLXBONE UNDERGROUND');
+ let hold=null,x=0,y=0,opened=false;
+ function clear(){if(hold!==null)clearTimeout(hold);hold=null}
+ function start(ev){
+  if(ev.type==='pointerdown'&&ev.pointerType==='touch')return;
+  if(ev.button!==undefined&&ev.button!==0)return;
+  clear();opened=false;x=ev.clientX||0;y=ev.clientY||0;
+  hold=setTimeout(()=>{hold=null;opened=true;open()},5000)
+ }
+ b.addEventListener('pointerdown',start);
+ b.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;clear();opened=false;x=e.touches[0].clientX;y=e.touches[0].clientY;hold=setTimeout(()=>{hold=null;opened=true;open()},5000)},{passive:true});
+ b.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;if(Math.abs(e.clientX-x)>24||Math.abs(e.clientY-y)>24)clear()});
+ b.addEventListener('touchmove',e=>{if(!e.touches.length)return;if(Math.abs(e.touches[0].clientX-x)>24||Math.abs(e.touches[0].clientY-y)>24)clear()},{passive:true});
+ ['pointerup','pointercancel','touchend','touchcancel','mouseleave'].forEach(ev=>b.addEventListener(ev,clear));
+ b.addEventListener('contextmenu',e=>{e.preventDefault()});
+ b.addEventListener('click',e=>{if(opened){e.preventDefault();e.stopPropagation();opened=false}},true);
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindBanner);else bindBanner();
+function fallbackButton(){
+ if(document.getElementById('hx-social-open-button'))return;
+ const b=el('button',{id:'hx-social-open-button',type:'button',text:'☠ UNDERGROUND',onclick:open,'aria-label':'Ouvrir le réseau social HELLXBONE'});
+ b.style.cssText='position:fixed;right:12px;bottom:85px;z-index:99998;background:#09180a;color:#aaff9a;border:2px solid #69ff64;border-radius:24px;padding:10px;font-weight:800;box-shadow:0 0 14px #41f65780';
+ document.body.append(b)
+}
+function init(){bindBanner();fallbackButton()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 async function authRequest(path,body){const r=await fetch(BASE+'/auth/v1/'+path,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.msg||j.error_description||j.message||'Connexion impossible');return j}
 async function ensureSession(){try{session=JSON.parse(localStorage.getItem(STORE)||'null')}catch(e){}
 if(session&&session.expires_at>Date.now()/1000+90)return;
