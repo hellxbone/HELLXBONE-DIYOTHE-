@@ -17,11 +17,15 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 #hx-home-actions button small{font:12px system-ui;color:#bfe7c9}
 #hx-home-actions button[aria-pressed=true]{background:#4fe378;color:#092311}
 #hx-home-actions button[aria-pressed=true] small{color:#103d20}
-#hx-radio-panel,#hx-horde-panel{min-width:0}\n#hx-radio-panel[hidden],#hx-horde-panel[hidden]{display:none!important}
+#hx-radio-panel,#hx-horde-panel{min-width:0}
+html:not(.hx-radio-selected) #hellx-onair,
+html:not(.hx-radio-selected) #hx-radio-panel{display:none!important}
+html:not(.hx-radio-selected) #hx-radio-panel *{visibility:hidden!important}\n#hx-radio-panel[hidden],#hx-horde-panel[hidden]{display:none!important}
 #hx-horde-panel #hellx-meet,#hx-horde-panel #hellx-radar{margin:12px auto!important}
 @media(max-width:380px){#hx-home-actions button{font-size:13px}}
 `;document.head.appendChild(style);
 let selected='home';
+document.documentElement.classList.remove('hx-radio-selected');
 // L'accueil ne doit jamais conserver le lecteur radio affiché après un retour par la maison.
 document.addEventListener('click',event=>{
  const home=event.target.closest('nav[aria-label="Navigation principale"] [data-page="accueil"]');
@@ -34,6 +38,7 @@ function nav(){
 }
 function sync(){
  nav();const app=document.getElementById('app');if(!app)return;
+ document.documentElement.classList.toggle('hx-radio-selected',selected==='radio');
  const radio=app.querySelector('#hellx-onair');if(!radio){const bar=document.getElementById('hx-quick-nav');if(bar)bar.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','false'));return}
  let hub=app.querySelector('#hx-home-hub'),horde=app.querySelector('#hx-horde-panel'),radioPanel=app.querySelector('#hx-radio-panel');
  if(!hub){
