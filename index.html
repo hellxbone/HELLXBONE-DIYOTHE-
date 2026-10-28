@@ -153,13 +153,6 @@ const social=socialBrowser();
    d'un pseudo seul, pour éviter toute usurpation de compte. */
 
 
-if(social && existingName && sessionStorage.getItem('hellx-social-continue')!=='1'){
-  // Ne jamais tenter de réinscrire automatiquement un pseudo déjà présent
-  // dans le navigateur intégré de Facebook.
-  sessionStorage.removeItem('hellx-social-continue');
-  showSocialAccountChoice();
-  return;
-}
 if(existingName){
   // Valider le compte coté serveur avant d'ouvrir le club.
   // Une erreur réseau ne doit pas déclencher la création d'un second pseudo.
