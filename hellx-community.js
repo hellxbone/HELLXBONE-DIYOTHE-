@@ -8,11 +8,19 @@ const art=document.createElement('figure');
 art.id='hellx-home-reaper';
 art.setAttribute('aria-label','Illustration gothique HELLXBONE');
 art.innerHTML='<img src="./hellxbone-faucheuse.png" alt="Faucheuse gothique à la faux, crânes et décor macabre HELLXBONE" loading="lazy" decoding="async">';
+style.textContent+='#hellx-club[hidden],#hellx-home-reaper[hidden]{display:none!important}';
 style.textContent+='#hellx-home-reaper{display:block;width:min(100% - 24px,876px);margin:20px auto 32px;padding:0;background:#000;border:1px solid #443e31;border-radius:6px;overflow:hidden}#hellx-home-reaper img{display:block;width:100%;height:auto;object-fit:contain}';
 const placeClub=()=>{
- const radio=document.getElementById('hellx-onair');
- if(radio){if(radio.nextElementSibling!==root)radio.insertAdjacentElement('afterend',root);if(root.nextElementSibling!==art)root.insertAdjacentElement('afterend',art);art.hidden=false;}
- else{art.remove();const anchor=document.querySelector('#hellx-live-entry')||document.querySelector('header');if(anchor&&anchor.nextElementSibling!==root)anchor.insertAdjacentElement('afterend',root);}
+ const app=document.getElementById('app');
+ const radio=app?.querySelector('#hellx-onair');
+ const hub=app?.querySelector('#hx-home-hub');
+ // Les boutons sont réservés à l'accueil et jamais à la rubrique radios.
+ if(!radio||!hub){root.remove();art.remove();return}
+ if(root.parentElement!==app||root.previousElementSibling!==hub)hub.insertAdjacentElement('afterend',root);
+ if(art.parentElement!==app||art.previousElementSibling!==root)root.insertAdjacentElement('afterend',art);
+ const onHome=!document.documentElement.classList.contains('hx-radio-selected')&&!document.querySelector('#hx-home-actions [data-hx-section="horde"][aria-pressed="true"]');
+ root.hidden=!onHome;
+ art.hidden=!onHome;
 };
 const appRoot=document.getElementById('app');
 if(appRoot)new MutationObserver(placeClub).observe(appRoot,{childList:true});
