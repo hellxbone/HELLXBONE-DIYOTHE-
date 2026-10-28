@@ -1211,7 +1211,13 @@ function skull(x,y,s){
  for(let i=-2;i<=2;i++)c.fillRect(x+i*1.4*s,y+7*s,.45*s,2*s);
 }
 function graveyard(t){
- const q=t%45, lift=ease((q-14)/12), enter=ease((q-27)/9);
+ const q=t%45, lift=ease((q-17)/10), enter=ease((q-27)/9);
+// Flight path: erratic yet smooth insect flight, not a straight drone rail.
+const flutter=Math.sin(t*1.75)*2.4+Math.sin(t*3.15+.8)*.9;
+const drift=Math.sin(t*.43)*19+Math.sin(t*.97+1)*9+flutter;
+const bank=Math.sin(t*.69)*.13+Math.sin(t*1.44)*.055;
+const dive=Math.sin(t*.57)*.11+Math.sin(t*1.37)*.06;
+const surge=1+Math.sin(t*.82)*.2;
  c.fillStyle='#010702';c.fillRect(0,0,W,H);
  // Surface texture, moon reflections and extremely subtle illumination.
  const sky=c.createRadialGradient(195,19,0,195,19,135);
@@ -1220,8 +1226,8 @@ function graveyard(t){
  ellipse(196,19,14,14,green(86));ellipse(200,17,12,13,'#08210f');
  c.save();c.beginPath();c.rect(0,0,W,H);c.clip();
  if(q<32){
-  const zoom=1.82-1.32*lift, travel=q*12,center=128+Math.sin(q*.28)*3;
-  c.save();c.translate(center,53);c.scale(zoom,zoom);c.translate(-128,-53);
+  const zoom=(1.82-1.32*lift)*(1+dive*.43), travel=q*12+Math.sin(q*.78)*9,center=128+drift;
+  c.save();c.translate(center,53+Math.sin(t*.89)*7);c.rotate(bank);c.transform(1,Math.sin(t*.51)*.05,Math.sin(t*.74)*.09,1,0,0);c.scale(zoom*surge,zoom/surge);c.translate(-128,-53);
   // Drone tilted top-down: central avenue, aerial parallax and edges.
   poly([[101,-200],[155,-200],[159,260],[98,260]],'#0c2515');
   stroke([[99,-190],[98,260]],green(46));stroke([[157,-190],[160,260]],green(43));
@@ -1241,8 +1247,8 @@ function graveyard(t){
    if(i%3===0)stroke([[113,y],[145,y+2]],green(26),1);
   }
   if(q>13){
-   const approach=ease((q-13)/14),cy=-96+approach*151,scale=.5+approach*1.16;
-   c.save();c.translate(128,cy);c.scale(scale,scale);
+   const approach=ease((q-13)/14),cy=-96+approach*151+Math.sin(t*1.1)*8,scale=.5+approach*1.16;
+   c.save();c.translate(128+Math.sin(t*.7)*14,cy);c.rotate(Math.sin(t*.9)*.08);c.scale(scale,scale);
    // Crypt in aerial view: bevelled roof, shadows, carved stone outline.
    poly([[-36,-31],[34,-31],[49,-15],[49,27],[-39,27]],'#06130b');
    poly([[-35,-27],[26,-27],[37,-17],[37,23],[-35,23]],green(47));
@@ -1265,7 +1271,7 @@ function graveyard(t){
   for(let j=5;j>=0;j--){
    const depth=((j/6+z*2)%1),r=10+depth*145;
    const light=30+depth*115;
-   stroke([[128-r,106],[128-r,53-r*.6],[128-r*.65,53-r],[128+r*.65,53-r],[128+r,53-r*.6],[128+r,106]],green(light),1+depth*2);
+   const sway=Math.sin(t*.9+depth*3)*13;stroke([[128-r+sway,106],[128-r+sway,53-r*.6],[128-r*.65+sway,53-r],[128+r*.65+sway,53-r],[128+r+sway,53-r*.6],[128+r+sway,106]],green(light),1+depth*2);
    stroke([[128-r*.78,105],[128-r*.75,70]],green(light*.65),.8);
   }
   // A dark stone sarcophagus and the skull hidden in the crypt.
@@ -1284,7 +1290,7 @@ function graveyard(t){
 }
 function render(ms){
  requestAnimationFrame(render);
- if(ms-last<65)return;last=ms;
+ if(ms-last<33)return;last=ms;
  if(!canvas||!ctx||!radio||document.hidden)return;
  const rect=canvas.getBoundingClientRect(),w=rect.width,h=rect.height;
  if(w<65||h<20)return;
@@ -1295,7 +1301,7 @@ function render(ms){
  const pixels=c.getImageData(0,0,W,H).data;
  ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle='#000802';ctx.fillRect(0,0,w,h);
  // Dense phosphor dot matrix: every 1.6 px in source, variable luminance and fine shadows.
- const step=2,dx=w/W,dy=h/H;
+ const step=1,dx=w/W,dy=h/H;
  for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step){
   const idx=(y*W+x)*4,lum=(pixels[idx+1]*.92+pixels[idx+2]*.08);
   const threshold=8+noise(x,y)*15;
