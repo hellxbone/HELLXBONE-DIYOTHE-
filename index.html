@@ -123,6 +123,30 @@ const social=socialBrowser();
    Les données locales restent isolées entre navigateurs : aucune identité n'est déduite
    d'un pseudo seul, pour éviter toute usurpation de compte. */
 
+if(social && sessionStorage.getItem('hellx-social-continue')!=='1'){
+  const entry=document.createElement('div');
+  entry.id='hellx-member-gate';
+  entry.innerHTML='<form id="hellx-member-entry"><h1>HELLXBONE CLUB</h1><p>Tu arrives de Facebook. Pour retrouver ton compte, ta carte et tes scores, ouvre HELLXBONE dans Chrome. Facebook ne partage pas les connexions avec l’application installée.</p><button type="button" id="hellx-social-chrome">OUVRIR DANS CHROME</button><button type="button" id="hellx-social-copy">COPIER LE LIEN</button><button type="button" id="hellx-social-continue">CONTINUER DANS FACEBOOK</button><p id="hellx-member-error" role="status">Nouveau membre ? Choisis « Continuer dans Facebook ». Si Chrome ne s’ouvre pas, copie le lien.</p></form>';
+  document.body.appendChild(entry);
+  entry.querySelector('#hellx-social-chrome').onclick=()=>{
+    const url=location.href;
+    if(/Android/i.test(navigator.userAgent)){
+      const u=new URL(url);
+      location.href='intent://'+u.host+u.pathname+u.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(url)+';end';
+    }else{window.open(url,'_blank','noopener,noreferrer')}
+  };
+  entry.querySelector('#hellx-social-copy').onclick=async()=>{
+    const message=entry.querySelector('#hellx-member-error');
+    try{await navigator.clipboard.writeText(location.href);message.textContent='Lien copié : colle-le dans Chrome.'}
+    catch(e){message.textContent='Copie cette adresse dans Chrome : '+location.href}
+  };
+  entry.querySelector('#hellx-social-continue').onclick=()=>{
+    sessionStorage.setItem('hellx-social-continue','1');
+    entry.remove();
+    location.reload();
+  };
+  return;
+}
 if(existingName){
   // Valider le compte coté serveur avant d'ouvrir le club.
   // Une erreur réseau ne doit pas déclencher la création d'un second pseudo.
