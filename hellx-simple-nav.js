@@ -13,7 +13,7 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 #hx-home-hub h2{color:#97ffae!important;font:900 25px system-ui!important;text-align:center;margin:5px 0}
 #hx-home-hub p{color:#ccedcf!important;text-align:center}
 #hx-home-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:13px 0}
-#hx-home-actions button{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;min-height:82px;background:#14351e;border:1px solid #5ce67c;border-radius:12px;color:#e3ffea;font:900 15px system-ui;padding:12px 8px;cursor:pointer}
+#hx-home-actions button{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;min-height:65px;background:#14351e;border:1px solid #5ce67c;border-radius:12px;color:#e3ffea;font:900 15px system-ui;padding:7px 8px;cursor:pointer}
 #hx-home-actions button small{font:12px system-ui;color:#bfe7c9}
 #hx-home-actions button[aria-pressed=true]{background:#4fe378;color:#092311}
 #hx-home-actions button[aria-pressed=true] small{color:#103d20}
