@@ -13,6 +13,7 @@ modal.append(el('div',{class:'hx-social-shell'},[
  el('nav',{id:'hx-social-tabs','aria-label':'Réseau social'},[
  el('button',{type:'button',text:'Fil',onclick:()=>switchTab('feed')}),
  el('button',{type:'button',text:'Membres',onclick:()=>switchTab('members')}),
+ el('button',{type:'button',text:'Messages',onclick:()=>switchTab('messages')}),
  el('button',{type:'button',text:'Profil',onclick:()=>switchTab('profile')})
  ]),
  el('div',{id:'hx-social-content'})
@@ -47,8 +48,8 @@ function memberName(){try{return String(JSON.parse(localStorage.getItem('hellxbo
 async function boot(){status('Connexion à la Horde…');try{await ensureSession();const id=session.user.id;let p=await api('hx_social_profiles','GET',null,'?user_id=eq.'+encodeURIComponent(id));
 if(!p.length){const name=memberName();if(!name){status('Inscris d’abord ton pseudo HELLXBONE CLUB.');return}p=await api('hx_social_profiles','POST',{user_id:id,pseudo:name})}
 me=p[0];status('');await switchTab('feed')}catch(e){status(e.message);const c=document.getElementById('hx-social-content');c.replaceChildren(el('button',{text:'Réessayer',onclick:boot}))}}
-async function switchTab(t){tab=t;for(const [i,b]of [...document.querySelectorAll('#hx-social-tabs button')].entries())b.setAttribute('aria-current',(['feed','members','profile'][i]===t)?'page':'false');if(!me)return;
-status('Chargement…');try{if(t==='feed')await feed();if(t==='members')await members();if(t==='profile')await profile();status('')}catch(e){status(e.message)}}
+async function switchTab(t){tab=t;for(const [i,b]of [...document.querySelectorAll('#hx-social-tabs button')].entries())b.setAttribute('aria-current',(['feed','members','messages','profile'][i]===t)?'page':'false');if(!me)return;
+status('Chargement…');try{if(t==='feed')await feed();if(t==='members')await members();if(t==='messages')await messages();if(t==='profile')await profile();status('')}catch(e){status(e.message)}}
 const content=()=>document.getElementById('hx-social-content');
 function button(text,fn,cls=''){return el('button',{type:'button',text,class:cls,onclick:fn})}
 function label(tag,text){return el(tag,{text})}
@@ -76,6 +77,39 @@ card.append(actions);c.append(card)}
 async function showComments(postId,card){let area=card.querySelector('.hx-social-comments');if(area){area.remove();return}area=el('div',{class:'hx-social-comments'});card.append(area);const data=await api('hx_social_comments','GET',null,'?post_id=eq.'+postId+'&order=created_at.asc&limit=100');for(const item of data){const l=el('p',{},[el('b',{text:postAuthor(item.user_id)+': '}),document.createTextNode(item.body)]);if(item.user_id===me.user_id)l.append(button('✕',async()=>{await api('hx_social_comments','DELETE',null,'?id=eq.'+item.id,'return=minimal');l.remove()}));area.append(l)}
 const form=el('form');const input=el('input',{placeholder:'Écrire un commentaire',required:'',maxlength:'1000'});form.append(input,el('button',{type:'submit',text:'Envoyer'}));form.onsubmit=async e=>{e.preventDefault();try{await api('hx_social_comments','POST',{post_id:postId,user_id:me.user_id,body:input.value.trim()});area.remove();await showComments(postId,card)}catch(x){status(x.message)}};area.append(form)}
 async function members(){await loadSocial();const c=content();c.replaceChildren(label('h3','Les membres de la Horde'));const search=el('input',{type:'search',placeholder:'Chercher un pseudo'});c.append(search);const listing=el('div');c.append(listing);
-function draw(){listing.replaceChildren();Object.values(profiles).filter(p=>p.pseudo.toLowerCase().includes(search.value.toLowerCase())).slice(0,100).forEach(p=>{const line=el('div',{class:'hx-social-person'});line.append(el('strong',{text:p.pseudo}),label('p',p.bio||''));if(p.user_id!==me.user_id){const following=follows.some(f=>f.follower_id===me.user_id&&f.following_id===p.user_id);line.append(button(following?'Ne plus suivre':'Suivre',async()=>{try{if(following)await api('hx_social_follows','DELETE',null,'?follower_id=eq.'+me.user_id+'&following_id=eq.'+p.user_id,'return=minimal');else await api('hx_social_follows','POST',{follower_id:me.user_id,following_id:p.user_id});await members()}catch(e){status(e.message)}}))}listing.append(line)})}search.addEventListener('input',draw);draw()}
+function draw(){listing.replaceChildren();Object.values(profiles).filter(p=>p.pseudo.toLowerCase().includes(search.value.toLowerCase())).slice(0,100).forEach(p=>{const line=el('div',{class:'hx-social-person'});line.append(el('strong',{text:p.pseudo}),label('p',p.bio||''));if(p.user_id!==me.user_id){const following=follows.some(f=>f.follower_id===me.user_id&&f.following_id===p.user_id);line.append(button('Message',()=>messages(p.user_id)));line.append(button(following?'Ne plus suivre':'Suivre',async()=>{try{if(following)await api('hx_social_follows','DELETE',null,'?follower_id=eq.'+me.user_id+'&following_id=eq.'+p.user_id,'return=minimal');else await api('hx_social_follows','POST',{follower_id:me.user_id,following_id:p.user_id});await members()}catch(e){status(e.message)}}))}listing.append(line)})}search.addEventListener('input',draw);draw()}
+
+async function messages(toId=null){
+ const c=content();c.replaceChildren(label('h3','Messagerie privée'));status('Chargement des messages…');
+ const [all,ps]=await Promise.all([
+ api('hx_social_messages','GET',null,'?select=*&order=created_at.desc&limit=500'),
+ api('hx_social_profiles','GET',null,'?select=user_id,pseudo&limit=500')
+ ]);
+ profiles=Object.fromEntries(ps.map(p=>[p.user_id,p]));
+ const contacts=new Set(all.map(m=>m.sender_id===me.user_id?m.receiver_id:m.sender_id));
+ if(toId)contacts.add(toId);
+ const picker=el('select',{'aria-label':'Choisir un destinataire'});
+ picker.append(el('option',{value:'',text:'Choisir un membre…'}));
+ ps.filter(p=>p.user_id!==me.user_id).sort((a,b)=>a.pseudo.localeCompare(b.pseudo)).forEach(p=>picker.append(el('option',{value:p.user_id,text:p.pseudo})));
+ if(toId)picker.value=toId;
+ c.append(picker);
+ const thread=el('div',{class:'hx-social-thread'}),form=el('form',{class:'hx-social-compose'});
+ const input=el('textarea',{maxlength:'2000',required:'',placeholder:'Ton message privé…','aria-label':'Message privé'});
+ form.append(input,el('button',{type:'submit',text:'Envoyer'}));c.append(thread,form);
+ function draw(){
+  const id=picker.value;thread.replaceChildren();
+  if(!id){thread.append(label('p','Sélectionne un membre pour discuter.'));return}
+  const msgs=all.filter(m=>(m.sender_id===me.user_id&&m.receiver_id===id)||(m.sender_id===id&&m.receiver_id===me.user_id)).reverse();
+  if(!msgs.length)thread.append(label('p','Pas encore de messages avec ce membre.'));
+  for(const m of msgs){
+   const item=el('div',{class:'hx-social-message'});
+   item.append(el('strong',{text:m.sender_id===me.user_id?'Moi':(profiles[m.sender_id]?.pseudo||'Membre')}),label('small',new Date(m.created_at).toLocaleString('fr-FR')),label('p',m.body));
+   if(m.sender_id===me.user_id)item.append(button('Supprimer',async()=>{try{await api('hx_social_messages','DELETE',null,'?id=eq.'+m.id,'return=minimal');await messages(id)}catch(e){status(e.message)}}));
+   thread.append(item)
+  }
+ }
+ picker.addEventListener('change',draw);draw();status('');
+ form.onsubmit=async e=>{e.preventDefault();if(!picker.value||!input.value.trim())return;try{await api('hx_social_messages','POST',{sender_id:me.user_id,receiver_id:picker.value,body:input.value.trim()});await messages(picker.value)}catch(x){status(x.message)}};
+}
 async function profile(){await loadSocial();const c=content();c.replaceChildren(label('h3','Mon profil'));const form=el('form',{class:'hx-social-compose'});const name=el('input',{value:me.pseudo,maxlength:'24',required:'','aria-label':'Pseudo'});const bio=el('textarea',{maxlength:'500',placeholder:'Ma présentation','aria-label':'Présentation'});bio.value=me.bio||'';form.append(label('p','Pseudo'),name,label('p','Présentation'),bio,el('button',{type:'submit',text:'Enregistrer'}));form.onsubmit=async e=>{e.preventDefault();try{const [p]=await api('hx_social_profiles','PATCH',{pseudo:name.value.trim(),bio:bio.value.trim()},'?user_id=eq.'+me.user_id);me=p;status('Profil enregistré')}catch(x){status(x.message)}};c.append(form,label('p','Publications : '+posts.filter(p=>p.user_id===me.user_id).length+' · Abonnés : '+follows.filter(f=>f.following_id===me.user_id).length+' · Abonnements : '+follows.filter(f=>f.follower_id===me.user_id).length))}
 })();
