@@ -1250,7 +1250,15 @@ function graveyard(t){
   poly([[-16,-23],[-10,-31],[0,-34],[11,-31],[17,-23],[15,-3],[7,13],[0,20],[-8,12],[-17,-3]],green(94));
   poly([[-13,-20],[-4,-23],[-1,-14],[-12,-12]],green(19));
   poly([[13,-20],[4,-23],[1,-14],[12,-12]],green(19));
-  ellipse(-7,-16,3,1.5,green(244));ellipse(7,-16,3,1.5,green(244));
+  // Shadowed eyelids, sockets and bone ridges, brighter reflected pupils.
+  ellipse(-7,-17,5,3,green(13));ellipse(7,-17,5,3,green(13));
+  stroke([[-13,-21],[-7,-24],[-1,-20]],green(177),1.5);
+  stroke([[13,-21],[7,-24],[1,-20]],green(177),1.5);
+  ellipse(-7,-16,2.5,1.2,green(250));ellipse(7,-16,2.5,1.2,green(250));
+  stroke([[-16,-7],[-12,-1],[-15,7]],green(35),2);
+  stroke([[16,-7],[12,-1],[15,7]],green(35),2);
+  for(let h=0;h<18;h++){const xx=(noise(h,3)-.5)*30,yy=-29+noise(h,7)*41;
+   ellipse(xx,yy,.25+noise(h,5)*.75,.3,green(45+noise(h,8)*105));}
   poly([[-1,-12],[-5,1],[0,3],[5,1],[1,-12]],green(53));
   poly([[-11,6],[0,8],[11,6],[7,13],[-7,13]],green(17));
   for(let k=-2;k<=2;k++)stroke([[k*3,9],[k*3,11]],green(160),.7);
@@ -1266,7 +1274,10 @@ function graveyard(t){
   c.save();c.translate(x,y);c.scale(s,s);
   const beat=Math.sin(t*8+type*1.8);
   // Human silhouette with neck, jaw, hair, shoulders, elbows, knees, boots.
+  // Human head in three-quarter view, with hair and chin silhouette.
   ellipse(0,-20+beat*.55,4.2,5.7,green(139));
+  poly([[2,-18],[5,-16],[3,-12],[-1,-12]],green(68));
+  stroke([[-4,-22],[-2,-25],[2,-25],[4,-22]],green(176),.8);
   poly([[-5,-22],[-8,-18],[-6,-14],[-1,-13],[-3,-9],[-7,-6]],green(56)); // hair
   poly([[-5,-13],[5,-13],[9,-3],[5,12],[-7,12],[-9,1]],green(85));
   poly([[-5,11],[0,11],[-3,24],[-9,29],[-13,28],[-9,23]],green(68));
@@ -1289,6 +1300,7 @@ function graveyard(t){
  function stage(t,alpha){
   c.save();c.globalAlpha=alpha;
   const pan=Math.sin(t*1.2)*7;
+  const haze=c.createRadialGradient(128,42,4,128,42,118);haze.addColorStop(0,'rgba(95,240,137,.24)');haze.addColorStop(1,'rgba(0,30,12,0)');c.fillStyle=haze;c.fillRect(0,0,W,H);
   poly([[24,47],[222,47],[240,76],[9,76]],'#08170e');
   stroke([[24,47],[222,47],[240,76],[9,76]],green(184),1.5);
   // Distant crowd as an undulating silhouette, no stick figures.
@@ -1316,6 +1328,8 @@ function graveyard(t){
     beam.addColorStop(0,'rgba(118,255,159,.36)');beam.addColorStop(1,'rgba(46,255,101,.035)');
     poly([[sx-2,18],[sx+2,18],[tx+22,106],[tx-22,106]],beam);
     ellipse(tx,101,13,3,'rgba(120,255,158,.23)');
+    for(let p=0;p<6;p++){const fy=35+p*11,fx=sx+(tx-sx)*(fy-19)/87;
+      ellipse(fx+Math.sin(t*2+p*9)*3,fy,.65,.65,'rgba(185,255,180,.3)');}
   }
   c.restore();
  }
@@ -1395,7 +1409,8 @@ function render(ms){
   if(lum<threshold)continue;
   const bright=clamp(lum/190),v=Math.floor(45+bright*210);
   ctx.fillStyle='rgba('+Math.floor(v*.34)+','+v+','+Math.floor(v*.55)+','+clamp(.3+bright*.7).toFixed(2)+')';
-  ctx.fillRect(x*dx,y*dy,Math.max(.9,dx*1.52),Math.max(.9,dy*1.52));
+  const dotX=x*dx,dotY=y*dy;
+  ctx.fillRect(dotX,dotY,Math.max(.7,dx*1.13),Math.max(.7,dy*1.13));
  }
 }
 requestAnimationFrame(render);
