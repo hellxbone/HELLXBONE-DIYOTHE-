@@ -14,26 +14,35 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install FFmpeg
         run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
-      - name: Download the actual Mixkit clip 101588
-        shell: bash
+      - name: Download official Mixkit MP4
         run: |
           mkdir -p assets
-          set -euo pipefail
-          for url in \
-            'https://assets.mixkit.co/videos/101588/101588-video-720.mp4' \
-            'https://assets.mixkit.co/videos/preview/mixkit-hand-rising-from-grave-101588-large.mp4' \
-            'https://assets.mixkit.co/videos/101588/101588-video-1080.mp4'; do
-            if curl -fL --retry 2 --max-time 35 "$url" -o /tmp/mixkit-101588.mp4 && \
-               ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 /tmp/mixkit-101588.mp4 | grep -q '[0-9]'; then
-              echo "Valid clip downloaded"
-              break
-            fi
-          done
-          test -s /tmp/mixkit-101588.mp4
-          ffprobe -v error -show_entries format=duration /tmp/mixkit-101588.mp4
+          python - <<'PY'
+          import requests,re,html,subprocess
+          base='https://mixkit.co/free-stock-video/hand-rising-from-grave-101588/'
+          links=['https://mixkit.co/free-stock-video/download/101588/',
+                 'https://mixkit.co/free-stock-video/download/101588/?resolution=720',
+                 'https://assets.mixkit.co/videos/preview/mixkit-hand-rising-from-grave-101588-large.mp4']
+          session=requests.Session()
+          session.headers.update({'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131 Safari/537.36','Referer':base})
+          try:
+            page=session.get(base,timeout=20).text
+            links=re.findall(r'https?[^"\\s<>]+(?:\\.mp4|/download/[^"\\s<>]+)',html.unescape(page))+links
+          except Exception as exc:print('Discovery:',exc)
+          for url in links:
+            try:
+              r=session.get(url,timeout=35)
+              if len(r.content)<120000 or b'ftyp' not in r.content[:128]:
+                print('Invalid MP4:',r.status_code,url[:100]);continue
+              open('/tmp/mixkit-101588.mp4','wb').write(r.content)
+              subprocess.run(['ffprobe','-v','error','-select_streams','v:0','-show_entries','stream=width','-of','csv=p=0','/tmp/mixkit-101588.mp4'],check=True)
+              print('Downloaded:',url,len(r.content));break
+            except Exception as e:print('Failed:',str(e)[:120])
+          else:raise SystemExit('Could not fetch MP4 from provider')
+          PY
       - name: Convert real footage into green phosphor DMD
         run: |
-          ffmpeg -hide_banner -loglevel error -y -i /tmp/mixkit-101588.mp4 -vf "fps=15,scale=256:106:force_original_aspect_ratio=increase,crop=256:106,format=gray,eq=contrast=1.7:brightness=-0.035,format=rgb24,lutrgb=r='val*0.25':g='val':b='val*0.45',scale=256:106:flags=neighbor" -an -c:v libvpx-vp9 -b:v 350k -crf 35 -deadline good -cpu-used 5 assets/hellxbone-cemetery.webm
+          ffmpeg -hide_banner -loglevel error -y -i /tmp/mixkit-101588.mp4 -vf "fps=18,scale=768:318:force_original_aspect_ratio=increase,crop=768:318,format=gray,eq=contrast=1.7:brightness=-0.035,format=rgb24,lutrgb=r='val*0.25':g='val':b='val*0.45'" -an -c:v libvpx-vp9 -b:v 350k -crf 35 -deadline good -cpu-used 5 assets/hellxbone-cemetery.webm
           test -s assets/hellxbone-cemetery.webm
       - name: Commit video
         run: |
