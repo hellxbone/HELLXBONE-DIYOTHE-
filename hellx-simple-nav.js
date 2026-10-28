@@ -60,7 +60,7 @@ function sync(){
  if(!eq){
   eq=document.createElement('div');eq.className='hx-eq';
   eq.innerHTML='<strong>ÉGALISEUR HELLXBONE</strong><button type="button" id="hx-eq-toggle">ACTIVER EQ</button><div class="hx-eq-sliders">'+
-  [['bass','MÉGA BASSES'],['mid','MÉDIUMS'],['treble','AIGUS']].map(([k,n])=>'<label>'+n+' <output id="hx-eq-'+k+'-value">+0 dB</output><input type="range" id="hx-eq-'+k+'" min="-12" max="'+(k==='bass'?'24':'12')+'" value="0" step="1"></label>').join('')+'</div>';
+  [['bass','MÉGA BASSES'],['mid','MÉDIUMS'],['treble','AIGUS']].map(([k,n])=>'<label>'+n+' <output id="hx-eq-'+k+'-value">+0 dB</output><input type="range" id="hx-eq-'+k+'" min="-12" max="'+('12')+'" value="0" step="1"></label>').join('')+'</div>';
   radio.appendChild(eq);
  }
  eq.style.setProperty('display','block','important');
