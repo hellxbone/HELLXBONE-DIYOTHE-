@@ -45,7 +45,7 @@ function sync(){
  let hub=app.querySelector('#hx-home-hub'),horde=app.querySelector('#hx-horde-panel'),radioPanel=app.querySelector('#hx-radio-panel');
  if(!hub){
   hub=document.createElement('section');hub.id='hx-home-hub';
-  hub.innerHTML='<div id="hx-home-actions"><button type="button" data-hx-section="horde">🍺 BIÈRE ?<small>tchat à proximité</small></button><button type="button" data-hx-section="radio">📻 LIVE 666<small>Le metal partout avec toi</small></button></div>';
+  hub.innerHTML='<div id="hx-home-actions"><button type="button" data-hx-section="horde">🤘 ON SE CAPTE ?<small>Concerts • Festivals • Sorties</small></button><button type="button" data-hx-section="radio">📻 LIVE 666<small>Le metal partout avec toi</small></button></div>';
   horde=document.createElement('div');horde.id='hx-horde-panel';
   radioPanel=document.createElement('div');radioPanel.id='hx-radio-panel';
   app.prepend(hub,horde,radioPanel);
