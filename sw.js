@@ -1,4 +1,4 @@
-const CACHE_VERSION='hellxbone-neon-icon-20261015-v2';
+const CACHE_VERSION='hellxbone-radio-eq-20261028-v1';
 self.addEventListener('install',event=>{self.skipWaiting()});
 self.addEventListener('activate',event=>{
  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
