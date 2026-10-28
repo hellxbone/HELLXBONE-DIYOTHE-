@@ -1459,6 +1459,12 @@ function render(ms){
   frame=extract(c.getImageData(0,0,W,H));
  }
  ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle='#000802';ctx.fillRect(0,0,w,h);
+ // Genuine footage gets full display resolution: no 128x53 pixel-grid pass.
+ if(filmReady&&film.videoWidth&&film.readyState>=2){
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+  ctx.drawImage(film,0,0,w,h);
+  return;
+ }
  const dx=w/DW,dy=h/DH;
  for(let y=0;y<DH;y++)for(let x=0;x<DW;x++){
   const k=y*DW+x;
