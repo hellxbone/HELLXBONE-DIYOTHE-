@@ -18,6 +18,10 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 #hx-home-actions button[aria-pressed=true]{background:#4fe378;color:#092311}
 #hx-home-actions button[aria-pressed=true] small{color:#103d20}
 #hx-radio-panel,#hx-horde-panel{min-width:0}
+#hx-radio-panel .hx-eq{display:block!important;visibility:visible!important;position:relative!important;opacity:1!important;min-height:115px!important;margin:12px 0!important;padding:12px!important;border:2px solid #60fb79!important;background:#061b0c!important;color:#baffc2!important}
+#hx-radio-panel .hx-eq-sliders{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+#hx-radio-panel .hx-eq-sliders input{width:100%!important;display:block!important}
+
 html:not(.hx-radio-selected) #hellx-onair,
 html:not(.hx-radio-selected) #hx-radio-panel{display:none!important}
 html:not(.hx-radio-selected) #hx-radio-panel *{visibility:hidden!important}
@@ -51,6 +55,17 @@ function sync(){
   hub.addEventListener('click',e=>{const button=e.target.closest('[data-hx-section]');if(!button)return;selected=button.dataset.hxSection;sync();if(selected==='horde')document.getElementById('hx-horde-panel')?.scrollIntoView({behavior:'smooth',block:'start'})});
  }
  if(radio.parentElement!==radioPanel)radioPanel.appendChild(radio);
+ // Garantit la présence de l'égaliseur même dans un lecteur restauré par le cache.
+ let eq=radio.querySelector('.hx-eq');
+ if(!eq){
+  eq=document.createElement('div');eq.className='hx-eq';
+  eq.innerHTML='<strong>ÉGALISEUR HELLXBONE</strong><button type="button" id="hx-eq-toggle">ACTIVER EQ</button><div class="hx-eq-sliders">'+
+  [['bass','MÉGA BASSES'],['mid','MÉDIUMS'],['treble','AIGUS']].map(([k,n])=>'<label>'+n+' <output id="hx-eq-'+k+'-value">+0 dB</output><input type="range" id="hx-eq-'+k+'" min="-12" max="12" value="0" step="1"></label>').join('')+'</div>';
+  radio.appendChild(eq);
+ }
+ eq.style.setProperty('display','block','important');
+ eq.style.setProperty('visibility','visible','important');
+
  radioPanel.style.setProperty('display',selected==='radio'?'':'none','important');
  const meet=app.querySelector('#hellx-meet'),radar=app.querySelector('#hellx-radar');
  if(meet&&meet.parentElement!==horde)horde.appendChild(meet);
