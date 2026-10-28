@@ -1234,49 +1234,88 @@ function graveyard(t){
   c.restore();
  }
  function devil(x,y,scale,alpha){
+  // Cinematic close-up with sculpted horns, jaw, cheek shadows and redoubled eye glow.
   c.save();c.globalAlpha=alpha;c.translate(x,y);c.scale(scale,scale);
-  ellipse(0,9,15,18,green(48));
-  ellipse(0,-13,17,19,green(103));
-  poly([[-14,-23],[-23,-43],[-5,-34]],green(122));
-  poly([[14,-23],[23,-43],[5,-34]],green(122));
-  ellipse(-7,-14,3.2,2.7,green(228));ellipse(7,-14,3.2,2.7,green(228));
-  stroke([[-9,-3],[0,2],[9,-3]],green(175),1.7);
-  stroke([[-13,8],[-26,24]],green(130),3);
-  stroke([[13,8],[26,24]],green(130),3);
+  const body=c.createLinearGradient(-25,-35,27,34);
+  body.addColorStop(0,'#102719');body.addColorStop(.42,'#65d28a');body.addColorStop(1,'#091a0d');
+  poly([[-28,34],[-23,10],[-16,1],[-16,-19],[-11,-32],[0,-39],[14,-32],[19,-16],[18,2],[28,15],[31,38]],body);
+  // Two swept, curved, ridged horns instead of triangles.
+  poly([[-14,-24],[-21,-37],[-29,-53],[-32,-64],[-19,-57],[-8,-43],[-5,-29]],green(124));
+  poly([[14,-24],[20,-37],[29,-54],[31,-65],[19,-57],[8,-43],[5,-29]],green(124));
+  stroke([[-26,-52],[-21,-43],[-12,-35]],green(202),1.6);
+  stroke([[27,-53],[20,-44],[12,-35]],green(202),1.6);
+  for(let j=0;j<3;j++){stroke([[-18-j*3,-36-j*5],[-11-j*3,-35-j*5]],green(65),.7);
+    stroke([[18+j*3,-36-j*5],[11+j*3,-35-j*5]],green(65),.7);}
+  // Long forehead, brow ridges, eyes within deep sockets, nose and mouth.
+  poly([[-16,-23],[-10,-31],[0,-34],[11,-31],[17,-23],[15,-3],[7,13],[0,20],[-8,12],[-17,-3]],green(94));
+  poly([[-13,-20],[-4,-23],[-1,-14],[-12,-12]],green(19));
+  poly([[13,-20],[4,-23],[1,-14],[12,-12]],green(19));
+  ellipse(-7,-16,3,1.5,green(244));ellipse(7,-16,3,1.5,green(244));
+  poly([[-1,-12],[-5,1],[0,3],[5,1],[1,-12]],green(53));
+  poly([[-11,6],[0,8],[11,6],[7,13],[-7,13]],green(17));
+  for(let k=-2;k<=2;k++)stroke([[k*3,9],[k*3,11]],green(160),.7);
+  stroke([[-16,-8],[-12,4],[-5,13],[0,20],[8,11],[15,-5]],green(145),1.1);
+  // Heavy shoulders and clawed hand reaching toward camera.
+  poly([[-18,6],[-34,14],[-37,35],[-15,38],[-9,19]],green(55));
+  poly([[17,6],[34,14],[42,30],[24,38],[9,19]],green(59));
+  c.translate(22,17);c.rotate(Math.sin(t*1.8)*.06);
+  poly([[0,4],[10,-4],[14,-22],[17,-26],[18,-8],[22,-27],[25,-29],[24,-4],[28,-18],[31,-18],[30,9],[16,19]],green(109));
+  c.restore();
+ }
+ function performer(x,y,s,type,t){
+  c.save();c.translate(x,y);c.scale(s,s);
+  const beat=Math.sin(t*8+type*1.8);
+  // Human silhouette with neck, jaw, hair, shoulders, elbows, knees, boots.
+  ellipse(0,-20+beat*.55,4.2,5.7,green(139));
+  poly([[-5,-22],[-8,-18],[-6,-14],[-1,-13],[-3,-9],[-7,-6]],green(56)); // hair
+  poly([[-5,-13],[5,-13],[9,-3],[5,12],[-7,12],[-9,1]],green(85));
+  poly([[-5,11],[0,11],[-3,24],[-9,29],[-13,28],[-9,23]],green(68));
+  poly([[0,11],[6,10],[10,25],[15,28],[7,29],[3,23]],green(62));
+  if(type===0){ // vocalist and microphone, torso leaning into crowd
+    poly([[-5,-10],[-12,-3],[-18,-7],[-19,-11],[-21,-11],[-20,-3],[-13,3],[-6,4]],green(143));
+    poly([[5,-9],[14,-15],[18,-13],[10,-4],[7,3]],green(127));
+    stroke([[13,-16],[14,9]],green(180),1);
+    ellipse(12,-17,2.5,1.5,green(220));
+  }else{ // real guitar outline rather than a line
+    poly([[-8,-8],[-14,-1],[-9,5],[-1,6],[5,1],[2,-5]],green(145));
+    poly([[-7,1],[-1,-5],[8,-2],[11,4],[5,8],[-3,8]],green(185));
+    stroke([[3,1],[23,-13]],green(220),2.2);
+    stroke([[3,-1],[22,-14]],green(90),.7);
+    poly([[5,-10],[9,-8],[13,1],[10,3],[4,-4]],green(118));
+    poly([[-6,-10],[-13,-1],[-8,5],[-3,1]],green(110));
+  }
   c.restore();
  }
  function stage(t,alpha){
   c.save();c.globalAlpha=alpha;
-  // Raised concert platform, drumkit, musicians and moving crowd.
-  poly([[48,45],[197,45],[211,71],[33,71]],'#07170d');
-  stroke([[48,45],[197,45],[211,71],[33,71]],green(180),2);
-  for(let j=0;j<4;j++){
-   const x=67+j*36;
-   const bounce=Math.sin(t*7+j*2)*2;
-   ellipse(x,30+bounce,6,7,green(137));
-   stroke([[x,38+bounce],[x-2,52],[x-8,60]],green(175),2.6);
-   stroke([[x-2,52],[x+6,60]],green(160),2.6);
-   stroke([[x,42+bounce],[x+13,48+bounce]],green(172),2);
-   if(j===1||j===3)stroke([[x-9,43+bounce],[x+12,49+bounce]],green(230),2.3);
+  const pan=Math.sin(t*1.2)*7;
+  poly([[24,47],[222,47],[240,76],[9,76]],'#08170e');
+  stroke([[24,47],[222,47],[240,76],[9,76]],green(184),1.5);
+  // Distant crowd as an undulating silhouette, no stick figures.
+  poly(Array.from({length:57},(_,i)=>[i*4.7,83+Math.sin(i*1.9+t*5)*3-((i%7===0)?7:0)]).concat([[W,H],[0,H]]),green(55));
+  for(let i=0;i<18;i++){
+    const x=8+i*14,y=88+Math.sin(i*2.4+t*5)*2;
+    ellipse(x,y,4.5,5,green(84+Math.floor(noise(i,7)*45)));
+    if(i%3===0){stroke([[x+1,y+4],[x+5,y-13+Math.sin(t*5+i)*3]],green(143),2.4);
+      stroke([[x+5,y-13],[x+8,y-17]],green(166),1.4);}
   }
-  ellipse(127,48,15,12,green(105));ellipse(127,48,9,8,'#031207');
-  stroke([[111,35],[102,28],[108,46]],green(145),2);
-  for(let i=0;i<25;i++){
-   const x=15+(i%13)*19+Math.sin(i*9)*5,y=77+Math.floor(i/13)*17+Math.sin(i*3+t*5)*2;
-   ellipse(x,y,3.8,4.2,green(50+Math.floor(noise(i,2)*85)));
-   stroke([[x,y+4],[x+Math.sin(t*3+i)*4,y+12]],green(69),2);
-   if(i%4===0)stroke([[x+1,y+6],[x+7,y-7+Math.sin(t*4+i)*3]],green(128),1.5);
-  }
-  // Real beams crossing the crowd: moving-head stage lighting.
+  // Drum kit: shells, cymbals, stands and sticks behind front line.
+  ellipse(134+pan*.2,38,13,12,green(123));ellipse(134+pan*.2,38,9,8,'#031007');
+  ellipse(113,27,7,3,green(185));ellipse(151,25,8,3,green(168));
+  stroke([[113,27],[113,48]],green(104));stroke([[151,25],[151,48]],green(104));
+  stroke([[124,24],[116,14+Math.sin(t*9)*3]],green(205),1.5);
+  stroke([[140,24],[151,15-Math.sin(t*9)*3]],green(205),1.5);
+  performer(62+pan,51,1.42,1,t);
+  performer(190+pan,51,1.42,1,t+1);
+  performer(100+pan*.3,52,1.46,0,t);
+  // Four moving head projectors sweep the crowd, their spots follow the beam.
   c.globalCompositeOperation='screen';
   for(let j=0;j<4;j++){
-   const source=51+j*50,angle=Math.sin(t*2.1+j*1.7)*.72;
-   const target=source+Math.sin(angle)*90;
-   const gradient=c.createLinearGradient(source,35,target,104);
-   gradient.addColorStop(0,'rgba(91,255,133,.34)');
-   gradient.addColorStop(1,'rgba(39,255,100,.01)');
-   poly([[source-3,37],[source+3,37],[target+21,106],[target-21,106]],gradient);
-   stroke([[source,37],[target,102]],green(155),.7);
+    const sx=28+j*64,tx=128+Math.sin(t*2+j*1.8)*114;
+    const beam=c.createLinearGradient(sx,19,tx,104);
+    beam.addColorStop(0,'rgba(118,255,159,.36)');beam.addColorStop(1,'rgba(46,255,101,.035)');
+    poly([[sx-2,18],[sx+2,18],[tx+22,106],[tx-22,106]],beam);
+    ellipse(tx,101,13,3,'rgba(120,255,158,.23)');
   }
   c.restore();
  }
