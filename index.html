@@ -35,23 +35,16 @@ mountTransferButton();
 }
 function mountTransferButton(){
  if(document.getElementById('hellx-account-transfer-button'))return;
- const holder=document.createElement('section');
- holder.id='hellx-account-transfer-button';
- holder.setAttribute('aria-label','Récupération de mon compte HELLXBONE');
- holder.style.cssText='max-width:640px;margin:22px auto;padding:16px;border:1px solid #66ff77;border-radius:12px;background:#101010;color:#fff;text-align:center;font-family:system-ui';
- const title=document.createElement('strong');
- title.textContent='MA CARTE DE MEMBRE · HELLXBONE CLUB';
- const explanation=document.createElement('p');
- explanation.textContent='Pour utiliser ton compte dans Facebook ou sur un autre appareil, génère ton code sécurisé ici.';
- explanation.style.cssText='font-size:13px;line-height:1.5;margin:12px 0';
  const button=document.createElement('button');
+ button.id='hellx-account-transfer-button';
  button.type='button';
- button.textContent='RÉCUPÉRER MON CODE';
- button.style.cssText='background:#b72319;color:#fff;border:1px solid #ff746b;border-radius:9px;font-weight:800;padding:14px 20px;width:100%;cursor:pointer';
- button.addEventListener('click',showTransferCode);
- holder.append(title,explanation,button);
- (document.querySelector('footer')||document.getElementById('app')||document.body).prepend(holder);
+ button.textContent='MON CODE DE TRANSFERT';
+ button.setAttribute('aria-label','Générer mon code de transfert HELLXBONE');
+ button.style.cssText='position:fixed!important;right:12px!important;top:190px!important;z-index:2147483000!important;display:block!important;visibility:visible!important;opacity:1!important;max-width:48vw!important;border:2px solid #7bff84!important;border-radius:10px!important;background:#111!important;color:#fff!important;padding:10px 12px!important;font:800 12px system-ui!important;line-height:1.3!important;box-shadow:0 4px 22px #000c!important;cursor:pointer!important';
+ button.onclick=showTransferCode;
+ document.body.appendChild(button);
 }
+
 async function enroll(name){
 const result=await rpc('hellx_club_register',{p_member_id:deviceId(),p_pseudo:name});
 const m=Array.isArray(result)?result[0]:result;
