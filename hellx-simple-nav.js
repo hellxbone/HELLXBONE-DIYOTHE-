@@ -58,6 +58,9 @@ function sync(){
  if(radar&&radar.parentElement!==horde)horde.appendChild(radar);
  // Les autres outils non concernés restent en place ; aucun lecteur audio n'est recréé.
  horde.hidden=selected!=='horde';radioPanel.hidden=selected!=='radio';
+ const clubButtons=document.getElementById('hellx-club'),reaper=document.getElementById('hellx-home-reaper');
+ if(clubButtons)clubButtons.hidden=selected!=='home';
+ if(reaper)reaper.hidden=selected!=='home';
 // La radio ne s'affiche que sur demande via RADIOS LIVE, pas sur l'accueil.
 if(selected==='home'){radioPanel.hidden=true;horde.hidden=true}
  // Afficher aussi le radar et ses chats (enfants du radar) dès que Rencontres est choisi.
