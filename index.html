@@ -1184,14 +1184,21 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </style><style id="hx-radio-title-style">#hellx-onair .hx-head h2{font-size:clamp(11px,2.7vw,16px)!important;letter-spacing:.4px!important;white-space:nowrap!important;line-height:1.4!important}</style><script defer src="hellx-analytics.js?v=20261025-member-stats"></script><script>window.HELLX_CHAT_ENDPOINT="https://muddy-moon-76da.diyothe.workers.dev";</script><script defer src="hellx-ai-chat.js?v=20261017-persona-v1"></script><script defer src="hellx-shake.js?v=20261021-neon-v5"></script><script defer src="hellx-curse.js?v=20261023-v2"></script><script defer src="hellx-invite.js?v=20261023-v3"></script><script defer src="hellx-auto-alerts.js?v=20261023"></script><script defer src="hellx-radar.js?v=20261024-order-v5"></script><script defer src="hellx-nearby-chat.js?v=20261026-pseudos-v2"></script><script defer src="hellx-ghost-chat.js?v=20261026-ghost-v1"></script><script defer src="hellx-meet.js?v=20261027-preview-v3"></script><script defer src="hellx-simple-nav.js?v=20261028-home-only-club-v1"></script><script>
 /* Dot-matrix radio art: decorative patterns, not a fabricated audio analyser. */
 (()=>{'use strict';
-const canvas=document.getElementById('hx-dot-matrix'),radio=document.getElementById('hellx-onair');
-if(!canvas||!radio)return;
-const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;
+let canvas=null,radio=null,ctx=null;
+function attach(){
+ const found=document.getElementById('hx-dot-matrix');
+ if(found===canvas&&ctx)return;
+ canvas=found;radio=document.getElementById('hellx-onair');
+ ctx=canvas?.getContext('2d',{alpha:true})||null;
+}
+attach();
+new MutationObserver(attach).observe(document.getElementById('app')||document.body,{childList:true,subtree:true});
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 let last=0,mode=0,modeAt=0,raf=0;
 function draw(time){
  raf=requestAnimationFrame(draw);
  if(time-last<45)return;last=time;
+ if(!ctx||!radio||!canvas)return;
  const visible=radio.classList.contains('hx-playing')&&!radio.classList.contains('hx-radio-standby')&&!document.hidden&&!reduced.matches;
  if(!visible)return;
  const box=canvas.getBoundingClientRect(),w=Math.round(box.width),h=Math.round(box.height);
