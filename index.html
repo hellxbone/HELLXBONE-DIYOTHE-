@@ -1181,6 +1181,18 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #hellx-onair #hx-nowplaying-text{font-size:clamp(15px,3.9vw,21px)!important;line-height:1.25!important;font-weight:800!important;text-shadow:0 1px 5px #031b07,0 0 10px #54ff83!important}
 #hellx-onair .hx-standby-marquee span{font-size:clamp(12px,3.15vw,17px)!important}
 @media(prefers-reduced-motion:reduce){#hellx-onair #hx-dot-matrix{opacity:1!important}}
+</style><style id="hx-live-transparent-overlay">
+#hellx-onair .hx-display{position:relative!important;overflow:hidden!important}
+#hellx-onair .hx-display::before{
+ content:"HELLXBONE LIVE"!important;position:absolute!important;inset:0!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ z-index:8!important;pointer-events:none!important;
+ color:rgba(170,255,181,.22)!important;
+ font:900 clamp(13px,3.25vw,23px)/1 system-ui,sans-serif!important;
+ letter-spacing:.075em!important;white-space:nowrap!important;
+ text-shadow:0 0 7px rgba(85,255,126,.18)!important;
+ mix-blend-mode:screen!important
+}
 </style><style id="hx-cemetery-clean-screen">#hellx-onair .hx-display-top,#hellx-onair #hx-standby-marquee,#hellx-onair #hx-nowplaying{display:none!important}#hellx-onair #hx-dot-matrix{z-index:5!important}</style><style id="hx-radio-title-style">#hellx-onair .hx-head h2{font-size:clamp(11px,2.7vw,16px)!important;letter-spacing:.4px!important;white-space:nowrap!important;line-height:1.4!important}</style><script defer src="hellx-analytics.js?v=20261025-member-stats"></script><script>window.HELLX_CHAT_ENDPOINT="https://muddy-moon-76da.diyothe.workers.dev";</script><script defer src="hellx-ai-chat.js?v=20261017-persona-v1"></script><script defer src="hellx-shake.js?v=20261021-neon-v5"></script><script defer src="hellx-curse.js?v=20261023-v2"></script><script defer src="hellx-invite.js?v=20261023-v3"></script><script defer src="hellx-auto-alerts.js?v=20261023"></script><script defer src="hellx-radar.js?v=20261024-order-v5"></script><script defer src="hellx-nearby-chat.js?v=20261026-pseudos-v2"></script><script defer src="hellx-ghost-chat.js?v=20261026-ghost-v1"></script><script defer src="hellx-meet.js?v=20261027-preview-v3"></script><script defer src="hellx-simple-nav.js?v=20261028-home-only-club-v1"></script><script>
 /* HELLXBONE CINEMA — cinematic point-cloud graveyard with textured stone and depth */
 (()=>{'use strict';
