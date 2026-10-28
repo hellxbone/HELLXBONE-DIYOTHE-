@@ -116,7 +116,7 @@ function showRetryGate(name,reason){
   };
  };
 }
-function socialBrowser(){const ua=navigator.userAgent;return /Instagram/i.test(ua)?'Instagram':(/FBAN|FBAV|FB_IAB|FB4A|FBIOS/i.test(ua)?'Facebook':null)}
+function socialBrowser(){const ua=navigator.userAgent,ref=document.referrer||'',params=new URLSearchParams(location.search);return /Instagram|instagram\.com/i.test(ua+' '+ref)?'Instagram':(/FBAN|FBAV|FB_IAB|FB4A|FBIOS|facebook\.com|fb\.com|l\.facebook\.com|lm\.facebook\.com|m\.facebook\.com/i.test(ua+' '+ref)||params.has('fbclid')||params.has('fb_action_ids'))?'Facebook':null}
 function showSocialAccountChoice(){
  const gate=document.createElement('div');gate.id='hellx-member-gate';
  gate.innerHTML='<form id="hellx-member-entry"><h1>HELLXBONE CLUB</h1><p>Facebook garde une connexion séparée. Ton compte n’est pas perdu. Pour retrouver ton pseudo et tes scores, ouvre l’application habituelle ou Chrome.</p><button type="button" id="hellx-choice-browser">OUVRIR DANS CHROME</button><button type="button" id="hellx-choice-copy">COPIER LE LIEN</button><button type="button" id="hellx-choice-new">INSCRIRE UN NOUVEAU MEMBRE</button><p><a href="#" id="hellx-choice-recover">J’ai déjà un compte : récupérer avec un code</a></p><p id="hellx-member-error" role="status"></p></form>';
@@ -131,7 +131,8 @@ function showSocialAccountChoice(){
   catch(e){gate.querySelector('#hellx-member-error').textContent=location.href}
  };
  gate.querySelector('#hellx-choice-new').onclick=()=>{
-  try{localStorage.removeItem(STORAGE);localStorage.removeItem(PLAYER);localStorage.removeItem(DEVICE)}catch(e){}
+  // Preserve the device identity and account data; a new visitor chooses a different nickname.
+  try{localStorage.removeItem(STORAGE);localStorage.removeItem(PLAYER)}catch(e){}
   sessionStorage.setItem('hellx-social-continue','1');location.reload();
  };
  gate.querySelector('#hellx-choice-recover').onclick=e=>{
@@ -151,31 +152,8 @@ const social=socialBrowser();
    Les données locales restent isolées entre navigateurs : aucune identité n'est déduite
    d'un pseudo seul, pour éviter toute usurpation de compte. */
 
-if(social && sessionStorage.getItem('hellx-social-continue')!=='1'){
-  const entry=document.createElement('div');
-  entry.id='hellx-member-gate';
-  entry.innerHTML='<form id="hellx-member-entry"><h1>HELLXBONE CLUB</h1><p>Tu arrives de Facebook. Pour retrouver ton compte, ta carte et tes scores, ouvre HELLXBONE dans Chrome. Facebook ne partage pas les connexions avec l’application installée.</p><button type="button" id="hellx-social-chrome">OUVRIR DANS CHROME</button><button type="button" id="hellx-social-copy">COPIER LE LIEN</button><button type="button" id="hellx-social-continue">CONTINUER DANS FACEBOOK</button><p id="hellx-member-error" role="status">Nouveau membre ? Choisis « Continuer dans Facebook ». Si Chrome ne s’ouvre pas, copie le lien.</p></form>';
-  document.body.appendChild(entry);
-  entry.querySelector('#hellx-social-chrome').onclick=()=>{
-    const url=location.href;
-    if(/Android/i.test(navigator.userAgent)){
-      const u=new URL(url);
-      location.href='intent://'+u.host+u.pathname+u.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(url)+';end';
-    }else{window.open(url,'_blank','noopener,noreferrer')}
-  };
-  entry.querySelector('#hellx-social-copy').onclick=async()=>{
-    const message=entry.querySelector('#hellx-member-error');
-    try{await navigator.clipboard.writeText(location.href);message.textContent='Lien copié : colle-le dans Chrome.'}
-    catch(e){message.textContent='Copie cette adresse dans Chrome : '+location.href}
-  };
-  entry.querySelector('#hellx-social-continue').onclick=()=>{
-    sessionStorage.setItem('hellx-social-continue','1');
-    entry.remove();
-    location.reload();
-  };
-  return;
-}
-if(social && existingName){
+
+if(social && existingName && sessionStorage.getItem('hellx-social-continue')!=='1'){
   // Ne jamais tenter de réinscrire automatiquement un pseudo déjà présent
   // dans le navigateur intégré de Facebook.
   sessionStorage.removeItem('hellx-social-continue');
@@ -191,7 +169,7 @@ if(existingName){
     if(social)showSocialHint();
   }catch(e){
     console.warn('HELLXBONE: vérification de compte impossible',e);
-    showRetryGate(existingName,e.message);
+    if(e.message==='PSEUDO_PRIS')showSocialAccountChoice();else showRetryGate(existingName,e.message);
   }
   return;
 }
