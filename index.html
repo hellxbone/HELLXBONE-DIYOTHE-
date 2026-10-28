@@ -1182,123 +1182,130 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #hellx-onair .hx-standby-marquee span{font-size:clamp(12px,3.15vw,17px)!important}
 @media(prefers-reduced-motion:reduce){#hellx-onair #hx-dot-matrix{opacity:1!important}}
 </style><style id="hx-cemetery-clean-screen">#hellx-onair .hx-display-top,#hellx-onair #hx-standby-marquee,#hellx-onair #hx-nowplaying{display:none!important}#hellx-onair #hx-dot-matrix{z-index:5!important}</style><style id="hx-radio-title-style">#hellx-onair .hx-head h2{font-size:clamp(11px,2.7vw,16px)!important;letter-spacing:.4px!important;white-space:nowrap!important;line-height:1.4!important}</style><script defer src="hellx-analytics.js?v=20261025-member-stats"></script><script>window.HELLX_CHAT_ENDPOINT="https://muddy-moon-76da.diyothe.workers.dev";</script><script defer src="hellx-ai-chat.js?v=20261017-persona-v1"></script><script defer src="hellx-shake.js?v=20261021-neon-v5"></script><script defer src="hellx-curse.js?v=20261023-v2"></script><script defer src="hellx-invite.js?v=20261023-v3"></script><script defer src="hellx-auto-alerts.js?v=20261023"></script><script defer src="hellx-radar.js?v=20261024-order-v5"></script><script defer src="hellx-nearby-chat.js?v=20261026-pseudos-v2"></script><script defer src="hellx-ghost-chat.js?v=20261026-ghost-v1"></script><script defer src="hellx-meet.js?v=20261027-preview-v3"></script><script defer src="hellx-simple-nav.js?v=20261028-home-only-club-v1"></script><script>
-/* HELLXBONE RADIO — DRONE CINEMATIQUE: cimetière, crypte, descente intérieure */
+/* HELLXBONE CINEMA — cinematic point-cloud graveyard with textured stone and depth */
 (()=>{'use strict';
-let canvas=null,ctx=null,radio=null;
-function attach(){const n=document.getElementById('hx-dot-matrix');if(n===canvas&&ctx)return;canvas=n;radio=document.getElementById('hellx-onair');ctx=n?.getContext('2d',{alpha:true})||null;}
+let canvas,ctx,radio,begin=0,last=0;
+function attach(){const n=document.getElementById('hx-dot-matrix');if(n===canvas&&ctx)return;canvas=n;radio=document.getElementById('hellx-onair');ctx=n?.getContext('2d',{alpha:false})||null;begin=0;}
 attach();new MutationObserver(attach).observe(document.getElementById('app')||document.body,{childList:true,subtree:true});
-const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-const W=160,H=66,off=document.createElement('canvas');off.width=W;off.height=H;const p=off.getContext('2d',{willReadFrequently:true});
-const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),smooth=v=>{v=clamp(v);return v*v*(3-2*v)};
-function box(x,y,w,h,shade=1){p.globalAlpha=shade;p.fillRect(x,y,w,h);p.globalAlpha=1}
-function path(points,width=1){p.lineWidth=width;p.beginPath();points.forEach(([x,y],i)=>i?p.lineTo(x,y):p.moveTo(x,y));p.stroke()}
-function grave(x,y,sz,orientation=0){
- p.save();p.translate(x,y);p.rotate(orientation);p.scale(sz,sz);
- p.fillRect(-3,-6,6,12);p.beginPath();p.arc(0,-6,3,Math.PI,Math.PI*2);p.fill();
- p.globalAlpha=.24;path([[4,-5],[8,-2],[8,9]],1);p.restore();
+const W=256,H=106,off=document.createElement('canvas');off.width=W;off.height=H;const c=off.getContext('2d',{willReadFrequently:true});
+const TAU=Math.PI*2,clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),ease=x=>{x=clamp(x);return x*x*(3-2*x)};
+const noise=(a,b)=>{const x=Math.sin(a*127.1+b*311.7)*43758.5453;return x-Math.floor(x)};
+function poly(pts,fill){c.fillStyle=fill;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill();}
+function stroke(pts,color,width=1){c.strokeStyle=color;c.lineWidth=width;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke();}
+function ellipse(x,y,rx,ry,fill){c.fillStyle=fill;c.beginPath();c.ellipse(x,y,Math.abs(rx),Math.abs(ry),0,0,TAU);c.fill();}
+const green=(v)=>'rgb('+Math.floor(v*.26)+','+Math.floor(v)+','+Math.floor(v*.46)+')';
+function stone(x,y,w,h,dark=false){
+ const v=dark?67:110;
+ poly([[x-w*.5,y],[x-w*.5,y-h*.72],[x-w*.38,y-h],[x+w*.32,y-h],[x+w*.5,y-h*.75],[x+w*.5,y]],green(v));
+ poly([[x+w*.5,y],[x+w*.5,y-h*.75],[x+w*.68,y-h*.84],[x+w*.68,y-h*.07]],green(43));
+ stroke([[x-w*.5,y],[x-w*.5,y-h*.72],[x-w*.38,y-h],[x+w*.32,y-h],[x+w*.5,y-h*.75],[x+w*.5,y]],green(175),.7);
+ // Age, fissures and moss: no flat, cartoon block.
+ for(let k=0;k<12;k++){const u=noise(x+k*3,y)*.86-.43,vv=noise(y+k*7,x);const yy=y-vv*h*.8;
+  c.fillStyle=green(36+Math.floor(noise(k,x)*80));c.fillRect(x+u*w,yy,Math.max(.5,w*.08),.6);}
+ stroke([[x-w*.15,y-h*.7],[x-w*.05,y-h*.49],[x-w*.2,y-h*.36]],green(35),.8);
 }
-function cross(x,y,z){box(x-z*.7,y-z*4,z*1.4,z*8);box(x-z*2.5,y-z*2.7,z*5,z*1.4)}
 function skull(x,y,s){
- p.save();p.translate(x,y);p.scale(s,s);
- p.beginPath();p.ellipse(0,-2,7,7,0,0,Math.PI*2);p.fill();p.fillRect(-4,2,8,5);
- p.globalCompositeOperation='destination-out';p.beginPath();p.arc(-3,-2,2,0,Math.PI*2);p.arc(3,-2,2,0,Math.PI*2);p.fill();
- p.fillRect(-1,2,2,2);for(let k=-3;k<=3;k+=2)p.fillRect(k,6,.8,2);
- p.restore();
+ ellipse(x,y,7*s,8*s,green(130));poly([[x-4*s,y+3*s],[x+4*s,y+3*s],[x+3*s,y+10*s],[x-3*s,y+10*s]],green(112));
+ ellipse(x-3*s,y,2.2*s,2.7*s,green(12));ellipse(x+3*s,y,2.2*s,2.7*s,green(12));
+ poly([[x,y+2*s],[x-1.3*s,y+5*s],[x+1.3*s,y+5*s]],green(10));
+ for(let i=-2;i<=2;i++)c.fillRect(x+i*1.4*s,y+7*s,.45*s,2*s);
 }
-function crypt(x,y,scale){
- p.save();p.translate(x,y);p.scale(scale,scale);
- // Vue aérienne d'une crypte ancienne : marches, toit, pierres et portail.
- p.strokeRect(-23,-17,46,34);
- p.globalAlpha=.35;for(let i=-17;i<18;i+=7)path([[i,-17],[i+7,17]],1);
- p.globalAlpha=1;p.strokeRect(-18,-12,36,24);p.strokeRect(-12,-8,24,16);
- p.fillRect(-5,9,10,4);
- for(let j=0;j<4;j++)path([[-10-j*4,14+j*3],[10+j*4,14+j*3]],1);
- p.restore();
-}
-function cemetery(t){
- // Séquence continue de 42 secondes : survol tombes -> montée -> crypte -> intérieur.
- const phase=t%42;
- p.clearRect(0,0,W,H);p.fillStyle='#69ff9c';p.strokeStyle='#69ff9c';p.lineJoin='round';
- if(phase<26){
-  const rise=smooth((phase-13)/11),fly=smooth(phase/3);
-  const zoom=1.85-1.19*rise;
-  const travel=phase*8.1;
-  const cx=80+Math.sin(phase*.25)*2,cy=32;
-  p.save();p.translate(cx,cy);p.scale(zoom,zoom);p.translate(-80,-32);
-  // Le sol et l'allée au centre défilent vers le bas comme vus d'un drone.
-  p.globalAlpha=.35;path([[65,-180],[65,230]],1);path([[95,-180],[95,230]],1);
-  for(let i=-15;i<25;i++){
-   const yy=((i*16+travel+300)%400)-155;
-   const left=42+Math.sin(i*3.2)*7,right=117+Math.cos(i*2.1)*7;
-   p.globalAlpha=.36+.2*Math.sin(i+phase*.17)**2;
-   grave(left,yy,1.05,i%4*.12);grave(right,yy+7,1.1,-i%3*.11);
-   if(i%3===0){grave(24,yy-6,.8);grave(138,yy+12,.83);}
-   if(i%5===0){cross(54,yy-7,.8);cross(104,yy+2,.75);}
-   if(i%6===0){p.beginPath();p.arc(13,yy+2,5,0,7);p.stroke();path([[13,yy],[6,yy-9],[1,yy-10]],1);}
-  }
-  p.globalAlpha=1;
-  // La crypte arrive depuis l'horizon quand le drone prend de l'altitude.
-  if(phase>13){
-   const amount=smooth((phase-13)/12);
-   const y=-68+amount*101;
-   crypt(80,y,.6+amount*.78);
-  }
-  p.restore();
- }else{
-  // Plongée à travers le portail de la crypte, perspective intérieure.
-  const descend=smooth((phase-26)/7),inside=smooth((phase-30)/7);
-  const cx=80,cy=33;
-  p.globalAlpha=.8;
-  const outer=18+descend*92;
-  p.strokeRect(cx-outer,cy-outer*.58,outer*2,outer*1.16);
-  p.globalAlpha=.28;for(let k=1;k<5;k++){
-   const r=outer*(1-k*.16);
-   p.strokeRect(cx-r,cy-r*.58,r*2,r*1.16);
-  }
-  p.globalAlpha=1;
-  if(phase>30){
-   // Voûtes de pierre, niches funéraires et escalier descendant.
-   for(let j=0;j<5;j++){
-    let z=1-(j+inside*2)%5/5;
-    let wide=8+z*70,high=4+z*29;
-    p.globalAlpha=.22+z*.6;
-    path([[cx-wide,cy+high],[cx-wide,cy-high*.2],[cx-wide*.58,cy-high]],1+z);
-    path([[cx+wide,cy+high],[cx+wide,cy-high*.2],[cx+wide*.58,cy-high]],1+z);
-    path([[cx-wide,cy+high],[cx+wide,cy+high]],1);
-    cross(cx-wide+4,cy+high-5,.55+z*.5);
+function graveyard(t){
+ const q=t%45, lift=ease((q-14)/12), enter=ease((q-27)/9);
+ c.fillStyle='#010702';c.fillRect(0,0,W,H);
+ // Surface texture, moon reflections and extremely subtle illumination.
+ const sky=c.createRadialGradient(195,19,0,195,19,135);
+ sky.addColorStop(0,'#19492a');sky.addColorStop(.55,'#092012');sky.addColorStop(1,'#010702');
+ c.fillStyle=sky;c.fillRect(0,0,W,H);
+ ellipse(196,19,14,14,green(86));ellipse(200,17,12,13,'#08210f');
+ c.save();c.beginPath();c.rect(0,0,W,H);c.clip();
+ if(q<32){
+  const zoom=1.82-1.32*lift, travel=q*12,center=128+Math.sin(q*.28)*3;
+  c.save();c.translate(center,53);c.scale(zoom,zoom);c.translate(-128,-53);
+  // Drone tilted top-down: central avenue, aerial parallax and edges.
+  poly([[101,-200],[155,-200],[159,260],[98,260]],'#0c2515');
+  stroke([[99,-190],[98,260]],green(46));stroke([[157,-190],[160,260]],green(43));
+  for(let i=-24;i<37;i++){
+   const y=((i*16+travel+600)%620)-245;
+   const depth=.55+.5*(y+245)/620;
+   for(const side of [-1,1]){
+    const x=128+side*(45+noise(i,side)*30);
+    // Cast shadow behind raised tombstones: aerial depth.
+    ellipse(x+4,y+5,9*depth,3*depth,'#020a05');
+    stone(x,y,8*depth,13*depth,i%4===0);
+    if(i%4===0)stone(x+side*18,y+8,5*depth,8*depth,true);
+    if(i%9===0){stroke([[x+side*14,y],[x+side*13,y-18],[x+side*2,y-31]],green(72),1.8);
+       stroke([[x+side*13,y-18],[x+side*22,y-24]],green(65));}
    }
-   p.globalAlpha=clamp((phase-33)/4);
-   skull(80,41,1.2+inside*.8);
+   // Une rangée de dalles et de marches, granuleuses.
+   if(i%3===0)stroke([[113,y],[145,y+2]],green(26),1);
   }
-  p.globalAlpha=1;
+  if(q>13){
+   const approach=ease((q-13)/14),cy=-96+approach*151,scale=.5+approach*1.16;
+   c.save();c.translate(128,cy);c.scale(scale,scale);
+   // Crypt in aerial view: bevelled roof, shadows, carved stone outline.
+   poly([[-36,-31],[34,-31],[49,-15],[49,27],[-39,27]],'#06130b');
+   poly([[-35,-27],[26,-27],[37,-17],[37,23],[-35,23]],green(47));
+   poly([[-35,-27],[26,-27],[5,-7],[-18,-7]],green(106));
+   poly([[26,-27],[37,-17],[37,23],[5,6],[5,-7]],green(40));
+   poly([[-18,-7],[5,-7],[5,6],[-18,6]],green(61));
+   stroke([[-35,-27],[26,-27],[37,-17],[37,23],[-35,23],[-35,-27]],green(170),1.5);
+   for(let k=0;k<5;k++)stroke([[-35+k*11,-27],[5+k*6,-7]],green(80),.7);
+   poly([[-12,9],[10,9],[10,24],[-12,24]],'#000500');
+   stroke([[-13,23],[-13,8],[-8,3],[7,3],[11,8],[11,23]],green(160),1.2);
+   for(let j=0;j<5;j++)stroke([[-20-j*2,26+j*4],[20+j*2,26+j*4]],green(50+j*11),1);
+   c.restore();
+  }
+  c.restore();
  }
- // Brume fine glissant le long des pierres.
- for(let k=0;k<4;k++){
-  const y=12+k*15+Math.sin(t*.28+k)*3,x=((t*(2+k*.4)+k*48)%220)-55;
-  p.globalAlpha=.1;path([[x,y],[x+45,y+.5],[x+67,y]],1);
+ if(q>=29){
+  // Descent into crypt: stone archways accelerate past camera.
+  const z=ease((q-29)/9), wide=18+z*165;
+  poly([[0,0],[W,0],[W,H],[0,H]],'rgba(0,6,2,'+(z*.92)+')');
+  for(let j=5;j>=0;j--){
+   const depth=((j/6+z*2)%1),r=10+depth*145;
+   const light=30+depth*115;
+   stroke([[128-r,106],[128-r,53-r*.6],[128-r*.65,53-r],[128+r*.65,53-r],[128+r,53-r*.6],[128+r,106]],green(light),1+depth*2);
+   stroke([[128-r*.78,105],[128-r*.75,70]],green(light*.65),.8);
+  }
+  // A dark stone sarcophagus and the skull hidden in the crypt.
+  if(q>35){const v=ease((q-35)/6);c.globalAlpha=v;
+   poly([[78,89],[102,71],[158,71],[180,89],[174,105],[83,105]],green(43));
+   stroke([[78,89],[102,71],[158,71],[180,89]],green(143),1.5);
+   skull(129,77,.9+v*.8);c.globalAlpha=1;}
  }
- p.globalAlpha=1;
+ // Fine moving mist, distinct planes.
+ for(let k=0;k<7;k++){
+  const y=15+k*16+Math.sin(t*.25+k)*3,x=((t*(4+k*.5)+k*56)%320)-65;
+  const fog=c.createLinearGradient(x,0,x+105,0);fog.addColorStop(0,'#08211200');fog.addColorStop(.5,'#24583a24');fog.addColorStop(1,'#08211200');
+  c.fillStyle=fog;c.fillRect(x,y,105,3+k*.4);
+ }
+ c.restore();
 }
-let previous=0,cinemaStart=null;
-function frame(ms){
- requestAnimationFrame(frame);
- if(ms-previous<60)return;previous=ms;
+function render(ms){
+ requestAnimationFrame(render);
+ if(ms-last<65)return;last=ms;
  if(!canvas||!ctx||!radio||document.hidden)return;
- const r=canvas.getBoundingClientRect(),w=Math.round(r.width),h=Math.round(r.height);if(w<60||h<20)return;
- const dpr=Math.min(window.devicePixelRatio||1,2);if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
- if(cinemaStart===null)cinemaStart=ms;
- cemetery((ms-cinemaStart)/1000);
- ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
- const data=p.getImageData(0,0,W,H).data;ctx.fillStyle='#69ff9c';
- const caption=radio.querySelector('#hx-nowplaying:not([hidden])'),dim=caption?.8:1;
- for(let y=0;y<H;y+=2)for(let x=0;x<W;x+=2){
-  const alpha=data[(y*W+x)*4+3]/255;if(alpha<.14)continue;
-  ctx.globalAlpha=Math.min(1,alpha*dim);
-  ctx.fillRect(x*w/W,y*h/H,Math.max(1.2,w/W*1.56),Math.max(1.2,h/H*1.55));
+ const rect=canvas.getBoundingClientRect(),w=rect.width,h=rect.height;
+ if(w<65||h<20)return;
+ const ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(w*ratio),ch=Math.round(h*ratio);
+ if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
+ if(!begin)begin=ms;
+ graveyard((ms-begin)/1000);
+ const pixels=c.getImageData(0,0,W,H).data;
+ ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle='#000802';ctx.fillRect(0,0,w,h);
+ // Dense phosphor dot matrix: every 1.6 px in source, variable luminance and fine shadows.
+ const step=2,dx=w/W,dy=h/H;
+ for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step){
+  const idx=(y*W+x)*4,lum=(pixels[idx+1]*.92+pixels[idx+2]*.08);
+  const threshold=8+noise(x,y)*15;
+  if(lum<threshold)continue;
+  const bright=clamp(lum/190),v=Math.floor(45+bright*210);
+  ctx.fillStyle='rgba('+Math.floor(v*.34)+','+v+','+Math.floor(v*.55)+','+clamp(.3+bright*.7).toFixed(2)+')';
+  ctx.fillRect(x*dx,y*dy,Math.max(.9,dx*1.52),Math.max(.9,dy*1.52));
  }
- ctx.globalAlpha=1;
 }
-requestAnimationFrame(frame);
+requestAnimationFrame(render);
 })();
 </script></body></html>
 
