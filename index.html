@@ -1057,11 +1057,11 @@ function activateSurround(){
   const reflectionGain=surroundCtx.createGain();reflectionGain.gain.value=.10;
   surroundSource.connect(reflection);reflection.connect(reflectionGain);reflectionGain.connect(mix);
   const compressor=surroundCtx.createDynamicsCompressor();
-  compressor.threshold.value=-30;compressor.knee.value=10;compressor.ratio.value=3.5;compressor.attack.value=.006;compressor.release.value=.22;
+  compressor.threshold.value=-18;compressor.knee.value=8;compressor.ratio.value=2.2;compressor.attack.value=.006;compressor.release.value=.22;
   // Gain de sortie dédié au mode concert : effet nettement audible même sur les flux faibles.
-  const concertVolume=surroundCtx.createGain();concertVolume.gain.value=2.2;
+  const concertVolume=surroundCtx.createGain();concertVolume.gain.value=3.0;
   const limiter=surroundCtx.createDynamicsCompressor();
-  limiter.threshold.value=-4;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=.002;limiter.release.value=.11;
+  limiter.threshold.value=-1;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=.002;limiter.release.value=.11;
   mix.connect(compressor);compressor.connect(concertVolume);concertVolume.connect(limiter);limiter.connect(surroundCtx.destination);
  }
  return surroundCtx.resume();
