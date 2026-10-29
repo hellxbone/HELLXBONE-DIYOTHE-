@@ -1023,11 +1023,11 @@ function activateSurround(){
   const dry=surroundCtx.createGain();dry.gain.value=.84;
   const delay=surroundCtx.createDelay(.1);delay.delayTime.value=.018;
   const wet=surroundCtx.createGain();wet.gain.value=.18;
-  surroundSource.connect(dry);dry.connect(surroundCtx.destination);
+  surroundSource.connect(dry);const leveler=surroundCtx.createDynamicsCompressor();leveler.threshold.value=-26;leveler.knee.value=16;leveler.ratio.value=3;leveler.attack.value=.012;leveler.release.value=.23;const makeup=surroundCtx.createGain();makeup.gain.value=1.18;dry.connect(leveler);leveler.connect(makeup);makeup.connect(surroundCtx.destination);
   surroundSource.connect(delay);delay.connect(wet);
   if(typeof surroundCtx.createStereoPanner==='function'){
-   const side=surroundCtx.createStereoPanner();side.pan.value=.72;wet.connect(side);side.connect(surroundCtx.destination);
-  }else wet.connect(surroundCtx.destination);
+   const side=surroundCtx.createStereoPanner();side.pan.value=.72;wet.connect(side);side.connect(leveler);
+  }else wet.connect(leveler);
  }
  return surroundCtx.resume();
 }
