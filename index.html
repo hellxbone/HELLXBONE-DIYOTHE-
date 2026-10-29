@@ -1038,6 +1038,24 @@ function activateSurround(){
   if(typeof surroundCtx.createStereoPanner==='function'){
    const side=surroundCtx.createStereoPanner();side.pan.value=.85;spaceGain.connect(side);side.connect(mix);
   }else spaceGain.connect(mix);
+  // Simulation d'une grande salle de concert : réflexions précoces + réverbération diffuse.
+  const hallImpulse=surroundCtx.createBuffer(2,Math.floor(surroundCtx.sampleRate*1.35),surroundCtx.sampleRate);
+  for(let channel=0;channel<2;channel++){
+   const data=hallImpulse.getChannelData(channel);
+   for(let i=0;i<data.length;i++){
+    const t=i/surroundCtx.sampleRate;
+    const decay=Math.pow(1-t/1.35,2.7);
+    data[i]=(Math.random()*2-1)*decay*.21;
+   }
+  }
+  const hall=surroundCtx.createConvolver();hall.buffer=hallImpulse;
+  const hallHighpass=surroundCtx.createBiquadFilter();hallHighpass.type='highpass';hallHighpass.frequency.value=320;
+  const hallLowpass=surroundCtx.createBiquadFilter();hallLowpass.type='lowpass';hallLowpass.frequency.value=6500;
+  const hallWet=surroundCtx.createGain();hallWet.gain.value=.19;
+  surroundSource.connect(hallHighpass);hallHighpass.connect(hallLowpass);hallLowpass.connect(hall);hall.connect(hallWet);hallWet.connect(mix);
+  const reflection=surroundCtx.createDelay(.15);reflection.delayTime.value=.085;
+  const reflectionGain=surroundCtx.createGain();reflectionGain.gain.value=.10;
+  surroundSource.connect(reflection);reflection.connect(reflectionGain);reflectionGain.connect(mix);
   const compressor=surroundCtx.createDynamicsCompressor();
   compressor.threshold.value=-25;compressor.knee.value=10;compressor.ratio.value=3.5;compressor.attack.value=.006;compressor.release.value=.22;
   const limiter=surroundCtx.createDynamicsCompressor();
