@@ -111,3 +111,7 @@
 #hellx-riff-crush .riff-stats .riff-stat{padding:4px 2px!important;min-height:0!important;border-radius:10px}
 #hellx-riff-crush .riff-stats .riff-stat b{font-size:clamp(16px,3.9vw,22px);line-height:1.05;margin:0}
 #hellx-riff-crush .riff-stats .riff-stat span{font-size:clamp(8px,1.9vw,10px);line-height:1.1;margin-top:2px}
+
+/* TOP 10 : bouton de classement plus large sous le plateau */
+#hellx-riff-crush .riff-leaderboard{width:min(100%,420px);box-sizing:border-box;margin:12px auto 16px}
+#hellx-riff-crush .riff-leaderboard summary{text-align:center;min-height:44px}
