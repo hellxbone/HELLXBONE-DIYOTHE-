@@ -118,3 +118,7 @@
 
 /* La case SCORE à gauche est plus large, les 5 compteurs restent sur une ligne */
 #hellx-riff-crush .riff-stats{grid-template-columns:minmax(0,1.45fr) repeat(4,minmax(0,1fr))}
+
+/* Boutons du bas moins hauts sans modifier les compteurs du haut */
+#hellx-riff-crush .riff-actions .riff-restart,#hellx-riff-crush .riff-actions .riff-sound{min-height:34px;padding:5px 12px;font-size:12px;border-radius:9px}
+#hellx-riff-crush .riff-leaderboard summary{min-height:32px;padding:3px 6px}
