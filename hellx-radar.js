@@ -1,4 +1,4 @@
-/* HELLXBONE — radar volontaire, présence récente conservée 30 minutes en veille. */
+/* HELLXBONE — radar volontaire, présence récente conservée 2 heures en veille. */
 (() => {
 'use strict';
 const BASE='https://ldibykpitjutratyqqax.supabase.co/rest/v1/rpc/';
@@ -70,7 +70,7 @@ function ui(){
  const radio=app?.querySelector('#hellx-onair');
  if(!radio)return null;
  node=document.createElement('section');node.id='hellx-radar';node.setAttribute('aria-label','Radar à métalleux');
- node.innerHTML='<h2>☠ RADAR À MÉTALLEUX</h2><div class="hx-mil-heading"><span>HX-666 / SURVEILLANCE</span><span><i class="hx-mil-led"></i> &nbsp;SCAN LOCAL</span></div><p>Repère les membres HELLXBONE volontaires à moins de 5 km. Seuls les pseudos et des distances approximatives apparaissent.</p><div class="hx-radar-screen" role="img" aria-label="Radar circulaire animé, points représentant les membres détectés, position indicative uniquement"><div class="hx-radar-sweep"></div><div class="hx-radar-label">HELLXBONE</div><div class="hx-radar-dots" id="hellx-radar-dots"></div><div class="hx-radar-center"></div><div class="hx-radar-range">PORTÉE 5 KM</div></div><button id="hellx-radar-toggle" type="button">ACTIVER MON RADAR</button><p id="hellx-radar-status" role="status">Radar désactivé. Ta position n’est pas partagée.</p><ul id="hellx-radar-list" aria-live="polite"></ul><p style="font-size:12px!important">GPS sur accord. Position approximative. Les membres restent affichés jusqu’à 30 minutes après leur dernier signal GPS, même si leur téléphone est en veille. Ce n’est pas une localisation en direct. Coupe le radar pour disparaître immédiatement.</p>';
+ node.innerHTML='<h2>☠ RADAR À MÉTALLEUX</h2><div class="hx-mil-heading"><span>HX-666 / SURVEILLANCE</span><span><i class="hx-mil-led"></i> &nbsp;SCAN LOCAL</span></div><p>Repère les membres HELLXBONE volontaires à moins de 5 km. Seuls les pseudos et des distances approximatives apparaissent.</p><div class="hx-radar-screen" role="img" aria-label="Radar circulaire animé, points représentant les membres détectés, position indicative uniquement"><div class="hx-radar-sweep"></div><div class="hx-radar-label">HELLXBONE</div><div class="hx-radar-dots" id="hellx-radar-dots"></div><div class="hx-radar-center"></div><div class="hx-radar-range">PORTÉE 5 KM</div></div><button id="hellx-radar-toggle" type="button">ACTIVER MON RADAR</button><p id="hellx-radar-status" role="status">Radar désactivé. Ta position n’est pas partagée.</p><ul id="hellx-radar-list" aria-live="polite"></ul><p style="font-size:12px!important">GPS sur accord. Position approximative. Les membres restent affichés jusqu’à 2 heures après leur dernier signal GPS, même si leur téléphone est en veille. Ce n’est pas une localisation en direct. Coupe le radar pour disparaître immédiatement.</p>';
  // Accueil : invitation en premier, radio ensuite, radar juste en dessous.
  radio.insertAdjacentElement('afterend',node);
  node.querySelector('#hellx-radar-toggle').addEventListener('click',()=>active?stop():start());
@@ -99,7 +99,7 @@ function display(rows){
  valid.forEach(m=>{
   const li=document.createElement('li'),name=document.createElement('strong');
   name.textContent=String(m.pseudo||'Métalleux').slice(0,20);
-  const age=Math.max(0,Math.min(30,Number(m.seen_minutes)||0));
+  const age=Math.max(0,Math.min(120,Number(m.seen_minutes)||0));
   li.append(name,document.createTextNode(' · '+String(m.distance||'à proximité')+' · '+(age===0?'Vu il y a moins d’une minute':'Vu il y a '+age+' min')));
   list.appendChild(li);
  });
