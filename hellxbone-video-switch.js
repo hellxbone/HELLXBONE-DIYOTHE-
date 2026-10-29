@@ -8,9 +8,9 @@ function install(){
 const root=document.getElementById('hellx-onair');if(!root||root.querySelector('.hx-video-choice'))return;
 const controls=root.querySelector('.hx-controls'),screen=root.querySelector('.hx-display');if(!controls||!screen)return;
 const sw=document.createElement('div');sw.className='hx-video-choice';sw.setAttribute('role','group');sw.setAttribute('aria-label','Choix de vidéo');
-for(const v of ['1','2']){const b=document.createElement('button');b.type='button';b.textContent=v;b.setAttribute('aria-label',v==='1'?'Cimetière':'Metal TV');b.onclick=()=>{chosen=v;try{localStorage.setItem('hx-video-choice',v)}catch(e){}draw()};sw.appendChild(b)}
+for(const v of ['1','2']){const b=document.createElement('button');b.type='button';b.textContent=v;b.setAttribute('aria-label',v==='1'?'Cimetière':'Vidéo metal muette');b.onclick=()=>{chosen=v;try{localStorage.setItem('hx-video-choice',v)}catch(e){}draw()};sw.appendChild(b)}
 controls.appendChild(sw);
-function draw(){root.classList.toggle('hx-tv-selected',chosen==='2');sw.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-pressed',String(chosen===String(i+1))));let f=screen.querySelector('.hx-metaltv');if(chosen==='2'&&!f){f=document.createElement('iframe');f.className='hx-metaltv';f.title='Metal TV';f.allow='autoplay; fullscreen';f.src='https://metaltv.live/';screen.appendChild(f)}else if(chosen==='1'&&f)f.remove()}
+function draw(){root.classList.toggle('hx-tv-selected',chosen==='2');sw.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-pressed',String(chosen===String(i+1))));let f=screen.querySelector('.hx-metaltv');if(chosen==='2'&&!f){f=document.createElement('iframe');f.className='hx-metaltv';f.title='Frontiers Metal TV (muet)';f.allow='autoplay; fullscreen; encrypted-media';f.src='https://www.youtube-nocookie.com/embed/UiCK7SCpSIA?autoplay=1&mute=1&controls=0&playsinline=1&rel=0&disablekb=1';screen.appendChild(f)}else if(chosen==='1'&&f)f.remove()}
 draw();
 }
 document.addEventListener('DOMContentLoaded',()=>{install();new MutationObserver(install).observe(document.body,{childList:true,subtree:true})});
