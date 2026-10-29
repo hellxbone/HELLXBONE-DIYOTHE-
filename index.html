@@ -996,8 +996,8 @@ function clearRecovery(){clearTimeout(retryTimer);clearTimeout(stallTimer);retry
 function recover(){
  if(!active||retryTimer||!navigator.onLine)return;
  clearTimeout(stallTimer);
- if(retryCount>=8){status('Connexion instable · appuie sur POWER pour réessayer');return}
- const delay=Math.min(30000,1500*Math.pow(1.7,retryCount++));
+ // Continue attempting reconnection while the listener wants radio on.
+ const delay=Math.min(30000,1500*Math.pow(1.7,Math.min(retryCount++,12)));
  status('Signal interrompu · reconnexion automatique…');
  retryTimer=setTimeout(async()=>{
   retryTimer=0;if(!active||!navigator.onLine)return;
@@ -1082,7 +1082,7 @@ function bindAudioEvents(a){
  a.addEventListener('stalled',()=>{if(a===audio)monitorStall()});
  a.addEventListener('waiting',()=>{if(a===audio)monitorStall()});
  a.addEventListener('ended',()=>{if(a===audio&&active)recover()});
- a.addEventListener('pause',()=>{if(a===audio)refreshMeter()});
+ a.addEventListener('pause',()=>{if(a!==audio)return;refreshMeter();if(active&&!retryTimer){clearTimeout(stallTimer);stallTimer=setTimeout(()=>{if(active&&audio.paused)recover()},2500)}});
 }
 function resetAudioForSurround(enabled){
  const wasPlaying=active;playSerial++;clearRecovery();retryCount=0;active=false;audio.pause();audio.removeAttribute('src');audio.load();
@@ -1100,7 +1100,7 @@ function resetAudioForSurround(enabled){
 let active=false,index=0,frame=0,vuTick=0,introShown=false,introPlaying=false,introTimer=0,introInterval=0;
 function el(id){return document.getElementById(id)}
 function status(message){const x=el('hellx-onair-status');if(x)x.textContent=message}
-function ui(){const radio=el('hellx-onair'),button=el('hellx-onair-toggle'),led=el('hellx-led-power'),tune=el('hx-tuning');if(radio)radio.classList.toggle('hx-playing',active&&!audio.paused);if(button){button.textContent=active&&!audio.paused?'■ STOP':'⏻ POWER';button.setAttribute('aria-pressed',String(active&&!audio.paused))}if(led)led.setAttribute('aria-label',active&&!audio.paused?'Radio en lecture':'Radio arrêtée');if(tune)tune.textContent=active&&!audio.paused?'LIVE':'STANDBY';updateStandbyMarquee()}
+function ui(){const radio=el('hellx-onair'),button=el('hellx-onair-toggle'),led=el('hellx-led-power'),tune=el('hx-tuning');if(radio)radio.classList.toggle('hx-playing',active);if(button){button.textContent=active?'■ STOP':'⏻ POWER';button.setAttribute('aria-pressed',String(active))}if(led)led.setAttribute('aria-label',active?(audio.paused?'Radio en reconnexion':'Radio en lecture'):'Radio arrêtée');if(tune)tune.textContent=active?(audio.paused?'RECONNECT':'LIVE'):'STANDBY';updateStandbyMarquee()}
 
 // Public metadata is best effort: streaming audio playback works independently of metadata.
 let metadataTimer=0,metadataSerial=0;
@@ -1167,7 +1167,7 @@ function startMetadata(){
  if(active&&!audio.paused){updateTrack();metadataTimer=setInterval(updateTrack,30000)}
 }
 function stopMetadata(){clearInterval(metadataTimer);metadataTimer=0;metadataSerial++;showTrack(stations[index].name)}
-function updateStandbyMarquee(){const radio=el('hellx-onair');if(radio)radio.classList.toggle('hx-radio-standby',!(active&&!audio.paused));}
+function updateStandbyMarquee(){const radio=el('hellx-onair');if(radio)radio.classList.toggle('hx-radio-standby',!active);}
 function tryBeatCapture(){
  if(beatAnalyser||beatCtx||!active)return;
  const capture=audio.captureStream||audio.mozCaptureStream;
@@ -1208,7 +1208,7 @@ function animation(){meter();if(active&&!audio.paused)frame=window.setTimeout(an
 function refreshMeter(){if(frame)clearTimeout(frame);frame=0;ui();animation()}
 async function start(){clearRecovery();retryCount=0;playSerial++;const serial=playSerial;if(stations[index].externalPlayer){stop();status('Ouverture du lecteur officiel de '+stations[index].name+'…');window.open(stations[index].url,'_blank','noopener,noreferrer');return}if(active&&!audio.paused)return;active=true;audio.src=stations[index].url;status('Connexion au direct…');try{if(surroundEnabled)await activateSurround();await audio.play();if(serial!==playSerial)return;status('EN DIRECT · '+stations[index].name);refreshMeter();startMetadata()}catch(e){if(serial!==playSerial)return;status('Flux interrompu · tentative de reconnexion');recover();refreshMeter()}}
 function stop(){beatAnalyser=surroundEnabled?beatAnalyser:null;if(beatCtx){beatCtx.close().catch(()=>{});beatCtx=null;beatSource=null}lastBeat=0;beatFloor=.012;el('hellx-led-power')?.style.removeProperty('opacity');el('hellx-led-power')?.style.removeProperty('box-shadow');clearTimeout(introTimer);clearInterval(introInterval);introInterval=0;introPlaying=false;introShown=false;el('hx-standby-marquee')?.querySelector('span')?.style.removeProperty('animation');playSerial++;clearRecovery();retryCount=0;active=false;audio.pause();audio.removeAttribute('src');audio.load();status('Radio arrêtée');stopMetadata();refreshMeter()}
-function changeStation(n){introShown=false;clearInterval(introInterval);introInterval=0;clearTimeout(introTimer);introPlaying=false;index=(n+stations.length)%stations.length;const sel=el('hellx-onair-station');if(sel)sel.value=String(index);if(active){stop();start()}else {status('Prêt · '+stations[index].name);showTrack(stations[index].name)}}
+function changeStation(n){introShown=false;clearInterval(introInterval);introInterval=0;clearTimeout(introTimer);introPlaying=false;index=(n+stations.length)%stations.length;const sel=el('hellx-onair-station');if(sel)sel.value=String(index);if(active){clearRecovery();retryCount=0;playSerial++;audio.pause();audio.src=stations[index].url;audio.load();status('Changement de station · connexion…');audio.play().then(()=>{if(active){status('EN DIRECT · '+stations[index].name);refreshMeter();startMetadata()}}).catch(()=>{if(active)recover()});refreshMeter()}else {status('Prêt · '+stations[index].name);showTrack(stations[index].name)}}
 function mount(){const radio=el('hellx-onair');if(!radio||radio.dataset.radioBound==='yes')return;const selector=el('hellx-onair-station');if(selector){selector.replaceChildren(...stations.map((station,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=station.name;return option}));selector.value=String(index)}radio.dataset.radioBound='yes';el('hellx-onair-toggle')?.addEventListener('click',()=>active?stop():start());el('hellx-onair-station')?.addEventListener('change',e=>changeStation(Number(e.target.value)||0));el('hx-next-station')?.addEventListener('click',()=>changeStation(index+1));
  refreshMeter()}
 bindAudioEvents(audio);
