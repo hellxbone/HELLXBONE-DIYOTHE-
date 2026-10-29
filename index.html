@@ -1021,14 +1021,28 @@ function activateSurround(){
   surroundSource=surroundCtx.createMediaElementSource(audio);
   beatAnalyser=surroundCtx.createAnalyser();beatAnalyser.fftSize=1024;beatBuffer=new Uint8Array(beatAnalyser.frequencyBinCount);
   surroundSource.connect(beatAnalyser);
-  const dry=surroundCtx.createGain();dry.gain.value=.84;
-  const delay=surroundCtx.createDelay(.1);delay.delayTime.value=.018;
-  const wet=surroundCtx.createGain();wet.gain.value=.18;
-  surroundSource.connect(dry);const leveler=surroundCtx.createDynamicsCompressor();leveler.threshold.value=-32;leveler.knee.value=12;leveler.ratio.value=4.5;leveler.attack.value=.008;leveler.release.value=.28;const makeup=surroundCtx.createGain();makeup.gain.value=1.55;dry.connect(leveler);leveler.connect(makeup);makeup.connect(surroundCtx.destination);
-  surroundSource.connect(delay);delay.connect(wet);
+  // Mode spectacle : basses profondes, présence des guitares et scène stéréo élargie.
+  // Les effets passent par un limiteur commun pour protéger des crêtes et éviter l'écrêtage.
+  const mix=surroundCtx.createGain();mix.gain.value=.86;
+  const dry=surroundCtx.createGain();dry.gain.value=.75;surroundSource.connect(dry);dry.connect(mix);
+  const bass=surroundCtx.createBiquadFilter();bass.type='lowshelf';bass.frequency.value=125;bass.gain.value=6;
+  const bassGain=surroundCtx.createGain();bassGain.gain.value=.34;
+  surroundSource.connect(bass);bass.connect(bassGain);bassGain.connect(mix);
+  const presence=surroundCtx.createBiquadFilter();presence.type='peaking';presence.frequency.value=2600;presence.Q.value=.75;presence.gain.value=3.5;
+  const presenceGain=surroundCtx.createGain();presenceGain.gain.value=.23;
+  surroundSource.connect(presence);presence.connect(presenceGain);presenceGain.connect(mix);
+  const spaceDelay=surroundCtx.createDelay(.12);spaceDelay.delayTime.value=.027;
+  const spaceGain=surroundCtx.createGain();spaceGain.gain.value=.23;
+  const spaceFilter=surroundCtx.createBiquadFilter();spaceFilter.type='highpass';spaceFilter.frequency.value=280;
+  surroundSource.connect(spaceDelay);spaceDelay.connect(spaceFilter);spaceFilter.connect(spaceGain);
   if(typeof surroundCtx.createStereoPanner==='function'){
-   const side=surroundCtx.createStereoPanner();side.pan.value=.72;wet.connect(side);side.connect(leveler);
-  }else wet.connect(leveler);
+   const side=surroundCtx.createStereoPanner();side.pan.value=.85;spaceGain.connect(side);side.connect(mix);
+  }else spaceGain.connect(mix);
+  const compressor=surroundCtx.createDynamicsCompressor();
+  compressor.threshold.value=-25;compressor.knee.value=10;compressor.ratio.value=3.5;compressor.attack.value=.006;compressor.release.value=.22;
+  const limiter=surroundCtx.createDynamicsCompressor();
+  limiter.threshold.value=-4;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=.002;limiter.release.value=.11;
+  mix.connect(compressor);compressor.connect(limiter);limiter.connect(surroundCtx.destination);
  }
  return surroundCtx.resume();
 }
