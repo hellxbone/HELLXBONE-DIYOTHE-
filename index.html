@@ -1025,8 +1025,8 @@ function activateSurround(){
   // Les effets passent par un limiteur commun pour protéger des crêtes et éviter l'écrêtage.
   const mix=surroundCtx.createGain();mix.gain.value=1.02;
   const dry=surroundCtx.createGain();dry.gain.value=.75;surroundSource.connect(dry);dry.connect(mix);
-  const bass=surroundCtx.createBiquadFilter();bass.type='lowshelf';bass.frequency.value=125;bass.gain.value=12;
-  const bassGain=surroundCtx.createGain();bassGain.gain.value=.34;
+  const bass=surroundCtx.createBiquadFilter();bass.type='lowshelf';bass.frequency.value=150;bass.gain.value=16;
+  const bassGain=surroundCtx.createGain();bassGain.gain.value=.65;
   surroundSource.connect(bass);bass.connect(bassGain);bassGain.connect(mix);
   const presence=surroundCtx.createBiquadFilter();presence.type='peaking';presence.frequency.value=2600;presence.Q.value=.75;presence.gain.value=3.5;
   const presenceGain=surroundCtx.createGain();presenceGain.gain.value=.23;
@@ -1059,7 +1059,7 @@ function activateSurround(){
   const compressor=surroundCtx.createDynamicsCompressor();
   compressor.threshold.value=-18;compressor.knee.value=8;compressor.ratio.value=2.2;compressor.attack.value=.006;compressor.release.value=.22;
   // Gain de sortie dédié au mode concert : effet nettement audible même sur les flux faibles.
-  const concertVolume=surroundCtx.createGain();concertVolume.gain.value=3.0;
+  const concertVolume=surroundCtx.createGain();concertVolume.gain.value=2.3;
   const limiter=surroundCtx.createDynamicsCompressor();
   limiter.threshold.value=-1;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=.002;limiter.release.value=.11;
   mix.connect(compressor);compressor.connect(concertVolume);concertVolume.connect(limiter);limiter.connect(surroundCtx.destination);
