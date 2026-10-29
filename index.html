@@ -1025,7 +1025,7 @@ function activateSurround(){
   // Les effets passent par un limiteur commun pour protéger des crêtes et éviter l'écrêtage.
   const mix=surroundCtx.createGain();mix.gain.value=.86;
   const dry=surroundCtx.createGain();dry.gain.value=.75;surroundSource.connect(dry);dry.connect(mix);
-  const bass=surroundCtx.createBiquadFilter();bass.type='lowshelf';bass.frequency.value=125;bass.gain.value=6;
+  const bass=surroundCtx.createBiquadFilter();bass.type='lowshelf';bass.frequency.value=125;bass.gain.value=12;
   const bassGain=surroundCtx.createGain();bassGain.gain.value=.34;
   surroundSource.connect(bass);bass.connect(bassGain);bassGain.connect(mix);
   const presence=surroundCtx.createBiquadFilter();presence.type='peaking';presence.frequency.value=2600;presence.Q.value=.75;presence.gain.value=3.5;
