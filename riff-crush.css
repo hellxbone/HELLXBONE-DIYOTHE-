@@ -106,3 +106,8 @@
 #hellx-riff-crush .riff-stat b{font-size:clamp(16px,4vw,23px);line-height:1.1}
 #hellx-riff-crush .riff-stat span{display:block;font-size:clamp(8px,1.9vw,10px);letter-spacing:0;white-space:nowrap}
 @media(max-width:390px){#hellx-riff-crush .riff-stats{gap:3px}#hellx-riff-crush .riff-stat{padding:8px 1px;border-radius:9px}#hellx-riff-crush .riff-stat span{font-size:8px}}
+
+/* Compteurs du haut moins hauts, alignés sur une rangée */
+#hellx-riff-crush .riff-stats .riff-stat{padding:4px 2px!important;min-height:0!important;border-radius:10px}
+#hellx-riff-crush .riff-stats .riff-stat b{font-size:clamp(16px,3.9vw,22px);line-height:1.05;margin:0}
+#hellx-riff-crush .riff-stats .riff-stat span{font-size:clamp(8px,1.9vw,10px);line-height:1.1;margin-top:2px}
