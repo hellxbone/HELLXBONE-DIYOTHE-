@@ -115,3 +115,6 @@
 /* TOP 10 : bouton de classement plus large sous le plateau */
 #hellx-riff-crush .riff-leaderboard{width:min(100%,420px);box-sizing:border-box;margin:12px auto 16px}
 #hellx-riff-crush .riff-leaderboard summary{text-align:center;min-height:44px}
+
+/* La case SCORE à gauche est plus large, les 5 compteurs restent sur une ligne */
+#hellx-riff-crush .riff-stats{grid-template-columns:minmax(0,1.45fr) repeat(4,minmax(0,1fr))}
