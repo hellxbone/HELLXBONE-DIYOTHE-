@@ -989,7 +989,7 @@ style.textContent=`
 @media(prefers-reduced-motion:reduce){#hellx-onair .hx-vu-bar{transition:none}}
 `;
 document.head.appendChild(style);
-let audio=new Audio();audio.preload='none';audio.setAttribute('playsinline','');
+let audio=new Audio();audio.preload='none';audio.volume=1;audio.setAttribute('playsinline','');
 let surroundEnabled=false,surroundCtx=null,surroundSource=null,beatAnalyser=null,beatBuffer=null,beatCtx=null,beatSource=null,lastBeat=0,beatFloor=.012;
 let retryTimer=0,retryCount=0,playSerial=0,stallTimer=0;
 function clearRecovery(){clearTimeout(retryTimer);clearTimeout(stallTimer);retryTimer=0;stallTimer=0}
@@ -1024,7 +1024,7 @@ function activateSurround(){
   const dry=surroundCtx.createGain();dry.gain.value=.84;
   const delay=surroundCtx.createDelay(.1);delay.delayTime.value=.018;
   const wet=surroundCtx.createGain();wet.gain.value=.18;
-  surroundSource.connect(dry);const leveler=surroundCtx.createDynamicsCompressor();leveler.threshold.value=-26;leveler.knee.value=16;leveler.ratio.value=3;leveler.attack.value=.012;leveler.release.value=.23;const makeup=surroundCtx.createGain();makeup.gain.value=1.18;dry.connect(leveler);leveler.connect(makeup);makeup.connect(surroundCtx.destination);
+  surroundSource.connect(dry);const leveler=surroundCtx.createDynamicsCompressor();leveler.threshold.value=-32;leveler.knee.value=12;leveler.ratio.value=4.5;leveler.attack.value=.008;leveler.release.value=.28;const makeup=surroundCtx.createGain();makeup.gain.value=1.55;dry.connect(leveler);leveler.connect(makeup);makeup.connect(surroundCtx.destination);
   surroundSource.connect(delay);delay.connect(wet);
   if(typeof surroundCtx.createStereoPanner==='function'){
    const side=surroundCtx.createStereoPanner();side.pan.value=.72;wet.connect(side);side.connect(leveler);
@@ -1052,7 +1052,7 @@ function bindAudioEvents(a){
 }
 function resetAudioForSurround(enabled){
  const wasPlaying=active;playSerial++;clearRecovery();retryCount=0;active=false;audio.pause();audio.removeAttribute('src');audio.load();
- audio=new Audio();audio.preload='none';audio.setAttribute('playsinline','');
+ audio=new Audio();audio.preload='none';audio.volume=1;audio.setAttribute('playsinline','');
  if(enabled)audio.crossOrigin='anonymous';
  surroundSource=null;beatAnalyser=null;beatBuffer=null;
  if(beatCtx){beatCtx.close().catch(()=>{});beatCtx=null;beatSource=null}
