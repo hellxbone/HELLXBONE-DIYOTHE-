@@ -1,4 +1,4 @@
-/* HELLXBONE — radar de membres volontaires, actif seulement quand la page est visible. */
+/* HELLXBONE — radar volontaire, présence récente conservée 30 minutes en veille. */
 (() => {
 'use strict';
 const BASE='https://ldibykpitjutratyqqax.supabase.co/rest/v1/rpc/';
@@ -70,7 +70,7 @@ function ui(){
  const radio=app?.querySelector('#hellx-onair');
  if(!radio)return null;
  node=document.createElement('section');node.id='hellx-radar';node.setAttribute('aria-label','Radar à métalleux');
- node.innerHTML='<h2>☠ RADAR À MÉTALLEUX</h2><div class="hx-mil-heading"><span>HX-666 / SURVEILLANCE</span><span><i class="hx-mil-led"></i> &nbsp;SCAN LOCAL</span></div><p>Repère les membres HELLXBONE volontaires à moins de 5 km. Seuls les pseudos et des distances approximatives apparaissent.</p><div class="hx-radar-screen" role="img" aria-label="Radar circulaire animé, points représentant les membres détectés, position indicative uniquement"><div class="hx-radar-sweep"></div><div class="hx-radar-label">HELLXBONE</div><div class="hx-radar-dots" id="hellx-radar-dots"></div><div class="hx-radar-center"></div><div class="hx-radar-range">PORTÉE 5 KM</div></div><button id="hellx-radar-toggle" type="button">ACTIVER MON RADAR</button><p id="hellx-radar-status" role="status">Radar désactivé. Ta position n’est pas partagée.</p><ul id="hellx-radar-list" aria-live="polite"></ul><p style="font-size:12px!important">GPS sur accord. La position est arrondie à environ 1 km, masquée aux autres et expire après 2 minutes. Fonctionne uniquement pendant l’ouverture de l’application. Coupe le radar quand tu veux.</p>';
+ node.innerHTML='<h2>☠ RADAR À MÉTALLEUX</h2><div class="hx-mil-heading"><span>HX-666 / SURVEILLANCE</span><span><i class="hx-mil-led"></i> &nbsp;SCAN LOCAL</span></div><p>Repère les membres HELLXBONE volontaires à moins de 5 km. Seuls les pseudos et des distances approximatives apparaissent.</p><div class="hx-radar-screen" role="img" aria-label="Radar circulaire animé, points représentant les membres détectés, position indicative uniquement"><div class="hx-radar-sweep"></div><div class="hx-radar-label">HELLXBONE</div><div class="hx-radar-dots" id="hellx-radar-dots"></div><div class="hx-radar-center"></div><div class="hx-radar-range">PORTÉE 5 KM</div></div><button id="hellx-radar-toggle" type="button">ACTIVER MON RADAR</button><p id="hellx-radar-status" role="status">Radar désactivé. Ta position n’est pas partagée.</p><ul id="hellx-radar-list" aria-live="polite"></ul><p style="font-size:12px!important">GPS sur accord. Position approximative. Les membres restent affichés jusqu’à 30 minutes après leur dernier signal GPS, même si leur téléphone est en veille. Ce n’est pas une localisation en direct. Coupe le radar pour disparaître immédiatement.</p>';
  // Accueil : invitation en premier, radio ensuite, radar juste en dessous.
  radio.insertAdjacentElement('afterend',node);
  node.querySelector('#hellx-radar-toggle').addEventListener('click',()=>active?stop():start());
@@ -94,12 +94,13 @@ function display(rows){
   dot.title=String(m.pseudo||'Métalleux').slice(0,20)+' — '+String(m.distance||'à proximité');
   dots.appendChild(dot);
  });
- if(!valid.length){status('Radar actif — aucun membre volontaire détecté dans les 5 km.');return;}
- status('Radar actif — '+valid.length+' métalleux détecté(s) à proximité.');
+ if(!valid.length){status('Radar actif — aucun membre signalé dans les 30 dernières minutes à moins de 5 km.');return;}
+ status('Radar actif — '+valid.length+' membre(s) signalé(s) dans les 30 dernières minutes. Positions non actualisées en veille.');
  valid.forEach(m=>{
   const li=document.createElement('li'),name=document.createElement('strong');
   name.textContent=String(m.pseudo||'Métalleux').slice(0,20);
-  li.append(name,document.createTextNode(' · '+String(m.distance||'à proximité')));
+  const age=Math.max(0,Math.min(30,Number(m.seen_minutes)||0));
+  li.append(name,document.createTextNode(' · '+String(m.distance||'à proximité')+' · '+(age===0?'Vu il y a moins d’une minute':'Vu il y a '+age+' min')));
   list.appendChild(li);
  });
 }
@@ -130,7 +131,7 @@ function stop(forget=true){
  document.getElementById('hellx-radar-list')?.replaceChildren();
  document.getElementById('hellx-radar-dots')?.replaceChildren();
  status('Radar désactivé. Ta position n’est pas partagée.');
- const member=id();if(member)rpc('hellx_radar_off',{p_member_id:member}).catch(()=>{});
+ const member=id();if(member&&forget)rpc('hellx_radar_off',{p_member_id:member}).catch(()=>{});
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&active)stop(false);else if(!document.hidden&&enabledBefore()&&!active)start()});
 function initialize(){
