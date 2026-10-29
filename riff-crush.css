@@ -99,3 +99,10 @@
 #hellx-games-pseudo-overlay button{border-radius:13px!important;min-height:50px!important}
 @media(max-width:420px){#hellx-riff-crush .riff-wrap{border-radius:17px;padding:11px}#hellx-riff-crush .riff-board{border-radius:12px}#hellx-riff-crush .riff-top{gap:7px}#hellx-riff-crush .riff-close{padding:8px 10px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){#hellx-riff-crush .riff-cell,#digicode .metal-key{transition:none!important}}
+
+/* HELLXBONE : cinq compteurs sur une ligne, même sur mobile */
+#hellx-riff-crush .riff-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(3px,1vw,8px);margin:8px 0 12px}
+#hellx-riff-crush .riff-stat{min-width:0;padding:9px 2px;border-radius:12px}
+#hellx-riff-crush .riff-stat b{font-size:clamp(16px,4vw,23px);line-height:1.1}
+#hellx-riff-crush .riff-stat span{display:block;font-size:clamp(8px,1.9vw,10px);letter-spacing:0;white-space:nowrap}
+@media(max-width:390px){#hellx-riff-crush .riff-stats{gap:3px}#hellx-riff-crush .riff-stat{padding:8px 1px;border-radius:9px}#hellx-riff-crush .riff-stat span{font-size:8px}}
