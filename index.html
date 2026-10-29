@@ -1059,7 +1059,7 @@ function activateSurround(){
   const compressor=surroundCtx.createDynamicsCompressor();
   compressor.threshold.value=-30;compressor.knee.value=10;compressor.ratio.value=3.5;compressor.attack.value=.006;compressor.release.value=.22;
   // Gain de sortie dédié au mode concert : effet nettement audible même sur les flux faibles.
-  const concertVolume=surroundCtx.createGain();concertVolume.gain.value=1.8;
+  const concertVolume=surroundCtx.createGain();concertVolume.gain.value=2.2;
   const limiter=surroundCtx.createDynamicsCompressor();
   limiter.threshold.value=-4;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=.002;limiter.release.value=.11;
   mix.connect(compressor);compressor.connect(concertVolume);concertVolume.connect(limiter);limiter.connect(surroundCtx.destination);
