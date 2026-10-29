@@ -1023,7 +1023,7 @@ function activateSurround(){
   surroundSource.connect(beatAnalyser);
   // Mode spectacle : basses profondes, présence des guitares et scène stéréo élargie.
   // Les effets passent par un limiteur commun pour protéger des crêtes et éviter l'écrêtage.
-  const mix=surroundCtx.createGain();mix.gain.value=.86;
+  const mix=surroundCtx.createGain();mix.gain.value=1.02;
   const dry=surroundCtx.createGain();dry.gain.value=.75;surroundSource.connect(dry);dry.connect(mix);
   const bass=surroundCtx.createBiquadFilter();bass.type='lowshelf';bass.frequency.value=125;bass.gain.value=12;
   const bassGain=surroundCtx.createGain();bassGain.gain.value=.34;
