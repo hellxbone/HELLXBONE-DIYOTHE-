@@ -777,9 +777,34 @@ async function doShare(platform,title,url,excerpt=''){
   // Teaser court : une seule phrase intrigante, sans recopier tout le résumé.
   const topic=(cleanTitle+' '+String(excerpt||'')).toLocaleLowerCase('fr');
   const subject=(cleanTitle.match(/(?:Metallica|Rammstein|Korn|System of a Down|Marilyn Manson|AC\/DC|Hellfest|Tagada Jones)/i)||[])[0];
-  const teaser=isGame
-    ? '🤘 Jusqu’où iras-tu dans MEGA RIFF ? Viens relever le défi !'
-    : '🤘 '+(subject?subject+' est au cœur d’une actu qui mérite le détour :':'Cette actu rock et metal mérite le détour :')+' découvre pourquoi les fans devraient y jeter un œil !';
+  // Une accroche unique, construite à partir du vrai titre de l'article, et non d'un slogan passe-partout.
+  // Les formulations restent interrogatives pour intriguer sans inventer de faits.
+  const teaser=(function(){
+    if(isGame)return '🤘 Jusqu’où iras-tu dans MEGA RIFF ? Viens relever le défi !';
+    const t=cleanTitle.replace(/^[🔥🤘💀\s]+/u,'').replace(/[!?.\s]+$/,'');
+    const lower=t.toLocaleLowerCase('fr');
+    const seed=[...t].reduce((v,ch)=>((v*33+ch.charCodeAt(0))>>>0),19);
+    const choose=arr=>arr[seed%arr.length];
+    // Garder le fait central du titre, sans reprendre mot pour mot l'annonce.
+    let hook;
+    if(/sorties? de la semaine|sorties? musicales?|nouveaut[eé]s? (?:rock|metal)|albums? de la semaine/.test(lower))
+      hook=choose(['Quelles nouveautés vont mettre ta playlist sens dessus dessous cette semaine ?', 'Cette semaine, quels nouveaux sons méritent vraiment de finir à fond dans tes enceintes ?', 'Quel disque risque de tourner en boucle chez toi après cette sélection ?']);
+    else if(/troll|clash|pol[eé]mique|r[eé]pond|r[eè]gle ses comptes|attaque/.test(lower))
+      hook=choose(['Pourquoi cette histoire risque-t-elle de faire autant réagir les fans ?', 'Qu’est-ce qui a déclenché cette réponse qui ne passe pas inaperçue ?', 'Jusqu’où cette confrontation va-t-elle faire parler dans le metal ?']);
+    else if(/festival|concert|tourn[eé]e|sur sc[eè]ne|live/.test(lower))
+      hook=choose(['Qu’est-ce qui attend vraiment les fans derrière cette annonce ?', 'Pourquoi ce rendez-vous pourrait-il faire autant de bruit ?', 'Quel détail de cet événement va retenir l’attention des metalleux ?']);
+    else if(/album|single|nouveau titre|nouvel ep|sortie|disque/.test(lower))
+      hook=choose(['Ce nouveau son va-t-il retourner les habitudes des fans ?', 'Qu’est-ce qui se cache derrière cette nouvelle décharge sonore ?', 'La prochaine claque dans tes oreilles se trouve-t-elle ici ?']);
+    else if(/interview|entretien|confidences|r[eé]v[eé]lation/.test(lower))
+      hook=choose(['Qu’est-ce qui ressort vraiment de cette prise de parole ?', 'Quelle confidence va faire réagir les fans ?', 'Que révèle cet échange sur les coulisses du metal ?']);
+    else if(/clip|vid[eé]o/.test(lower))
+      hook=choose(['Qu’est-ce qui rend ces images si intrigantes ?', 'Ce clip réserve-t-il une surprise aux fans ?', 'Pourquoi cette vidéo mérite-t-elle qu’on y regarde de plus près ?']);
+    else
+      hook=choose(['Quel détail de cette histoire pourrait bien surprendre les fans ?', 'Pourquoi cette annonce fait-elle parler dans l’univers rock et metal ?', 'Qu’est-ce qui se cache réellement derrière ce titre ?']);
+    // Le lecteur identifie immédiatement l'article même hors contexte.
+    const anchor=(subject||((t.match(/^[^:!?—–]{3,55}(?=\s*[:!?—–])/u)||[])[0])||'').trim();
+    return '🤘 '+(anchor?anchor+' : ':'')+hook;
+  })();
   const invite=isGame?'🔥 Rejoins gratuitement le HELLXBONE CLUB pour jouer et profiter des autres fonctionnalités !':'🔥 Encore plus d’actus rock et metal ? Rejoins gratuitement le HELLXBONE CLUB !';
   // Hashtags pertinents au sujet, sans prétendre à des artistes ou événements absents.
   const tags=['HELLXBONE','HELLXBONECLUB','DIYOTHE','Rock','Metal','MetalNews','RockNews','MetalHeads','Metalleux','MetalCommunity','MusiqueMetal','ActuMetal','RockMusic'];
