@@ -172,6 +172,27 @@ if(existingName){
 const gate=document.createElement('div');gate.id='hellx-member-gate';
 gate.innerHTML='<form id="hellx-member-entry"><img src="hellxbone-maltese-v11.svg" alt="" width="76" height="76"><h1>HELLXBONE CLUB</h1><p>Choisis ton pseudo pour acceder gratuitement a HELLXBONE.</p><label for="hellx-member-name">TON PSEUDO</label><input id="hellx-member-name" name="pseudo" maxlength="20" autocomplete="nickname" required placeholder="Ton pseudo de metalleux"><button type="submit">ENTRER DANS HELLXBONE</button><small>ADHESION GRATUITE — ton pseudo et ton numero de membre sont enregistres.</small><p id="hellx-member-error" role="alert" hidden></p><p><a href="#" id="hellx-transfer-recover" style="color:#7fff8f">J’ai déjà un pseudo : récupérer mon compte</a></p><p id="hellx-club-live-count">Rejoins des centaines de membres HELLXBONE CLUB</p></form>';
 document.body.appendChild(gate);
+// Instagram et Facebook utilisent un stockage différent de Chrome et de la PWA.
+// Présenter les choix avant toute inscription pour éviter les comptes en double.
+if(social){
+ const form=gate.querySelector('form');
+ const intro=form.querySelector('h1');
+ intro.textContent='HELLXBONE CLUB';
+ const notice=document.createElement('div');
+ notice.id='hellx-social-entry-help';
+ notice.style.cssText='border:1px solid #69e783;border-radius:9px;padding:13px;margin:16px 0;color:#f2fff4;background:#102015;text-align:center;line-height:1.45';
+ notice.innerHTML='<strong>DÉJÀ MEMBRE HELLXBONE ?</strong><p style="margin:9px 0">Instagram et Facebook n’utilisent pas la même connexion que ton application. Ouvre HELLXBONE dans Chrome pour retrouver ton compte habituel, ou utilise ton code de récupération.</p><button type="button" id="hellx-social-open-chrome" style="width:100%;margin:5px 0;padding:12px">OUVRIR DANS CHROME</button><button type="button" id="hellx-social-existing" style="width:100%;margin:5px 0;padding:12px">RÉCUPÉRER MON COMPTE</button><small style="display:block;margin-top:8px">Nouveau membre ? Choisis simplement un pseudo ci-dessous.</small>';
+ intro.insertAdjacentElement('afterend',notice);
+ notice.querySelector('#hellx-social-open-chrome').onclick=()=>{
+  const u=new URL(location.href);
+  if(/Android/i.test(navigator.userAgent)){
+   location.href='intent://'+u.host+u.pathname+u.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(u.href)+';end';
+  }else{
+   window.open(u.href,'_blank','noopener,noreferrer');
+  }
+ };
+ notice.querySelector('#hellx-social-existing').onclick=()=>gate.querySelector('#hellx-transfer-recover').click();
+}
 /* Message d'accueil fixe : aucun compteur de membres exposé aux visiteurs. */
 gate.querySelector('form').addEventListener('submit',async function(event){
 event.preventDefault();if(gate.querySelector('#hellx-transfer-input'))return;
