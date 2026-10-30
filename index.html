@@ -774,10 +774,23 @@ async function doShare(platform,title,url,excerpt=''){
     else intros=['SOUS LES PROJECTEURS','À NE PAS RATER','LE RADAR METAL A REPÉRÉ','ÇA MÉRITE LE DÉTOUR','LA HORDE, REGARDE ÇA','SUR LE DEVANT DE LA SCÈNE','LE METAL EN ÉBULLITION'];
     return pick(intros)+' : '+subject+' !';
   })();
-  const brief=String(excerpt||'').replace(/\s+/g,' ').trim().slice(0,220);
-  const intro=isGame?'🎸 Viens tester MEGA RIFF !':'🤘 '+(brief||'Découvre cette actualité rock et metal.');
-  const invite=isGame?'🔥 Rejoins gratuitement le HELLXBONE CLUB pour jouer et profiter des autres fonctionnalités !':'🔥 Envie de découvrir davantage d’actus rock et metal ? Rejoins gratuitement le HELLXBONE CLUB !';
-  const text='🔥 '+clickTitle+'\n\n'+intro+'\n\n'+invite+'\n👉 Application gratuite : '+appUrl+(link!==appUrl?'\n\n📰 Source / article : '+link:'');
+  // Teaser court : une seule phrase intrigante, sans recopier tout le résumé.
+  const topic=(cleanTitle+' '+String(excerpt||'')).toLocaleLowerCase('fr');
+  const subject=(cleanTitle.match(/(?:Metallica|Rammstein|Korn|System of a Down|Marilyn Manson|AC\/DC|Hellfest|Tagada Jones)/i)||[])[0];
+  const teaser=isGame
+    ? '🤘 Jusqu’où iras-tu dans MEGA RIFF ? Viens relever le défi !'
+    : '🤘 '+(subject?subject+' est au cœur d’une actu qui mérite le détour :':'Cette actu rock et metal mérite le détour :')+' découvre pourquoi les fans devraient y jeter un œil !';
+  const invite=isGame?'🔥 Rejoins gratuitement le HELLXBONE CLUB pour jouer et profiter des autres fonctionnalités !':'🔥 Encore plus d’actus rock et metal ? Rejoins gratuitement le HELLXBONE CLUB !';
+  // Hashtags pertinents au sujet, sans prétendre à des artistes ou événements absents.
+  const tags=['HELLXBONE','HELLXBONECLUB','DIYOTHE','Rock','Metal','MetalNews','RockNews','MetalHeads','Metalleux','MetalCommunity','MusiqueMetal','ActuMetal','RockMusic'];
+  const groups=['Metallica','Rammstein','Korn','Marilyn Manson','System of a Down','AC/DC','Tagada Jones','Slipknot','Iron Maiden','Megadeth','Slayer','Gojira','Nightwish'];
+  for(const g of groups)if(topic.includes(g.toLocaleLowerCase('fr')))tags.unshift(g.replace(/[^a-z0-9]/gi,''));
+  const themes=[[/leper messiah/i,'LeperMessiah'],[/sphere|las vegas/i,'SphereLasVegas'],[/concert|live|scène|tournée/i,'ConcertMetal'],[/festival|hellfest/i,'FestivalMetal'],[/clip|vidéo|video/i,'MetalVideo'],[/album|single|disque/i,'NouvelAlbum'],[/interview|entretien/i,'InterviewMetal'],[/thrash/i,'ThrashMetal'],[/death metal/i,'DeathMetal'],[/black metal/i,'BlackMetal'],[/hard rock/i,'HardRock'],[/nu metal/i,'NuMetal'],[/gothique|gothic/i,'GothicMetal'],[/punk/i,'PunkRock'],[/fran[cç]ais|france/i,'MetalFrancais']];
+  for(const [re,tag] of themes)if(re.test(topic))tags.push(tag);
+  const generic=['HeavyMetal','MetalMusic','RockCommunity','MetalFrance','MusiqueRock','PassionMetal','MetalFans','RockAndMetal','CultureMetal','DecouverteMetal'];
+  for(const tag of generic)if(tags.length<20)tags.push(tag);
+  const hashtags=[...new Set(tags)].slice(0,24).map(tag=>'#'+tag).join(' ');
+  const text='🔥 '+clickTitle+'\\n\\n'+teaser+'\\n\\n'+invite+'\\n👉 Application gratuite : '+appUrl+'\\n\\n'+hashtags;
   if(platform==='sms'){
     const smsText=text;
     try{ await navigator.clipboard.writeText(smsText); }catch(e){}
@@ -810,7 +823,7 @@ async function doShare(platform,title,url,excerpt=''){
   if(platform==='facebook'){
     // Facebook does not permit pre-filling the user's post text via the sharer URL.
     // Copy an engaging caption first, then open the genuine Facebook link preview.
-    const caption=text+'\n\n#HELLXBONE #DIYOTHE #Rock #Metal';
+    const caption=text;
     const fbUrl='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link);
     // Facebook blocks prefilled captions from website share links.
     // Show the user exactly what will be posted and offer a reliable copy step.
