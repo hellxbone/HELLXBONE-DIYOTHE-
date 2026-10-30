@@ -790,7 +790,7 @@ async function doShare(platform,title,url,excerpt=''){
   const generic=['HeavyMetal','MetalMusic','RockCommunity','MetalFrance','MusiqueRock','PassionMetal','MetalFans','RockAndMetal','CultureMetal','DecouverteMetal'];
   for(const tag of generic)if(tags.length<20)tags.push(tag);
   const hashtags=[...new Set(tags)].slice(0,24).map(tag=>'#'+tag).join(' ');
-  const text='🔥 '+clickTitle+'\\n\\n'+teaser+'\\n\\n'+invite+'\\n👉 Application gratuite : '+appUrl+'\\n\\n'+hashtags;
+  const text='🔥 '+clickTitle+'\n\n'+teaser+'\n\n'+invite+'\n👉 Application gratuite : '+appUrl+'\n\n'+hashtags;
   if(platform==='sms'){
     const smsText=text;
     try{ await navigator.clipboard.writeText(smsText); }catch(e){}
