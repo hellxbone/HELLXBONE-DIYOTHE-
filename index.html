@@ -183,14 +183,14 @@ if(social){
  notice.style.cssText='border:1px solid #69e783;border-radius:9px;padding:13px;margin:16px 0;color:#f2fff4;background:#102015;text-align:center;line-height:1.45';
  notice.innerHTML='<strong>DÉJÀ MEMBRE HELLXBONE ?</strong><p style="margin:9px 0">Instagram et Facebook n’utilisent pas la même connexion que ton application. Ouvre HELLXBONE dans Chrome pour retrouver ton compte habituel, ou utilise ton code de récupération.</p><button type="button" id="hellx-social-open-chrome" style="width:100%;margin:5px 0;padding:12px">OUVRIR DANS CHROME</button><button type="button" id="hellx-social-existing" style="width:100%;margin:5px 0;padding:12px">RÉCUPÉRER MON COMPTE</button><small style="display:block;margin-top:8px">Nouveau membre ? Choisis simplement un pseudo ci-dessous.</small>';
  intro.insertAdjacentElement('afterend',notice);
- notice.querySelector('#hellx-social-open-chrome').onclick=()=>{
-  const u=new URL(location.href);
-  if(/Android/i.test(navigator.userAgent)){
-   location.href='intent://'+u.host+u.pathname+u.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(u.href)+';end';
-  }else{
-   window.open(u.href,'_blank','noopener,noreferrer');
-  }
- };
+ const btn=notice.querySelector('#hellx-social-open-chrome');
+ const copy=document.createElement('button');copy.type='button';copy.textContent='COPIER LE LIEN POUR CHROME';copy.style.cssText='width:100%;margin:5px 0;padding:12px';
+ const help=document.createElement('p');help.setAttribute('role','status');help.style.cssText='font-size:13px;overflow-wrap:anywhere';
+ btn.after(copy,help);
+ const target=location.origin+location.pathname;
+ copy.onclick=async()=>{try{await navigator.clipboard.writeText(target);help.textContent='Lien copié. Ouvre Chrome et colle le lien.'}catch(e){help.textContent='Copie ce lien dans Chrome : '+target}};
+ btn.textContent='ESSAYER D’OUVRIR CHROME';
+ btn.onclick=()=>{help.textContent='Si Instagram bloque Chrome, copie le lien ci-dessous ou utilise le menu ⋮ d’Instagram puis Ouvrir dans le navigateur.';const u=new URL(target);if(/Android/i.test(navigator.userAgent))location.href='intent://'+u.host+u.pathname+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(target)+';end';else window.open(target,'_blank','noopener,noreferrer')};
  notice.querySelector('#hellx-social-existing').onclick=()=>gate.querySelector('#hellx-transfer-recover').click();
 }
 /* Message d'accueil fixe : aucun compteur de membres exposé aux visiteurs. */
