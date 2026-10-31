@@ -1,25 +1,25 @@
 {
-  "updated_at": 1793461293,
+  "updated_at": 1793463376,
   "stations": [
     {
       "name": "METAL INTERNATIONAL",
       "title": "RADIO BOB - Metal",
-      "updated_at": 1793461293
+      "updated_at": 1793463376
     },
     {
       "name": "METALCORE",
       "title": "RADIO BOB - Metalcore",
-      "updated_at": 1793461293
+      "updated_at": 1793463376
     },
     {
       "name": "NEW METAL",
       "title": "STAR FM New Metal",
-      "updated_at": 1793461293
+      "updated_at": 1793463376
     },
     {
       "name": "RAMMSTEIN LIVE",
       "title": "Best of Rock FM - Rammstein",
-      "updated_at": 1793461293
+      "updated_at": 1793463376
     }
   ]
 }
