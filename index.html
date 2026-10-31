@@ -1695,23 +1695,21 @@ function startBuild(){
 }
 function render(ms){
  requestAnimationFrame(render);
- if(ms-last<33)return;last=ms;
+ if(ms-last<42)return;last=ms;
  if(!canvas||!ctx||!radio||document.hidden)return;
  const rect=canvas.getBoundingClientRect(),w=rect.width,h=rect.height;
  if(w<65||h<20)return;
  const ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(w*ratio),ch=Math.round(h*ratio);
  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
  if(!begin)begin=ms;
- if(filmReady)syncFilm();else startBuild();
+ if(filmReady)syncFilm(); // Évite le pré-calcul permanent de 516 images : rendu de secours à la demande.
  const movieSeconds=((ms-begin)/750)%DURATION;
  const position=movieSeconds*FPS,i0=Math.floor(position)%FRAME_COUNT,i1=(i0+1)%FRAME_COUNT,blend=position-Math.floor(position);
  // Playback draws stored frames instead of rerunning shapes, with temporal blending.
  const first=FRAMES[i0],second=FRAMES[i1];
  let frame=first;
  if(filmReady&&film.videoWidth&&film.readyState>=2){
-  c.clearRect(0,0,W,H);
-  c.drawImage(film,0,0,W,H);
-  frame=extract(c.getImageData(0,0,W,H));
+  // La vidéo est dessinée directement plus bas : aucun readback pixel nécessaire.
  }else if(!frame||!ready){
   graveyard(movieSeconds);
   frame=extract(c.getImageData(0,0,W,H));
