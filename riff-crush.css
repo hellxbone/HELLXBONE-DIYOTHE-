@@ -2,7 +2,8 @@
 #hellx-riff-crush{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.96);color:#f5f1e8;overflow:auto;padding:18px 12px 28px;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
 .riff-wrap{position:relative;z-index:2;max-width:520px;margin:0 auto;background:linear-gradient(180deg,#151515,#050505);border:2px solid #8fff46;border-radius:18px;padding:16px;box-shadow:0 0 26px rgba(143,255,70,.22)}
 .riff-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.riff-title{margin:0;font-size:28px;line-height:1;color:#76ff23;text-shadow:0 0 8px rgba(118,255,35,.65),0 0 18px rgba(118,255,35,.25);text-transform:uppercase;letter-spacing:.04em}\n.riff-last-winner{margin-top:6px;color:#b8ef9f;font:600 clamp(9px,2.4vw,11px)/1.35 system-ui,sans-serif;letter-spacing:.015em;white-space:normal}
+.riff-title{margin:0;font-size:28px;line-height:1;color:#76ff23;text-shadow:0 0 8px rgba(118,255,35,.65),0 0 18px rgba(118,255,35,.25);text-transform:uppercase;letter-spacing:.04em}
+.riff-last-winner{margin-top:6px;color:#b8ef9f;font:600 clamp(9px,2.4vw,11px)/1.35 system-ui,sans-serif;letter-spacing:.015em;white-space:normal}
 .riff-sub{margin:6px 0 14px;color:#cfcfcf;font-size:13px}
 .riff-close,.riff-restart{border:1px solid #8fff46;background:#0b0b0b;color:#fff;border-radius:10px;min-height:44px;padding:9px 13px;font-weight:800}
 .riff-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0 12px}
@@ -122,3 +123,7 @@
 /* Boutons du bas moins hauts sans modifier les compteurs du haut */
 #hellx-riff-crush .riff-actions .riff-restart,#hellx-riff-crush .riff-actions .riff-sound{min-height:28px;padding:3px 10px;font-size:11px;border-radius:8px}
 #hellx-riff-crush .riff-leaderboard summary{min-height:27px;padding:2px 5px;font-size:12px}
+
+/* Correction titre + palmarès : spécificité forte contre les styles globaux */
+#hellx-riff-crush .riff-top .riff-title{color:#78ff00!important;font-size:clamp(25px,6vw,36px)!important;font-weight:950!important;text-shadow:0 0 7px rgba(120,255,0,.85),0 0 16px rgba(120,255,0,.5)!important;}
+#hellx-riff-crush .riff-top .riff-last-winner{display:block!important;color:#b2ff8b!important;font-family:system-ui,sans-serif!important;font-size:10px!important;font-weight:600!important;line-height:1.2!important;letter-spacing:0!important;margin:4px 0 0!important;padding:0!important;text-shadow:none!important;max-width:100%;}
