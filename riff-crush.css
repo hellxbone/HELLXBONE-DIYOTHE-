@@ -2,7 +2,7 @@
 #hellx-riff-crush{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.96);color:#f5f1e8;overflow:auto;padding:18px 12px 28px;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
 .riff-wrap{position:relative;z-index:2;max-width:520px;margin:0 auto;background:linear-gradient(180deg,#151515,#050505);border:2px solid #8fff46;border-radius:18px;padding:16px;box-shadow:0 0 26px rgba(143,255,70,.22)}
 .riff-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.riff-title{margin:0;font-size:28px;line-height:1;color:#fff;text-transform:uppercase;letter-spacing:.04em}
+.riff-title{margin:0;font-size:28px;line-height:1;color:#76ff23;text-shadow:0 0 8px rgba(118,255,35,.65),0 0 18px rgba(118,255,35,.25);text-transform:uppercase;letter-spacing:.04em}\n.riff-last-winner{margin-top:6px;color:#b8ef9f;font:600 clamp(9px,2.4vw,11px)/1.35 system-ui,sans-serif;letter-spacing:.015em;white-space:normal}
 .riff-sub{margin:6px 0 14px;color:#cfcfcf;font-size:13px}
 .riff-close,.riff-restart{border:1px solid #8fff46;background:#0b0b0b;color:#fff;border-radius:10px;min-height:44px;padding:9px 13px;font-weight:800}
 .riff-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0 12px}
