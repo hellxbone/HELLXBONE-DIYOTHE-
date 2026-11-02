@@ -1785,6 +1785,6 @@ function render(ms){
 }
 requestAnimationFrame(render);
 })();
-</script><script id="hellx-menu-black-hardfix">(()=>{function fix(){document.querySelectorAll('nav[aria-label="Navigation principale"] > button').forEach(b=>{b.style.setProperty('background','#080a09','important');b.style.setProperty('background-image','none','important');b.style.setProperty('border','0','important');b.style.setProperty('box-shadow','none','important');b.style.setProperty('border-radius','0','important');});}fix();document.addEventListener('DOMContentLoaded',fix);})()</script></body></html>
+</script><script id="hellx-menu-black-hardfix">(()=>{function fix(){document.querySelectorAll('nav[aria-label="Navigation principale"] > button').forEach(b=>{b.style.setProperty('background','#080a09','important');b.style.setProperty('background-image','none','important');b.style.setProperty('border','0','important');b.style.setProperty('border-bottom',b.getAttribute('aria-current')==='page'?'2px solid #8fff46':'2px solid transparent','important');b.style.setProperty('box-shadow','none','important');b.style.setProperty('border-radius','0','important');});}fix();document.addEventListener('DOMContentLoaded',fix);document.addEventListener('click',()=>requestAnimationFrame(fix),true);})()</script></body></html>
 
 
