@@ -1,6 +1,45 @@
 (()=>{'use strict';
 const key='hellxbone-member-v1';const style=document.createElement('style');
 style.textContent='#hellx-club{max-width:900px;margin:8px auto;padding:0 12px;font:700 14px system-ui}#hellx-club>div>button{width:49%!important;height:38px!important;min-height:38px!important;max-height:38px!important;box-sizing:border-box!important;padding:2px 5px!important;font-size:12px!important;line-height:1!important;background:#111;color:#9cff67;border:2px solid #9cff67;border-radius:9px;cursor:pointer}#hellx-club>div{display:flex;gap:2%}#hellx-club-dialog[hidden]{display:none}#hellx-club-dialog{position:fixed;inset:0;z-index:2147482000;background:#000d;display:flex;align-items:center;justify-content:center;padding:16px}#hellx-club-panel{width:min(100%,450px);max-height:90vh;overflow:auto;padding:20px;border:2px solid #9cff67;border-radius:16px;background:#111;color:white;font:16px system-ui}#hellx-club-panel h2{color:#9cff67!important;font-size:24px!important}#hellx-club-panel button{padding:11px;margin:5px 3px 5px 0;background:#9cff67;color:#111;border:0;border-radius:8px;font-weight:bold}#hellx-club-panel input{width:100%;box-sizing:border-box;padding:12px;background:#222!important;color:white!important;border:1px solid #9cff67!important}#hellx-club-card{background:linear-gradient(130deg,#252525,#050505);padding:20px;margin:14px 0;border:2px solid #9cff67;border-radius:12px}#hellx-club-clock{font-size:clamp(24px,7vw,38px);font-weight:900;color:#9cff67;text-align:center;padding:20px 0}';
+
+// Habillage du compte à rebours : parchemin infernal (illustration externe, fond noir de secours).
+style.textContent += `
+#hellx-club-dialog.hellx-countdown #hellx-club-panel{
+  width:min(96vw,490px);max-height:min(94dvh,840px);box-sizing:border-box;
+  padding:clamp(78px,21vw,112px) clamp(34px,9vw,52px) clamp(65px,17vw,94px);
+  border:0;border-radius:0;
+  background-color:#000;background-image:url("./hellx-parchemin.jpg");
+  background-repeat:no-repeat;background-position:center;background-size:100% 100%;
+  box-shadow:none;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#65ff00 #000;
+}
+#hellx-club-dialog.hellx-countdown #hellx-club-panel h2{
+  margin:10px 0 16px;text-align:center;color:#89ff21!important;
+  font-family:Impact,"Arial Narrow",Georgia,serif;font-size:clamp(18px,5vw,27px)!important;
+  font-weight:900;letter-spacing:.035em;line-height:1.15;text-transform:uppercase;
+  text-shadow:0 0 12px #43ff0099;
+}
+#hellx-club-dialog.hellx-countdown #hellx-club-body{color:#eee;text-align:center}
+#hellx-club-dialog.hellx-countdown #hellx-club-body p{
+  font-size:clamp(14px,3.8vw,17px);line-height:1.48;margin:14px 0;
+}
+#hellx-club-dialog.hellx-countdown #hellx-club-body small{font-size:.82em;color:#ddd}
+#hellx-club-dialog.hellx-countdown #hellx-club-clock{
+  color:#8cff1b;font-family:Impact,"Arial Narrow",Georgia,serif;
+  font-size:clamp(21px,6.1vw,34px);letter-spacing:.02em;white-space:nowrap;
+  text-shadow:0 0 13px #51ff0077;padding:18px 0;
+}
+#hellx-club-dialog.hellx-countdown #hellx-club-panel button{
+  background:#78ff27;color:#071000;border:1px solid #b2ff77;border-radius:5px;
+  font-family:Impact,"Arial Narrow",Georgia,serif;font-size:clamp(13px,3.7vw,18px);
+  letter-spacing:.035em;min-height:42px;cursor:pointer;
+}
+#hellx-club-dialog.hellx-countdown #hellx-club-close{display:block;margin:0 auto 10px}
+#hellx-club-dialog.hellx-countdown #hxc-play{display:block;margin:18px auto 0}
+@media(max-height:690px){
+ #hellx-club-dialog.hellx-countdown #hellx-club-panel{padding-top:65px;padding-bottom:54px}
+ #hellx-club-dialog.hellx-countdown #hellx-club-body p{margin:8px 0}
+}
+`;
 document.head.appendChild(style);
 const root=document.createElement('section');root.id='hellx-club';root.innerHTML='<div><button type="button" data-hxc="member">☠ CARTE DE MEMBRE</button><button type="button" data-hxc="clock">⏳ TIRAGE DU TEE-SHIRT</button></div>';
 (document.querySelector('#hellx-live-entry')||document.querySelector('header')).insertAdjacentElement('afterend',root);
@@ -55,7 +94,7 @@ function paintCard(canvas,m){
   img.src=CARD_ART;
  });
 }
-function card(){clearInterval(timer);open();const m=read();body.innerHTML='<h2>☠ CARTE HELLXBONE</h2>'+(m?'<canvas id="hellx-club-preview" style="width:100%;height:auto;display:block;border-radius:9px;margin:12px 0" aria-label="Carte de membre HELLXBONE personnalisée"></canvas><button id="hxc-save">ENREGISTRER LA CARTE</button><button id="hxc-share">PARTAGER</button><button id="hxc-edit">CHANGER DE PSEUDO</button>':'<p>Crée ta carte virtuelle gratuitement, conservée sur ton téléphone.</p><form id="hxc-form"><label for="hxc-name">Ton pseudo</label><input id="hxc-name" maxlength="20" required autocomplete="nickname"><button type="submit">CRÉER MA CARTE</button></form>');
+function card(){modal.classList.remove('hellx-countdown');clearInterval(timer);open();const m=read();body.innerHTML='<h2>☠ CARTE HELLXBONE</h2>'+(m?'<canvas id="hellx-club-preview" style="width:100%;height:auto;display:block;border-radius:9px;margin:12px 0" aria-label="Carte de membre HELLXBONE personnalisée"></canvas><button id="hxc-save">ENREGISTRER LA CARTE</button><button id="hxc-share">PARTAGER</button><button id="hxc-edit">CHANGER DE PSEUDO</button>':'<p>Crée ta carte virtuelle gratuitement, conservée sur ton téléphone.</p><form id="hxc-form"><label for="hxc-name">Ton pseudo</label><input id="hxc-name" maxlength="20" required autocomplete="nickname"><button type="submit">CRÉER MA CARTE</button></form>');
 if(!m){const form=body.querySelector('form');form.querySelector('input').value=localStorage.getItem('hellx-riff-player-name')||'';form.onsubmit=e=>{e.preventDefault();const name=form.querySelector('input').value.trim().replace(/[<>]/g,'').slice(0,20);if(!name)return;try{localStorage.setItem(key,JSON.stringify({name,id:'HX-'+Math.random().toString(36).slice(2,10).toUpperCase(),date:new Date().toLocaleDateString('fr-FR')}));card()}catch{alert('Stockage local indisponible.')}};return;}
 const canvas=body.querySelector('#hellx-club-preview');const ready=paintCard(canvas,m);
 body.querySelector('#hxc-edit').onclick=()=>{const name=prompt('Nouveau pseudo (20 caractères maximum)',m.name);if(name===null)return;const clean=name.trim().replace(/[<>]/g,'').slice(0,20);if(!clean)return;localStorage.setItem(key,JSON.stringify({...m,name:clean}));card()};
@@ -69,6 +108,6 @@ button.textContent='PHOTO TÉLÉCHARGÉE';setTimeout(()=>{button.textContent='EN
 };
 }
 function parisTarget(){const now=new Date();const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit'});const p=Object.fromEntries(fmt.formatToParts(now).filter(x=>x.type!=='literal').map(x=>[x.type,+x.value]));const y=p.month===12?p.year+1:p.year,m=p.month===12?1:p.month+1,utc=Date.UTC(y,m-1,1);const q=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(utc)).filter(x=>x.type!=='literal').map(x=>[x.type,+x.value]));return utc-(Date.UTC(q.year,q.month-1,q.day,q.hour,q.minute)-utc);}
-function countdown(){clearInterval(timer);open();const target=parisTarget();body.innerHTML='<h2>⏳ COMPTE À REBOURS INFERNAL</h2><p>Prochain premier du mois : rendez-vous pour le classement MÉGA RIFF et le tee-shirt annoncé.</p><div id="hellx-club-clock" role="timer"></div><p><small>Heure de Paris. Le tirage et les lots suivent les règles de ton concours.</small></p><button id="hxc-play">JOUER À MÉGA RIFF</button>';const el=body.querySelector('#hellx-club-clock');const tick=()=>{const v=Math.max(0,Math.floor((target-Date.now())/1000));el.textContent=v===0?'JOUR DU TIRAGE !':Math.floor(v/86400)+'j '+String(Math.floor(v%86400/3600)).padStart(2,'0')+'h '+String(Math.floor(v%3600/60)).padStart(2,'0')+'m '+String(v%60).padStart(2,'0')+'s';if(!v)clearInterval(timer)};tick();timer=setInterval(tick,1000);body.querySelector('#hxc-play').onclick=()=>{close();document.querySelector('nav [data-page="jeu"]')?.click()};}
+function countdown(){modal.classList.add('hellx-countdown');clearInterval(timer);open();const target=parisTarget();body.innerHTML='<h2>⏳ COMPTE À REBOURS INFERNAL</h2><p>Prochain premier du mois : rendez-vous pour le classement MÉGA RIFF et le tee-shirt annoncé.</p><div id="hellx-club-clock" role="timer"></div><p><small>Heure de Paris. Le tirage et les lots suivent les règles de ton concours.</small></p><button id="hxc-play">JOUER À MÉGA RIFF</button>';const el=body.querySelector('#hellx-club-clock');const tick=()=>{const v=Math.max(0,Math.floor((target-Date.now())/1000));el.textContent=v===0?'JOUR DU TIRAGE !':Math.floor(v/86400)+'j '+String(Math.floor(v%86400/3600)).padStart(2,'0')+'h '+String(Math.floor(v%3600/60)).padStart(2,'0')+'m '+String(v%60).padStart(2,'0')+'s';if(!v)clearInterval(timer)};tick();timer=setInterval(tick,1000);body.querySelector('#hxc-play').onclick=()=>{close();document.querySelector('nav [data-page="jeu"]')?.click()};}
 root.addEventListener('click',e=>{const t=e.target.closest('[data-hxc]');if(t)(t.dataset.hxc==='member'?card:countdown)()});
 })();
