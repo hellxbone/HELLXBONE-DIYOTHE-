@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 600" preserveAspectRatio="none">
+<defs><filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="v"><stop stop-color="#a0ff18"/><stop offset=".45" stop-color="#3aca00"/><stop offset="1" stop-color="#91ff15"/></linearGradient></defs>
+<rect width="460" height="600" fill="#000"/>
+<g fill="none" stroke="url(#v)" stroke-width="3" filter="url(#glow)">
+<path d="M33 82 Q18 49 67 39 Q140 47 184 49 M276 49 Q320 47 393 39 Q442 49 427 82 L427 514 Q442 551 393 561 Q320 550 276 551 M184 551 Q140 550 67 561 Q18 551 33 514 Z"/>
+<path d="M53 111 Q32 85 60 63 Q100 80 160 67 M300 67 Q360 80 400 63 Q428 85 407 111 L407 488 Q428 515 400 537 Q360 520 300 533 M160 533 Q100 520 60 537 Q32 515 53 488 Z" stroke-width="1.4"/>
+<path d="M52 102 Q2 73 31 45 Q65 21 87 41 Q38 38 52 102 M408 102 Q458 73 429 45 Q395 21 373 41 Q422 38 408 102"/>
+<path d="M52 498 Q2 527 31 555 Q65 579 87 559 Q38 562 52 498 M408 498 Q458 527 429 555 Q395 579 373 559 Q422 562 408 498"/>
+<path d="M174 49 Q199 12 214 31 Q223 40 230 5 Q237 40 246 31 Q261 12 286 49" stroke-width="4"/>
+<path d="M177 552 Q205 581 230 594 Q255 581 283 552 M230 594 L230 549" stroke-width="4"/>
+<path d="M27 285 L12 300 L27 315 L43 300 Z M433 285 L448 300 L433 315 L417 300 Z"/>
+</g><g fill="#77fa07" stroke="#b0ff3b" stroke-width="2" filter="url(#glow)"><path d="M229 44 Q202 21 186 31 Q201 31 206 54 L215 67 L205 83 L221 78 L230 99 L239 78 L255 83 L245 67 L254 54 Q259 31 274 31 Q258 21 231 44Z"/><path d="M210 60 L221 65 L217 71 L208 66 M250 60 L239 65 L243 71 L252 66" fill="#000"/><path d="M216 79 L244 79 L230 94Z" fill="#000"/></g>
+</svg>
