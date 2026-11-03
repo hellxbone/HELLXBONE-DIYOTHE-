@@ -19,8 +19,6 @@ PUBLIC_KEY = "sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv"
 PARIS = ZoneInfo("Europe/Paris")
 TODAY = dt.datetime.now(PARIS).date()
 GENRES = re.compile(r"metal|métal|rock|punk|hardcore|goth|darkwave|new wave|industrial|grunge|alternative|indie|post-punk|hard rock", re.I)
-NON_CONCERT = re.compile(r"appel aux dons|exposition|portes ouvertes|marché artisanal|brocante|vide.grenier|atelier|conférence|visite guidée|repas|loto|soirée dansante|karaoké|théâtre|cinéma|projection|collecte|randonnée",re.I)
-MUSIC_EVENT = re.compile(r"concert|festival|live|musique|music|groupe|band|rock|metal|métal|punk|hardcore|blues|grunge|darkwave|goth",re.I)
 REGIONS = [
     ("Paris", 48.8566, 2.3522), ("Nantes", 47.2184, -1.5536),
     ("Lyon", 45.7640, 4.8357), ("Marseille", 43.2965, 5.3698),
@@ -30,24 +28,6 @@ REGIONS = [
     ("Montpellier", 43.6108, 3.8767), ("Nice", 43.7102, 7.2620),
     ("Tours", 47.3941, 0.6848), ("Dijon", 47.3220, 5.0415),
     ("Brest", 48.3904, -4.4861), ("Grenoble", 45.1885, 5.7245),
-    ("Angers",47.4784,-0.5632), ("Cholet",47.0600,-0.8783),
-    ("Clisson",47.0870,-1.2830), ("La Roche-sur-Yon",46.6705,-1.4260),
-    ("Saint-Nazaire",47.2735,-2.2137), ("Le Mans",48.0061,0.1996),
-    ("Vannes",47.6582,-2.7608), ("Lorient",47.7483,-3.3702),
-    ("Quimper",47.9960,-4.1025), ("Saint-Brieuc",48.5142,-2.7658),
-    ("Caen",49.1829,-0.3707), ("Rouen",49.4431,1.0993),
-    ("Reims",49.2583,4.0317), ("Nancy",48.6921,6.1844),
-    ("Metz",49.1193,6.1757), ("Orléans",47.9029,1.9093),
-    ("Poitiers",46.5802,0.3404), ("Limoges",45.8336,1.2611),
-    ("La Rochelle",46.1603,-1.1511), ("Pau",43.2951,-0.3708),
-    ("Bayonne",43.4929,-1.4748), ("Perpignan",42.6887,2.8948),
-    ("Avignon",43.9493,4.8055), ("Nîmes",43.8367,4.3601),
-    ("Saint-Étienne",45.4397,4.3872), ("Annecy",45.8992,6.1294),
-    ("Chambéry",45.5646,5.9178), ("Besançon",47.2378,6.0241),
-    ("Belfort",47.6397,6.8638), ("Mulhouse",47.7508,7.3359),
-    ("Troyes",48.2973,4.0744), ("Amiens",49.8941,2.2958),
-    ("Arras",50.2910,2.7775), ("Valenciennes",50.3571,3.5233),
-    ("Ajaccio",41.9192,8.7386), ("Bastia",42.6973,9.4509),
     ("Saint-Denis Réunion", -20.8789, 55.4481),
     ("Fort-de-France", 14.6037, -61.0742),
     ("Pointe-à-Pitre", 16.2411, -61.5331),
@@ -75,7 +55,7 @@ def normalize(event):
         if not day or day < TODAY: return None
         title = str(event.get("artist") or "").strip()[:150]
         city = str(event.get("city") or "").strip()[:90]
-        if not title or not city or NON_CONCERT.search(title): return None
+        if not title or not city: return None
         source = str(event.get("source") or "").strip()
         if source and not source.startswith("https://"): source = ""
         ticket = str(event.get("tickets") or "").strip()
@@ -88,6 +68,7 @@ def normalize(event):
           "source":source,"tickets":ticket}
         if event.get("verified"):result["verified"]=True
         if event.get("id"):result["id"]=event["id"]
+        if event.get("origin")=="datatourisme-vetted":result["origin"]="datatourisme-vetted"
         lat,lon = event.get("lat"),event.get("lon")
         if lat is not None and lon is not None and -90<=float(lat)<=90 and -180<=float(lon)<=180:
             result["lat"],result["lon"]=round(float(lat),5),round(float(lon),5)
@@ -128,13 +109,15 @@ def from_datatourisme(region):
     data=get(url)
     accepted=[]
     for x in data.get("objects",[]):
+        types=x.get("type") or []
+        if not isinstance(types,list) or not any(t in {"Concert","MusicEvent","MusicFestival"} for t in types):continue
         title=x.get("label") or {}
         title=title.get("@fr","") if isinstance(title,dict) else str(title)
         descriptions=x.get("hasDescription") or []
         description=" ".join(str((item.get("description") or {}).get("@fr",""))[:1500] for item in descriptions if isinstance(item,dict))
         match=GENRES.search(title+" "+description)
-        if not match or not title.strip() or NON_CONCERT.search(title):continue
-        if not MUSIC_EVENT.search(title) and not re.search(r'concert|sur scène|performance musicale|musique live|live music',description,re.I):continue
+        if not match or not title.strip():continue
+        if re.search(r"appel aux dons|collecte|artisanales|brocante|vide.grenier|randonn[eé]e|march[eé] de|loto|salon de|atelier cr[eé]atif",title,re.I):continue
         dates=x.get("takesPlaceAt") or []
         places=x.get("isLocatedAt") or []
         place=places[0] if places else {}
@@ -153,23 +136,26 @@ def from_datatourisme(region):
             if not d or d<TODAY:continue
             accepted.append(normalize({"date":d.isoformat(),"artist":title,
               "city":city,"department":department.get("insee",""),"venue":venue,
-              "genre":match.group(0),"source":x.get("uri",""),
+              "genre":match.group(0),"source":x.get("uri",""),"origin":"datatourisme-vetted",
               "lat":lat2,"lon":lon2}))
     print(f"{name}: {len(list(filter(None,accepted)))} concerts rock/metal DATAtourisme")
     return [x for x in accepted if x]
 
 def main():
     old=json.loads(DEST.read_text(encoding="utf-8")) if DEST.exists() else {"events":[]}
-    events=[normalize(e) for e in old.get("events",[])]
+    # Supprime les premières fiches DATAtourisme non qualifiées (bruit non musical).
+    events=[normalize(e) for e in old.get("events",[]) if
+            not (str(e.get("source","")).startswith("https://data.datatourisme.fr/")
+                 and e.get("origin")!="datatourisme-vetted")]
     try:events+=from_db()
     except Exception as ex:print("Catalogue Supabase indisponible:",str(ex)[:160])
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         for future in concurrent.futures.as_completed([pool.submit(from_ticketmaster,r) for r in REGIONS]):
             try:events+=future.result()
             except Exception as ex: print("Ticketmaster indisponible:",str(ex)[:160])
-    # Couverture tournante de 12 zones par jour, petites villes incluses.
-    offset=(TODAY.toordinal()*12)%len(REGIONS)
-    selected=[REGIONS[(offset+i)%len(REGIONS)] for i in range(12)]
+    # Requête progressive sur 4 zones par jour : couverture des 20 zones en 5 jours.
+    offset=(TODAY.toordinal()*4)%len(REGIONS)
+    selected=[REGIONS[(offset+i)%len(REGIONS)] for i in range(4)]
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
         for future in concurrent.futures.as_completed([pool.submit(from_datatourisme,r) for r in selected]):
             try:events+=future.result()
