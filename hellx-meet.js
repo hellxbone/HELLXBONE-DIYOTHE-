@@ -4,7 +4,7 @@ const PREFIX='hxmeet=';
 const css=document.createElement('style');
 css.textContent=`
 #hellx-meet{max-width:650px;margin:12px auto 24px;background:#07150b;color:#e0ffe4;border:2px solid #53f779;border-radius:12px;padding:16px;font:15px system-ui;box-shadow:0 0 18px #20f05733}
-#hellx-meet h2{font:900 22px system-ui;color:#91ffa7;margin:0 0 8px}
+#hellx-meet h2{font:900 22px system-ui!important;color:#39ff14!important;-webkit-text-fill-color:#39ff14!important;text-shadow:0 0 8px rgba(57,255,20,.75)!important;opacity:1!important;visibility:visible!important;margin:0 0 8px}
 #hellx-meet p{line-height:1.5}
 #hellx-meet label{display:block;font-weight:700;margin:12px 0 4px}
 #hellx-meet input,#hellx-meet textarea{width:100%;border:1px solid #68aa77;border-radius:7px;padding:12px;background:#020b04;color:#fff;font:15px system-ui}
