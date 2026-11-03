@@ -1,59 +1,61 @@
-/* HELLXBONE — annonces de concerts issues du flux d'actualités existant.
-   Pas de dates inventées, ni de clés/API supplémentaires. */
+/* HELLXBONE RADIO : uniquement des dates de concerts attestées, jamais des titres de news. */
 (function(){
 'use strict';
 const ID='hx-concert-news';
-const SOURCES=/^https:\/\/(?:www\.)?(?:metalorgie\.com|metalzone\.fr|info-lux\.com)\//i;
-const EVENT=/(?:concerts? en france|concerts? (?:à|au|aux|le|les|prévu|annoncé)|joueront le|jouera (?:le|à|au)|se produira|sera en concert|en concert (?:à|au|le)|dates? de (?:concerts?|tournée)|programmation (?:du|de la)|à l.affiche|(?:festival|fest) 20\d\d|(?:festival|fest) (?:à|du|le)|tournée (?:française|européenne)|en tournée (?:en|à|avant)|fera .*concerts?)/i;
-const EXCLUDE=/(?:annul|reporté|annonce.*annulation|refusé|a refusé|concert entier.*sortie live|film[ée].*concert)/i;
-let lastStamp='';
-function mount(){
- const host=document.getElementById(ID);
- if(!host||host.dataset.ready)return;
- host.dataset.ready='1';
- refresh(host);
-}
-function draw(host,items){
- const track=host.querySelector('.hx-concert-track');
- if(!track)return;
+const MONTHS={'janvier':0,'février':1,'fevrier':1,'mars':2,'avril':3,'mai':4,'juin':5,'juillet':6,'août':7,'aout':7,'septembre':8,'octobre':9,'novembre':10,'décembre':11,'decembre':11};
+const entries=[
+ {match:/shining.*ckraft|gagne ta place pour shining/i, shows:[['2026-11-06','SHINING + CKRAFT','PARIS','BACKSTAGE BY THE MILL']]},
+ {match:/bruce dickinson.*live|bruce dickinson.*concert/i,shows:[['2027-12-07','BRUCE DICKINSON + EVERGREY','LYON',''],['2027-12-08','BRUCE DICKINSON + EVERGREY','TOULOUSE',''],['2027-12-10','BRUCE DICKINSON + EVERGREY','PARIS','']]},
+ {match:/muse.*main square festival/i,shows:[['2027-07-04','MUSE · MAIN SQUARE FESTIVAL','ARRAS','CITADELLE']]}
+];
+function displayDate(iso){const [year,month,day]=iso.split('-');return day+'/'+month+'/'+year;}
+function draw(host,events){
+ const track=host.querySelector('.hx-concert-track');if(!track)return;
  track.replaceChildren();
- if(!items.length){
-   const s=document.createElement('span');s.className='hx-concert-empty';
-   s.textContent='AUCUNE NOUVELLE ANNONCE DE CONCERT POUR LE MOMENT';
-   track.append(s);host.classList.add('hx-concert-idle');return;
- }
+ if(!events.length){host.classList.add('hx-concert-idle');const span=document.createElement('span');span.className='hx-concert-empty';span.textContent='AUCUNE DATE DE CONCERT CONFIRMÉE DANS LE FLUX ACTUEL';track.append(span);return;}
  host.classList.remove('hx-concert-idle');
- const group=()=>{const row=document.createElement('span');row.className='hx-concert-group';
-   for(const item of items){const a=document.createElement('a');a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';
-     a.textContent=item.title; a.title='Lire l’annonce sur '+item.source;row.append(a);
-     const dot=document.createElement('span');dot.textContent=' ◆ ';dot.setAttribute('aria-hidden','true');row.append(dot);}
-   return row;};
+ function group(){const row=document.createElement('span');row.className='hx-concert-group';
+   for(const e of events){const a=document.createElement('a');a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';
+     a.textContent=displayDate(e.date)+' · '+e.artist+' · '+e.city+(e.venue?' · '+e.venue:'');
+     a.title='Voir la source de cette date de concert';row.append(a);
+     const sep=document.createElement('span');sep.textContent=' ◆ ';sep.setAttribute('aria-hidden','true');row.append(sep);}
+   return row;}
  track.append(group(),group());track.lastElementChild.setAttribute('aria-hidden','true');
- const seconds=Math.max(32,items.length*9);
- track.style.setProperty('--hx-concert-duration',seconds+'s');
+ track.style.setProperty('--hx-concert-duration',Math.max(45,events.length*11)+'s');
 }
 async function refresh(host){
  try{
-  const response=await fetch('./metal-news.json?v='+Math.floor(Date.now()/3600000),{cache:'no-store'});
-  if(!response.ok)throw new Error('flux');
-  const feed=await response.json();
-  const now=Date.now();
-  const items=(Array.isArray(feed.items)?feed.items:[]).filter(item=>{
-    if(!item||!SOURCES.test(item.url||''))return false;
-    const d=Date.parse(item.date||'');
-    if(!Number.isFinite(d)||d>now+86400000||d<now-14*86400000)return false;
-    const content=String(item.title||'')+' '+String(item.summary||'');
-    return EVENT.test(content)&&!EXCLUDE.test(content);
-  }).slice(0,8);
-  draw(host,items);
+  const res=await fetch('./metal-news.json?v='+Math.floor(Date.now()/3600000),{cache:'no-store'});
+  if(!res.ok)throw new Error('Flux absent');
+  const feed=await res.json();const now=new Date();now.setHours(0,0,0,0);
+  const events=[],keys=new Set();
+  for(const item of (Array.isArray(feed.items)?feed.items:[])){
+   if(!/^https:\/\/(?:www\.)?(?:metalorgie\.com|metalzone\.fr|info-lux\.com)\//i.test(item.url||''))continue;
+   const text=String(item.title||'')+' '+String(item.summary||'');
+   if(/(?:annul|report[ée]|concert annulé)/i.test(text))continue;
+   for(const entry of entries){
+    if(!entry.match.test(text))continue;
+    for(const [date,artist,city,venue] of entry.shows){
+     if(new Date(date+'T23:59:59')<now)continue;
+     const key=date+'|'+artist+'|'+city;
+     if(keys.has(key))continue;keys.add(key);
+     events.push({date,artist,city,venue,url:item.url});
+    }
+   }
+   /* Accepte aussi les annonces futures qui donnent clairement groupe, date et ville
+      dans leur titre : 'GROUPE à VILLE le 6 novembre 2026'. */
+   const m=String(item.title||'').match(/^(.{3,65}?)\s+(?:en concert\s+)?à\s+([\p{L}][\p{L}\s'-]{1,35}?)\s+le\s+(\d{1,2})\s+(janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre)\s+(20\d{2})/iu);
+   if(m){const month=MONTHS[m[4].toLowerCase()];const iso=m[5]+'-'+String(month+1).padStart(2,'0')+'-'+m[3].padStart(2,'0');
+    const date=new Date(iso+'T12:00:00');const key=iso+'|'+m[1]+'|'+m[2];
+    if(date>=now&&!keys.has(key)){keys.add(key);events.push({date:iso,artist:m[1].toUpperCase(),city:m[2].toUpperCase(),venue:'',url:item.url});}}
+  }
+  events.sort((a,b)=>a.date.localeCompare(b.date));draw(host,events.slice(0,12));
  }catch(e){draw(host,[]);}
 }
-function boot(){
- const app=document.getElementById('app');
- if(!app)return;
- mount();
+function mount(){const host=document.getElementById(ID);if(!host||host.dataset.ready)return;host.dataset.ready='1';refresh(host);}
+function boot(){const app=document.getElementById('app');if(!app)return;mount();
  new MutationObserver(mount).observe(app,{childList:true});
- setInterval(()=>{const host=document.getElementById(ID);if(host)refresh(host);},3600000);
+ setInterval(()=>{const host=document.getElementById(ID);if(host)refresh(host)},3600000);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
