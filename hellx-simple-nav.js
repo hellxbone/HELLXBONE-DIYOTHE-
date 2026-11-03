@@ -57,14 +57,8 @@ function sync(){
   hub.addEventListener('click',e=>{const button=e.target.closest('[data-hx-section]');if(!button)return;selected=button.dataset.hxSection;sync();if(selected==='horde')document.getElementById('hx-horde-panel')?.scrollIntoView({behavior:'smooth',block:'start'})});
  }
  if(radio.parentElement!==radioPanel)radioPanel.appendChild(radio);
- // Bandeau uniquement sous le lecteur radio, jamais à la place du bouton d'accueil.
- let bottomBanner=radioPanel.querySelector('.hx-radio-banner-bottom');
- if(!bottomBanner){
-  bottomBanner=document.createElement('div');
-  bottomBanner.className='hx-radio-banner-bottom';
-  bottomBanner.innerHTML='<img src="./hellxbone-radio-live-banner.webp" alt="24/24 METAL LIVE FROM HELL" loading="eager">';
- }
- if(bottomBanner.previousElementSibling!==radio)radio.insertAdjacentElement('afterend',bottomBanner);
+ // Ancien bandeau inférieur supprimé : le poste fusionné comprend déjà son visuel.
+ radioPanel.querySelectorAll('.hx-radio-banner-bottom').forEach(banner=>banner.remove());
  radioPanel.style.setProperty('display',selected==='radio'?'':'none','important');
  const meet=app.querySelector('#hellx-meet'),radar=app.querySelector('#hellx-radar');
  if(meet&&meet.parentElement!==horde)horde.appendChild(meet);
