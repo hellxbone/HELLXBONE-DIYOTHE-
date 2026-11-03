@@ -12,7 +12,7 @@ document.head.append(css);
 let records=[],shown=false,loading=false,host=null,position=null,radiusKm=50;
 const safeDate=x=>/^20\d\d-\d\d-\d\d$/.test(x||'')?x:'';
 function valid(e){return e&&safeDate(e.date)&&e.artist&&e.city&&(/https:\/\//i.test(e.source||'')||e.verified===true)&&new Date(e.date+'T23:59:59')>=new Date()}
-function unique(events){const s=new Set();return events.filter(valid).filter(e=>{const k=[e.date,e.artist,e.city].join('|').toLowerCase();if(s.has(k))return false;s.add(k);return true}).sort((a,b)=>a.date.localeCompare(b.date))}
+function unique(events){const s=new Set();return events.filter(valid).sort((a,b)=>Number(!!b.id)-Number(!!a.id)).filter(e=>{const k=[e.date,e.artist,e.city].join('|').toLowerCase();if(s.has(k))return false;s.add(k);return true}).sort((a,b)=>a.date.localeCompare(b.date))}
 async function load(){if(loading)return;loading=true;
  const results=await Promise.allSettled([
  fetch(EVENTS+'?v='+Math.floor(Date.now()/3600000),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('feed');return r.json()}).then(j=>j.events||[]),
@@ -26,13 +26,29 @@ const element=(name,content)=>{const n=document.createElement(name);if(content!=
 function prefs(){const p=read();return {city:String(p.city||''),department:String(p.department||''),style:String(p.style||''),alerts:!!p.alerts}}
 function distanceKm(a,b,c,d){const rad=Math.PI/180,dl=(d-b)*rad,dp=(c-a)*rad,h=Math.sin(dp/2)**2+Math.cos(a*rad)*Math.cos(c*rad)*Math.sin(dl/2)**2;return 12742*Math.asin(Math.min(1,Math.sqrt(h)))}
 function draw(){if(!host||!host.isConnected)return;const p=prefs();const slot=host.querySelector('#hx-concert-list');slot.replaceChildren();
- const filtered=records.filter(e=>(!position||!e.lat||!e.lon||distanceKm(position.lat,position.lon,e.lat,e.lon)<=radiusKm)&&(!p.city||e.city.toLocaleLowerCase('fr').includes(p.city.toLocaleLowerCase('fr')))&&(!p.department||String(e.department||'')===p.department)&&(!p.style||String(e.genre||'').toLocaleLowerCase('fr').includes(p.style.toLocaleLowerCase('fr'))));
+ const filtered=records.filter(e=>(!position||(Number.isFinite(Number(e.lat))&&Number.isFinite(Number(e.lon))&&distanceKm(position.lat,position.lon,Number(e.lat),Number(e.lon))<=radiusKm))&&(!p.city||e.city.toLocaleLowerCase('fr').includes(p.city.toLocaleLowerCase('fr')))&&(!p.department||String(e.department||'')===p.department)&&(!p.style||String(e.genre||'').toLocaleLowerCase('fr').includes(p.style.toLocaleLowerCase('fr'))));
  const count=host.querySelector('#hx-concert-count');count.textContent=filtered.length+' concert(s) à venir dans le catalogue';
  if(!filtered.length){slot.append(element('p','Aucune date correspondante pour le moment. Essaie sans filtre.'));return}
  filtered.slice(0,80).forEach(e=>{const card=element('article');card.className='hx-concert-card';card.append(element('strong',e.artist),element('p',new Date(e.date+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' · '+e.city+(e.venue?' · '+e.venue:'')));
  if(/^https:\/\//i.test(e.source||'')){const src=element('a','Voir l’annonce');src.href=e.source;src.target='_blank';src.rel='noopener noreferrer';card.append(src)}
  else if(e.verified){card.append(element('span','Concert publié dans le catalogue HELLXBONE · '))}
  if(/^https:\/\//.test(e.tickets||'')){const a=element('a','Billetterie');a.href=e.tickets;a.rel='noopener noreferrer';a.target='_blank';card.append(a)}
+ if(e.id){
+  const rsvp=element('button',"J'Y VAIS");rsvp.type='button';
+  const count=element('span','');count.className='hx-small';
+  const member=()=>{try{return localStorage.getItem('hellx-club-device-v1')||''}catch{return ''}};
+  const key='hx-going-'+e.id;
+  let going=localStorage.getItem(key)==='yes';
+  function updateCount(n){count.textContent=' · '+n+' membre(s) inscrits';rsvp.textContent=going?"JE N'Y VAIS PLUS":"J'Y VAIS"}
+  fetch(API+'/rest/v1/rpc/hellx_concert_attendance',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({p_concert_id:e.id})}).then(r=>r.ok?r.json():null).then(n=>{if(typeof n==='number')updateCount(n)}).catch(()=>{});
+  rsvp.addEventListener('click',async()=>{
+   if(!member()){count.textContent=' · Rejoins le club avec un pseudo.';return}
+   rsvp.disabled=true;
+   try{const next=!going;const res=await fetch(API+'/rest/v1/rpc/hellx_concert_attend',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({p_concert_id:e.id,p_member_id:member(),p_join:next})});
+    if(!res.ok)throw Error('Inscription indisponible');going=next;localStorage.setItem(key,going?'yes':'no');updateCount(await res.json());
+   }catch{count.textContent=' · Action impossible, réessaie.'}finally{rsvp.disabled=false}
+  });card.append(rsvp,count);
+ }
  const meet=element('button','RASSEMBLER LA HORDE');meet.type='button';meet.addEventListener('click',()=>{document.querySelector('#hx-home-actions [data-hx-section="horde"]')?.click();setTimeout(()=>{const open=document.getElementById('hellx-meet-open');open?.click();const place=document.getElementById('hx-meet-place');if(place){place.value=[e.venue,e.city].filter(Boolean).join(' — ');place.dispatchEvent(new Event('input',{bubbles:true}))}const when=document.getElementById('hx-meet-when');if(when)when.value=e.date+'T19:00';document.getElementById('hellx-meet')?.scrollIntoView({behavior:'smooth',block:'start'})},150)});card.append(meet);slot.append(card)});
 }
 function mount(){const app=document.getElementById('app');if(!app)return;const anchor=document.getElementById('hx-concert-news');if(!anchor)return;
