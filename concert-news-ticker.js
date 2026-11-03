@@ -9,19 +9,22 @@ const entries=[
  {match:/muse.*main square festival/i,shows:[['2027-07-04','MUSE · MAIN SQUARE FESTIVAL','ARRAS','CITADELLE']]}
 ];
 function displayDate(iso){const [year,month,day]=iso.split('-');return day+'/'+month+'/'+year;}
+const PHOTO_TITLES={'SHINING + CKRAFT':'Shining (Swedish band)','BRUCE DICKINSON + EVERGREY':'Bruce Dickinson','MUSE · MAIN SQUARE FESTIVAL':'Muse (band)'};
+const photoCache=new Map();
+async function photo(artist){const name=PHOTO_TITLES[artist]||artist.split(/[+·]/)[0].trim();if(photoCache.has(name))return photoCache.get(name);const promise=(async()=>{try{const r=await fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=240&titles='+encodeURIComponent(name));if(!r.ok)return '';const json=await r.json();return Object.values(json.query?.pages||{})[0]?.thumbnail?.source||''}catch(e){return ''}})();photoCache.set(name,promise);return promise}
 function draw(host,events){
- const track=host.querySelector('.hx-concert-track');if(!track)return;
- track.replaceChildren();
- if(!events.length){host.classList.add('hx-concert-idle');const span=document.createElement('span');span.className='hx-concert-empty';span.textContent='AUCUNE DATE DE CONCERT CONFIRMÉE DANS LE FLUX ACTUEL';track.append(span);return;}
+ const track=host.querySelector('.hx-concert-track');if(!track)return;track.replaceChildren();
+ if(!events.length){host.classList.add('hx-concert-idle');const el=document.createElement('span');el.className='hx-concert-empty';el.textContent='AUCUNE DATE DE CONCERT CONFIRMÉE DANS LE FLUX ACTUEL';track.append(el);return}
  host.classList.remove('hx-concert-idle');
- function group(){const row=document.createElement('span');row.className='hx-concert-group';
-   for(const e of events){const a=document.createElement('a');a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';
-     a.textContent=displayDate(e.date)+' · '+e.artist+' · '+e.city+(e.venue?' · '+e.venue:'');
-     a.title='Voir la source de cette date de concert';row.append(a);
-     const sep=document.createElement('span');sep.textContent=' ◆ ';sep.setAttribute('aria-hidden','true');row.append(sep);}
-   return row;}
- track.append(group(),group());track.lastElementChild.setAttribute('aria-hidden','true');
- track.style.setProperty('--hx-concert-duration',Math.max(45,events.length*11)+'s');
+ function group(){const row=document.createElement('div');row.className='hx-concert-group';for(const e of events){
+ const a=document.createElement('a');a.className='hx-concert-card';a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';a.title='Détails du concert de '+e.artist;
+ const pic=document.createElement('span');pic.className='hx-concert-portrait';pic.textContent='♫';pic.setAttribute('aria-hidden','true');
+ const info=document.createElement('span');info.className='hx-concert-copy';
+ for(const [tag,cls,value] of [['span','hx-concert-type','CONCERT ROCK / METAL'],['strong','hx-concert-artist',e.artist],['span','hx-concert-date',displayDate(e.date)],['span','hx-concert-city',e.city+(e.venue?' · '+e.venue:'')]]){const t=document.createElement(tag);t.className=cls;t.textContent=value;info.append(t)}
+ a.append(pic,info);row.append(a);
+ photo(e.artist).then(url=>{if(!url||!pic.isConnected)return;const img=document.createElement('img');img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.onerror=()=>img.remove();img.src=url;pic.replaceChildren(img)});
+ }return row}
+ track.append(group(),group());track.lastElementChild.setAttribute('aria-hidden','true');track.style.setProperty('--hx-concert-duration',Math.max(55,events.length*14)+'s')
 }
 async function refresh(host){
  try{
