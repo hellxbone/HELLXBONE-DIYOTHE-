@@ -18,6 +18,8 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 #hx-home-actions button[aria-pressed=true]{background:#4fe378;color:#092311}
 #hx-home-actions button[aria-pressed=true] small{color:#103d20}
 #hx-radio-panel,#hx-horde-panel{min-width:0}
+html.hx-radio-selected #hx-home-actions{grid-template-columns:minmax(0,1fr)}
+html.hx-radio-selected #hx-home-actions [data-hx-section="horde"]{display:none!important}
 
 html:not(.hx-radio-selected) #hellx-onair,
 html:not(.hx-radio-selected) #hx-radio-panel{display:none!important}
