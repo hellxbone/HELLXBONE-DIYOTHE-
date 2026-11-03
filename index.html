@@ -826,20 +826,26 @@ html.hx-radio-console-ready #hellx-onair>#hx-bass{display:none!important}
 </style><script id="hx-radio-console-image-loader-20261103">
 (()=>{const i=new Image();i.onload=()=>{document.documentElement.classList.add('hx-radio-console-ready')};i.src='./6472.png?v=20261103-radio-console';})();
 </script><style id="hx-header-radio-only-fix-20261103">html.hx-radio-selected body > header.hellx-header{display:none!important}html:not(.hx-radio-selected) body > header.hellx-header{display:block!important}</style><style id="hx-hide-extra-radio-banner-20261103">html.hx-radio-selected header.hellx-header{display:none!important}html.hx-radio-selected .hellx-home-bottom-art{display:none!important}html.hx-radio-selected #hellx-onair + .hellx-home-bottom-art{display:none!important}</style><style id="hx-concert-news-style">
-#hx-concert-news{width:100%;max-width:680px;margin:5px auto 12px;background:#050805;border:1px solid #254f2c;color:#a2ffaa;overflow:hidden;box-sizing:border-box;padding:4px 0 5px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
-#hx-concert-news .hx-concert-label{display:block;color:#8eff92;font-size:10px;letter-spacing:.12em;font-weight:800;padding:0 9px 3px}
-#hx-concert-news .hx-concert-viewport{width:100%;overflow:hidden;white-space:nowrap}
-#hx-concert-news .hx-concert-track{display:flex;width:max-content;animation:hx-concert-scroll var(--hx-concert-duration,50s) linear infinite}
-#hx-concert-news .hx-concert-group{display:inline-flex;align-items:center;flex:none;white-space:nowrap;font-size:12px;font-weight:750}
-#hx-concert-news .hx-concert-group a{color:#99ff9f;text-decoration:none;text-shadow:0 0 4px #30b83b;padding-left:14px}
-#hx-concert-news .hx-concert-group a:focus-visible{outline:2px solid #fff}
-#hx-concert-news .hx-concert-group span{color:#579e60;padding:0 5px}
+#hx-concert-news{width:100%;max-width:680px;margin:6px auto 12px;background:#050805;border:1px solid #254f2c;color:white;overflow:hidden;box-sizing:border-box;padding:7px 0 9px;font-family:system-ui,Arial,sans-serif}
+#hx-concert-news .hx-concert-label{display:block;color:#80ff56;font-size:11px;letter-spacing:.1em;font-weight:900;padding:0 10px 7px}
+#hx-concert-news .hx-concert-viewport{width:100%;overflow:hidden}
+#hx-concert-news .hx-concert-track{display:flex;width:max-content;animation:hx-concert-scroll var(--hx-concert-duration,60s) linear infinite}
+#hx-concert-news .hx-concert-group{display:flex;align-items:stretch;flex:none;gap:10px;padding:0 5px 0 0}
+#hx-concert-news .hx-concert-card{color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;box-sizing:border-box;width:min(82vw,300px);min-height:103px;padding:7px 10px;border:1px solid #2c4630;border-radius:7px;background:#101310}
+#hx-concert-news .hx-concert-card:focus-visible{outline:2px solid #80ff56}
+#hx-concert-news .hx-concert-portrait{width:85px;height:85px;flex:0 0 85px;display:grid;place-items:center;overflow:hidden;border-radius:5px;background:#1d261d;color:#70d86c;font-size:35px}
+#hx-concert-news .hx-concert-portrait img{display:block;width:100%;height:100%;object-fit:cover}
+#hx-concert-news .hx-concert-copy{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+#hx-concert-news .hx-concert-type{color:#86ff5b;font-size:9px;font-weight:900;letter-spacing:.055em}
+#hx-concert-news .hx-concert-artist{font-size:clamp(13px,3.6vw,17px);line-height:1.12;font-weight:900;color:#fff;white-space:normal;overflow-wrap:anywhere}
+#hx-concert-news .hx-concert-date{color:#baffad;font-size:12px;font-weight:800}
+#hx-concert-news .hx-concert-city{color:#bdc8bc;font-size:11px;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
 #hx-concert-news:hover .hx-concert-track,#hx-concert-news:focus-within .hx-concert-track{animation-play-state:paused}
 #hx-concert-news.hx-concert-idle .hx-concert-track{animation:none;width:100%}
-#hx-concert-news .hx-concert-empty{display:block;padding:2px 9px;font-size:11px;white-space:normal;color:#a8c9aa}
+#hx-concert-news .hx-concert-empty{display:block;padding:3px 10px;font-size:11px;color:#a8c9aa}
 @keyframes hx-concert-scroll{to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){#hx-concert-news .hx-concert-track{animation:none;width:auto;overflow-x:auto;max-width:100%}#hx-concert-news .hx-concert-group:last-child{display:none}}
-</style><script defer src="./concert-news-ticker.js?v=20261103-dates-only"></script><style id="hx-ticker-page-scope-20261103">
+</style><script defer src="./concert-news-ticker.js?v=20261103-photo-cards"></script><style id="hx-ticker-page-scope-20261103">
 /* Les deux bandeaux sont montés dans la même vue : limiter chacun à sa page. */
 html:not(.hx-radio-selected) #hx-concert-news{display:none!important}
 html.hx-radio-selected .hx-winner-led{display:none!important}
