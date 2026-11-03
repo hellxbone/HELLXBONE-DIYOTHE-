@@ -33,7 +33,7 @@ style.textContent += `
   font-family:Impact,"Arial Narrow",Georgia,serif;font-size:clamp(13px,3.7vw,18px);
   letter-spacing:.035em;min-height:42px;cursor:pointer;
 }
-#hellx-club-dialog.hellx-countdown #hellx-club-close{display:block;margin:0 auto 10px}
+#hellx-club-dialog.hellx-countdown #hellx-club-close{display:block;margin:0 auto 10px;min-height:21px;height:21px;padding:0 12px;line-height:19px;font-size:clamp(12px,3vw,15px);}
 #hellx-club-dialog.hellx-countdown #hxc-play{display:block;margin:18px auto 0}
 @media(max-height:690px){
  #hellx-club-dialog.hellx-countdown #hellx-club-panel{padding-top:65px;padding-bottom:54px}
@@ -108,6 +108,6 @@ button.textContent='PHOTO TÉLÉCHARGÉE';setTimeout(()=>{button.textContent='EN
 };
 }
 function parisTarget(){const now=new Date();const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit'});const p=Object.fromEntries(fmt.formatToParts(now).filter(x=>x.type!=='literal').map(x=>[x.type,+x.value]));const y=p.month===12?p.year+1:p.year,m=p.month===12?1:p.month+1,utc=Date.UTC(y,m-1,1);const q=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(utc)).filter(x=>x.type!=='literal').map(x=>[x.type,+x.value]));return utc-(Date.UTC(q.year,q.month-1,q.day,q.hour,q.minute)-utc);}
-function countdown(){modal.classList.add('hellx-countdown');clearInterval(timer);open();const target=parisTarget();body.innerHTML='<h2>⏳ COMPTE À REBOURS INFERNAL</h2><p>Prochain premier du mois : rendez-vous pour le classement MÉGA RIFF et le tee-shirt annoncé.</p><div id="hellx-club-clock" role="timer"></div><p><small>Heure de Paris. Le tirage et les lots suivent les règles de ton concours.</small></p><button id="hxc-play">JOUER À MÉGA RIFF</button>';const el=body.querySelector('#hellx-club-clock');const tick=()=>{const v=Math.max(0,Math.floor((target-Date.now())/1000));el.textContent=v===0?'JOUR DU TIRAGE !':Math.floor(v/86400)+'j '+String(Math.floor(v%86400/3600)).padStart(2,'0')+'h '+String(Math.floor(v%3600/60)).padStart(2,'0')+'m '+String(v%60).padStart(2,'0')+'s';if(!v)clearInterval(timer)};tick();timer=setInterval(tick,1000);body.querySelector('#hxc-play').onclick=()=>{close();document.querySelector('nav [data-page="jeu"]')?.click()};}
+function countdown(){modal.classList.add('hellx-countdown');clearInterval(timer);open();const target=parisTarget();body.innerHTML='<h2>⏳ COMPTE À REBOURS INFERNAL</h2><p>Prochain premier du mois : rendez-vous pour le classement MÉGA RIFF et le tee-shirt annoncé.</p><div id="hellx-club-clock" role="timer"></div><p><small>Heure de Paris. Le tirage et les lots suivent les règles de ton concours.</small></p>';const el=body.querySelector('#hellx-club-clock');const tick=()=>{const v=Math.max(0,Math.floor((target-Date.now())/1000));el.textContent=v===0?'JOUR DU TIRAGE !':Math.floor(v/86400)+'j '+String(Math.floor(v%86400/3600)).padStart(2,'0')+'h '+String(Math.floor(v%3600/60)).padStart(2,'0')+'m '+String(v%60).padStart(2,'0')+'s';if(!v)clearInterval(timer)};tick();timer=setInterval(tick,1000);}
 root.addEventListener('click',e=>{const t=e.target.closest('[data-hxc]');if(t)(t.dataset.hxc==='member'?card:countdown)()});
 })();
