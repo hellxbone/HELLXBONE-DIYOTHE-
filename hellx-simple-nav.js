@@ -81,7 +81,9 @@ if(selected==='home'){radioPanel.hidden=true;horde.hidden=true}
  hub.querySelectorAll('[data-hx-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hxSection===selected)));
  document.querySelectorAll('#hx-quick-nav [data-hx-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hxSection===selected)));
 }
-setInterval(sync,1200);
+// Synchronisation moins agressive : les clics déclenchent un rafraîchissement immédiat.
+setInterval(sync,6000);
+document.addEventListener('click',e=>{if(e.target.closest('nav [data-page], [data-hx-section], #hellx-meet-open'))setTimeout(sync,0)},true);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
 })();
 
