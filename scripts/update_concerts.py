@@ -147,7 +147,7 @@ def main():
             try:events+=future.result()
             except Exception as ex: print("Ticketmaster indisponible:",str(ex)[:160])
     # Requête progressive sur 4 zones par jour : couverture des 20 zones en 5 jours.
-    offset=((TODAY.toordinal()//5)*4)%len(REGIONS)
+    offset=(TODAY.toordinal()*4)%len(REGIONS)
     selected=[REGIONS[(offset+i)%len(REGIONS)] for i in range(4)]
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
         for future in concurrent.futures.as_completed([pool.submit(from_datatourisme,r) for r in selected]):
