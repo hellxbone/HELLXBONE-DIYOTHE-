@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-03T11:27:40.581685+00:00",
   "events": [
     {
       "date": "2026-11-06",
@@ -9,8 +9,71 @@
       "venue": "Backstage By The Mill",
       "genre": "metal",
       "source": "https://www.metalorgie.com/news/185329-concours-shining-nor-et-ckraft-jazz",
+      "tickets": "",
+      "verified": true,
+      "id": 6,
       "lat": 48.8566,
       "lon": 2.3522
+    },
+    {
+      "date": "2026-11-10",
+      "artist": "Michael Schenker",
+      "city": "Nantes",
+      "department": "44",
+      "venue": "Stereolux",
+      "genre": "Hard rock / Heavy metal",
+      "source": "",
+      "tickets": "",
+      "verified": true,
+      "id": 16501944
+    },
+    {
+      "date": "2026-11-24",
+      "artist": "Shaârghot",
+      "city": "Nantes",
+      "department": "44",
+      "venue": "Stereolux",
+      "genre": "Metal industriel",
+      "source": "",
+      "tickets": "",
+      "verified": true,
+      "id": 15849795
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Boy Harsher + Choir Boy",
+      "city": "Nantes",
+      "department": "44",
+      "venue": "Warehouse Nantes",
+      "genre": "Darkwave",
+      "source": "",
+      "tickets": "",
+      "verified": true,
+      "id": 16697184
+    },
+    {
+      "date": "2026-12-08",
+      "artist": "FFF",
+      "city": "Nantes",
+      "department": "44",
+      "venue": "Stereolux",
+      "genre": "Rock / Funk",
+      "source": "",
+      "tickets": "",
+      "verified": true,
+      "id": 15546725
+    },
+    {
+      "date": "2026-12-12",
+      "artist": "Les Vulves Assassines",
+      "city": "Nantes",
+      "department": "44",
+      "venue": "Stereolux",
+      "genre": "Punk",
+      "source": "",
+      "tickets": "",
+      "verified": true,
+      "id": 16203873
     },
     {
       "date": "2027-07-04",
@@ -20,6 +83,9 @@
       "venue": "Citadelle",
       "genre": "rock",
       "source": "https://www.info-lux.com/muse-main-square-festival-2027-arras-4-juillet/pays/france/haut-de-france/pas-de-calais/arras/",
+      "tickets": "",
+      "verified": true,
+      "id": 7,
       "lat": 50.291,
       "lon": 2.777
     },
@@ -28,8 +94,12 @@
       "artist": "SCORPIONS",
       "city": "Paris",
       "department": "75",
+      "venue": "",
       "genre": "hard rock",
       "source": "https://www.metalzone.fr/news/241030-scorpions-tournee-europeenne-2027-concerts-france-paris-nimes/",
+      "tickets": "",
+      "verified": true,
+      "id": 2,
       "lat": 48.8566,
       "lon": 2.3522
     },
@@ -38,8 +108,12 @@
       "artist": "SCORPIONS",
       "city": "Nîmes",
       "department": "30",
+      "venue": "",
       "genre": "hard rock",
       "source": "https://www.metalzone.fr/news/241030-scorpions-tournee-europeenne-2027-concerts-france-paris-nimes/",
+      "tickets": "",
+      "verified": true,
+      "id": 1,
       "lat": 43.8367,
       "lon": 4.3601
     },
@@ -48,8 +122,12 @@
       "artist": "BRUCE DICKINSON + EVERGREY",
       "city": "Lyon",
       "department": "69",
+      "venue": "",
       "genre": "heavy metal",
       "source": "https://www.metalorgie.com/news/185334-bruce-dickinson-le-chanteur-d-iron-maiden-en",
+      "tickets": "",
+      "verified": true,
+      "id": 3,
       "lat": 45.764,
       "lon": 4.8357
     },
@@ -58,8 +136,12 @@
       "artist": "BRUCE DICKINSON + EVERGREY",
       "city": "Toulouse",
       "department": "31",
+      "venue": "",
       "genre": "heavy metal",
       "source": "https://www.metalorgie.com/news/185334-bruce-dickinson-le-chanteur-d-iron-maiden-en",
+      "tickets": "",
+      "verified": true,
+      "id": 5,
       "lat": 43.6047,
       "lon": 1.4442
     },
@@ -68,8 +150,12 @@
       "artist": "BRUCE DICKINSON + EVERGREY",
       "city": "Paris",
       "department": "75",
+      "venue": "",
       "genre": "heavy metal",
       "source": "https://www.metalorgie.com/news/185334-bruce-dickinson-le-chanteur-d-iron-maiden-en",
+      "tickets": "",
+      "verified": true,
+      "id": 4,
       "lat": 48.8566,
       "lon": 2.3522
     }
