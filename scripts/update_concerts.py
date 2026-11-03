@@ -68,6 +68,7 @@ def normalize(event):
           "source":source,"tickets":ticket}
         if event.get("verified"):result["verified"]=True
         if event.get("id"):result["id"]=event["id"]
+        if event.get("origin")=="datatourisme-vetted":result["origin"]="datatourisme-vetted"
         lat,lon = event.get("lat"),event.get("lon")
         if lat is not None and lon is not None and -90<=float(lat)<=90 and -180<=float(lon)<=180:
             result["lat"],result["lon"]=round(float(lat),5),round(float(lon),5)
@@ -108,12 +109,15 @@ def from_datatourisme(region):
     data=get(url)
     accepted=[]
     for x in data.get("objects",[]):
+        types=x.get("type") or []
+        if not isinstance(types,list) or not any(t in {"Concert","MusicEvent","MusicFestival"} for t in types):continue
         title=x.get("label") or {}
         title=title.get("@fr","") if isinstance(title,dict) else str(title)
         descriptions=x.get("hasDescription") or []
         description=" ".join(str((item.get("description") or {}).get("@fr",""))[:1500] for item in descriptions if isinstance(item,dict))
         match=GENRES.search(title+" "+description)
         if not match or not title.strip():continue
+        if re.search(r"appel aux dons|collecte|artisanales|brocante|vide.grenier|randonn[eé]e|march[eé] de|loto|salon de|atelier cr[eé]atif",title,re.I):continue
         dates=x.get("takesPlaceAt") or []
         places=x.get("isLocatedAt") or []
         place=places[0] if places else {}
@@ -132,14 +136,17 @@ def from_datatourisme(region):
             if not d or d<TODAY:continue
             accepted.append(normalize({"date":d.isoformat(),"artist":title,
               "city":city,"department":department.get("insee",""),"venue":venue,
-              "genre":match.group(0),"source":x.get("uri",""),
+              "genre":match.group(0),"source":x.get("uri",""),"origin":"datatourisme-vetted",
               "lat":lat2,"lon":lon2}))
     print(f"{name}: {len(list(filter(None,accepted)))} concerts rock/metal DATAtourisme")
     return [x for x in accepted if x]
 
 def main():
     old=json.loads(DEST.read_text(encoding="utf-8")) if DEST.exists() else {"events":[]}
-    events=[normalize(e) for e in old.get("events",[])]
+    # Supprime les premières fiches DATAtourisme non qualifiées (bruit non musical).
+    events=[normalize(e) for e in old.get("events",[]) if
+            not (str(e.get("source","")).startswith("https://data.datatourisme.fr/")
+                 and e.get("origin")!="datatourisme-vetted")]
     try:events+=from_db()
     except Exception as ex:print("Catalogue Supabase indisponible:",str(ex)[:160])
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
