@@ -52,7 +52,21 @@ async function refresh(host){
     const date=new Date(iso+'T12:00:00');const key=iso+'|'+m[1]+'|'+m[2];
     if(date>=now&&!keys.has(key)){keys.add(key);events.push({date:iso,artist:m[1].toUpperCase(),city:m[2].toUpperCase(),venue:'',url:item.url});}}
   }
-  events.sort((a,b)=>a.date.localeCompare(b.date));draw(host,events.slice(0,12));
+  // Le bandeau radio utilise aussi le catalogue national, pas uniquement trois annonces.
+  try {
+   const response=await fetch('./concerts.json?v='+Math.floor(Date.now()/3600000),{cache:'no-store'});
+   if(response.ok){
+    const catalog=await response.json();
+    for(const e of (catalog.events||[])){
+     if(!e.date||!e.artist||!e.city||new Date(e.date+'T23:59:59')<now)continue;
+     const key=e.date+'|'+e.artist+'|'+e.city;
+     if(keys.has(key))continue;
+     keys.add(key);
+     events.push({date:e.date,artist:e.artist,city:e.city,venue:e.venue||'',url:e.source||e.tickets||'#'});
+    }
+   }
+  }catch(error){console.warn('Catalogue concerts temporairement indisponible',error)}
+  events.sort((a,b)=>a.date.localeCompare(b.date));draw(host,events.slice(0,30));
  }catch(e){draw(host,[]);}
 }
 function mount(){const host=document.getElementById(ID);if(!host||host.dataset.ready)return;host.dataset.ready='1';refresh(host);}
