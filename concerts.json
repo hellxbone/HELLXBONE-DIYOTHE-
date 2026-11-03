@@ -1,0 +1,63 @@
+{
+  "updated": "2026-11-03",
+  "events": [
+    {
+      "date": "2026-11-06",
+      "artist": "SHINING + CKRAFT",
+      "city": "Paris",
+      "department": "75",
+      "venue": "Backstage By The Mill",
+      "genre": "metal",
+      "source": "https://www.metalorgie.com/news/185329-concours-shining-nor-et-ckraft-jazz"
+    },
+    {
+      "date": "2027-07-04",
+      "artist": "MUSE · MAIN SQUARE FESTIVAL",
+      "city": "Arras",
+      "department": "62",
+      "venue": "Citadelle",
+      "genre": "rock",
+      "source": "https://www.info-lux.com/muse-main-square-festival-2027-arras-4-juillet/pays/france/haut-de-france/pas-de-calais/arras/"
+    },
+    {
+      "date": "2027-07-12",
+      "artist": "SCORPIONS",
+      "city": "Paris",
+      "department": "75",
+      "genre": "hard rock",
+      "source": "https://www.metalzone.fr/news/241030-scorpions-tournee-europeenne-2027-concerts-france-paris-nimes/"
+    },
+    {
+      "date": "2027-07-15",
+      "artist": "SCORPIONS",
+      "city": "Nîmes",
+      "department": "30",
+      "genre": "hard rock",
+      "source": "https://www.metalzone.fr/news/241030-scorpions-tournee-europeenne-2027-concerts-france-paris-nimes/"
+    },
+    {
+      "date": "2027-12-07",
+      "artist": "BRUCE DICKINSON + EVERGREY",
+      "city": "Lyon",
+      "department": "69",
+      "genre": "heavy metal",
+      "source": "https://www.metalorgie.com/news/185334-bruce-dickinson-le-chanteur-d-iron-maiden-en"
+    },
+    {
+      "date": "2027-12-08",
+      "artist": "BRUCE DICKINSON + EVERGREY",
+      "city": "Toulouse",
+      "department": "31",
+      "genre": "heavy metal",
+      "source": "https://www.metalorgie.com/news/185334-bruce-dickinson-le-chanteur-d-iron-maiden-en"
+    },
+    {
+      "date": "2027-12-10",
+      "artist": "BRUCE DICKINSON + EVERGREY",
+      "city": "Paris",
+      "department": "75",
+      "genre": "heavy metal",
+      "source": "https://www.metalorgie.com/news/185334-bruce-dickinson-le-chanteur-d-iron-maiden-en"
+    }
+  ]
+}
