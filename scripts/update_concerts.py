@@ -99,6 +99,44 @@ def from_ticketmaster(region):
     print(f"{name}: {len(result)} concerts filtrés")
     return result
 
+def from_datatourisme(region):
+    """Utilise l'API DATAtourisme déjà configurée côté Supabase.
+    Ne retient que les fiches datées mentionnant explicitement les styles ciblés.
+    """
+    name, lat, lon = region
+    url=PROJECT+"/functions/v1/concerts-datatourisme?"+urllib.parse.urlencode({"lat":lat,"lon":lon})
+    data=get(url)
+    accepted=[]
+    for x in data.get("objects",[]):
+        title=x.get("label") or {}
+        title=title.get("@fr","") if isinstance(title,dict) else str(title)
+        descriptions=x.get("hasDescription") or []
+        description=" ".join(str((item.get("description") or {}).get("@fr",""))[:1500] for item in descriptions if isinstance(item,dict))
+        match=GENRES.search(title+" "+description)
+        if not match or not title.strip():continue
+        dates=x.get("takesPlaceAt") or []
+        places=x.get("isLocatedAt") or []
+        place=places[0] if places else {}
+        address=(place.get("address") or [{}])[0]
+        city_object=address.get("hasAddressCity") or {}
+        department=city_object.get("isPartOfDepartment") or {}
+        city=(city_object.get("label") or {}).get("@fr") or address.get("addressLocality") or ""
+        geo=place.get("geo") or place.get("geoPoint") or {}
+        lat2=geo.get("latitude",geo.get("lat"))
+        lon2=geo.get("longitude",geo.get("lon"))
+        venue=((place.get("label") or {}).get("@fr","") if isinstance(place.get("label"),dict) else "") or ""
+        for date in dates[:8]:
+            start=date.get("startDate")
+            if not start:continue
+            d=parse_day(start)
+            if not d or d<TODAY:continue
+            accepted.append(normalize({"date":d.isoformat(),"artist":title,
+              "city":city,"department":department.get("insee",""),"venue":venue,
+              "genre":match.group(0),"source":x.get("uri",""),
+              "lat":lat2,"lon":lon2}))
+    print(f"{name}: {len(list(filter(None,accepted)))} concerts rock/metal DATAtourisme")
+    return [x for x in accepted if x]
+
 def main():
     old=json.loads(DEST.read_text(encoding="utf-8")) if DEST.exists() else {"events":[]}
     events=[normalize(e) for e in old.get("events",[])]
@@ -107,7 +145,14 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         for future in concurrent.futures.as_completed([pool.submit(from_ticketmaster,r) for r in REGIONS]):
             try:events+=future.result()
-            except Exception as ex: print("Source régionale indisponible:",str(ex)[:160])
+            except Exception as ex: print("Ticketmaster indisponible:",str(ex)[:160])
+    # Requête progressive sur 4 zones par jour : couverture des 20 zones en 5 jours.
+    offset=(TODAY.toordinal()*4)%len(REGIONS)
+    selected=[REGIONS[(offset+i)%len(REGIONS)] for i in range(4)]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+        for future in concurrent.futures.as_completed([pool.submit(from_datatourisme,r) for r in selected]):
+            try:events+=future.result()
+            except Exception as ex: print("DATAtourisme indisponible:",str(ex)[:160])
     grouped={}
     for e in filter(None,events):
         key=(e["date"],e["artist"].casefold(),e["city"].casefold())
