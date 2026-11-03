@@ -2,8 +2,10 @@ name: Actualiser agenda concerts HELLXBONE
 on:
   workflow_dispatch:
   schedule:
-    - cron: '21 6,18 * * *'
+    - cron: '21 6 * * *'
   push:
+    branches:
+      - main
     paths:
       - 'scripts/update_concerts.py'
       - '.github/workflows/concerts-update.yml'
