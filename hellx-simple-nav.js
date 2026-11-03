@@ -20,8 +20,10 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 #hx-radio-panel,#hx-horde-panel{min-width:0}
 html.hx-radio-selected #hx-home-actions{grid-template-columns:minmax(0,1fr)}
 html.hx-radio-selected #hx-home-actions [data-hx-section="horde"]{display:none!important}
-#hx-home-actions button[data-hx-section="radio"]{display:block!important;width:100%!important;padding:0!important;min-height:0!important;overflow:hidden!important;background:#000!important;border:0!important;border-radius:0!important;line-height:0!important}
-#hx-home-actions button[data-hx-section="radio"] .hx-live-banner{display:block;width:100%;height:auto;aspect-ratio:4/1;object-fit:contain;background:#000}
+#hx-home-actions button[data-hx-section="radio"] .hx-live-banner{display:none!important}
+html.hx-radio-selected #hx-home-actions button[data-hx-section="radio"]{display:block!important;width:100%!important;padding:0!important;min-height:0!important;overflow:hidden!important;background:#000!important;border:0!important;border-radius:0!important;line-height:0!important}
+html.hx-radio-selected #hx-home-actions button[data-hx-section="radio"] .hx-live-label{display:none!important}
+html.hx-radio-selected #hx-home-actions button[data-hx-section="radio"] .hx-live-banner{display:block!important;width:100%;height:auto;aspect-ratio:4/1;object-fit:contain;background:#000}
 #hx-home-actions button[data-hx-section="radio"]:focus-visible{outline:2px solid #39ff14!important;outline-offset:3px}
 html.hx-radio-selected #hx-home-hub{padding:0!important;background:#000!important;margin-bottom:8px!important}
 html.hx-radio-selected #hx-home-actions{margin:0!important;gap:0!important}
@@ -53,7 +55,7 @@ function sync(){
  let hub=app.querySelector('#hx-home-hub'),horde=app.querySelector('#hx-horde-panel'),radioPanel=app.querySelector('#hx-radio-panel');
  if(!hub){
   hub=document.createElement('section');hub.id='hx-home-hub';
-  hub.innerHTML='<div id="hx-home-actions"><button type="button" data-hx-section="horde">🤘 ON SE CAPTE ?<small>Concerts • Festivals • Sorties</small></button><button type="button" data-hx-section="radio" aria-label="Radio metal live 24 heures sur 24"><img class="hx-live-banner" src="./hellxbone-radio-live-banner.webp" alt="24/24 METAL LIVE FROM HELL" loading="eager"></button></div>';
+  hub.innerHTML='<div id="hx-home-actions"><button type="button" data-hx-section="horde">🤘 ON SE CAPTE ?<small>Concerts • Festivals • Sorties</small></button><button type="button" data-hx-section="radio" aria-label="Radio metal live 24 heures sur 24"><span class="hx-live-label">📻 LIVE 666<small>Le metal partout avec toi</small></span><img class="hx-live-banner" src="./hellxbone-radio-live-banner.webp" alt="24/24 METAL LIVE FROM HELL" loading="eager"></button></div>';
   horde=document.createElement('div');horde.id='hx-horde-panel';
   radioPanel=document.createElement('div');radioPanel.id='hx-radio-panel';
   app.prepend(hub,horde,radioPanel);
