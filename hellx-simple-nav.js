@@ -84,3 +84,75 @@ if(selected==='home'){radioPanel.hidden=true;horde.hidden=true}
 setInterval(sync,1200);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
 })();
+
+
+/* HELLXBONE — panneau accueil illustré, cinq zones tactiles indépendantes.
+   Déposer 6487.png à la racine du dépôt. Retour aux boutons classiques si l'image manque. */
+(()=>{
+ 'use strict';
+ if(window.__hxHomeIllustratedMenu)return;
+ window.__hxHomeIllustratedMenu=true;
+ const css=document.createElement('style');
+ css.textContent=`
+ #hx-home-graphic{position:relative;width:100%;max-width:852px;aspect-ratio:852/572;margin:0 auto;line-height:0;overflow:hidden;background:#000;border:0;border-radius:0;box-shadow:none}
+ #hx-home-graphic>img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none}
+ #hx-home-graphic .hx-img-hotspot{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0!important;border-radius:8px;background:transparent!important;background-image:none!important;color:transparent!important;font-size:0!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+ #hx-home-graphic .hx-img-hotspot:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
+ #hx-home-graphic .hx-hot-meet{left:6%;top:10%;width:33%;height:29%}
+ #hx-home-graphic .hx-hot-radio{left:61%;top:10%;width:33%;height:29%}
+ #hx-home-graphic .hx-hot-member{left:6%;top:45%;width:33%;height:26%}
+ #hx-home-graphic .hx-hot-draw{left:61%;top:45%;width:33%;height:26%}
+ #hx-home-graphic .hx-hot-invite{left:18%;top:75%;width:64%;height:19%}
+ #hx-home-graphic[hidden]{display:none!important}
+ html.hx-home-image-ready:not(.hx-radio-selected) #hx-home-hub #hx-home-actions,
+ html.hx-home-image-ready:not(.hx-radio-selected) #hx-home-hub #hellx-club{display:none!important}
+ `;
+ document.head.appendChild(css);
+ const targets=[
+  ['meet','hx-hot-meet','ON SE CAPTE ?'],
+  ['radio','hx-hot-radio','LIVE 666'],
+  ['member','hx-hot-member','CARTE DE MEMBRE'],
+  ['draw','hx-hot-draw','TIRAGE DU TEE-SHIRT'],
+  ['invite','hx-hot-invite','INVITER MES POTES']
+ ];
+ function trigger(key){
+  const selector={
+   meet:'#hx-home-actions [data-hx-section="horde"]',
+   radio:'#hx-home-actions [data-hx-section="radio"]',
+   member:'#hellx-club [data-hxc="member"]',
+   draw:'#hellx-club [data-hxc="clock"]',
+   invite:'#hellx-invite-button'
+  }[key];
+  const target=document.querySelector(selector);
+  if(target)target.click();
+ }
+ function mount(){
+  const hub=document.getElementById('hx-home-hub');if(!hub)return;
+  let panel=document.getElementById('hx-home-graphic');
+  if(!panel){
+   panel=document.createElement('div');panel.id='hx-home-graphic';panel.hidden=true;
+   panel.setAttribute('role','group');panel.setAttribute('aria-label','Raccourcis HELLXBONE CLUB');
+   const img=document.createElement('img');img.src='./6487.png?v=20261103-menu-home';img.alt='';img.decoding='async';
+   img.addEventListener('load',()=>{document.documentElement.classList.add('hx-home-image-ready');syncVisibility()});
+   img.addEventListener('error',()=>{document.documentElement.classList.remove('hx-home-image-ready');panel.hidden=true});
+   panel.appendChild(img);
+   for(const [key,cls,label] of targets){
+    const button=document.createElement('button');button.type='button';button.className='hx-img-hotspot '+cls;
+    button.setAttribute('aria-label',label);button.title=label;
+    button.addEventListener('click',()=>trigger(key));
+    panel.appendChild(button);
+   }
+   hub.insertBefore(panel,hub.querySelector('#hellx-club'));
+  }
+  syncVisibility();
+ }
+ function syncVisibility(){
+  const panel=document.getElementById('hx-home-graphic');if(!panel)return;
+  const horde=document.querySelector('#hx-home-actions [data-hx-section="horde"]');
+  const radio=document.querySelector('#hx-home-actions [data-hx-section="radio"]');
+  const subpage=horde?.getAttribute('aria-pressed')==='true'||radio?.getAttribute('aria-pressed')==='true';
+  panel.hidden=!document.documentElement.classList.contains('hx-home-image-ready')||subpage;
+ }
+ setInterval(mount,1400);
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
+})();
