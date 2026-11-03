@@ -29,8 +29,7 @@ function draw(host,events){
 async function refresh(host){
  try{
   const res=await fetch('./metal-news.json?v='+Math.floor(Date.now()/3600000),{cache:'no-store'});
-  if(!res.ok)throw new Error('Flux absent');
-  const feed=await res.json();const now=new Date();now.setHours(0,0,0,0);
+  const feed=res.ok?await res.json():{items:[]};const now=new Date();now.setHours(0,0,0,0);
   const events=[],keys=new Set();
   for(const item of (Array.isArray(feed.items)?feed.items:[])){
    if(!/^https:\/\/(?:www\.)?(?:metalorgie\.com|metalzone\.fr|info-lux\.com)\//i.test(item.url||''))continue;
