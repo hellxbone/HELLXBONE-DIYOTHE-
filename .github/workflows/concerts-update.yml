@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '21 6 * * *'
   push:
+    branches:
+      - main
     paths:
       - 'scripts/update_concerts.py'
       - '.github/workflows/concerts-update.yml'
