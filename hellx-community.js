@@ -8,8 +8,8 @@ style.textContent += `
   width:min(96vw,490px);max-height:min(94dvh,840px);box-sizing:border-box;
   padding:clamp(78px,21vw,112px) clamp(34px,9vw,52px) clamp(65px,17vw,94px);
   border:0;border-radius:0;
-  background-color:#000;background-image:url("./hellx-parchemin.jpg");
-  background-repeat:no-repeat;background-position:center;background-size:100% 100%;
+  background-color:#000;background-image:url("./hellx-parchemin.jpg"),url("./hellx-parchemin.svg");
+  background-repeat:no-repeat,no-repeat;background-position:center,center;background-size:100% 100%,100% 100%;
   box-shadow:none;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#65ff00 #000;
 }
 #hellx-club-dialog.hellx-countdown #hellx-club-panel h2{
