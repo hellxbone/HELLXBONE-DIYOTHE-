@@ -1,0 +1,43 @@
+name: Actualiser agenda concerts HELLXBONE
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '21 6 * * *'
+  push:
+    paths:
+      - 'scripts/update_concerts.py'
+      - '.github/workflows/concerts-update.yml'
+permissions:
+  contents: write
+concurrency:
+  group: hellxbone-concert-catalog
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Actualiser le catalogue
+        run: python scripts/update_concerts.py
+      - name: Publier si les données ont changé
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add concerts.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Actualiser le calendrier HELLXBONE concerts"
+            for attempt in 1 2 3; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                exit 0
+              fi
+              if git push origin HEAD:main; then exit 0; fi
+              sleep 3
+            done
+            exit 1
+          fi
