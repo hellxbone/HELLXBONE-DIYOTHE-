@@ -17,7 +17,7 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 #hx-home-actions button small{font:12px system-ui;color:#bfe7c9}
 #hx-home-actions button[aria-pressed=true]{background:#4fe378;color:#092311}
 #hx-home-actions button[aria-pressed=true] small{color:#103d20}
-#hx-radio-panel,#hx-horde-panel{min-width:0}
+#hx-radio-panel{min-width:0}
 html.hx-radio-selected #hx-home-actions{grid-template-columns:minmax(0,1fr)}
 html.hx-radio-selected #hx-home-actions [data-hx-section="horde"]{display:none!important}
 html.hx-radio-selected #hx-home-hub{display:none!important}
@@ -27,8 +27,8 @@ html.hx-radio-selected #hx-home-hub{display:none!important}
 html:not(.hx-radio-selected) #hellx-onair,
 html:not(.hx-radio-selected) #hx-radio-panel{display:none!important}
 html:not(.hx-radio-selected) #hx-radio-panel *{visibility:hidden!important}
-#hx-radio-panel[hidden],#hx-horde-panel[hidden]{display:none!important}
-#hx-horde-panel #hellx-meet,#hx-horde-panel #hellx-radar{margin:12px auto!important}
+#hx-radio-panel[hidden]{display:none!important}
+
 @media(max-width:380px){#hx-home-actions button{font-size:13px}}
 `;document.head.appendChild(style);
 let selected='home';
@@ -47,36 +47,27 @@ function sync(){
  nav();const app=document.getElementById('app');if(!app)return;
  document.documentElement.classList.toggle('hx-radio-selected',selected==='radio');
  const radio=app.querySelector('#hellx-onair');if(!radio){const bar=document.getElementById('hx-quick-nav');if(bar)bar.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','false'));return}
- let hub=app.querySelector('#hx-home-hub'),horde=app.querySelector('#hx-horde-panel'),radioPanel=app.querySelector('#hx-radio-panel');
+ let hub=app.querySelector('#hx-home-hub'),radioPanel=app.querySelector('#hx-radio-panel');
  if(!hub){
   hub=document.createElement('section');hub.id='hx-home-hub';
-  hub.innerHTML='<div id="hx-home-actions"><button type="button" data-hx-section="horde">🤘 ON SE CAPTE ?<small>Concerts • Festivals • Sorties</small></button><button type="button" data-hx-section="radio" aria-label="Radio metal live 24 heures sur 24">📻 LIVE 666<small>Le metal partout avec toi</small></button></div>';
-  horde=document.createElement('div');horde.id='hx-horde-panel';
+  hub.innerHTML='<div id="hx-home-actions"><button type="button" data-hx-section="radio" aria-label="Radio metal live 24 heures sur 24">📻 LIVE 666<small>Le metal partout avec toi</small></button></div>';
+  
   radioPanel=document.createElement('div');radioPanel.id='hx-radio-panel';
-  app.prepend(hub,horde,radioPanel);
-  hub.addEventListener('click',e=>{const button=e.target.closest('[data-hx-section]');if(!button)return;selected=button.dataset.hxSection;sync();if(selected==='horde')document.getElementById('hx-horde-panel')?.scrollIntoView({behavior:'smooth',block:'start'})});
+  app.prepend(hub,radioPanel);
+  hub.addEventListener('click',e=>{const button=e.target.closest('[data-hx-section="radio"]');if(!button)return;selected='radio';sync()});
  }
  if(radio.parentElement!==radioPanel)radioPanel.appendChild(radio);
  // Ancien bandeau inférieur supprimé : le poste fusionné comprend déjà son visuel.
  radioPanel.querySelectorAll('.hx-radio-banner-bottom').forEach(banner=>banner.remove());
  radioPanel.style.setProperty('display',selected==='radio'?'':'none','important');
- const meet=app.querySelector('#hellx-meet'),radar=app.querySelector('#hellx-radar');
- if(meet&&!horde.contains(meet))horde.appendChild(meet);
- if(radar&&!horde.contains(radar))horde.appendChild(radar);
+ 
  // Les autres outils non concernés restent en place ; aucun lecteur audio n'est recréé.
- horde.hidden=selected!=='horde';radioPanel.hidden=selected!=='radio';
+ radioPanel.hidden=selected!=='radio';
  const clubButtons=document.getElementById('hellx-club'),reaper=document.getElementById('hellx-home-reaper');
  if(clubButtons)clubButtons.hidden=selected!=='home';
  if(reaper)reaper.hidden=selected!=='home';
 // La radio ne s'affiche que sur demande via RADIOS LIVE, pas sur l'accueil.
-if(selected==='home'){radioPanel.hidden=true;horde.hidden=true}
- // Afficher aussi le radar et ses chats (enfants du radar) dès que Rencontres est choisi.
- if(selected==='horde'){
-  const radarNode=document.getElementById('hellx-radar');
-  const meetNode=document.getElementById('hellx-meet');
-  if(meetNode&&!horde.contains(meetNode))horde.prepend(meetNode);
-  if(radarNode&&!horde.contains(radarNode))horde.append(radarNode);
- }
+if(selected==='home'){radioPanel.hidden=true}
 
  hub.querySelectorAll('[data-hx-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hxSection===selected)));
  document.querySelectorAll('#hx-quick-nav [data-hx-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hxSection===selected)));
@@ -102,7 +93,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  #hx-home-graphic>img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none}
  #hx-home-graphic .hx-img-hotspot{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0!important;border-radius:8px;background:transparent!important;background-image:none!important;color:transparent!important;font-size:0!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #hx-home-graphic .hx-img-hotspot:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
- #hx-home-graphic .hx-hot-meet{left:6%;top:10%;width:33%;height:29%}
+ #hx-home-graphic .hx-hot-meet{left:6%;top:10%;width:33%;height:29%;pointer-events:none!important;cursor:default!important}
  #hx-home-graphic .hx-hot-radio{left:61%;top:10%;width:33%;height:29%}
  #hx-home-graphic .hx-hot-member{left:6%;top:45%;width:33%;height:26%}
  #hx-home-graphic .hx-hot-draw{left:61%;top:45%;width:33%;height:26%}
@@ -113,7 +104,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  `;
  document.head.appendChild(css);
  const targets=[
-  ['meet','hx-hot-meet','ON SE CAPTE ?'],
+  
   ['radio','hx-hot-radio','LIVE 666'],
   ['member','hx-hot-member','CARTE DE MEMBRE'],
   ['draw','hx-hot-draw','TIRAGE DU TEE-SHIRT'],
@@ -121,7 +112,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  ];
  function trigger(key){
   const selector={
-   meet:'#hx-home-actions [data-hx-section="horde"]',
+   
    radio:'#hx-home-actions [data-hx-section="radio"]',
    member:'#hellx-club [data-hxc="member"]',
    draw:'#hellx-club [data-hxc="clock"]',
@@ -152,9 +143,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  }
  function syncVisibility(){
   const panel=document.getElementById('hx-home-graphic');if(!panel)return;
-  const horde=document.querySelector('#hx-home-actions [data-hx-section="horde"]');
   const radio=document.querySelector('#hx-home-actions [data-hx-section="radio"]');
-  const subpage=horde?.getAttribute('aria-pressed')==='true'||radio?.getAttribute('aria-pressed')==='true';
+  const subpage=radio?.getAttribute('aria-pressed')==='true';
   panel.hidden=!document.documentElement.classList.contains('hx-home-image-ready')||subpage;
  }
  setInterval(mount,1400);
