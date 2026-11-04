@@ -1,4 +1,4 @@
-const CACHE_VERSION='hellxbone-facebook-entry-20261028-v3';
+const CACHE_VERSION='hellxbone-parchment-force-20261104-v2';
 self.addEventListener('install',event=>{self.skipWaiting()});
 self.addEventListener('activate',event=>{
  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
