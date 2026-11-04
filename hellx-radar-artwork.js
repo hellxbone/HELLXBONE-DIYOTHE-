@@ -29,7 +29,7 @@ style.textContent=`
 #hx-art-chat #hellx-ghost form button{width:26%;height:100%;border:0!important;background:transparent!important;color:transparent!important;font-size:0!important;box-shadow:none!important}
 #hx-art-chat .hx-hit-back{left:26%;top:90.4%;width:49%;height:7.3%}
 #hx-art-views{width:100%;margin:auto;background:#000}
-#hx-art-views #hellx-radar{max-width:none!important;width:100%!important;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important;background:#000!important}
+#hx-art-views #hellx-radar{position:absolute!important;width:0!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important;background:transparent!important;opacity:0!important;pointer-events:none!important}
 #hx-art-views #hellx-radar>h2,#hx-art-views #hellx-radar>.hx-mil-heading,#hx-art-views #hellx-radar>p,#hx-art-views #hellx-radar>ul,#hx-art-views #hellx-radar>.hx-nearby-chat{display:none!important}
 #hx-art-views #hellx-radar>#hellx-radar-toggle{display:none!important}
 #hx-art-meet{padding:12px;background:#000;border:1px solid #38ff28}
@@ -54,7 +54,7 @@ const status=mk('div','hx-art-status');status.setAttribute('role','status');fron
 function hotspot(parent,cls,label,action){const b=mk('button','hx-art-hit '+cls);b.type='button';b.setAttribute('aria-label',label);b.addEventListener('click',action);parent.append(b)}
 function show(name){front.hidden=name!=='radar';chat.hidden=name!=='chat';meet.hidden=name!=='meet';if(name==='chat')ghost.querySelector('input')?.focus({preventScroll:true});art.scrollIntoView({block:'start'})}
 hotspot(front,'hx-hit-chat','Ouvrir le Chat Fantôme',()=>show('chat'));
-hotspot(front,'hx-hit-meet','Créer un rendez-vous',()=>{const original=document.getElementById('hellx-meet');if(!original)return;meet.append(original);show('meet');original.querySelector('#hellx-meet-open')?.click()});
+hotspot(front,'hx-hit-meet','Créer un rendez-vous',()=>{const original=document.getElementById('hellx-meet');if(!original)return;show('meet');meet.append(original);original.querySelector('#hellx-meet-open')?.click()});
 hotspot(front,'hx-hit-back','Retour à l’accueil',()=>{document.querySelector('nav[aria-label="Navigation principale"] [data-page="accueil"]')?.click();show('radar')});
 const windowEl=mk('div','hx-chat-window');windowEl.append(ghost);chat.append(windowEl);
 hotspot(chat,'hx-hit-back','Retour au radar',()=>show('radar'));
