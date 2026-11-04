@@ -19,7 +19,6 @@ nav[aria-label="Navigation principale"] button{display:flex!important;align-item
 #hx-home-actions button[aria-pressed=true] small{color:#103d20}
 #hx-radio-panel{min-width:0}
 html.hx-radio-selected #hx-home-actions{grid-template-columns:minmax(0,1fr)}
-html.hx-radio-selected #hx-home-actions [data-hx-section="horde"]{display:none!important}
 html.hx-radio-selected #hx-home-hub{display:none!important}
 #hx-radio-panel .hx-radio-banner-bottom{display:block;width:100%;max-width:100%;margin:12px auto 0;background:#000;line-height:0;overflow:hidden}
 #hx-radio-panel .hx-radio-banner-bottom img{display:block;width:100%;height:auto;object-fit:contain;background:#000}
@@ -40,7 +39,7 @@ document.addEventListener('click',event=>{
 },true);
 function nav(){
  // Les deux raccourcis crâne/radio sous le menu sont supprimés.
- // Les accès RENCONTRES et RADIOS LIVE du panneau HELLXBONE CLUB restent disponibles.
+ // Le raccourci LIVE 666 reste disponible.
  document.getElementById('hx-quick-nav')?.remove();
 }
 function sync(){
@@ -74,7 +73,7 @@ if(selected==='home'){radioPanel.hidden=true}
 }
 // Synchronisation moins agressive : les clics déclenchent un rafraîchissement immédiat.
 setInterval(sync,6000);
-document.addEventListener('click',e=>{if(e.target.closest('nav [data-page], [data-hx-section], #hellx-meet-open'))setTimeout(sync,0)},true);
+document.addEventListener('click',e=>{if(e.target.closest('nav [data-page], [data-hx-section]'))setTimeout(sync,0)},true);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
 })();
 
@@ -93,8 +92,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  #hx-home-graphic>img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none}
  #hx-home-graphic .hx-img-hotspot{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0!important;border-radius:8px;background:transparent!important;background-image:none!important;color:transparent!important;font-size:0!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #hx-home-graphic .hx-img-hotspot:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
- #hx-home-graphic .hx-hot-meet{left:6%;top:10%;width:33%;height:29%;pointer-events:none!important;cursor:default!important}
- #hx-home-graphic .hx-hot-radio{left:61%;top:10%;width:33%;height:29%}
+  #hx-home-graphic .hx-hot-radio{left:61%;top:10%;width:33%;height:29%}
  #hx-home-graphic .hx-hot-member{left:6%;top:45%;width:33%;height:26%}
  #hx-home-graphic .hx-hot-draw{left:61%;top:45%;width:33%;height:26%}
  #hx-home-graphic .hx-hot-invite{left:18%;top:75%;width:64%;height:19%}
