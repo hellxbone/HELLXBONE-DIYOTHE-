@@ -151,3 +151,52 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  setInterval(mount,1400);
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
 })();
+
+/* HELLXBONE — menu metal cinq zones tactiles, image 6553.png.
+   Conserver les boutons data-page existants: navigation, clavier et lecteurs d'écran.
+   Si l'image n'a pas encore été déposée, les icônes précédentes restent visibles. */
+(()=>{
+ 'use strict';
+ const css=document.createElement('style');
+ css.textContent=`
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready{
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  width:100%!important;aspect-ratio:852 / 133!important;height:auto!important;
+  min-height:0!important;max-height:none!important;gap:0!important;
+  padding:0!important;margin:0!important;overflow:hidden!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+  background:#000 url("./6553.png?v=20261104-neon-menu") center / 100% 100% no-repeat!important;
+  position:sticky!important;top:0!important;z-index:90!important;
+ }
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button,
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button[aria-current="page"],
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button[aria-current="true"]{
+  display:block!important;width:100%!important;height:100%!important;
+  min-height:0!important;max-height:none!important;min-width:0!important;
+  margin:0!important;padding:0!important;flex:none!important;
+  border:0!important;outline:0!important;border-radius:0!important;
+  background:transparent!important;background-image:none!important;
+  box-shadow:none!important;color:transparent!important;
+  font-size:0!important;line-height:0!important;opacity:1!important;
+  cursor:pointer!important;touch-action:manipulation;
+ }
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button svg,
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button img,
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button .hellx-nav-icon{
+  visibility:hidden!important;opacity:0!important;
+ }
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button:focus-visible{
+  outline:2px solid #fff!important;outline-offset:-4px!important;
+ }
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button[aria-current="page"]{
+  box-shadow:inset 0 -3px 0 #c5ffb2!important;
+ }
+ `;
+ document.head.appendChild(css);
+ const nav=document.querySelector('nav[aria-label="Navigation principale"]');
+ if(!nav)return;
+ const img=new Image();
+ img.onload=()=>{if(img.naturalWidth>0)nav.classList.add('hx-neon-menu-ready')};
+ img.onerror=()=>nav.classList.remove('hx-neon-menu-ready');
+ img.src='./6553.png?v=20261104-neon-menu';
+})();
