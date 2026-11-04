@@ -74,7 +74,7 @@ const led=mk('span','hx-art-led');front.append(led);
 const toggle=mk('button','hx-art-toggle');toggle.type='button';toggle.setAttribute('aria-label','Activer ou couper mon radar');toggle.onclick=()=>radar.querySelector('#hellx-radar-toggle')?.click();front.append(toggle);
 const status=mk('div','hx-art-status');status.setAttribute('role','status');front.append(status);
 function hotspot(parent,cls,label,action){const b=mk('button','hx-art-hit '+cls);b.type='button';b.setAttribute('aria-label',label);b.addEventListener('click',action);parent.append(b)}
-function show(name){front.hidden=name!=='radar';chat.hidden=name!=='chat';meet.hidden=name!=='meet';if(name==='chat')ghost.querySelector('input')?.focus({preventScroll:true});if(!window.matchMedia('(max-width:0px)').matches){ /* plein écran : ne jamais faire défiler la page */ }}
+function show(name){front.hidden=name!=='radar';chat.hidden=name!=='chat';meet.hidden=name!=='meet';if(name==='chat')ghost.querySelector('input')?.focus({preventScroll:true});/* Position fixe : aucun scroll de page. */}
 hotspot(front,'hx-hit-chat','Ouvrir le Chat Fantôme',()=>show('chat'));
 hotspot(front,'hx-hit-meet','Créer un rendez-vous',()=>{const original=document.getElementById('hellx-meet');if(!original)return;meet.append(original);show('meet');original.querySelector('#hellx-meet-open')?.click()});
 hotspot(front,'hx-hit-back','Retour à l’accueil',()=>{document.querySelector('nav[aria-label="Navigation principale"] [data-page="accueil"]')?.click();show('radar')});
