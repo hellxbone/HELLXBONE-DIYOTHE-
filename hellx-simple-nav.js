@@ -30,6 +30,37 @@ html:not(.hx-radio-selected) #hx-radio-panel *{visibility:hidden!important}
 
 @media(max-width:380px){#hx-home-actions button{font-size:13px}}
 `;document.head.appendChild(style);
+
+// Garder la page et son lecteur audio vivants lorsque HELLX SIGNAL est affiché.
+let signalOverlay=null;
+function closeSignal(){
+ if(!signalOverlay)return;
+ signalOverlay.remove();signalOverlay=null;
+ document.documentElement.style.removeProperty('overflow');
+ document.body.style.removeProperty('overflow');
+}
+function openSignal(){
+ if(signalOverlay)return;
+ const overlay=document.createElement('div');
+ overlay.id='hx-signal-overlay';
+ overlay.setAttribute('role','dialog');
+ overlay.setAttribute('aria-label','HELLX SIGNAL');
+ overlay.setAttribute('aria-modal','true');
+ Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'2147483000',background:'#000'});
+ const frame=document.createElement('iframe');
+ frame.title='HELLX SIGNAL';
+ frame.src='./hellx-signal.html?embedded=1';
+ frame.setAttribute('allow','screen-wake-lock');
+ Object.assign(frame.style,{border:'0',width:'100%',height:'100%',display:'block',background:'#000'});
+ overlay.appendChild(frame);
+ document.body.appendChild(overlay);
+ signalOverlay=overlay;
+ document.documentElement.style.setProperty('overflow','hidden');
+ document.body.style.setProperty('overflow','hidden');
+}
+window.addEventListener('message',event=>{
+ if(event.origin===location.origin&&event.source===signalOverlay?.querySelector('iframe')?.contentWindow&&event.data==='hellx-signal-close')closeSignal();
+});
 let selected='home';
 document.documentElement.classList.remove('hx-radio-selected');
 // L'accueil ne doit jamais conserver le lecteur radio affiché après un retour par la maison.
@@ -53,7 +84,7 @@ function sync(){
   
   radioPanel=document.createElement('div');radioPanel.id='hx-radio-panel';
   app.prepend(hub,radioPanel);
-  hub.addEventListener('click',e=>{const signal=e.target.closest('[data-hx-section="signal"]');if(signal){location.href='./hellx-signal.html';return}const button=e.target.closest('[data-hx-section="radio"]');if(!button)return;selected='radio';sync()});
+  hub.addEventListener('click',e=>{const signal=e.target.closest('[data-hx-section="signal"]');if(signal){openSignal();return}const button=e.target.closest('[data-hx-section="radio"]');if(!button)return;selected='radio';sync()});
  }
  if(radio.parentElement!==radioPanel)radioPanel.appendChild(radio);
  // Ancien bandeau inférieur supprimé : le poste fusionné comprend déjà son visuel.
