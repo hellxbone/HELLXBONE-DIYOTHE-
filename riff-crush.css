@@ -398,3 +398,46 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
   gap:clamp(2px,.6vw,4px)!important;
   border-radius:5px!important;
 }
+
+/* 2026-11-04 : texte du cartouche supérieur compact et compteurs légèrement remontés.
+   Garder ces changements limités au HUD ; la grille et les commandes restent intactes. */
+#hellx-riff-crush .riff-top{
+  top:6.05%!important;
+  height:4.7%!important;
+  align-items:center!important;
+}
+#hellx-riff-crush .riff-top>div:first-child{
+  position:relative!important;
+  flex:0 0 auto!important;
+  width:43%!important;
+  height:100%!important;
+  display:grid!important;
+  grid-template-columns:37% 63%!important;
+  align-items:center!important;
+  justify-content:initial!important;
+  gap:0!important;
+  overflow:hidden!important;
+}
+#hellx-riff-crush .riff-top .riff-title{
+  font-size:clamp(11px,2.3vw,16px)!important;
+  line-height:1.05!important;
+  letter-spacing:-.04em!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-top .riff-last-winner{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0 2px!important;
+  box-sizing:border-box!important;
+  font-size:clamp(7px,1.25vw,9px)!important;
+  line-height:1.18!important;
+  font-weight:700!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-stats{top:13.0%!important}
