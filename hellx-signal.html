@@ -125,6 +125,11 @@ render();
 /* Exact user artwork is the visual layer. Controls match the artwork pixel positions. */
 .hxs-art{display:none;position:relative;width:min(100%,760px);margin:0 auto;aspect-ratio:864/1536;background:#000;isolation:isolate}
 .hxs-art>img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;pointer-events:none}
+/* Masquer les faux indicateurs heure / réseau / batterie imprimés sur le visuel source. */
+.hxs-art:before,.hxs-art:after{content:"";position:absolute;top:1%;height:3.4%;z-index:1;pointer-events:none;background:linear-gradient(90deg,#010401 0%,#020902 65%,#010401 100%);filter:blur(3px)}
+.hxs-art:before{left:5.5%;width:12.5%}
+.hxs-art:after{left:75%;width:21.5%}
+
 body.hxs-art-ready{background:#000}
 body.hxs-art-ready:not(.presentation) .wrap{display:none!important}
 body.hxs-art-ready:not(.presentation) .hxs-art{display:block}
