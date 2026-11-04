@@ -17,10 +17,11 @@ html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-meet{height:100%!i
 #hx-art-radar[hidden],#hx-art-chat[hidden]{display:none!important}
 #hx-art-radar .hx-art-hit,#hx-art-chat .hx-art-hit{position:absolute;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important;background:transparent!important;color:transparent!important;font:0/0 sans-serif!important;cursor:pointer;z-index:9;touch-action:manipulation}
 #hx-art-radar .hx-art-hit:focus-visible,#hx-art-chat .hx-art-hit:focus-visible{outline:3px solid white!important;outline-offset:-3px!important}
-#hx-art-radar .hx-art-scope{position:absolute;left:26.3%;top:23.7%;width:47.4%;height:24.6%;border-radius:50%;overflow:hidden}
+
 #hx-art-radar .hx-art-scope .hx-radar-screen{width:100%!important;height:100%!important;aspect-ratio:1!important;margin:0!important;border:0!important;outline:0!important;box-shadow:none!important}
 
-#hx-art-radar .hx-art-scope{box-sizing:border-box;left:26.5%;top:22%;width:47%;height:auto;aspect-ratio:1;background:#021108;border-radius:50%;overflow:hidden}
+/* Center the circular viewport in the artwork's inner metallic bezel. Single geometry rule. */
+#hx-art-radar .hx-art-scope{position:absolute;box-sizing:border-box;left:26.5%;top:23%;width:47%;height:auto;aspect-ratio:1;background:#021108;border-radius:50%;overflow:hidden}
 #hx-art-radar .hx-art-scope .hx-radar-screen{position:relative!important;display:block!important;box-sizing:border-box!important;width:100%!important;height:100%!important;aspect-ratio:1!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;isolation:isolate;background:repeating-radial-gradient(circle,transparent 0 19.5%,#36ff5f45 19.8% 20%,transparent 20.4% 20.5%),linear-gradient(90deg,transparent 49.75%,#43ff6059 50%,transparent 50.25%),linear-gradient(0deg,transparent 49.75%,#43ff6059 50%,transparent 50.25%),radial-gradient(circle,#0a3419,#041e0d 65%,#010b05)!important;box-shadow:inset 0 0 26px #10ff5240!important}
 #hx-art-radar .hx-radar-screen::before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:50%;background:repeating-linear-gradient(0deg,#03100422 0px,#03100422 1px,transparent 2px,transparent 5px)}
 #hx-art-radar .hx-radar-screen::after{content:none!important}
