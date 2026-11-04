@@ -479,3 +479,11 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
   font-size:clamp(18px,5.7vw,33px)!important;
   box-sizing:border-box!important;
 }
+
+/* 2026-11-04 — centrage vertical vérifié sur la capture 14:16 :
+   réduire l'écart supérieur et dégager le bas du cadre. */
+#hellx-riff-crush .riff-board{
+  top:32.05%!important;
+  left:10.5%!important;
+  width:79%!important;
+}
