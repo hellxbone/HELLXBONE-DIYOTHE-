@@ -487,3 +487,8 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
   left:10.5%!important;
   width:79%!important;
 }
+
+/* TOP 10 : descendre uniquement le classement dans son encadrement inférieur. */
+#hellx-riff-crush .riff-actions .riff-leaderboard{
+  margin-top:clamp(38px,5vh,55px)!important;
+}
