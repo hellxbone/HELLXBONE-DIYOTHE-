@@ -462,3 +462,20 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
   min-height:0!important;
   font-size:clamp(19px,6.1vw,35px)!important;
 }
+
+/* 2026-11-04 — rectification des débordements constatés sur capture 14:13.
+   Le plateau carré doit rester intégralement dans l'ouverture du cadre, y compris en bas. */
+#hellx-riff-crush .riff-board{
+  top:32.7%!important;
+  left:10.5%!important;
+  width:79%!important;
+  gap:clamp(2px,.52vw,4px)!important;
+  padding:1px!important;
+  overflow:hidden!important;
+  border-radius:2px!important;
+}
+#hellx-riff-crush .riff-cell{
+  aspect-ratio:1!important;
+  font-size:clamp(18px,5.7vw,33px)!important;
+  box-sizing:border-box!important;
+}
