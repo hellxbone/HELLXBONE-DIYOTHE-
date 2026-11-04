@@ -13,10 +13,35 @@ function memberPseudo(){try{const member=JSON.parse(localStorage.getItem('hellxb
 function greeting(){const pseudo=memberPseudo();return api?'Hey'+(pseudo?' '+pseudo:'')+' ! Ici HELLX, maître de cet antre. Je suis le portail vers le monde du bas, l’Enfer. Qu’est-ce qui t’amène, brebis égarée ?':'HELLX attend sa connexion à Cloudflare pour pouvoir discuter.'}
 add(greeting(),false);
 window.addEventListener('hellx-member-synced',()=>{if(!history.length&&log.children.length===1)log.firstElementChild.textContent=greeting()});
+const countNotice=document.createElement('div');
+countNotice.id='hellx-club-count-notice';
+countNotice.setAttribute('role','status');
+countNotice.setAttribute('aria-live','polite');
+countNotice.style.cssText='display:none;position:fixed;z-index:2147483002;bottom:110px;right:12px;max-width:calc(100vw - 24px);padding:15px 18px;background:#070b06;color:#b0ff58;border:2px solid #b0ff58;border-radius:12px;box-shadow:0 0 20px #75f52f66;font:800 17px system-ui;text-align:center';
+document.body.append(countNotice);
+let countNoticeTimer=0,holdTimer=0,holdTriggered=false;
+function showCountNotice(message){
+  countNotice.textContent=message;countNotice.style.display='block';
+  clearTimeout(countNoticeTimer);
+  countNoticeTimer=setTimeout(()=>countNotice.style.display='none',6500);
+}
+async function showClubCount(){
+  showCountNotice('HELLXBONE CLUB · Comptage en cours…');
+  try{
+    const response=await fetch('https://ldibykpitjutratyqqax.supabase.co/rest/v1/rpc/hellx_club_count',{
+      method:'POST',headers:{'apikey':'sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv','Content-Type':'application/json'},body:'{}'
+    });
+    if(!response.ok)throw Error('Compteur indisponible');
+    const value=await response.json(),count=Number(value);
+    if(!Number.isSafeInteger(count)||count<0)throw Error('Compteur invalide');
+    showCountNotice('HELLXBONE CLUB : '+count.toLocaleString('fr-FR')+' abonné'+(count>1?'s':''));
+  }catch(e){showCountNotice('Nombre d’abonnés momentanément indisponible');}
+}
+function cancelHold(){clearTimeout(holdTimer);holdTimer=0;}
 let startX=0,startY=0,dragging=false,suppressClick=false;
-b.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;dragging=false;b.setPointerCapture(e.pointerId)});
-b.addEventListener('pointermove',e=>{if(!b.hasPointerCapture(e.pointerId))return;if(Math.hypot(e.clientX-startX,e.clientY-startY)>7)dragging=true;if(dragging){b.style.left=Math.max(6,Math.min(innerWidth-b.offsetWidth-6,e.clientX-b.offsetWidth/2))+'px';b.style.top=Math.max(6,Math.min(innerHeight-b.offsetHeight-6,e.clientY-b.offsetHeight/2))+'px';b.style.right='auto';b.style.bottom='auto';suppressClick=true}});
-b.addEventListener('pointerup',()=>{dragging=false});
+b.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;dragging=false;holdTriggered=false;cancelHold();b.setPointerCapture(e.pointerId);holdTimer=setTimeout(()=>{if(!dragging){holdTriggered=true;suppressClick=true;showClubCount()}},5000)});
+b.addEventListener('pointermove',e=>{if(!b.hasPointerCapture(e.pointerId))return;if(Math.hypot(e.clientX-startX,e.clientY-startY)>7){dragging=true;cancelHold()}if(dragging){b.style.left=Math.max(6,Math.min(innerWidth-b.offsetWidth-6,e.clientX-b.offsetWidth/2))+'px';b.style.top=Math.max(6,Math.min(innerHeight-b.offsetHeight-6,e.clientY-b.offsetHeight/2))+'px';b.style.right='auto';b.style.bottom='auto';suppressClick=true}});
+b.addEventListener('pointerup',()=>{cancelHold();dragging=false});b.addEventListener('pointercancel',()=>{cancelHold();dragging=false});b.addEventListener('lostpointercapture',cancelHold);b.addEventListener('contextmenu',e=>{if(holdTriggered)e.preventDefault()});
 b.onclick=()=>{if(suppressClick){suppressClick=false;return}p.classList.toggle('open');if(p.classList.contains('open'))inp.focus()};
 p.querySelector('header button').onclick=()=>p.classList.remove('open');
 form.onsubmit=async e=>{e.preventDefault();const val=inp.value.trim();if(!val||busy)return;if(!api){add('Le moteur IA n’est pas encore activé.',false);return}inp.value='';add(val,true);const w=add('HELLX réfléchit…',false);busy=true;send.disabled=true;try{const messages=[...history,{role:'user',content:val}].slice(-12);const c=new AbortController();const t=setTimeout(()=>c.abort(),25000);let res;try{res=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages,pseudo:memberPseudo()}),signal:c.signal})}finally{clearTimeout(t)}const json=await res.json();if(!res.ok)throw Error(json.error||'Service indisponible');if(!json.reply)throw Error('Réponse vide');const forbidden=/\b(casquettes?|bonnets?|sweats?|hoodies?|vestes?|pantalons?|chaussures?|posters?|mugs?|accessoires?)\b/i;const claims=/(vend|vente|boutique|disponible|propos|command|achet|trouv|catalogue|stock|article)/i;const reply=forbidden.test(json.reply)&&claims.test(json.reply)?'La boutique HELLXBONE vend uniquement des tee-shirts rock et metal : 20 € pièce, jusqu’au 6XL pour les hommes et 3XL pour les femmes, avec livraison gratuite à domicile via Amazon. Va jeter un œil dans la rubrique Boutique !':json.reply;w.textContent=reply;history=[...messages,{role:'assistant',content:reply}].slice(-12)}catch(err){w.textContent=/quota|limit|neurons/i.test(err.message)?'HELLX recharge ses batteries. Reviens demain.':'HELLX est momentanément indisponible.'}finally{busy=false;send.disabled=false}};
