@@ -149,3 +149,23 @@ html body #hellx-radar #hellx-ghost input,html body #hellx-radar .hx-nearby-chat
 html body #hellx-radar #hellx-ghost button,html body #hellx-radar .hx-nearby-chat button{padding:6px 8px!important;font-size:11px!important;min-height:32px!important}
 html body #hellx-radar .hx-nearby-chat .hx-chat-row{padding:3px 0!important;gap:4px!important;font-size:11px!important}
 html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;padding:4px!important;margin:3px 0!important}
+
+
+/* MEGA RIFF — fond personnalisé vert néon (image déposée à la racine du dépôt). */
+#hellx-riff-crush{
+  background-color:#000;
+  background-image:url("./hellxbone-mega-riff-bg.webp");
+  background-repeat:no-repeat;
+  background-position:center center;
+  background-size:100% 100%;
+  background-attachment:local;
+}
+#hellx-riff-crush .riff-wrap{
+  background:transparent;
+  border:0;
+  box-shadow:none;
+}
+#hellx-riff-crush .riff-board{
+  background:#000;
+  border-color:#5aff09;
+}
