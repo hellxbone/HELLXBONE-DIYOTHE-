@@ -61,8 +61,8 @@ function sync(){
  radioPanel.querySelectorAll('.hx-radio-banner-bottom').forEach(banner=>banner.remove());
  radioPanel.style.setProperty('display',selected==='radio'?'':'none','important');
  const meet=app.querySelector('#hellx-meet'),radar=app.querySelector('#hellx-radar');
- if(meet&&meet.parentElement!==horde)horde.appendChild(meet);
- if(radar&&radar.parentElement!==horde)horde.appendChild(radar);
+ if(meet&&!horde.contains(meet))horde.appendChild(meet);
+ if(radar&&!horde.contains(radar))horde.appendChild(radar);
  // Les autres outils non concernés restent en place ; aucun lecteur audio n'est recréé.
  horde.hidden=selected!=='horde';radioPanel.hidden=selected!=='radio';
  const clubButtons=document.getElementById('hellx-club'),reaper=document.getElementById('hellx-home-reaper');
@@ -74,8 +74,8 @@ if(selected==='home'){radioPanel.hidden=true;horde.hidden=true}
  if(selected==='horde'){
   const radarNode=document.getElementById('hellx-radar');
   const meetNode=document.getElementById('hellx-meet');
-  if(meetNode&&meetNode.parentElement!==horde)horde.prepend(meetNode);
-  if(radarNode&&radarNode.parentElement!==horde)horde.append(radarNode);
+  if(meetNode&&!horde.contains(meetNode))horde.prepend(meetNode);
+  if(radarNode&&!horde.contains(radarNode))horde.append(radarNode);
  }
 
  hub.querySelectorAll('[data-hx-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hxSection===selected)));
