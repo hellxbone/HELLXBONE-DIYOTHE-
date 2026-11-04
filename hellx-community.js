@@ -90,6 +90,53 @@ style.textContent += `
  #hellx-club-dialog #hellx-club-panel{padding-top:65px!important;padding-bottom:58px!important}
 }
 `;
+/* Carte de membre : contenu centré et deux actions compactes. Le tirage reste inchangé. */
+style.textContent += `
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-panel{
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;
+  box-sizing:border-box!important;text-align:center!important;
+  min-height:min(80dvh,720px);
+  max-height:calc(100dvh - 24px);
+  overflow-y:auto;
+}
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-body{
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;
+  text-align:center!important;width:100%!important;min-width:0!important;
+}
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-body h2{
+  width:100%;text-align:center!important;margin:8px auto 13px!important;
+}
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-preview{
+  width:100%!important;max-width:100%!important;height:auto!important;
+  margin:8px auto 12px!important;
+}
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-close{
+  display:block!important;align-self:center!important;
+  box-sizing:border-box!important;
+  height:35px!important;min-height:35px!important;
+  padding:0 15px!important;margin:0 auto 12px!important;
+  line-height:33px!important;font-size:clamp(12px,3.3vw,15px)!important;
+}
+#hellx-club-dialog:not(.hellx-countdown) .hxc-card-actions{
+  display:flex!important;flex-wrap:wrap!important;
+  align-items:center!important;justify-content:center!important;
+  gap:6px!important;width:100%!important;margin:4px auto 0!important;
+}
+#hellx-club-dialog:not(.hellx-countdown) .hxc-card-actions button{
+  box-sizing:border-box!important;
+  height:35px!important;min-height:35px!important;max-height:35px!important;
+  padding:0 10px!important;margin:0!important;
+  font-size:clamp(10px,2.8vw,13px)!important;line-height:1.1!important;
+  white-space:nowrap!important;
+}
+@media(max-width:375px){
+ #hellx-club-dialog:not(.hellx-countdown) .hxc-card-actions button{
+  font-size:10px!important;padding:0 7px!important;
+ }
+}
+`;
 document.head.appendChild(style);
 const root=document.createElement('section');root.id='hellx-club';root.innerHTML='<div><button type="button" data-hxc="member">☠ CARTE DE MEMBRE</button><button type="button" data-hxc="clock">⏳ TIRAGE DU TEE-SHIRT</button></div>';
 (document.querySelector('#hellx-live-entry')||document.querySelector('header')).insertAdjacentElement('afterend',root);
@@ -144,10 +191,10 @@ function paintCard(canvas,m){
   img.src=CARD_ART;
  });
 }
-function card(){modal.classList.remove('hellx-countdown');clearInterval(timer);open();const m=read();body.innerHTML='<h2>☠ CARTE HELLXBONE</h2>'+(m?'<canvas id="hellx-club-preview" style="width:100%;height:auto;display:block;border-radius:9px;margin:12px 0" aria-label="Carte de membre HELLXBONE personnalisée"></canvas><button id="hxc-save">ENREGISTRER LA CARTE</button><button id="hxc-share">PARTAGER</button><button id="hxc-edit">CHANGER DE PSEUDO</button>':'<p>Crée ta carte virtuelle gratuitement, conservée sur ton téléphone.</p><form id="hxc-form"><label for="hxc-name">Ton pseudo</label><input id="hxc-name" maxlength="20" required autocomplete="nickname"><button type="submit">CRÉER MA CARTE</button></form>');
+function card(){modal.classList.remove('hellx-countdown');clearInterval(timer);open();const m=read();body.innerHTML='<h2>☠ CARTE HELLXBONE</h2>'+(m?'<canvas id="hellx-club-preview" style="width:100%;height:auto;display:block;border-radius:9px;margin:12px 0" aria-label="Carte de membre HELLXBONE personnalisée"></canvas><div class="hxc-card-actions"><button id="hxc-save">ENREGISTRER LA CARTE</button><button id="hxc-share">PARTAGER</button></div>':'<p>Crée ta carte virtuelle gratuitement, conservée sur ton téléphone.</p><form id="hxc-form"><label for="hxc-name">Ton pseudo</label><input id="hxc-name" maxlength="20" required autocomplete="nickname"><button type="submit">CRÉER MA CARTE</button></form>');
 if(!m){const form=body.querySelector('form');form.querySelector('input').value=localStorage.getItem('hellx-riff-player-name')||'';form.onsubmit=e=>{e.preventDefault();const name=form.querySelector('input').value.trim().replace(/[<>]/g,'').slice(0,20);if(!name)return;try{localStorage.setItem(key,JSON.stringify({name,id:'HX-'+Math.random().toString(36).slice(2,10).toUpperCase(),date:new Date().toLocaleDateString('fr-FR')}));card()}catch{alert('Stockage local indisponible.')}};return;}
 const canvas=body.querySelector('#hellx-club-preview');const ready=paintCard(canvas,m);
-body.querySelector('#hxc-edit').onclick=()=>{const name=prompt('Nouveau pseudo (20 caractères maximum)',m.name);if(name===null)return;const clean=name.trim().replace(/[<>]/g,'').slice(0,20);if(!clean)return;localStorage.setItem(key,JSON.stringify({...m,name:clean}));card()};
+
 body.querySelector('#hxc-share').onclick=async()=>{const text='☠ '+m.name+' — Membre de la horde HELLXBONE 🤘 '+location.origin+location.pathname;try{if(navigator.share)await navigator.share({title:'HELLXBONE',text});else if(navigator.clipboard){await navigator.clipboard.writeText(text);alert('Texte copié');}else alert(text)}catch(e){if(e.name!=='AbortError')alert('Partage indisponible')}};
 body.querySelector('#hxc-save').onclick=async()=>{
 const button=body.querySelector('#hxc-save');button.disabled=true;button.textContent='PRÉPARATION DE LA PHOTO…';
