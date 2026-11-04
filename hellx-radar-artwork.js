@@ -12,7 +12,7 @@ style.textContent=`
 #hx-art-radar .hx-art-scope{position:absolute;left:26.3%;top:23.7%;width:47.4%;height:24.6%;border-radius:50%;overflow:hidden}
 #hx-art-radar .hx-art-scope .hx-radar-screen{width:100%!important;height:100%!important;aspect-ratio:1!important;margin:0!important;border:0!important;outline:0!important;box-shadow:none!important}
 
-#hx-art-radar .hx-art-scope{box-sizing:border-box;top:24.8%;height:auto;aspect-ratio:1;background:#021108}
+#hx-art-radar .hx-art-scope{box-sizing:border-box;left:28.2%;top:25.0%;width:43.6%;height:auto;aspect-ratio:1;background:#021108;border-radius:50%;overflow:hidden}
 #hx-art-radar .hx-art-scope .hx-radar-screen{position:relative!important;display:block!important;box-sizing:border-box!important;width:100%!important;height:100%!important;aspect-ratio:1!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;isolation:isolate;background:repeating-radial-gradient(circle,transparent 0 19.5%,#36ff5f45 19.8% 20%,transparent 20.4% 20.5%),linear-gradient(90deg,transparent 49.75%,#43ff6059 50%,transparent 50.25%),linear-gradient(0deg,transparent 49.75%,#43ff6059 50%,transparent 50.25%),radial-gradient(circle,#0a3419,#041e0d 65%,#010b05)!important;box-shadow:inset 0 0 26px #10ff5240!important}
 #hx-art-radar .hx-radar-screen::before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:50%;background:repeating-linear-gradient(0deg,#03100422 0px,#03100422 1px,transparent 2px,transparent 5px)}
 #hx-art-radar .hx-radar-screen::after{content:none!important}
@@ -22,6 +22,8 @@ style.textContent=`
 #hx-art-radar .hx-radar-dots{position:absolute;inset:0;z-index:3;pointer-events:none}
 #hx-art-radar .hx-radar-dot{position:absolute;width:9px;height:9px;border:1px solid #efffee;border-radius:50%;transform:translate(-50%,-50%);background:#bcffac;box-shadow:0 0 8px 3px #68ff82;animation:hellx-radar-pulse 1.7s infinite}
 #hx-art-radar .hx-radar-label,#hx-art-radar .hx-radar-range{display:none!important}
+#hx-horde-panel:has(#hx-art-views)>#hellx-meet{display:none!important}
+#hx-art-meet #hellx-meet{display:block!important;position:static!important;margin:0!important;width:100%!important}
 @media(prefers-reduced-motion:reduce){#hx-art-radar .hx-radar-sweep,#hx-art-radar .hx-radar-dot{animation:none!important}}
 #hx-art-radar .hx-hit-chat{left:6%;top:60.7%;width:88%;height:14.4%}
 #hx-art-radar .hx-hit-meet{left:25%;top:74.5%;width:50%;height:5.8%}
@@ -66,12 +68,14 @@ const status=mk('div','hx-art-status');status.setAttribute('role','status');fron
 function hotspot(parent,cls,label,action){const b=mk('button','hx-art-hit '+cls);b.type='button';b.setAttribute('aria-label',label);b.addEventListener('click',action);parent.append(b)}
 function show(name){front.hidden=name!=='radar';chat.hidden=name!=='chat';meet.hidden=name!=='meet';if(name==='chat')ghost.querySelector('input')?.focus({preventScroll:true});art.scrollIntoView({block:'start'})}
 hotspot(front,'hx-hit-chat','Ouvrir le Chat Fantôme',()=>show('chat'));
-hotspot(front,'hx-hit-meet','Créer un rendez-vous',()=>{const original=document.getElementById('hellx-meet');if(!original)return;show('meet');meet.append(original);original.querySelector('#hellx-meet-open')?.click()});
+hotspot(front,'hx-hit-meet','Créer un rendez-vous',()=>{const original=document.getElementById('hellx-meet');if(!original)return;meet.append(original);show('meet');original.querySelector('#hellx-meet-open')?.click()});
 hotspot(front,'hx-hit-back','Retour à l’accueil',()=>{document.querySelector('nav[aria-label="Navigation principale"] [data-page="accueil"]')?.click();show('radar')});
 const windowEl=mk('div','hx-chat-window');windowEl.append(ghost);chat.append(windowEl);
 hotspot(chat,'hx-hit-back','Retour au radar',()=>show('radar'));
 const backMeet=mk('button','hx-art-back','← RETOUR AU RADAR');backMeet.type='button';backMeet.onclick=()=>show('radar');meet.append(backMeet);
 art.append(front,chat,meet);horde.prepend(art);front.append(radar);
+// Le rendez-vous existant doit vivre UNIQUEMENT dans la sous-page, et non sous le radar.
+const originalMeet=document.getElementById('hellx-meet');if(originalMeet)meet.append(originalMeet);
 const refresh=()=>{front.classList.toggle('hx-art-active',radar.classList.contains('hx-scanning'));const raw=radar.querySelector('#hellx-radar-status')?.textContent||'';status.textContent=/refus|indisponible|impossible|erreur/i.test(raw)?raw:''};
 new MutationObserver(refresh).observe(radar,{attributes:true,attributeFilter:['class'],subtree:false});const statusEl=radar.querySelector('#hellx-radar-status');if(statusEl)new MutationObserver(refresh).observe(statusEl,{childList:true,characterData:true,subtree:true});refresh();
 mounted=true;
