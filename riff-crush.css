@@ -169,3 +169,40 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
   background:#000;
   border-color:#5aff09;
 }
+
+
+/* MEGA RIFF — décor Hellxbone néon fourni le 04/11/2026 */
+#hellx-riff-crush{
+  background:#000 url("hellxbone-mega-riff-bg.webp") center top / 100% 100% no-repeat !important;
+  padding:0 !important;
+  overflow-x:hidden;
+}
+#hellx-riff-crush .riff-wrap{
+  width:100% !important;
+  max-width:620px !important;
+  min-height:100dvh;
+  margin:0 auto !important;
+  padding:clamp(24px,5vw,36px) clamp(16px,4.3vw,28px) max(40px,env(safe-area-inset-bottom)) !important;
+  box-sizing:border-box;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+}
+#hellx-riff-crush .riff-title,#hellx-riff-crush .riff-last-winner{position:relative;z-index:1}
+#hellx-riff-crush .riff-board{
+  background:#000 !important;
+  border:1px solid #76ff18 !important;
+  box-shadow:0 0 12px #54ff155c !important;
+}
+#hellx-riff-crush .riff-stat{
+  background:rgba(0,0,0,.93) !important;
+  border-color:#70ef27 !important;
+}
+#hellx-riff-crush .riff-actions button,#hellx-riff-crush .riff-leaderboard{
+  background:#050805 !important;
+  border-color:#71f32b !important;
+}
+@media (min-width:621px){
+  #hellx-riff-crush{background-size:620px 100% !important}
+}
