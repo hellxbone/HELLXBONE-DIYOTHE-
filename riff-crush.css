@@ -441,3 +441,24 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
   text-align:center!important;
 }
 #hellx-riff-crush .riff-stats{top:13.0%!important}
+
+/* 2026-11-04 — MEGA RIFF : encastrer entièrement la grille dans le décor.
+   Cases légèrement réduites, grille centrée et bordures métalliques dégagées. */
+#hellx-riff-crush .riff-board{
+  top:32.15%!important;
+  left:8.5%!important;
+  width:83%!important;
+  padding:2px!important;
+  gap:clamp(2px,.55vw,4px)!important;
+  background:#000!important;
+  border:0!important;
+  border-radius:3px!important;
+  box-shadow:none!important;
+  z-index:1!important;
+}
+#hellx-riff-crush .riff-cell{
+  aspect-ratio:1!important;
+  min-width:0!important;
+  min-height:0!important;
+  font-size:clamp(19px,6.1vw,35px)!important;
+}
