@@ -41,7 +41,7 @@ function draw(){
  if(!root||!engine)return;const state=engine.play(day,trace);
  const score=root.querySelector('#hx-daily-score');score.textContent='SCORE : '+state.score.toLocaleString('fr-FR')+' · COUPS : '+state.movesRemaining;
  const board=root.querySelector('#hx-daily-board');board.replaceChildren();
- state.board.forEach((v,i)=>{const b=el('button');b.type='button';b.style.position='relative';b.style.overflow='hidden';b.innerHTML='<span style="position:absolute;inset:0;display:grid;place-items:center">'+symbols[v]+'</span><img src="./riff-icons/'+RIFF_DAILY_ICON_FILES[v]+'" alt="" draggable="false" onerror="this.hidden=true" style="position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none">';b.dataset.i=i;b.setAttribute('role','gridcell');b.setAttribute('aria-label','Case '+(i+1)+', '+symbols[v]);b.setAttribute('aria-pressed',String(chosen===i));b.disabled=complete;board.append(b)});
+ state.board.forEach((v,i)=>{const b=el('button');b.type='button';b.style.position='relative';b.style.overflow='hidden';b.innerHTML='<span style="position:absolute;inset:0;display:grid;place-items:center">'+symbols[v]+'</span><img src="./riff-icons/'+RIFF_DAILY_ICON_FILES[v]+'" alt="" draggable="false" onerror="this.style.display=\'none\'" style="position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none">';b.dataset.i=i;b.setAttribute('role','gridcell');b.setAttribute('aria-label','Case '+(i+1)+', '+symbols[v]);b.setAttribute('aria-pressed',String(chosen===i));b.disabled=complete;board.append(b)});
  root.querySelector('#hx-daily-finish').hidden=complete;
 }
 async function finish(){
