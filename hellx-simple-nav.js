@@ -49,11 +49,11 @@ function sync(){
  let hub=app.querySelector('#hx-home-hub'),radioPanel=app.querySelector('#hx-radio-panel');
  if(!hub){
   hub=document.createElement('section');hub.id='hx-home-hub';
-  hub.innerHTML='<div id="hx-home-actions"><button type="button" data-hx-section="radio" aria-label="Radio metal live 24 heures sur 24">📻 LIVE 666<small>Le metal partout avec toi</small></button></div>';
+  hub.innerHTML='<div id="hx-home-actions"><button type="button" data-hx-section="signal" aria-label="HELLX SIGNAL : communiquer sans parler">☠ HELLX SIGNAL<small>Communiquer sans parler</small></button><button type="button" data-hx-section="radio" aria-label="Radio metal live 24 heures sur 24">📻 LIVE 666<small>Le metal partout avec toi</small></button></div>';
   
   radioPanel=document.createElement('div');radioPanel.id='hx-radio-panel';
   app.prepend(hub,radioPanel);
-  hub.addEventListener('click',e=>{const button=e.target.closest('[data-hx-section="radio"]');if(!button)return;selected='radio';sync()});
+  hub.addEventListener('click',e=>{const signal=e.target.closest('[data-hx-section="signal"]');if(signal){location.href='./hellx-signal.html';return}const button=e.target.closest('[data-hx-section="radio"]');if(!button)return;selected='radio';sync()});
  }
  if(radio.parentElement!==radioPanel)radioPanel.appendChild(radio);
  // Ancien bandeau inférieur supprimé : le poste fusionné comprend déjà son visuel.
@@ -92,7 +92,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  #hx-home-graphic>img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none}
  #hx-home-graphic .hx-img-hotspot{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0!important;border-radius:8px;background:transparent!important;background-image:none!important;color:transparent!important;font-size:0!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #hx-home-graphic .hx-img-hotspot:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
-  #hx-home-graphic .hx-hot-radio{left:61%;top:10%;width:33%;height:29%}
+  #hx-home-graphic .hx-hot-meet{left:6%;top:10%;width:33%;height:29%}
+ #hx-home-graphic .hx-hot-radio{left:61%;top:10%;width:33%;height:29%}
  #hx-home-graphic .hx-hot-member{left:6%;top:45%;width:33%;height:26%}
  #hx-home-graphic .hx-hot-draw{left:61%;top:45%;width:33%;height:26%}
  #hx-home-graphic .hx-hot-invite{left:18%;top:75%;width:64%;height:19%}
@@ -102,7 +103,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  `;
  document.head.appendChild(css);
  const targets=[
-  
+  ['signal','hx-hot-meet','HELLX SIGNAL'],
   ['radio','hx-hot-radio','LIVE 666'],
   ['member','hx-hot-member','CARTE DE MEMBRE'],
   ['draw','hx-hot-draw','TIRAGE DU TEE-SHIRT'],
@@ -110,7 +111,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  ];
  function trigger(key){
   const selector={
-   
+   signal:'#hx-home-actions [data-hx-section="signal"]',
    radio:'#hx-home-actions [data-hx-section="radio"]',
    member:'#hellx-club [data-hxc="member"]',
    draw:'#hellx-club [data-hxc="clock"]',
