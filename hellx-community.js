@@ -71,6 +71,25 @@ style.textContent += `
   }
 }
 `;
+
+// Priorité maximale sur les thèmes globaux de l'application.
+style.textContent += `
+#hellx-club-dialog #hellx-club-panel{
+  background:#000 url("./hellx-parchemin.jpg?v=20261104") center center / 100% 100% no-repeat !important;
+  border:0 !important;border-radius:0 !important;box-shadow:none !important;
+  width:min(96vw,490px) !important;
+  padding:clamp(75px,19vw,106px) clamp(34px,9vw,52px) clamp(65px,17vw,90px) !important;
+}
+#hellx-club-dialog #hellx-club-close{
+  display:block !important;margin:0 auto 14px !important;
+  min-height:34px !important;font-size:clamp(12px,3.3vw,15px) !important;
+}
+#hellx-club-dialog #hellx-club-body{min-width:0!important}
+#hellx-club-dialog #hellx-club-body canvas{max-width:100%!important}
+@media(max-height:680px){
+ #hellx-club-dialog #hellx-club-panel{padding-top:65px!important;padding-bottom:58px!important}
+}
+`;
 document.head.appendChild(style);
 const root=document.createElement('section');root.id='hellx-club';root.innerHTML='<div><button type="button" data-hxc="member">☠ CARTE DE MEMBRE</button><button type="button" data-hxc="clock">⏳ TIRAGE DU TEE-SHIRT</button></div>';
 (document.querySelector('#hellx-live-entry')||document.querySelector('header')).insertAdjacentElement('afterend',root);
