@@ -32,7 +32,7 @@ style.textContent=`
 #hx-art-radar .hx-art-toggle:focus-visible{outline:2px solid white!important}
 #hx-art-radar .hx-art-led{position:absolute;right:19%;top:22.5%;width:2.4%;height:1.4%;border-radius:100%;background:#555}
 #hx-art-radar.hx-art-active .hx-art-led{background:#80ff60;box-shadow:0 0 12px #39ff14}
-#hx-art-chat .hx-chat-window{position:absolute;left:9.1%;top:33.7%;width:81.5%;height:38.7%;overflow:auto;z-index:2}
+#hx-art-chat .hx-chat-window{position:absolute;left:9.1%;top:33.7%;width:81.5%;height:38.7%;overflow:visible;z-index:2}
 #hx-art-chat #hellx-ghost{margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;height:100%;display:flex;flex-direction:column}
 #hx-art-chat #hellx-ghost>h3,#hx-art-chat #hellx-ghost>p:not([data-status]){display:none!important}
 #hx-art-chat #hellx-ghost [data-status]{font-size:11px!important;line-height:1.2!important;text-align:center;margin:0!important;color:#afffb9!important}
