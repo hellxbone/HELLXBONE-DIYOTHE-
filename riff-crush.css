@@ -387,3 +387,14 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
   list-style:none!important;
 }
 #hellx-riff-crush .riff-leaderboard summary::-webkit-details-marker{display:none}
+
+/* 2026-11-04 — grille encastrée dans l'ouverture noire du décor sur mobile :
+   bordures symétriques et marge haute/basse régulière. */
+#hellx-riff-crush .riff-board{
+  top:31.65%!important;
+  left:6.6%!important;
+  width:86.8%!important;
+  padding:clamp(2px,.5vw,4px)!important;
+  gap:clamp(2px,.6vw,4px)!important;
+  border-radius:5px!important;
+}
