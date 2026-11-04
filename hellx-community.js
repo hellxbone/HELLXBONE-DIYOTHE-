@@ -40,6 +40,37 @@ style.textContent += `
  #hellx-club-dialog.hellx-countdown #hellx-club-body p{margin:8px 0}
 }
 `;
+/* Même parchemin infernal sur les deux fenêtres, sans cadre CSS superposé. */
+style.textContent += `
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-panel{
+  width:min(96vw,490px);max-height:calc(100dvh - 24px);box-sizing:border-box;
+  padding:clamp(64px,17vw,96px) clamp(32px,8vw,52px) clamp(58px,15vw,86px);
+  background-color:#000;
+  background-image:url("./hellx-parchemin.jpg"),url("./hellx-parchemin.svg");
+  background-repeat:no-repeat,no-repeat;
+  background-position:center,center;
+  background-size:100% 100%,100% 100%;
+  border:0;border-radius:0;box-shadow:none;
+  overflow-y:auto;scrollbar-width:thin;scrollbar-color:#65ff00 #000;
+}
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-panel h2{
+  margin:10px 0 16px;text-align:center;color:#89ff21!important;
+  font-family:Impact,"Arial Narrow",Georgia,serif;
+  font-size:clamp(18px,5vw,25px)!important;
+  text-shadow:0 0 12px #43ff0099;
+}
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-body canvas{
+  width:100%!important;max-width:100%;height:auto!important;
+}
+#hellx-club-dialog:not(.hellx-countdown) #hellx-club-body button{
+  font-size:clamp(11px,3vw,14px);padding:9px 10px;min-height:40px;
+}
+@media(max-height:740px){
+  #hellx-club-dialog:not(.hellx-countdown) #hellx-club-panel{
+    padding-top:58px;padding-bottom:52px;
+  }
+}
+`;
 document.head.appendChild(style);
 const root=document.createElement('section');root.id='hellx-club';root.innerHTML='<div><button type="button" data-hxc="member">☠ CARTE DE MEMBRE</button><button type="button" data-hxc="clock">⏳ TIRAGE DU TEE-SHIRT</button></div>';
 (document.querySelector('#hellx-live-entry')||document.querySelector('header')).insertAdjacentElement('afterend',root);
