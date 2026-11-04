@@ -3,6 +3,14 @@
 if(window.__hxRadarArtwork)return;window.__hxRadarArtwork=true;
 const style=document.createElement('style');
 style.textContent=`
+/* Mode plein ecran pour le Radar et le Chat : aucune navigation ni defilement. */
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views),
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views) body{overflow:hidden!important;overscroll-behavior:none!important;height:100%!important}
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views) nav[aria-label="Navigation principale"]{display:none!important}
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-views{position:fixed!important;inset:0!important;z-index:2147483000!important;width:100vw!important;max-width:none!important;height:100vh!important;height:100dvh!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#000!important}
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-radar,
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-chat{height:100%!important;width:100%!important;max-width:none!important;aspect-ratio:auto!important;background-size:100% 100%!important}
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-meet{height:100%!important;overflow-y:auto!important;overscroll-behavior:contain!important;box-sizing:border-box!important}
 #hx-art-radar,#hx-art-chat{position:relative;width:min(100%,520px);aspect-ratio:865/1536;margin:0 auto;background:#000 center/100% 100% no-repeat;overflow:hidden;color:#baffbb}
 #hx-art-radar{background-image:url('./hellxbone-radar-1.webp')}
 #hx-art-chat{background-image:url('./hellxbone-radar-2.webp')}
@@ -66,7 +74,7 @@ const led=mk('span','hx-art-led');front.append(led);
 const toggle=mk('button','hx-art-toggle');toggle.type='button';toggle.setAttribute('aria-label','Activer ou couper mon radar');toggle.onclick=()=>radar.querySelector('#hellx-radar-toggle')?.click();front.append(toggle);
 const status=mk('div','hx-art-status');status.setAttribute('role','status');front.append(status);
 function hotspot(parent,cls,label,action){const b=mk('button','hx-art-hit '+cls);b.type='button';b.setAttribute('aria-label',label);b.addEventListener('click',action);parent.append(b)}
-function show(name){front.hidden=name!=='radar';chat.hidden=name!=='chat';meet.hidden=name!=='meet';if(name==='chat')ghost.querySelector('input')?.focus({preventScroll:true});art.scrollIntoView({block:'start'})}
+function show(name){front.hidden=name!=='radar';chat.hidden=name!=='chat';meet.hidden=name!=='meet';if(name==='chat')ghost.querySelector('input')?.focus({preventScroll:true});if(!window.matchMedia('(max-width:0px)').matches){ /* plein écran : ne jamais faire défiler la page */ }}
 hotspot(front,'hx-hit-chat','Ouvrir le Chat Fantôme',()=>show('chat'));
 hotspot(front,'hx-hit-meet','Créer un rendez-vous',()=>{const original=document.getElementById('hellx-meet');if(!original)return;meet.append(original);show('meet');original.querySelector('#hellx-meet-open')?.click()});
 hotspot(front,'hx-hit-back','Retour à l’accueil',()=>{document.querySelector('nav[aria-label="Navigation principale"] [data-page="accueil"]')?.click();show('radar')});
