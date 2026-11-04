@@ -165,7 +165,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   min-height:0!important;max-height:none!important;gap:0!important;
   padding:0!important;margin:0!important;overflow:hidden!important;
   border:0!important;border-radius:0!important;box-shadow:none!important;
-  background:#000 url("./6553.png?v=20261104-neon-menu") center / 100% 100% no-repeat!important;
+  background:#000 url("./IMG_20261104_132835.png?v=20261104-neon-menu-v2") center / 100% 100% no-repeat!important;
   position:sticky!important;top:0!important;z-index:90!important;
  }
  nav[aria-label="Navigation principale"].hx-neon-menu-ready > button,
@@ -198,5 +198,5 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  const img=new Image();
  img.onload=()=>{if(img.naturalWidth>0)nav.classList.add('hx-neon-menu-ready')};
  img.onerror=()=>nav.classList.remove('hx-neon-menu-ready');
- img.src='./6553.png?v=20261104-neon-menu';
+ img.src='./IMG_20261104_132835.png?v=20261104-neon-menu-v2';
 })();
