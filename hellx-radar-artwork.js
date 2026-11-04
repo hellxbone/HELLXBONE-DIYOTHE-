@@ -7,9 +7,9 @@ style.textContent=`
 html:has(#hx-horde-panel:not([hidden]) #hx-art-views),
 html:has(#hx-horde-panel:not([hidden]) #hx-art-views) body{overflow:hidden!important;overscroll-behavior:none!important;height:100%!important}
 html:has(#hx-horde-panel:not([hidden]) #hx-art-views) nav[aria-label="Navigation principale"]{display:none!important}
-html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-views{position:fixed!important;inset:0!important;z-index:2147483000!important;width:100vw!important;max-width:none!important;height:100vh!important;height:100dvh!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#000!important}
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-views{position:fixed!important;inset:0!important;z-index:2147483000!important;width:100vw!important;max-width:none!important;height:100vh!important;height:100dvh!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#000!important;display:flex!important;align-items:center!important;justify-content:center!important}
 html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-radar,
-html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-chat{height:100%!important;width:100%!important;max-width:none!important;aspect-ratio:auto!important;background-size:100% 100%!important}
+html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-chat{box-sizing:border-box!important;width:min(100vw,calc(100dvh * 865 / 1536))!important;max-width:none!important;height:auto!important;max-height:100dvh!important;aspect-ratio:865/1536!important;flex:none!important;margin:0!important;background-size:100% 100%!important}
 html:has(#hx-horde-panel:not([hidden]) #hx-art-views) #hx-art-meet{height:100%!important;overflow-y:auto!important;overscroll-behavior:contain!important;box-sizing:border-box!important}
 #hx-art-radar,#hx-art-chat{position:relative;width:min(100%,520px);aspect-ratio:865/1536;margin:0 auto;background:#000 center/100% 100% no-repeat;overflow:hidden;color:#baffbb}
 #hx-art-radar{background-image:url('./hellxbone-radar-1.webp')}
