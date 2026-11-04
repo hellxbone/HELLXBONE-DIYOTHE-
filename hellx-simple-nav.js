@@ -60,12 +60,8 @@ function openSignal(){
  signalOverlay=overlay;
  document.documentElement.style.setProperty('overflow','hidden');
  document.body.style.setProperty('overflow','hidden');
- // Le plein écran natif masque les indicateurs Android (heure, réseau, batterie)
- // uniquement si le navigateur autorise l'API après l'appui de l'utilisateur.
- if(overlay.requestFullscreen){
-  try{const request=overlay.requestFullscreen({navigationUI:'hide'});request?.catch(()=>{});}
-  catch{try{overlay.requestFullscreen()?.catch(()=>{});}catch{}}
- }
+ // Fenêtre bord à bord sans Fullscreen API : supprime le bandeau gris Android/Chrome.
+ // Le lecteur radio demeure actif dans la page parente.
 }
 window.addEventListener('message',event=>{
  if(event.origin===location.origin&&event.source===signalOverlay?.querySelector('iframe')?.contentWindow&&event.data==='hellx-signal-close')closeSignal();
