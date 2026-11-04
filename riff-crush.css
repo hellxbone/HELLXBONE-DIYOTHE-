@@ -307,3 +307,83 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 @media(min-width:621px){
   #hellx-riff-crush .riff-wrap{height:max(100dvh,1100px)!important}
 }
+
+/* 2026-11-04 — finition smartphone : alignement des textes sur le visuel MEGA RIFF.
+   La croix blanche est déjà dessinée dans le fond : ne pas en superposer une seconde. */
+#hellx-riff-crush .riff-top{
+  left:5%!important;
+  top:6.2%!important;
+  width:91%!important;
+  align-items:center!important;
+}
+#hellx-riff-crush .riff-top>div:first-child{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:42%!important;
+  min-width:0!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-top .riff-title{
+  width:100%!important;
+  margin:0!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-close{
+  position:absolute!important;
+  top:-8%!important;
+  right:0%!important;
+  width:11%!important;
+  height:100%!important;
+  min-width:38px!important;
+  min-height:38px!important;
+  opacity:0!important;
+  font-size:0!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+}
+/* Centrage stable des 5 chiffres dans les compteurs illustrés. */
+#hellx-riff-crush .riff-stats .riff-stat{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-stats .riff-stat b{
+  width:100%!important;
+  text-align:center!important;
+}
+/* Les boutons du bas ne doivent plus chevaucher les bordures du décor. */
+#hellx-riff-crush .riff-actions{
+  top:77.4%!important;
+  left:16%!important;
+  width:68%!important;
+  column-gap:4%!important;
+  row-gap:0!important;
+}
+#hellx-riff-crush .riff-actions .riff-restart,
+#hellx-riff-crush .riff-actions .riff-sound{
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  min-height:32px!important;
+  padding:0 3px!important;
+  line-height:1.15!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-actions .riff-leaderboard{
+  margin:clamp(8px,2vh,18px) auto 0!important;
+  padding:0!important;
+}
+#hellx-riff-crush .riff-leaderboard summary{
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  min-height:42px!important;
+  padding:0 6px!important;
+  line-height:1.15!important;
+  text-align:center!important;
+  list-style:none!important;
+}
+#hellx-riff-crush .riff-leaderboard summary::-webkit-details-marker{display:none}
