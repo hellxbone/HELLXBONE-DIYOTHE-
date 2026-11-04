@@ -1,11 +1,11 @@
-const CACHE_VERSION='hellxbone-parchment-force-20261104-v2';
-self.addEventListener('install',event=>{self.skipWaiting()});
+const CACHE_VERSION='hellxbone-signal-offline-20261104-v1';
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_VERSION).then(cache=>cache.add('./hellx-signal.html')).catch(()=>{}).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{
  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
 });
 self.addEventListener('fetch',event=>{
  if(event.request.method!=='GET')return;
- event.respondWith(fetch(event.request,{cache:'no-store'}).catch(()=>caches.match(event.request)));
+ event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{if(new URL(event.request.url).pathname.endsWith('/hellx-signal.html')&&response.ok){const clone=response.clone();caches.open(CACHE_VERSION).then(cache=>cache.put(event.request,clone)).catch(()=>{})}return response}).catch(()=>caches.match(event.request)));
 });
 self.addEventListener('push',event=>{
  let data={};
