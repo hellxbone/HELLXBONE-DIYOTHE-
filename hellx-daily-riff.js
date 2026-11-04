@@ -1,7 +1,8 @@
 /* HELLXBONE — défi quotidien avec score recalculé et enregistré côté serveur. */
 (()=>{'use strict';if(window.HellxDaily)return;
 const API='https://ldibykpitjutratyqqax.supabase.co/functions/v1/hellx-daily-riff';
-const symbols=['💀','🎸','🔥','🤘','⚡','☠️'];let engine=null,day='',trace=[],chosen=null,member='',pending=false,complete=false;
+const symbols=['💀','🎸','🔥','🤘','⚡','☠️'];
+const RIFF_DAILY_ICON_FILES=['crane.png','guitare.png','flamme.png','cornes-metal.png','eclair.png','os-croises.png'];let engine=null,day='',trace=[],chosen=null,member='',pending=false,complete=false;
 const css=document.createElement('style');css.textContent=`
 #hx-daily-overlay{position:fixed;inset:0;z-index:2147483000;background:#030504f5;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:10px;color:#e8ffed;font:14px system-ui}
 #hx-daily-overlay[hidden]{display:none!important}
@@ -40,7 +41,7 @@ function draw(){
  if(!root||!engine)return;const state=engine.play(day,trace);
  const score=root.querySelector('#hx-daily-score');score.textContent='SCORE : '+state.score.toLocaleString('fr-FR')+' · COUPS : '+state.movesRemaining;
  const board=root.querySelector('#hx-daily-board');board.replaceChildren();
- state.board.forEach((v,i)=>{const b=el('button',symbols[v]);b.type='button';b.dataset.i=i;b.setAttribute('role','gridcell');b.setAttribute('aria-label','Case '+(i+1)+', '+symbols[v]);b.setAttribute('aria-pressed',String(chosen===i));b.disabled=complete;board.append(b)});
+ state.board.forEach((v,i)=>{const b=el('button');b.type='button';b.style.position='relative';b.style.overflow='hidden';b.innerHTML='<span style="position:absolute;inset:0;display:grid;place-items:center">'+symbols[v]+'</span><img src="./riff-icons/'+RIFF_DAILY_ICON_FILES[v]+'" alt="" draggable="false" onerror="this.hidden=true" style="position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none">';b.dataset.i=i;b.setAttribute('role','gridcell');b.setAttribute('aria-label','Case '+(i+1)+', '+symbols[v]);b.setAttribute('aria-pressed',String(chosen===i));b.disabled=complete;board.append(b)});
  root.querySelector('#hx-daily-finish').hidden=complete;
 }
 async function finish(){
