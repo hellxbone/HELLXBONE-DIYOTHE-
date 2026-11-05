@@ -125,7 +125,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  #hx-home-hub:has(#hx-home-graphic:not([hidden])){padding:0!important;margin-left:0!important;margin-right:0!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
  #hx-home-graphic{position:relative;display:block;width:100vw!important;max-width:none!important;aspect-ratio:1124/776;height:auto!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;line-height:0;overflow:hidden;background:#000;border:0!important;border-radius:0!important;box-shadow:none!important}
  /* Un seul rendu de l’image source, proportions naturelles sans étirement ni effets superposés. */
- #hx-home-graphic>img{position:absolute!important;left:0!important;top:-97.9381%!important;display:block!important;width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;object-fit:unset!important;object-position:initial!important;transform:none!important;filter:none!important;image-rendering:auto!important;pointer-events:none!important}
+ #hx-home-graphic>img{position:absolute!important;left:0!important;top:-97.9381%!important;display:block!important;width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;object-fit:unset!important;object-position:initial!important;transform:none!important;filter:brightness(.88) saturate(.84) contrast(1.05)!important;image-rendering:auto!important;pointer-events:none!important}
  #hx-home-graphic .hx-img-hotspot{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0!important;border-radius:8px;background:transparent!important;background-image:none!important;color:transparent!important;font-size:0!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #hx-home-graphic .hx-img-hotspot:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
  #hx-home-graphic .hx-hot-meet{left:6%;top:5%;width:35%;height:41.5%}
@@ -180,7 +180,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(!panel){
    panel=document.createElement('div');panel.id='hx-home-graphic';panel.hidden=true;
    panel.setAttribute('role','group');panel.setAttribute('aria-label','Raccourcis HELLXBONE CLUB');
-   const img=document.createElement('img');img.src='./6617.png?v=20261105-home-full-v1';img.alt='';img.decoding='async';
+   const img=document.createElement('img');img.src='./6617.png?v=20261105-glow-reduced-v2';img.alt='';img.decoding='async';
    img.addEventListener('load',()=>{document.documentElement.classList.add('hx-home-image-ready');syncVisibility()});
    img.addEventListener('error',()=>{document.documentElement.classList.remove('hx-home-image-ready');panel.hidden=true});
    panel.appendChild(img);
