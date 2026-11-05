@@ -507,3 +507,15 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 #hellx-riff-crush .riff-board{box-sizing:border-box!important}
 #hellx-riff-crush .riff-cell{width:100%!important;min-width:0!important;min-height:0!important}
 @media(min-width:621px){#hellx-riff-crush .riff-wrap{height:auto!important;min-height:0!important}}
+
+/* 2026-11-05 v2 — grille contenue dans la fenêtre du décor sur écrans étroits/larges. */
+#hellx-riff-crush .riff-wrap{container-type:inline-size!important;aspect-ratio:620/1100!important;height:auto!important;min-height:0!important}
+#hellx-riff-crush .riff-board{
+  left:12%!important;top:32.1%!important;width:76%!important;
+  grid-template-columns:repeat(7,minmax(0,1fr))!important;
+  gap:clamp(2px,.45cqw,4px)!important;padding:1px!important;
+  overflow:visible!important;box-sizing:border-box!important;
+}
+#hellx-riff-crush .riff-cell{aspect-ratio:1/1!important;width:100%!important;height:auto!important;font-size:clamp(16px,5cqw,33px)!important}
+#hellx-riff-crush .riff-actions{top:77.4%!important}
+@media(min-width:621px){#hellx-riff-crush .riff-wrap{height:auto!important}}
