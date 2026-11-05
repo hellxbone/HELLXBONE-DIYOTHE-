@@ -197,7 +197,7 @@ art.addEventListener('click',e=>{
 const b=e.target.closest('.hxs-hit');if(!b)return;
 const key=b.dataset.hxs;
 const original=['back','large','flash'].includes(key)?document.getElementById(key):document.querySelector('#presets [data-id="'+key+'"]');
-original?.click();sync();
+original?.click();if(['help','sit','exit','toilet','pass','sos'].includes(key))document.getElementById('large')?.click();sync();
 });
 select.addEventListener('change',()=>{const actual=document.getElementById('lang');actual.value=select.value;actual.dispatchEvent(new Event('change',{bubbles:true}));sync()});
 const originalMessage=document.getElementById('message');new MutationObserver(sync).observe(originalMessage,{childList:true,characterData:true,subtree:true});
