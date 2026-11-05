@@ -160,26 +160,28 @@ font-size:clamp(13px,3.1vw,22px);pointer-events:none}
 body.hxs-art-ready.presentation .hxs-art{display:none!important}
 @media(min-width:760px){.hxs-translation{font-size:45px}.hxs-art select{font-size:23px}}
 @media(prefers-reduced-motion:reduce){.hxs-art *{animation:none!important}}
-/* SOS : alternance rouge/bleu type gyrophare, limitée à 2 cycles/s pour réduire les risques photosensibles. */
+/* SOS : impulsions saccadées, irrégulières et limitées à moins de 3 flashs/s. */
 body.presentation .display.sos.flash{
- animation:hxs-emergency-panel 1s steps(1,end) infinite!important;
+ animation:hxs-emergency-panel 1.5s steps(1,end) infinite!important;
  border:0!important;box-shadow:none!important;
 }
 body.presentation .display.sos.flash strong{
- animation:hxs-emergency-letters 1s steps(1,end) infinite!important;
+ animation:hxs-emergency-letters 1.5s steps(1,end) infinite!important;
  text-shadow:0 0 14px currentColor;
 }
 @keyframes hxs-emergency-panel{
- 0%,24.9%{background:#b40016;border-color:#ff2445}
- 25%,49.9%{background:#050914;border-color:#155bff}
- 50%,74.9%{background:#082cba;border-color:#428dff}
- 75%,100%{background:#160008;border-color:#ff2445}
+ 0%,8%{background:#ee1734}
+ 8.1%,16%{background:#140007}
+ 16.1%,29%{background:#ff2440}
+ 29.1%,47%{background:#04070f}
+ 47.1%,56%{background:#1258ff}
+ 56.1%,65%{background:#03091b}
+ 65.1%,82%{background:#186aff}
+ 82.1%,100%{background:#03050d}
 }
 @keyframes hxs-emergency-letters{
- 0%,24.9%{color:#fff}
- 25%,49.9%{color:#ff3b4f}
- 50%,74.9%{color:#fff}
- 75%,100%{color:#ff5266}
+ 0%,8%,16.1%,29%,47.1%,56%,65.1%,82%{color:#fff}
+ 8.1%,16%,29.1%,47%,56.1%,65%,82.1%,100%{color:#ff6676}
 }
 @media(prefers-reduced-motion:reduce){
  body.presentation .display.sos.flash,body.presentation .display.sos.flash strong{animation:none!important}
