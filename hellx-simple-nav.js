@@ -211,8 +211,15 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   const subpage=radio?.getAttribute('aria-pressed')==='true';
   panel.hidden=!document.documentElement.classList.contains('hx-home-image-ready')||subpage;
  }
- setInterval(mount,1400);
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
+ const initialize=()=>{
+  mount();
+  const app=document.getElementById('app');
+  if(app)new MutationObserver(()=>mount()).observe(app,{childList:true});
+  document.addEventListener('click',e=>{
+   if(e.target.closest('nav[aria-label="Navigation principale"] [data-page], [data-hx-section]'))queueMicrotask(syncVisibility);
+  },true);
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize,{once:true});else initialize();
 })();
 
 /* HELLXBONE — menu metal cinq zones tactiles, image 6553.png.
@@ -243,7 +250,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   font-size:0!important;line-height:0!important;opacity:1!important;
   cursor:pointer!important;touch-action:manipulation;
  }
- nav[aria-label="Navigation principale"].hx-neon-menu-ready > button .hellx-nav-icon,\n nav[aria-label="Navigation principale"].hx-neon-menu-ready > button svg,
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button .hellx-nav-icon,
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button svg,
  nav[aria-label="Navigation principale"].hx-neon-menu-ready > button img,
  nav[aria-label="Navigation principale"].hx-neon-menu-ready > button .hellx-nav-icon{
   visibility:hidden!important;opacity:0!important;
