@@ -1,5 +1,5 @@
-const CACHE_VERSION='hellxbone-signal-offline-20261105-v8';
-self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_VERSION).then(cache=>cache.addAll(['./hellx-signal.html','./assets/hellx-signal-design.jpg'])).catch(()=>{}).then(()=>self.skipWaiting()))});
+const CACHE_VERSION='hellxbone-signal-offline-20261105-clean-v9';
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_VERSION).then(cache=>cache.addAll(['./hellx-signal.html','./assets/6626.jpg'])).catch(()=>{}).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{
  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
 });
