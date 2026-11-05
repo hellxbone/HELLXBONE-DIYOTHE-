@@ -123,16 +123,16 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  const css=document.createElement('style');
  css.textContent=`
  #hx-home-hub:has(#hx-home-graphic:not([hidden])){padding:0!important;margin-left:0!important;margin-right:0!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
- #hx-home-graphic{position:relative;display:block;width:100vw!important;max-width:none!important;aspect-ratio:1124/826;height:auto!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;line-height:0;overflow:hidden;background:#000;border:0!important;border-radius:0!important;box-shadow:none!important}
+ #hx-home-graphic{position:relative;display:block;width:100vw!important;max-width:none!important;aspect-ratio:1124/776;height:auto!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;line-height:0;overflow:hidden;background:#000;border:0!important;border-radius:0!important;box-shadow:none!important}
  #hx-home-graphic>img{object-fit:contain!important}
- #hx-home-graphic>img{position:absolute;left:0;top:-85.9564%;display:block;width:100%;height:185.9564%;object-fit:fill;pointer-events:none}
+ #hx-home-graphic>img{position:absolute;left:0;top:-97.9381%;display:block;width:100%;height:197.9381%;object-fit:fill;pointer-events:none}
  #hx-home-graphic .hx-img-hotspot{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0!important;border-radius:8px;background:transparent!important;background-image:none!important;color:transparent!important;font-size:0!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #hx-home-graphic .hx-img-hotspot:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
- #hx-home-graphic .hx-hot-meet{left:6%;top:10.8%;width:35%;height:39%}
- #hx-home-graphic .hx-hot-radio{left:62%;top:16.3%;width:33%;height:33.5%}
- #hx-home-graphic .hx-hot-member{left:6%;top:51.8%;width:33%;height:24.2%}
- #hx-home-graphic .hx-hot-draw{left:61%;top:51.8%;width:33%;height:24.2%}
- #hx-home-graphic .hx-hot-invite{left:18%;top:77.8%;width:64%;height:18.6%}
+ #hx-home-graphic .hx-hot-meet{left:6%;top:5%;width:35%;height:41.5%}
+ #hx-home-graphic .hx-hot-radio{left:62%;top:10.9%;width:33%;height:35.6%}
+ #hx-home-graphic .hx-hot-member{left:6%;top:48.7%;width:33%;height:25.8%}
+ #hx-home-graphic .hx-hot-draw{left:61%;top:48.7%;width:33%;height:25.8%}
+ #hx-home-graphic .hx-hot-invite{left:18%;top:76.3%;width:64%;height:19.8%}
  #hx-home-graphic .hx-hot-nav{display:none!important}
  #hx-home-graphic .hx-hot-nav-home{left:1%}
  #hx-home-graphic .hx-hot-nav-news{left:20%}
