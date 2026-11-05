@@ -126,7 +126,7 @@ render();
 .hxs-art{display:none;position:relative;width:min(100%,760px);margin:0 auto;aspect-ratio:864/1536;background:#000;isolation:isolate}
 .hxs-art>img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;pointer-events:none}
 /* Masquer les faux indicateurs heure / réseau / batterie imprimés sur le visuel source. */
-.hxs-art:before,.hxs-art:after{content:"";position:absolute;top:1%;height:3.4%;z-index:1;pointer-events:none;background:linear-gradient(90deg,#010401 0%,#020902 65%,#010401 100%);filter:blur(3px)}
+.hxs-art:before,.hxs-art:after{display:none}
 .hxs-art:before{left:5.5%;width:12.5%}
 .hxs-art:after{left:75%;width:21.5%}
 
@@ -136,22 +136,22 @@ body.hxs-art-ready:not(.presentation) .hxs-art{display:block}
 .hxs-hit{position:absolute;border:0;background:transparent;color:transparent;cursor:pointer;margin:0;padding:0;min-height:0;border-radius:3px;touch-action:manipulation}
 .hxs-hit:focus-visible{outline:3px solid #fff;outline-offset:-3px}
 .hxs-hit:active{background:#43ff232b}
-.hxs-hit[data-hxs="back"]{left:4%;top:4.7%;width:23%;height:7%}
-.hxs-hit[data-hxs="large"]{left:5%;top:40.8%;width:45%;height:7.5%}
-.hxs-hit[data-hxs="flash"]{left:51%;top:40.8%;width:44%;height:7.5%}
-.hxs-hit[data-hxs="help"]{left:5%;top:53.4%;width:45%;height:7.8%}
-.hxs-hit[data-hxs="sit"]{left:51%;top:53.4%;width:44%;height:7.8%}
-.hxs-hit[data-hxs="exit"]{left:5%;top:62.1%;width:45%;height:8%}
-.hxs-hit[data-hxs="toilet"]{left:51%;top:62.1%;width:44%;height:8%}
-.hxs-hit[data-hxs="pass"]{left:5%;top:70.8%;width:45%;height:8%}
-.hxs-hit[data-hxs="sos"]{left:51%;top:70.8%;width:44%;height:8%}
+.hxs-hit[data-hxs="back"]{left:4%;top:6%;width:22%;height:5.4%}
+.hxs-hit[data-hxs="large"]{left:9%;top:18%;width:82%;height:20%}
+.hxs-hit[data-hxs="flash"]{display:none}
+.hxs-hit[data-hxs="help"]{left:5%;top:53.5%;width:44%;height:7.6%}
+.hxs-hit[data-hxs="sit"]{left:51%;top:53.5%;width:44%;height:7.6%}
+.hxs-hit[data-hxs="exit"]{left:5%;top:62.2%;width:44%;height:7.6%}
+.hxs-hit[data-hxs="toilet"]{left:51%;top:62.2%;width:44%;height:7.6%}
+.hxs-hit[data-hxs="pass"]{left:5%;top:71%;width:44%;height:7.6%}
+.hxs-hit[data-hxs="sos"]{left:51%;top:71%;width:44%;height:7.6%}
 .hxs-hit[data-hxs="selected"]{outline:2px solid #a7ff42;outline-offset:-6px}
 .hxs-translation{display:none;position:absolute;left:10%;top:25.4%;width:80%;height:8.3%;
 background:#010502;color:#ff3647;text-shadow:0 0 11px #ff202d;text-transform:uppercase;
 font-weight:900;font-family:Arial,sans-serif;font-size:clamp(17px,5.7vw,48px);
 text-align:center;align-items:center;justify-content:center;line-height:1.08;padding:3px;overflow-wrap:anywhere}
 .hxs-translation.visible{display:flex}
-.hxs-art select{position:absolute;top:81.25%;left:35%;width:48%;height:5%;border:0;outline-offset:1px;
+.hxs-art select{position:absolute;top:81.4%;left:35%;width:47%;height:3.7%;border:0;outline-offset:1px;
 background:#061008eb;color:#f2fff1;font-size:clamp(13px,3.1vw,24px);box-shadow:none}
 .hxs-flash-on{display:none;position:absolute;top:42%;left:53%;width:40%;height:5.1%;background:#021104;
 border:2px solid #58ff23;color:#eaffd9;font-weight:900;align-items:center;justify-content:center;
@@ -164,18 +164,18 @@ body.hxs-art-ready.presentation .hxs-art{display:none!important}
 <script id="hellx-signal-artwork-controller">
 (()=>{
 'use strict';
-const source='./assets/hellx-signal-design.jpg';
+const source='./assets/hellx-signal-design.jpg?v=20261105-new';
 const art=document.createElement('div');art.className='hxs-art';
 art.setAttribute('aria-label','HELLX SIGNAL, design rock metal interactif');
 const im=document.createElement('img');im.src=source;im.alt='Habillage infernal HELLX SIGNAL en vert néon et métal noir';
 const hit=(key,label)=>{const b=document.createElement('button');b.type='button';b.className='hxs-hit';b.dataset.hxs=key;b.setAttribute('aria-label',label);art.append(b);return b};
 art.append(im);
-const actions={back:'Retour à l’accueil',large:'Afficher le message en plein écran',flash:'Activer ou désactiver le flash',
+const actions={back:'Retour à l’accueil',large:'Afficher le message en plein écran',
 help:'J’ai besoin d’aide',sit:'Je dois m’asseoir',exit:'Je cherche une sortie',toilet:'Je cherche les toilettes',
 pass:'Laissez-moi passer',sos:'SOS — appelez les secours'};
 Object.entries(actions).forEach(([key,label])=>hit(key,label));
 const translation=document.createElement('div');translation.className='hxs-translation';translation.setAttribute('aria-live','polite');art.append(translation);
-const on=document.createElement('div');on.className='hxs-flash-on';on.textContent='FLASH : ON';art.append(on);
+const on=document.createElement('div');on.className='hxs-flash-on';on.textContent='FLASH : ON';
 const select=document.createElement('select');select.setAttribute('aria-label','Langue des messages');
 select.innerHTML=document.getElementById('lang').innerHTML;art.append(select);
 document.body.insertBefore(art,document.querySelector('main.wrap'));
@@ -189,7 +189,7 @@ const defaultImage=key==='help'&&language==='fr';
 translation.classList.toggle('visible',!defaultImage);
 translation.textContent=message;
 translation.style.color=(key==='sos'||key==='help')?'#ff3748':'#aaff9a';
-on.classList.toggle('visible',flashing);
+on.classList.remove('visible');
 select.value=language;
 art.querySelectorAll('.hxs-hit').forEach(b=>b.removeAttribute('data-hxs-selected'));
 }
