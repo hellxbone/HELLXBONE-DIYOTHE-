@@ -123,24 +123,22 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  const css=document.createElement('style');
  css.textContent=`
  #hx-home-hub:has(#hx-home-graphic:not([hidden])){padding:0!important;margin-left:0!important;margin-right:0!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
- #hx-home-graphic{position:relative;display:block;width:100vw!important;max-width:none!important;aspect-ratio:1124/1536;height:auto!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;line-height:0;overflow:hidden;background:#000;border:0!important;border-radius:0!important;box-shadow:none!important}
+ #hx-home-graphic{position:relative;display:block;width:100vw!important;max-width:none!important;aspect-ratio:1124/826;height:auto!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;line-height:0;overflow:hidden;background:#000;border:0!important;border-radius:0!important;box-shadow:none!important}
  #hx-home-graphic>img{object-fit:contain!important}
- #hx-home-graphic>img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none}
+ #hx-home-graphic>img{position:absolute;left:0;top:-85.9564%;display:block;width:100%;height:185.9564%;object-fit:fill;pointer-events:none}
  #hx-home-graphic .hx-img-hotspot{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0!important;border-radius:8px;background:transparent!important;background-image:none!important;color:transparent!important;font-size:0!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #hx-home-graphic .hx-img-hotspot:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
- #hx-home-graphic .hx-hot-meet{left:6%;top:52%;width:35%;height:21%}
- #hx-home-graphic .hx-hot-radio{left:62%;top:55%;width:33%;height:18%}
- #hx-home-graphic .hx-hot-member{left:6%;top:74%;width:33%;height:13%}
- #hx-home-graphic .hx-hot-draw{left:61%;top:74%;width:33%;height:13%}
- #hx-home-graphic .hx-hot-invite{left:18%;top:88%;width:64%;height:10%}
- #hx-home-graphic .hx-hot-nav{top:39.4%;height:9%;width:19%;}
+ #hx-home-graphic .hx-hot-meet{left:6%;top:10.8%;width:35%;height:39%}
+ #hx-home-graphic .hx-hot-radio{left:62%;top:16.3%;width:33%;height:33.5%}
+ #hx-home-graphic .hx-hot-member{left:6%;top:51.8%;width:33%;height:24.2%}
+ #hx-home-graphic .hx-hot-draw{left:61%;top:51.8%;width:33%;height:24.2%}
+ #hx-home-graphic .hx-hot-invite{left:18%;top:77.8%;width:64%;height:18.6%}
+ #hx-home-graphic .hx-hot-nav{display:none!important}
  #hx-home-graphic .hx-hot-nav-home{left:1%}
  #hx-home-graphic .hx-hot-nav-news{left:20%}
  #hx-home-graphic .hx-hot-nav-shop{left:40%}
  #hx-home-graphic .hx-hot-nav-game{left:60%}
  #hx-home-graphic .hx-hot-nav-about{left:80%}
- html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>header.hellx-header,
- html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>nav[aria-label="Navigation principale"],
  html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>footer{display:none!important}
  html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) #app{padding:0!important;margin:0!important;max-width:none!important}
  html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) #hx-home-hub{margin:0!important;padding:0!important}
