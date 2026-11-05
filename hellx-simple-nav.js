@@ -123,18 +123,28 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  const css=document.createElement('style');
  css.textContent=`
  #hx-home-hub:has(#hx-home-graphic:not([hidden])){padding:0!important;margin-left:0!important;margin-right:0!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
- #hx-home-graphic{position:relative;display:block;width:100vw!important;max-width:none!important;aspect-ratio:852/572;height:auto!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;line-height:0;overflow:hidden;background:#000;border:0!important;border-radius:0!important;box-shadow:none!important}
+ #hx-home-graphic{position:relative;display:block;width:100vw!important;max-width:none!important;aspect-ratio:1124/1536;height:auto!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;line-height:0;overflow:hidden;background:#000;border:0!important;border-radius:0!important;box-shadow:none!important}
  #hx-home-graphic>img{object-fit:contain!important}
  #hx-home-graphic>img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none}
  #hx-home-graphic .hx-img-hotspot{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0!important;border-radius:8px;background:transparent!important;background-image:none!important;color:transparent!important;font-size:0!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #hx-home-graphic .hx-img-hotspot:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
-  #hx-home-graphic .hx-hot-meet{left:4.5%;top:8.5%;width:36%;height:32%;display:block!important;box-sizing:border-box!important;background:transparent url("./6605.png?v=20261104-sos-cutout-v3") center/100% 100% no-repeat!important;clip-path:polygon(11% 11%,89% 11%,92% 12%,95% 16%,97% 22%,97% 78%,95% 84%,92% 88%,89% 89%,11% 89%,8% 88%,5% 84%,3% 78%,3% 22%,5% 16%,8% 12%)!important;border:0!important;border-radius:0!important;color:transparent!important;font-size:0!important;line-height:0!important;text-shadow:none!important;box-shadow:none!important;animation:hx-sos-heartbeat 1.35s infinite;transform-origin:center;will-change:transform,filter;overflow:hidden}
- @keyframes hx-sos-heartbeat{0%,35%,100%{transform:scale(1);filter:brightness(1)}8%{transform:scale(1.06);filter:brightness(1.5)}16%{transform:scale(1);filter:brightness(1.05)}24%{transform:scale(1.1);filter:brightness(1.75)}}
- @media(prefers-reduced-motion:reduce){#hx-home-graphic .hx-hot-meet{animation:none!important}}
- #hx-home-graphic .hx-hot-radio{left:61%;top:10%;width:33%;height:29%}
- #hx-home-graphic .hx-hot-member{left:6%;top:45%;width:33%;height:26%}
- #hx-home-graphic .hx-hot-draw{left:61%;top:45%;width:33%;height:26%}
- #hx-home-graphic .hx-hot-invite{left:18%;top:75%;width:64%;height:19%}
+ #hx-home-graphic .hx-hot-meet{left:6%;top:52%;width:35%;height:21%}
+ #hx-home-graphic .hx-hot-radio{left:62%;top:55%;width:33%;height:18%}
+ #hx-home-graphic .hx-hot-member{left:6%;top:74%;width:33%;height:13%}
+ #hx-home-graphic .hx-hot-draw{left:61%;top:74%;width:33%;height:13%}
+ #hx-home-graphic .hx-hot-invite{left:18%;top:88%;width:64%;height:10%}
+ #hx-home-graphic .hx-hot-nav{top:39.4%;height:9%;width:19%;}
+ #hx-home-graphic .hx-hot-nav-home{left:1%}
+ #hx-home-graphic .hx-hot-nav-news{left:20%}
+ #hx-home-graphic .hx-hot-nav-shop{left:40%}
+ #hx-home-graphic .hx-hot-nav-game{left:60%}
+ #hx-home-graphic .hx-hot-nav-about{left:80%}
+ html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>header.hellx-header,
+ html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>nav[aria-label="Navigation principale"],
+ html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) #app>.hx-winner-led,
+ html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>footer{display:none!important}
+ html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) #app{padding:0!important;margin:0!important;max-width:none!important}
+ html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) #hx-home-hub{margin:0!important;padding:0!important}
  #hx-home-graphic[hidden]{display:none!important}
  html.hx-home-image-ready:not(.hx-radio-selected) #hx-home-hub #hx-home-actions,
  html.hx-home-image-ready:not(.hx-radio-selected) #hx-home-hub #hellx-club{display:none!important}
@@ -145,9 +155,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   ['radio','hx-hot-radio','LIVE 666'],
   ['member','hx-hot-member','CARTE DE MEMBRE'],
   ['draw','hx-hot-draw','TIRAGE DU TEE-SHIRT'],
-  ['invite','hx-hot-invite','INVITER MES POTES']
+  ['invite','hx-hot-invite','INVITER MES POTES'],
+  ['accueil','hx-hot-nav hx-hot-nav-home','Accueil'],
+  ['magazine','hx-hot-nav hx-hot-nav-news','News'],
+  ['boutique','hx-hot-nav hx-hot-nav-shop','Boutique'],
+  ['jeu','hx-hot-nav hx-hot-nav-game','Jeux'],
+  ['apropos','hx-hot-nav hx-hot-nav-about','À propos']
  ];
  function trigger(key){
+  if(['accueil','magazine','boutique','jeu','apropos'].includes(key)){
+   document.querySelector('nav[aria-label="Navigation principale"] [data-page="'+key+'"]')?.click();return;
+  }
   const selector={
    signal:'#hx-home-actions [data-hx-section="signal"]',
    radio:'#hx-home-actions [data-hx-section="radio"]',
@@ -164,7 +182,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(!panel){
    panel=document.createElement('div');panel.id='hx-home-graphic';panel.hidden=true;
    panel.setAttribute('role','group');panel.setAttribute('aria-label','Raccourcis HELLXBONE CLUB');
-   const img=document.createElement('img');img.src='./6487.png?v=20261103-menu-home';img.alt='';img.decoding='async';
+   const img=document.createElement('img');img.src='./6617.png?v=20261105-home-full-v1';img.alt='';img.decoding='async';
    img.addEventListener('load',()=>{document.documentElement.classList.add('hx-home-image-ready');syncVisibility()});
    img.addEventListener('error',()=>{document.documentElement.classList.remove('hx-home-image-ready');panel.hidden=true});
    panel.appendChild(img);
