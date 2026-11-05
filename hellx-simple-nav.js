@@ -246,6 +246,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   background:#000 url("./IMG_20261104_132835.png?v=20261104-neon-menu-v3") center / 100% 100% no-repeat!important;
   position:sticky!important;top:0!important;z-index:90!important;
  }
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready::before,
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready::after,
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button::before,
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready > button::after{content:none!important;display:none!important}
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready{isolation:isolate!important;overflow:hidden!important;outline:0!important}
+ nav[aria-label="Navigation principale"].hx-neon-menu-ready + *{border-top:0!important}
  nav[aria-label="Navigation principale"].hx-neon-menu-ready > button,
  nav[aria-label="Navigation principale"].hx-neon-menu-ready > button[aria-current="page"],
  nav[aria-label="Navigation principale"].hx-neon-menu-ready > button[aria-current="true"]{
