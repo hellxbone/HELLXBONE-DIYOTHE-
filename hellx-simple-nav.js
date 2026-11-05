@@ -33,39 +33,50 @@ html:not(.hx-radio-selected) #hx-radio-panel *{visibility:hidden!important}
 
 // Garder la page et son lecteur audio vivants lorsque HELLX SIGNAL est affiché.
 let signalOverlay=null;
-function closeSignal(){
- if(!signalOverlay)return;
- const overlay=signalOverlay;
- signalOverlay=null;
- if(document.fullscreenElement===overlay)document.exitFullscreen?.().catch(()=>{});
- overlay.remove();
- document.documentElement.style.removeProperty('overflow');
- document.body.style.removeProperty('overflow');
-}
-function openSignal(){
+let signalFrame=null;
+function prepareSignal(){
  if(signalOverlay)return;
  const overlay=document.createElement('div');
  overlay.id='hx-signal-overlay';
  overlay.setAttribute('role','dialog');
  overlay.setAttribute('aria-label','HELLX SIGNAL');
  overlay.setAttribute('aria-modal','true');
- Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'2147483000',background:'#000'});
+ overlay.setAttribute('aria-hidden','true');
+ Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'2147483000',background:'#000',display:'none'});
  const frame=document.createElement('iframe');
  frame.title='HELLX SIGNAL';
- frame.src='./hellx-signal.html?embedded=1&v=20261105-signal-v8';
+ frame.src='./hellx-signal.html?embedded=1&v=20261105-fast-v1';
  frame.setAttribute('allow','screen-wake-lock');
  Object.assign(frame.style,{border:'0',width:'100%',height:'100%',display:'block',background:'#000'});
  overlay.appendChild(frame);
  document.body.appendChild(overlay);
  signalOverlay=overlay;
+ signalFrame=frame;
+}
+function closeSignal(){
+ if(!signalOverlay)return;
+ if(document.fullscreenElement===signalOverlay)document.exitFullscreen?.().catch(()=>{});
+ signalOverlay.style.display='none';
+ signalOverlay.setAttribute('aria-hidden','true');
+ document.documentElement.style.removeProperty('overflow');
+ document.body.style.removeProperty('overflow');
+}
+function openSignal(){
+ prepareSignal();
+ signalOverlay.style.display='block';
+ signalOverlay.removeAttribute('aria-hidden');
  document.documentElement.style.setProperty('overflow','hidden');
  document.body.style.setProperty('overflow','hidden');
- // Fenêtre bord à bord sans Fullscreen API : supprime le bandeau gris Android/Chrome.
- // Le lecteur radio demeure actif dans la page parente.
 }
 window.addEventListener('message',event=>{
- if(event.origin===location.origin&&event.source===signalOverlay?.querySelector('iframe')?.contentWindow&&event.data==='hellx-signal-close')closeSignal();
+ if(event.origin===location.origin&&event.source===signalFrame?.contentWindow&&event.data==='hellx-signal-close')closeSignal();
 });
+// Charger le module SOS en tâche différée, sans bloquer le démarrage de l'accueil.
+window.addEventListener('load',()=>{
+ const warm=()=>{if(!signalOverlay)prepareSignal()};
+ if('requestIdleCallback' in window)requestIdleCallback(warm,{timeout:3500});
+ else setTimeout(warm,1800);
+},{once:true});
 let selected='home';
 document.documentElement.classList.remove('hx-radio-selected');
 // L'accueil ne doit jamais conserver le lecteur radio affiché après un retour par la maison.
@@ -108,7 +119,7 @@ if(selected==='home'){radioPanel.hidden=true}
  document.querySelectorAll('#hx-quick-nav [data-hx-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.hxSection===selected)));
 }
 // Synchronisation moins agressive : les clics déclenchent un rafraîchissement immédiat.
-setInterval(sync,6000);
+// La navigation est synchronisée aux interactions, sans boucle périodique.
 document.addEventListener('click',e=>{if(e.target.closest('nav [data-page], [data-hx-section]'))setTimeout(sync,0)},true);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
 })();
