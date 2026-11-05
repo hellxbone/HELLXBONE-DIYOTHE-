@@ -52,7 +52,7 @@ function openSignal(){
  Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'2147483000',background:'#000'});
  const frame=document.createElement('iframe');
  frame.title='HELLX SIGNAL';
- frame.src='./hellx-signal.html?embedded=1&v=20261104-clean-header-v5';
+ frame.src='./hellx-signal.html?embedded=1&v=20261105-signal-v8';
  frame.setAttribute('allow','screen-wake-lock');
  Object.assign(frame.style,{border:'0',width:'100%',height:'100%',display:'block',background:'#000'});
  overlay.appendChild(frame);
