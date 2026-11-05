@@ -1,11 +1,30 @@
-const CACHE_VERSION='hellxbone-signal-offline-20261105-clean-v10';
+const CACHE_VERSION='hellxbone-signal-offline-20261105-stable-v11';
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_VERSION).then(cache=>cache.addAll(['./hellx-signal.html','./assets/6626.jpg'])).catch(()=>{}).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{
  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('hellxbone-signal-offline-')&&key!==CACHE_VERSION).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
 });
 self.addEventListener('fetch',event=>{
  if(event.request.method!=='GET')return;
- event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{if(new URL(event.request.url).pathname.endsWith('/hellx-signal.html')&&response.ok){const clone=response.clone();caches.open(CACHE_VERSION).then(cache=>cache.put(event.request,clone)).catch(()=>{})}return response}).catch(()=>caches.match(event.request)));
+ const url=new URL(event.request.url);
+ // External radio streams and Supabase API calls are handled by the browser.
+ if(url.origin!==self.location.origin)return;
+ if(!url.pathname.endsWith('/hellx-signal.html'))return;
+ // Show the already-cached emergency page immediately and refresh it safely
+ // in the background. This keeps SOS responsive on a poor connection.
+ event.respondWith((async()=>{
+  const cached=await caches.match('./hellx-signal.html');
+  const refresh=fetch(event.request,{cache:'no-cache'}).then(async response=>{
+   if(response.ok){
+    try{const cache=await caches.open(CACHE_VERSION);await cache.put('./hellx-signal.html',response.clone())}catch(e){}
+   }
+   return response;
+  });
+  if(cached){
+   event.waitUntil(refresh.catch(()=>{}));
+   return cached;
+  }
+  try{return await refresh}catch(e){return Response.error()}
+ })());
 });
 self.addEventListener('push',event=>{
  let data={};
