@@ -1874,7 +1874,7 @@ function startBuild(){
 function render(ms){
  requestAnimationFrame(render);
  if(ms-last<42)return;last=ms;
- if(!canvas||!ctx||!radio||document.hidden)return;
+ if(!canvas||!ctx||!radio||document.hidden||!canvas.getClientRects().length)return;
  const rect=canvas.getBoundingClientRect(),w=rect.width,h=rect.height;
  if(w<65||h<20)return;
  const ratio=Math.min(devicePixelRatio||1,2),cw=Math.round(w*ratio),ch=Math.round(h*ratio);
