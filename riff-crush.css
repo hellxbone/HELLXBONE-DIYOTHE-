@@ -492,3 +492,18 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 #hellx-riff-crush .riff-actions .riff-leaderboard{
   margin-top:clamp(38px,5vh,55px)!important;
 }
+
+/* 2026-11-05 — MEGA RIFF: référentiel graphique unique, indépendant de la hauteur d'écran.
+   Le décor et toutes les positions en % partagent désormais la même boîte 620×1100. */
+#hellx-riff-crush .riff-wrap{
+  width:min(100%,620px)!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:620 / 1100!important;
+  margin-inline:auto!important;
+  flex-shrink:0!important;
+  background-size:100% 100%!important;
+}
+#hellx-riff-crush .riff-board{box-sizing:border-box!important}
+#hellx-riff-crush .riff-cell{width:100%!important;min-width:0!important;min-height:0!important}
+@media(min-width:621px){#hellx-riff-crush .riff-wrap{height:auto!important;min-height:0!important}}
