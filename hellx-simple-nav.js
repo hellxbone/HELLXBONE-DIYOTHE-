@@ -141,10 +141,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  #hx-home-graphic .hx-hot-nav-about{left:80%}
  html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>header.hellx-header,
  html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>nav[aria-label="Navigation principale"],
- html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) #app>.hx-winner-led,
  html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) body>footer{display:none!important}
  html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) #app{padding:0!important;margin:0!important;max-width:none!important}
  html.hx-home-image-ready:not(.hx-radio-selected):has(#hx-home-graphic:not([hidden])) #hx-home-hub{margin:0!important;padding:0!important}
+ html.hx-home-image-ready:not(.hx-radio-selected) #app>.hx-winner-led{display:flex!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;margin:0!important}
  #hx-home-graphic[hidden]{display:none!important}
  html.hx-home-image-ready:not(.hx-radio-selected) #hx-home-hub #hx-home-actions,
  html.hx-home-image-ready:not(.hx-radio-selected) #hx-home-hub #hellx-club{display:none!important}
