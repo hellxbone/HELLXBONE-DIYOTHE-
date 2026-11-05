@@ -34,6 +34,7 @@ html:not(.hx-radio-selected) #hx-radio-panel *{visibility:hidden!important}
 // Garder la page et son lecteur audio vivants lorsque HELLX SIGNAL est affiché.
 let signalOverlay=null;
 let signalFrame=null;
+let signalReady=false;
 function prepareSignal(){
  if(signalOverlay)return;
  const overlay=document.createElement('div');
@@ -42,16 +43,26 @@ function prepareSignal(){
  overlay.setAttribute('aria-label','HELLX SIGNAL');
  overlay.setAttribute('aria-modal','true');
  overlay.setAttribute('aria-hidden','true');
- Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'2147483000',background:'#000',display:'none'});
+ Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'2147483000',background:'#000',display:'none',overflow:'auto'});
+ const preview=document.createElement('img');
+ preview.src='./assets/6626.jpg';
+ preview.alt='HELLX SIGNAL';
+ preview.setAttribute('aria-hidden','true');
+ Object.assign(preview.style,{display:'block',width:'100%',maxWidth:'760px',height:'auto',margin:'0 auto'});
  const frame=document.createElement('iframe');
  frame.title='HELLX SIGNAL';
- frame.src='./hellx-signal.html?embedded=1&v=20261105-fast-v1';
  frame.setAttribute('allow','screen-wake-lock');
- Object.assign(frame.style,{border:'0',width:'100%',height:'100%',display:'block',background:'#000'});
- overlay.appendChild(frame);
+ Object.assign(frame.style,{position:'absolute',inset:'0',border:'0',width:'100%',height:'100%',display:'none',background:'#000'});
+ frame.addEventListener('load',()=>{
+  signalReady=true;
+  frame.style.display='block';
+  preview.style.display='none';
+ });
+ overlay.append(preview,frame);
  document.body.appendChild(overlay);
  signalOverlay=overlay;
  signalFrame=frame;
+ frame.src='./hellx-signal.html?embedded=1&v=20261105-instant-v2';
 }
 function closeSignal(){
  if(!signalOverlay)return;
@@ -71,12 +82,9 @@ function openSignal(){
 window.addEventListener('message',event=>{
  if(event.origin===location.origin&&event.source===signalFrame?.contentWindow&&event.data==='hellx-signal-close')closeSignal();
 });
-// Charger le module SOS en tâche différée, sans bloquer le démarrage de l'accueil.
-window.addEventListener('load',()=>{
- const warm=()=>{if(!signalOverlay)prepareSignal()};
- if('requestIdleCallback' in window)requestIdleCallback(warm,{timeout:3500});
- else setTimeout(warm,1800);
-},{once:true});
+// Préparer SOS dès que le document est disponible ; ne pas attendre images, vidéo ou radio.
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',prepareSignal,{once:true});
+else prepareSignal();
 let selected='home';
 document.documentElement.classList.remove('hx-radio-selected');
 // L'accueil ne doit jamais conserver le lecteur radio affiché après un retour par la maison.
