@@ -39,7 +39,7 @@ async function showClubCount(){
 }
 function cancelHold(){clearTimeout(holdTimer);holdTimer=0;}
 let startX=0,startY=0,dragging=false,suppressClick=false;const HOLD_DRAG_TOLERANCE=22;
-b.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;dragging=false;holdTriggered=false;cancelHold();try{b.setPointerCapture(e.pointerId)}catch(_){}holdTimer=setTimeout(()=>{if(!dragging){holdTriggered=true;suppressClick=true;showClubCount()}},5000)});
+b.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;startX=e.clientX;startY=e.clientY;dragging=false;holdTriggered=false;cancelHold();try{b.setPointerCapture(e.pointerId)}catch(_){}holdTimer=setTimeout(()=>{if(!dragging){holdTriggered=true;suppressClick=true;location.href='./hellx-admin-stats.html'}},5000)});
 b.addEventListener('pointermove',e=>{if(!b.hasPointerCapture(e.pointerId))return;if(Math.hypot(e.clientX-startX,e.clientY-startY)>HOLD_DRAG_TOLERANCE){dragging=true;cancelHold()}if(dragging){b.style.left=Math.max(6,Math.min(innerWidth-b.offsetWidth-6,e.clientX-b.offsetWidth/2))+'px';b.style.top=Math.max(6,Math.min(innerHeight-b.offsetHeight-6,e.clientY-b.offsetHeight/2))+'px';b.style.right='auto';b.style.bottom='auto';suppressClick=true}});
 b.addEventListener('pointerup',()=>{cancelHold();dragging=false});b.addEventListener('pointercancel',()=>{cancelHold();dragging=false});b.addEventListener('lostpointercapture',cancelHold);b.addEventListener('contextmenu',e=>e.preventDefault());b.addEventListener('dragstart',e=>e.preventDefault());
 b.onclick=()=>{if(suppressClick||holdTriggered){suppressClick=false;holdTriggered=false;return}p.classList.toggle('open');if(p.classList.contains('open'))inp.focus()};
