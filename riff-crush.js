@@ -103,7 +103,7 @@ function buildShell(){if(q('#hellx-riff-crush'))return;const el=document.createE
 function toggleSound(){muted=!muted;q('.riff-sound').textContent=muted?'🔇 Son OFF':'🔊 Son ON';if(!muted){unlockAudio();sfx('level')}}
 // Les symboles dominants rendent les alignements de 4 et 5 plus accessibles, sans garantir de bonus.
 const RIFF_ICON_WEIGHTS=[1.18,1.18,1,1,1,1];
-function randIcon(){const weights=hellxboneOwnerAssist()?[9,9,1,1,1,1]:RIFF_ICON_WEIGHTS;const total=weights.reduce((sum,w)=>sum+w,0);let roll=(dailyMode?dailyRand():Math.random())*total;for(let i=0;i<ICONS.length;i++){roll-=weights[i];if(roll<0)return ICONS[i]}return ICONS[ICONS.length-1]}
+function randIcon(){const weights=hellxboneOwnerAssist()?[2.1,2.1,1,1,1,1]:RIFF_ICON_WEIGHTS;const total=weights.reduce((sum,w)=>sum+w,0);let roll=(dailyMode?dailyRand():Math.random())*total;for(let i=0;i<ICONS.length;i++){roll-=weights[i];if(roll<0)return ICONS[i]}return ICONS[ICONS.length-1]}
 function hasAt(r,c,v){return (c>=2&&board[idx(r,c-1)]===v&&board[idx(r,c-2)]===v)||(r>=2&&board[idx(r-1,c)]===v&&board[idx(r-2,c)]===v)}
 function fillFresh(){board=new Array(ROWS*COLS);for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){let v;do{v=randIcon()}while(hasAt(r,c,v));board[idx(r,c)]=v}}
 function goalForLevel(l){return LEVEL_GOALS[Math.min(l-1,LEVEL_GOALS.length-1)]}
@@ -133,7 +133,7 @@ function eventFlash(text,type='combo'){const f=q('#riff-flash'),e=q('#riff-event
 function hasPlayableMove(){for(let a=0;a<board.length;a++){const row=Math.floor(a/COLS),col=a%COLS;for(const b of [col+1<COLS?a+1:-1,row+1<ROWS?a+COLS:-1]){if(b<0||board[a]===board[b])continue;swap(a,b);const found=matches().length>=3;swap(a,b);if(found)return true}}return false}
 function ensurePlayable(){if(hasPlayableMove())return false;let attempts=0;do{fillFresh();attempts++}while(!hasPlayableMove()&&attempts<200);if(!hasPlayableMove()){fillFresh();board[0]=ICONS[0];board[1]=ICONS[1];board[2]=ICONS[0];board[COLS+1]=ICONS[0]}selected=null;return true}
 function finishIfBlocked(){if(gameLost||moves<=0)return false;if(ensurePlayable()){render();eventFlash('NOUVEAU RIFF !','combo');message('🤘 GRILLE REMIXÉE — UN ALIGNEMENT EST POSSIBLE !',true)}return false}
-function gravity(){for(let c=0;c<COLS;c++){let write=ROWS-1;for(let r=ROWS-1;r>=0;r--){const v=board[idx(r,c)];if(v!==null){board[idx(write,c)]=v;if(write!==r)board[idx(r,c)]=null;write--}}while(write>=0){let next=randIcon();const below=r=>write+r<ROWS?board[idx(write+r,c)]:null;const same3=below(1)&&below(1)===below(2)&&below(2)===below(3);const same4=same3&&below(3)===below(4);if(same4&&Math.random()<(hellxboneOwnerAssist()?.80:.018))next=below(1);else if(same3&&Math.random()<(hellxboneOwnerAssist()?.70:.03))next=below(1);board[idx(write,c)]=next;write--}}}
+function gravity(){for(let c=0;c<COLS;c++){let write=ROWS-1;for(let r=ROWS-1;r>=0;r--){const v=board[idx(r,c)];if(v!==null){board[idx(write,c)]=v;if(write!==r)board[idx(r,c)]=null;write--}}while(write>=0){let next=randIcon();const below=r=>write+r<ROWS?board[idx(write+r,c)]:null;const same3=below(1)&&below(1)===below(2)&&below(2)===below(3);const same4=same3&&below(3)===below(4);if(same4&&Math.random()<(hellxboneOwnerAssist()?.14:.018))next=below(1);else if(same3&&Math.random()<(hellxboneOwnerAssist()?.12:.03))next=below(1);board[idx(write,c)]=next;write--}}}
 const avalancheStyle=document.createElement('style');
 avalancheStyle.textContent=`
 #riff-board{position:relative;isolation:isolate}
