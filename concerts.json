@@ -1,318 +1,6 @@
 {
-  "updated": "2026-11-07T13:18:11.600506+00:00",
+  "updated": "2026-11-08T13:38:30.584451+00:00",
   "events": [
-    {
-      "date": "2026-11-07",
-      "artist": "BC le son",
-      "city": "Barsac",
-      "department": "33",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/23/fd1544dc-7c90-3171-bbe0-c857f42f3943",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 44.60736,
-      "lon": -0.31316
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Bergerock",
-      "city": "Bergerac",
-      "department": "24",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/23/2cfd9e2b-ce23-3e41-84a6-9e8edb472b01",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 44.84619,
-      "lon": 0.49841
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "CONCERT MAUNA LA NUIT",
-      "city": "Poucharramet",
-      "department": "31",
-      "venue": "",
-      "genre": "alternative",
-      "source": "https://data.datatourisme.fr/33/ffd7c7e0-ffd4-30c9-9285-85225fe2d240",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.41721,
-      "lon": 1.1737
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Concert \"Le Souffle\"",
-      "city": "Saint-Affrique",
-      "department": "12",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/31/da70e0a9-640c-3ede-b56b-5a773bf1d8f8",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.95809,
-      "lon": 2.88792
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Concert \"Poum Tchack\"",
-      "city": "Jouques",
-      "department": "13",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/58/37978858-a6c2-3582-9dd9-883ff704b855",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.63644,
-      "lon": 5.64398
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Concert - Circle of Mud",
-      "city": "Neuf-Brisach",
-      "department": "68",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/5/ce25fe31-12e9-36e7-9b83-baf4f41ba91f",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.01873,
-      "lon": 7.52345
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Concert - Strollad",
-      "city": "Le Langon",
-      "department": "85",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/49/638ea260-4831-3043-8a78-d97193494b9c",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 46.43733,
-      "lon": -0.95134
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Concert Pop Rock - les You",
-      "city": "Kaltenhouse",
-      "department": "67",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/5/52a0a64b-27cd-3934-8181-4932593c6923",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.78994,
-      "lon": 7.83828
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Concert RWB reprises Pop-Rock",
-      "city": "Sarras",
-      "department": "07",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/13/65df9f5a-f82e-3fa3-9c9e-f186cec265f4",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 45.18674,
-      "lon": 4.79987
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Concert Robin Léon",
-      "city": "Mutzig",
-      "department": "67",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/5/42207bf8-4c74-37ab-8aad-b2aa592dc3a7",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.53662,
-      "lon": 7.4495
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Dîner concert avec le duo The Shallows",
-      "city": "Andlau",
-      "department": "67",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/5/4957cd5d-8cc3-397f-bded-ffdba2a544ec",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.39554,
-      "lon": 7.40252
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Eclats de Rocks en concert ses 25 ans",
-      "city": "Aizenay",
-      "department": "85",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/49/022fe550-2304-3fb1-bc43-04b52e1469b6",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 46.73984,
-      "lon": -1.60333
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Festival : Les femmes s'en mêlent",
-      "city": "Salon-de-Provence",
-      "department": "13",
-      "venue": "",
-      "genre": "alternative",
-      "source": "https://data.datatourisme.fr/58/f534b969-ab89-3a39-bd3b-32c9289d2e44",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.64205,
-      "lon": 5.09943
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Grande Soirée Rock et Sbk",
-      "city": "Saint-Affrique",
-      "department": "12",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/31/2bc68018-3272-3e89-a5bb-312eb573c392",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.95686,
-      "lon": 2.88114
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "La boum du samedi",
-      "city": "Marseille 5e Arrondissement",
-      "department": "13",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/58/7ed8ebae-b1eb-31aa-b68e-20ef2e8dab37",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.29323,
-      "lon": 5.39175
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Mohsen Ferrah + Hamid Matoub",
-      "city": "Marseille 1er Arrondissement",
-      "department": "13",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/58/6b3e5763-c429-3ea0-808b-987f6a434386",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.30161,
-      "lon": 5.3755
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Musicolor - Calling Straits tribute band Rock",
-      "city": "Chambon-la-Forêt",
-      "department": "45",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/15/e30ae1fc-1931-38e6-a16b-e09db9ac9d5f",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.05691,
-      "lon": 2.27845
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Nexus Metal Fest",
-      "city": "Palaiseau",
-      "department": "91",
-      "venue": "",
-      "genre": "Metal",
-      "source": "https://data.datatourisme.fr/13/e8073170-f960-3032-8d91-cd942aa3a407",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.71348,
-      "lon": 2.25861
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Rocktary : Kaldeira et Agenou",
-      "city": "Vichy",
-      "department": "03",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/13/3ad87685-9c7c-3e75-b6a3-fcce948aa995",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 46.12206,
-      "lon": 3.42293
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Soirée Vita Danse",
-      "city": "Villefranche-de-Rouergue",
-      "department": "12",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/31/bf89fdf1-4655-38cf-b880-cb31745021f0",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 44.35782,
-      "lon": 2.02699
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Soirée piano - voix",
-      "city": "Retjons",
-      "department": "40",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/23/2f52dfc6-1f0a-3008-96bb-6a4c25db6134",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 44.10291,
-      "lon": -0.29472
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Spectacle MANIAFOLY -  Il était une fois Noël",
-      "city": "Plérin",
-      "department": "22",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/38/efec3574-0a2f-381a-ac66-f6cb3a445d9b",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.53965,
-      "lon": -2.75474
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "Tribute 100% Johnny",
-      "city": "Châteaurenard",
-      "department": "13",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/58/f12a30e5-2599-339b-8f1b-e1fc1ab0a1b5",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.88441,
-      "lon": 4.85584
-    },
-    {
-      "date": "2026-11-07",
-      "artist": "[COMPLET] Concert - B.R.E.T.O.N.S",
-      "city": "Pléneuf-Val-André",
-      "department": "22",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/38/ce8d69a9-61db-3f39-b459-dc083caae223",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.58372,
-      "lon": -2.55609
-    },
     {
       "date": "2026-11-08",
       "artist": "After marché - Hors-Loge",
@@ -416,6 +104,19 @@
       "origin": "datatourisme-vetted",
       "lat": 45.31654,
       "lon": 3.63221
+    },
+    {
+      "date": "2026-11-10",
+      "artist": "MAGMA - Concert Musiques Actuelles",
+      "city": "Arc-et-Senans",
+      "department": "25",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/06a50983-1309-3f7f-9b79-a34d60923fd6",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.03225,
+      "lon": 5.77828
     },
     {
       "date": "2026-11-10",
@@ -574,6 +275,32 @@
     },
     {
       "date": "2026-11-13",
+      "artist": "Cabaret sans frontières [Regards croisés sur le monde]",
+      "city": "Quimperlé",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/39bd1528-9f1c-36b2-bb98-09064bafc836",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.87404,
+      "lon": -3.55356
+    },
+    {
+      "date": "2026-11-13",
+      "artist": "Concert - Gangbé Brass Band",
+      "city": "Pont-Croix",
+      "department": "29",
+      "venue": "",
+      "genre": "métal",
+      "source": "https://data.datatourisme.fr/38/c2b7becf-3598-3c81-8983-1b344725cbf7",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.04228,
+      "lon": -4.48751
+    },
+    {
+      "date": "2026-11-13",
       "artist": "Concert : Black and White au Bar Le Phare",
       "city": "Pornic",
       "department": "44",
@@ -584,6 +311,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.10716,
       "lon": -2.0971
+    },
+    {
+      "date": "2026-11-13",
+      "artist": "Concert Francky Boohoo",
+      "city": "Le Blanc",
+      "department": "36",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/15/b6f34cd9-e84b-3343-8ea9-baa8c5fd03ea",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.63329,
+      "lon": 1.06327
     },
     {
       "date": "2026-11-13",
@@ -626,6 +366,19 @@
     },
     {
       "date": "2026-11-13",
+      "artist": "Concert groupe l'Ange Vert à la Croisée à Lopérec.",
+      "city": "Lopérec",
+      "department": "29",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/54720ac7-dba8-353f-a50c-fc4ad6f6d758",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.27743,
+      "lon": -4.04829
+    },
+    {
+      "date": "2026-11-13",
       "artist": "Dirtycute",
       "city": "Marseille 1er Arrondissement",
       "department": "13",
@@ -639,6 +392,45 @@
     },
     {
       "date": "2026-11-13",
+      "artist": "El Maout & Orchestral Heat",
+      "city": "Trédrez-Locquémeau",
+      "department": "22",
+      "venue": "",
+      "genre": "post-punk",
+      "source": "https://data.datatourisme.fr/38/89f42418-a414-39ae-b65c-0beaec5fd010",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.71253,
+      "lon": -3.56334
+    },
+    {
+      "date": "2026-11-13",
+      "artist": "MetalHearth Festival - 5ème édition",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "Metal",
+      "source": "https://data.datatourisme.fr/38/3d60dc12-74bd-3b00-b007-bcc810f9f9fd",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38454,
+      "lon": -4.48227
+    },
+    {
+      "date": "2026-11-13",
+      "artist": "Nastyjoe + Caïman",
+      "city": "Chalon-sur-Saône",
+      "department": "71",
+      "venue": "",
+      "genre": "Indie",
+      "source": "https://data.datatourisme.fr/6/6962c204-b331-319a-823f-4e0aab51950b",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.77481,
+      "lon": 4.84521
+    },
+    {
+      "date": "2026-11-13",
       "artist": "Rock This Town #9 - Jour 1",
       "city": "Valence",
       "department": "26",
@@ -649,6 +441,32 @@
       "origin": "datatourisme-vetted",
       "lat": 44.9289,
       "lon": 4.89179
+    },
+    {
+      "date": "2026-11-13",
+      "artist": "The Inspector Cluzo",
+      "city": "Tours",
+      "department": "37",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/15/cbc19eea-c448-397d-84d6-560f970fc843",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.38447,
+      "lon": 0.70138
+    },
+    {
+      "date": "2026-11-14",
+      "artist": "Astéréotypie · Festival Des Utopies Réelles",
+      "city": "Tours",
+      "department": "37",
+      "venue": "",
+      "genre": "post-punk",
+      "source": "https://data.datatourisme.fr/15/91994c51-8cbf-30d5-869e-a58d3b60c5ff",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.38447,
+      "lon": 0.70138
     },
     {
       "date": "2026-11-14",
@@ -714,6 +532,45 @@
       "origin": "datatourisme-vetted",
       "lat": 48.52763,
       "lon": -1.98204
+    },
+    {
+      "date": "2026-11-14",
+      "artist": "Concert : Étran de l’Aïr (rock touareg)",
+      "city": "Rostrenen",
+      "department": "22",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/cb716f38-dd6d-3805-8d78-ce6b2a7904f4",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.23665,
+      "lon": -3.31335
+    },
+    {
+      "date": "2026-11-14",
+      "artist": "Concert Jukebox",
+      "city": "Chinon",
+      "department": "37",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/15/63e4cdee-c435-3b1d-9ad2-472b3117cd7e",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.17759,
+      "lon": 0.26292
+    },
+    {
+      "date": "2026-11-14",
+      "artist": "Concert No One is inocent",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/981bef39-fcb8-3fe3-9779-0fffc7190db0",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38937,
+      "lon": -4.48402
     },
     {
       "date": "2026-11-14",
@@ -873,6 +730,19 @@
     },
     {
       "date": "2026-11-15",
+      "artist": "California party - Le retour !",
+      "city": "Pont-l'Abbé",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/6d8de6ea-8dae-32c0-a2cc-ca6c8ea059be",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.86887,
+      "lon": -4.22559
+    },
+    {
+      "date": "2026-11-15",
       "artist": "Concert Rock'Spell",
       "city": "Auriol",
       "department": "13",
@@ -911,6 +781,45 @@
       "lon": 5.40436
     },
     {
+      "date": "2026-11-17",
+      "artist": "Rodiathèque - American Stars & Bars (Vol. 1)",
+      "city": "Ornans",
+      "department": "25",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/00954fe7-380d-385c-9190-03250b088f18",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.1058,
+      "lon": 6.14608
+    },
+    {
+      "date": "2026-11-17",
+      "artist": "Tom McRae - Concert",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "alternative",
+      "source": "https://data.datatourisme.fr/38/23721e7f-f0ed-3eec-8895-a0296de1b525",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38928,
+      "lon": -4.48421
+    },
+    {
+      "date": "2026-11-18",
+      "artist": "Antti Paalanen - Techno à bretelles",
+      "city": "Trédrez-Locquémeau",
+      "department": "22",
+      "venue": "",
+      "genre": "metal",
+      "source": "https://data.datatourisme.fr/38/96650c3f-4153-3155-8ee3-e53466b84222",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.7127,
+      "lon": -3.56306
+    },
+    {
       "date": "2026-11-18",
       "artist": "Concert dessin animé - Animaux totem Cie KOHBA",
       "city": "Portets",
@@ -938,6 +847,45 @@
     },
     {
       "date": "2026-11-19",
+      "artist": "BIRDSTONE (RELEASE PARTY !)   MARAVE",
+      "city": "Joué-lès-Tours",
+      "department": "37",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/15/367d429c-96c6-39af-962b-01762d2caa68",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.33938,
+      "lon": 0.66303
+    },
+    {
+      "date": "2026-11-19",
+      "artist": "Bertrand Belin | Musique",
+      "city": "Fouesnant",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/d3abb85e-f261-395f-8ed1-2d1d8e4105e9",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.89528,
+      "lon": -4.01316
+    },
+    {
+      "date": "2026-11-19",
+      "artist": "Concert Three Birds Whisper — The Positive Rebellion Tour 2026",
+      "city": "Quetigny",
+      "department": "21",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/b8a4d6df-b951-3733-87e3-d42a54a1a101",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.31425,
+      "lon": 5.11274
+    },
+    {
+      "date": "2026-11-19",
       "artist": "Fethi Trab · Sirbey",
       "city": "Marseille 5e Arrondissement",
       "department": "13",
@@ -948,6 +896,32 @@
       "origin": "datatourisme-vetted",
       "lat": 43.29323,
       "lon": 5.39175
+    },
+    {
+      "date": "2026-11-19",
+      "artist": "Tyreek McDole + Lea Maria Fries & Julien Herné",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/2948f751-9914-3863-bbb5-bc529dc62a12",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.00733,
+      "lon": 0.19889
+    },
+    {
+      "date": "2026-11-19",
+      "artist": "[Concerts] Peter Kernel + Zato",
+      "city": "Chalon-sur-Saône",
+      "department": "71",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/6/ae38909e-cbdc-3ea7-8aef-ff012a1f07eb",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.77521,
+      "lon": 4.84551
     },
     {
       "date": "2026-11-20",
@@ -974,6 +948,19 @@
       "origin": "datatourisme-vetted",
       "lat": 43.75999,
       "lon": 1.04306
+    },
+    {
+      "date": "2026-11-20",
+      "artist": "Concert - DBIRD",
+      "city": "Pont-Croix",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/dbaaad15-770b-3e16-83a9-9a59a54a84f0",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.04228,
+      "lon": -4.48751
     },
     {
       "date": "2026-11-20",
@@ -1029,6 +1016,19 @@
     },
     {
       "date": "2026-11-20",
+      "artist": "Concert de Marion Roch",
+      "city": "Saint-Cosme-en-Vairais",
+      "department": "72",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/69210e1a-bdc0-3d9e-a266-2a198b2a3f2d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.27375,
+      "lon": 0.46011
+    },
+    {
+      "date": "2026-11-20",
       "artist": "Concert lecture - Mathias Malzieu",
       "city": "Colmar",
       "department": "68",
@@ -1052,6 +1052,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.1849,
       "lon": -1.86008
+    },
+    {
+      "date": "2026-11-20",
+      "artist": "Les Ramoneurs De Menhirs   Toxic Frogs",
+      "city": "Tours",
+      "department": "37",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/15/f9e6d488-8f8a-3b22-810e-a730c6cdb73e",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.38447,
+      "lon": 0.70138
     },
     {
       "date": "2026-11-20",
@@ -1094,6 +1107,19 @@
     },
     {
       "date": "2026-11-21",
+      "artist": "Concert - The Stranglers - COMPLET",
+      "city": "Penmarch",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/e2dc4d0c-3304-3196-9aeb-53701e5d087f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.81402,
+      "lon": -4.34027
+    },
+    {
+      "date": "2026-11-21",
       "artist": "Concert : Musik'Elles (Pop, Rock, Soul)",
       "city": "Romans-sur-Isère",
       "department": "26",
@@ -1117,6 +1143,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.8445,
       "lon": 7.63982
+    },
+    {
+      "date": "2026-11-21",
+      "artist": "Concert Thousand Degrees + Bonne Nuit",
+      "city": "Châteaulin",
+      "department": "29",
+      "venue": "",
+      "genre": "new wave",
+      "source": "https://data.datatourisme.fr/38/ea4756b8-4da6-3af4-800a-6cf10e337133",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.20724,
+      "lon": -4.06439
     },
     {
       "date": "2026-11-21",
@@ -1172,6 +1211,19 @@
     },
     {
       "date": "2026-11-21",
+      "artist": "Local Sessions",
+      "city": "Loches",
+      "department": "37",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/15/41239ee5-49f1-3a66-8e35-257cfd2c4e61",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.12286,
+      "lon": 0.99017
+    },
+    {
+      "date": "2026-11-21",
       "artist": "Martigues Metal Night",
       "city": "Martigues",
       "department": "13",
@@ -1195,6 +1247,32 @@
       "origin": "datatourisme-vetted",
       "lat": 43.88441,
       "lon": 4.85584
+    },
+    {
+      "date": "2026-11-21",
+      "artist": "Odyssée Live : une soirée de concerts et de musique festive à Louzy",
+      "city": "Louzy",
+      "department": "79",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/23/6d67c51d-e042-3fea-9422-d377323f1225",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.01264,
+      "lon": -0.1885
+    },
+    {
+      "date": "2026-11-21",
+      "artist": "Reverend Beat Man et Milan Slick",
+      "city": "Saint-Vallier",
+      "department": "71",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/275824d7-94a2-399b-823c-d3fe836049be",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.64176,
+      "lon": 4.36731
     },
     {
       "date": "2026-11-21",
@@ -1276,6 +1354,19 @@
     },
     {
       "date": "2026-11-22",
+      "artist": "Concert Claudine Lebègue et Pierre Luquet",
+      "city": "La Tagnière",
+      "department": "71",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/c5da3608-979b-3ae6-bfbd-644afa8ab8be",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.78846,
+      "lon": 4.21615
+    },
+    {
+      "date": "2026-11-22",
       "artist": "Dîner-concert \"Ember Swift\"",
       "city": "Genêts",
       "department": "50",
@@ -1286,6 +1377,32 @@
       "origin": "datatourisme-vetted",
       "lat": 48.68947,
       "lon": -1.48702
+    },
+    {
+      "date": "2026-11-22",
+      "artist": "Manu Lanvin (Blues, Booze and Rock'n'Roll !) / Crêpes",
+      "city": "Quimperlé",
+      "department": "29",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/93657f81-4313-375d-a91d-4f4b7d060012",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.87063,
+      "lon": -3.55285
+    },
+    {
+      "date": "2026-11-24",
+      "artist": "Brama",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/48f8765d-d08a-3097-be54-56cd49498fdd",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.00733,
+      "lon": 0.19889
     },
     {
       "date": "2026-11-24",
@@ -1311,6 +1428,19 @@
       "origin": "datatourisme-vetted",
       "lat": 49.89408,
       "lon": 2.29177
+    },
+    {
+      "date": "2026-11-25",
+      "artist": "[Apéro Concert] Dear Pola",
+      "city": "Chalon-sur-Saône",
+      "department": "71",
+      "venue": "",
+      "genre": "Indie",
+      "source": "https://data.datatourisme.fr/6/f0ff931f-f651-3303-bcf8-4d7727069a50",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.77513,
+      "lon": 4.84544
     },
     {
       "date": "2026-11-26",
@@ -1405,6 +1535,19 @@
     },
     {
       "date": "2026-11-26",
+      "artist": "FELDUP & THE SHOWERHEADS + TRAINFANTOME WHAT THE TEUF #6",
+      "city": "Tours",
+      "department": "37",
+      "venue": "",
+      "genre": "grunge",
+      "source": "https://data.datatourisme.fr/15/0e32bd99-6115-32ae-823e-cc79d002ff22",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.38447,
+      "lon": 0.70138
+    },
+    {
+      "date": "2026-11-26",
       "artist": "Geordie Greep",
       "city": "Marseille 5e Arrondissement",
       "department": "13",
@@ -1428,6 +1571,32 @@
       "origin": "datatourisme-vetted",
       "lat": 43.5844,
       "lon": 1.42761
+    },
+    {
+      "date": "2026-11-26",
+      "artist": "Les Négresses Vertes",
+      "city": "Morlaix",
+      "department": "29",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/03dce830-cc89-3475-a24c-a8fc5077276b",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.58332,
+      "lon": -3.83433
+    },
+    {
+      "date": "2026-11-26",
+      "artist": "ROBERT FINLEY",
+      "city": "Saint-Martin-des-Champs",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/82380b59-49a7-33c2-b350-a901853e9f2d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.57224,
+      "lon": -3.84767
     },
     {
       "date": "2026-11-26",
@@ -1509,6 +1678,19 @@
     },
     {
       "date": "2026-11-27",
+      "artist": "Concert - Red Cardell",
+      "city": "Pont-l'Abbé",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/7084f8e2-921a-3472-9a35-2ea0708bccd0",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.86789,
+      "lon": -4.22562
+    },
+    {
+      "date": "2026-11-27",
       "artist": "Concert : Alumine Live Métal Night",
       "city": "Sélestat",
       "department": "67",
@@ -1519,6 +1701,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.25692,
       "lon": 7.45197
+    },
+    {
+      "date": "2026-11-27",
+      "artist": "Concert PSYKUP- Heavy metal Français",
+      "city": "Quimperlé",
+      "department": "29",
+      "venue": "",
+      "genre": "metal",
+      "source": "https://data.datatourisme.fr/38/8aedb558-8423-3b66-8de7-c05ab1d007ae",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.86908,
+      "lon": -3.55272
     },
     {
       "date": "2026-11-27",
@@ -1638,6 +1833,58 @@
       "lon": -1.5016
     },
     {
+      "date": "2026-11-27",
+      "artist": "Shamane",
+      "city": "Trédrez-Locquémeau",
+      "department": "22",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/c63d319d-9672-36c6-8f97-92bdb4cbfc9e",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.7127,
+      "lon": -3.56306
+    },
+    {
+      "date": "2026-11-27",
+      "artist": "Soirée concerts grunge",
+      "city": "Valence",
+      "department": "26",
+      "venue": "",
+      "genre": "grunge",
+      "source": "https://data.datatourisme.fr/13/77b8fb9b-89ec-306e-b3db-bb6125da301b",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 44.9289,
+      "lon": 4.89179
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Animation musicale - Abysse",
+      "city": "Plouescat",
+      "department": "29",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/2646241c-9dc2-300b-b240-2d4114c8a241",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.65244,
+      "lon": -4.1933
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Back to 1990 La Petite Méchante",
+      "city": "Tours",
+      "department": "37",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/15/73ea9398-79e5-3ea6-85d5-781a9e73a7c5",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.38447,
+      "lon": 0.70138
+    },
+    {
       "date": "2026-11-28",
       "artist": "Bal swing",
       "city": "Marseille 14e Arrondissement",
@@ -1677,6 +1924,32 @@
     },
     {
       "date": "2026-11-28",
+      "artist": "Concert Tadaam",
+      "city": "Trémargat",
+      "department": "22",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/ceeca470-48a7-3dfa-8bfd-ca0165ccb05f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.33267,
+      "lon": -3.26854
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Concert de Mikaël Guerrand",
+      "city": "Audierne",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/7b27182d-e38a-3de6-81da-8eeab6ce76de",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.02446,
+      "lon": -4.56315
+    },
+    {
+      "date": "2026-11-28",
       "artist": "Concert violoncelles Duo Brady",
       "city": "Missillac",
       "department": "44",
@@ -1687,6 +1960,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.48153,
       "lon": -2.16001
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Jack et les Anémones  | showcase",
+      "city": "Fouesnant",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/c9ce5f6b-c2c5-3bcd-b732-7227fa0b07b0",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.89528,
+      "lon": -4.01316
     },
     {
       "date": "2026-11-28",
@@ -1726,6 +2012,19 @@
       "origin": "datatourisme-vetted",
       "lat": 44.47758,
       "lon": 1.40266
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Mary Bell + Prisonnier du temps",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/6f99da85-b262-3f9a-8055-64e80205b507",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38454,
+      "lon": -4.48227
     },
     {
       "date": "2026-11-28",
@@ -1793,6 +2092,45 @@
       "lon": 2.88212
     },
     {
+      "date": "2026-11-28",
+      "artist": "Verdun sur Rock III",
+      "city": "['Verdun-sur-le-Doubs', 'Verdun-Ciel']",
+      "department": "71",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/3bd7f2aa-9c96-3adf-b8bc-7e93b95119e7",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.88548,
+      "lon": 5.03957
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "[Concerts] Schlaasss + DuR ChaToN",
+      "city": "Chalon-sur-Saône",
+      "department": "71",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/6/39164906-6215-3435-8547-8a45428d6bf1",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.77532,
+      "lon": 4.84563
+    },
+    {
+      "date": "2026-11-29",
+      "artist": "Concert Pop Rock",
+      "city": "Vesoul",
+      "department": "70",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/61d82f47-0440-3c6b-8d36-15426e8abfce",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.62046,
+      "lon": 6.16094
+    },
+    {
       "date": "2026-11-29",
       "artist": "Futur 2000 avec The Wackids pour jeune public",
       "city": "Saint-André-de-Cubzac",
@@ -1833,6 +2171,19 @@
     },
     {
       "date": "2026-12-02",
+      "artist": "Beaune Blues Boogie Festival International 2026",
+      "city": "Beaune",
+      "department": "21",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/579bbb9a-5798-3aec-84c7-3da2d5f83342",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.02603,
+      "lon": 4.84
+    },
+    {
+      "date": "2026-12-02",
       "artist": "Concert - De Bowie à Bashung, en passant par…",
       "city": "Wintzenheim",
       "department": "68",
@@ -1843,6 +2194,71 @@
       "origin": "datatourisme-vetted",
       "lat": 48.07243,
       "lon": 7.29454
+    },
+    {
+      "date": "2026-12-02",
+      "artist": "Concert - OUAGA 2000 par Gurvan Loudoux, Amadou Diao & Evelyne Mambo",
+      "city": "Plonéour-Lanvern",
+      "department": "29",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/51d6f050-546d-3b37-9167-821bff0dbbd8",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.90313,
+      "lon": -4.28656
+    },
+    {
+      "date": "2026-12-02",
+      "artist": "Concerts/Shows de Sebastian Ellis Quartet et Nicolle Rochelle & The Dimes",
+      "city": "Beaune",
+      "department": "21",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/2b02860f-7c5d-34cc-a500-db0050ab6eab",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.02225,
+      "lon": 4.8397
+    },
+    {
+      "date": "2026-12-03",
+      "artist": "CONCERTS : CRAZY HOT BOOGIE NIGHT",
+      "city": "Beaune",
+      "department": "21",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/dd75aec5-afae-3dec-8b76-ae721cb2d11d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.0271,
+      "lon": 4.83958
+    },
+    {
+      "date": "2026-12-03",
+      "artist": "Leroy Se Meurt + Heimat",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/49/e66c162b-959c-3583-afff-9477f6b6437f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.00733,
+      "lon": 0.19889
+    },
+    {
+      "date": "2026-12-04",
+      "artist": "Jazz au Caveau : The Bartenders",
+      "city": "Plouescat",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/66bf4d41-2e98-3ea9-affa-35b4765adcc2",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.65783,
+      "lon": -4.17401
     },
     {
       "date": "2026-12-04",
@@ -1895,6 +2311,19 @@
       "origin": "datatourisme-vetted",
       "lat": 43.29323,
       "lon": 5.39175
+    },
+    {
+      "date": "2026-12-05",
+      "artist": "7Weeks + 1ère partie",
+      "city": "Chalon-sur-Saône",
+      "department": "71",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/6f4fe4c6-5818-319c-b224-7844f582f183",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.77489,
+      "lon": 4.84526
     },
     {
       "date": "2026-12-05",
@@ -2002,6 +2431,19 @@
     },
     {
       "date": "2026-12-05",
+      "artist": "Dîner Concert à la Comédie du Vin à Beaune",
+      "city": "Beaune",
+      "department": "21",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/2e30fe50-3684-3e92-a151-ed9d4ab7bd25",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.0223,
+      "lon": 4.84196
+    },
+    {
+      "date": "2026-12-05",
       "artist": "Feu d'artifice de Noël",
       "city": "La Turballe",
       "department": "44",
@@ -2012,6 +2454,32 @@
       "origin": "datatourisme-vetted",
       "lat": 47.34252,
       "lon": -2.50728
+    },
+    {
+      "date": "2026-12-05",
+      "artist": "Les Rockeurs ont du coeur",
+      "city": "Polisot",
+      "department": "10",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/3/871017d6-b3e6-3f4f-9e15-7bc2f8412a9d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.07315,
+      "lon": 4.38486
+    },
+    {
+      "date": "2026-12-05",
+      "artist": "Shaârghot + Solitaris",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/49/931777e2-aa10-3eaf-8a80-6b07a014c8d6",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.00733,
+      "lon": 0.19889
     },
     {
       "date": "2026-12-05",
@@ -2040,6 +2508,19 @@
     },
     {
       "date": "2026-12-09",
+      "artist": "Billie",
+      "city": "Dijon",
+      "department": "21",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/fdc1afd2-1d46-370b-a93b-9c49c8b548de",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.3238,
+      "lon": 5.03861
+    },
+    {
+      "date": "2026-12-09",
       "artist": "CINÉ CONCERT : MÉNILMONTANT & BRUMES D'AUTOMNE",
       "city": "Tournefeuille",
       "department": "31",
@@ -2063,6 +2544,32 @@
       "origin": "datatourisme-vetted",
       "lat": 43.54957,
       "lon": 1.48561
+    },
+    {
+      "date": "2026-12-10",
+      "artist": "So Floyd - From Pompeï to Pulse",
+      "city": "Lannion",
+      "department": "22",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/df4ca30b-fb9a-36fa-9784-8e55df1f2956",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.75847,
+      "lon": -3.46583
+    },
+    {
+      "date": "2026-12-10",
+      "artist": "Walid Ben Selim | Musique",
+      "city": "Fouesnant",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/d80bf9e6-9e6a-346c-b133-482ea6c17ade",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.89528,
+      "lon": -4.01316
     },
     {
       "date": "2026-12-11",
@@ -2118,6 +2625,19 @@
     },
     {
       "date": "2026-12-11",
+      "artist": "Jasmine Not Jafar   Sangris   Atomes   Rrose Sélavy Supergala Du 7880",
+      "city": "Tours",
+      "department": "37",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/15/417ad489-6ea5-330b-a5b5-ce457978de50",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.38447,
+      "lon": 0.70138
+    },
+    {
+      "date": "2026-12-11",
       "artist": "Les rockeurs ont du cœur",
       "city": "Brumath",
       "department": "67",
@@ -2141,6 +2661,32 @@
       "origin": "datatourisme-vetted",
       "lat": 43.88611,
       "lon": 4.8513
+    },
+    {
+      "date": "2026-12-11",
+      "artist": "Winecraft",
+      "city": "Ruffey-sur-Seille",
+      "department": "39",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/31b09615-9618-3411-a601-1b1e49752407",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.74347,
+      "lon": 5.49555
+    },
+    {
+      "date": "2026-12-12",
+      "artist": "Concert Three Birds Whisper — Positive Rebellion Tour 2026",
+      "city": "Dijon",
+      "department": "21",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/5349f0a5-5f3e-30b5-95ca-c28ed2ab2bbb",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.3238,
+      "lon": 5.03861
     },
     {
       "date": "2026-12-12",
@@ -2170,6 +2716,19 @@
     },
     {
       "date": "2026-12-12",
+      "artist": "Keren Ann +Mathis Akengin - Concert Musiques Actuelles",
+      "city": "Arc-et-Senans",
+      "department": "25",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/32a002ed-691d-3395-9c61-bb4ec19684ef",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.0351,
+      "lon": 5.76731
+    },
+    {
+      "date": "2026-12-12",
       "artist": "Les Fatals Picards",
       "city": "Marseille 6e Arrondissement",
       "department": "13",
@@ -2192,6 +2751,32 @@
       "tickets": "",
       "verified": true,
       "id": 16203873
+    },
+    {
+      "date": "2026-12-12",
+      "artist": "Passionate et Superflèche",
+      "city": "Arbois",
+      "department": "39",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/165d3106-3ae4-3a52-ae29-cdc517a5a068",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.90377,
+      "lon": 5.77109
+    },
+    {
+      "date": "2026-12-12",
+      "artist": "🎶 Spectacle de Horizontal Francis",
+      "city": "Lannilis",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/72f8b2a0-d77a-3f58-8d8b-63a601ec466f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.56937,
+      "lon": -4.51932
     },
     {
       "date": "2026-12-13",
@@ -2402,6 +2987,45 @@
       "lon": 4.89264
     },
     {
+      "date": "2026-12-19",
+      "artist": "RAMDAM en concert",
+      "city": "Arc-et-Senans",
+      "department": "25",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/fbddfff6-1596-379a-9fff-68ea5c5cde32",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.03348,
+      "lon": 5.78298
+    },
+    {
+      "date": "2026-12-19",
+      "artist": "[Teuf à paillettes] Par.Sek + Païkan + Stereo Bom",
+      "city": "Chalon-sur-Saône",
+      "department": "71",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/6/97c29c01-3901-3cca-8eef-a9b9f2544a2a",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.77524,
+      "lon": 4.84563
+    },
+    {
+      "date": "2026-12-30",
+      "artist": "Spectacle : \"Mystère et boule de gomme\"",
+      "city": "Plouguerneau",
+      "department": "29",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/85e3de52-ac2c-34cc-af35-6928f8cc790c",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.60639,
+      "lon": -4.51088
+    },
+    {
       "date": "2027-01-06",
       "artist": "ONE NIGHT OF QUEEN WEMBLEY 86",
       "city": "Narbonne",
@@ -2507,6 +3131,19 @@
     },
     {
       "date": "2027-01-15",
+      "artist": "SO FLOYD - FROM POMPEII TO PULSE",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/64059f97-8c88-3724-8104-b26ed2862909",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.9556,
+      "lon": 0.2227
+    },
+    {
+      "date": "2027-01-15",
       "artist": "Trio Alfred Yellow",
       "city": "Marseille 2e Arrondissement",
       "department": "13",
@@ -2530,6 +3167,19 @@
       "origin": "datatourisme-vetted",
       "lat": 49.89905,
       "lon": 2.27528
+    },
+    {
+      "date": "2027-01-16",
+      "artist": "Rendre à César",
+      "city": "Crozon",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/4465ef06-80c2-31e4-a9e8-e800c2d72bdf",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.24561,
+      "lon": -4.48861
     },
     {
       "date": "2027-01-17",
@@ -2649,6 +3299,32 @@
       "lon": 5.36792
     },
     {
+      "date": "2027-01-23",
+      "artist": "Tout le live 2027",
+      "city": "Plabennec",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/c3b16d66-a8ee-3306-9753-72aa0c3c2094",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.50349,
+      "lon": -4.42586
+    },
+    {
+      "date": "2027-01-24",
+      "artist": "Aldebert",
+      "city": "Lannion",
+      "department": "22",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/ea554792-6098-3845-84a2-029b0603dbf6",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.75847,
+      "lon": -3.46583
+    },
+    {
       "date": "2027-01-24",
       "artist": "Gorfou-Tornade",
       "city": "Marseille 7e Arrondissement",
@@ -2715,6 +3391,19 @@
     },
     {
       "date": "2027-01-29",
+      "artist": "Body Horror",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "post-punk",
+      "source": "https://data.datatourisme.fr/49/44ef02ec-3c47-3b76-bd79-664c6c1523bf",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.00743,
+      "lon": 0.19925
+    },
+    {
+      "date": "2027-01-29",
       "artist": "CONCERT : Johnny Jane - La Lune des Pirates",
       "city": "Amiens",
       "department": "80",
@@ -2753,6 +3442,19 @@
       "lon": 1.48561
     },
     {
+      "date": "2027-01-29",
+      "artist": "SARAH MCCLOY TRIO",
+      "city": "Saint-Martin-des-Champs",
+      "department": "29",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/8ed23674-7b50-348c-b5de-ee95d8a0bdf3",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.57224,
+      "lon": -3.84767
+    },
+    {
       "date": "2027-01-30",
       "artist": "Concert - Easy Cure, tribute to The Cure",
       "city": "Colmar",
@@ -2764,6 +3466,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.07578,
       "lon": 7.37105
+    },
+    {
+      "date": "2027-01-31",
+      "artist": "Birds On A Wire - Concert Musiques Actuelles",
+      "city": "Arc-et-Senans",
+      "department": "25",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/764e4464-5370-3c7f-887d-c4e0c4519831",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.03225,
+      "lon": 5.77828
     },
     {
       "date": "2027-02-03",
@@ -2792,6 +3507,19 @@
       "lon": 1.48561
     },
     {
+      "date": "2027-02-05",
+      "artist": "Fange + Deûle",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "metal",
+      "source": "https://data.datatourisme.fr/49/d6b699b5-770d-37c3-8ecd-cfe2a56ff61d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.00743,
+      "lon": 0.19925
+    },
+    {
       "date": "2027-02-06",
       "artist": "Bertrand Belin chanson",
       "city": "Pontchâteau",
@@ -2803,6 +3531,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.43762,
       "lon": -2.09084
+    },
+    {
+      "date": "2027-02-06",
+      "artist": "Concert TRIGGERFINGER",
+      "city": "Morlaix",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/20948bc8-f2b7-3ffb-b9db-cd850756eed3",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.58367,
+      "lon": -3.83463
     },
     {
       "date": "2027-02-09",
@@ -2857,6 +3598,19 @@
       "lon": 7.79259
     },
     {
+      "date": "2027-02-11",
+      "artist": "La tournée du coeur : Avec Cachemire, La Phaze & Bob’s not Dead !",
+      "city": "Morlaix",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/f4aac167-8574-3757-aebd-bf618c58091d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.58332,
+      "lon": -3.83433
+    },
+    {
       "date": "2027-02-12",
       "artist": "2 Gars & 1 Indien",
       "city": "Marseille 2e Arrondissement",
@@ -2897,6 +3651,19 @@
     },
     {
       "date": "2027-02-13",
+      "artist": "Concert - Kannibal Swing",
+      "city": "Lannilis",
+      "department": "29",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/c0282885-e34c-3491-a40f-417aeed837eb",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.56937,
+      "lon": -4.51932
+    },
+    {
+      "date": "2027-02-13",
       "artist": "Passion Coco",
       "city": "Chaumes-en-Retz",
       "department": "44",
@@ -2933,6 +3700,19 @@
       "origin": "datatourisme-vetted",
       "lat": 46.35404,
       "lon": -1.25345
+    },
+    {
+      "date": "2027-02-18",
+      "artist": "Concert : En Apparence",
+      "city": "Chaumont",
+      "department": "52",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/48/bd4a2d5b-b3c4-32c7-bbe6-d7830e591c49",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.10719,
+      "lon": 5.13655
     },
     {
       "date": "2027-02-19",
@@ -3000,6 +3780,19 @@
       "lon": 3.02333
     },
     {
+      "date": "2027-02-27",
+      "artist": "Concert  Howlin' Jaws & Komodor",
+      "city": "Penmarch",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/891f01b4-86bb-33fe-bdfd-cb9fb743d706",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.8135,
+      "lon": -4.33799
+    },
+    {
       "date": "2027-03-03",
       "artist": "Concert – Bézèd’H",
       "city": "Wintzenheim",
@@ -3063,6 +3856,19 @@
       "origin": "datatourisme-vetted",
       "lat": 50.69069,
       "lon": 3.16348
+    },
+    {
+      "date": "2027-03-06",
+      "artist": "Aldebert",
+      "city": "Besançon",
+      "department": "25",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/780063ca-ae21-3091-8e84-a9b1ad4bcf4b",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.2239,
+      "lon": 5.97919
     },
     {
       "date": "2027-03-06",
@@ -3156,6 +3962,32 @@
       "lon": 5.36656
     },
     {
+      "date": "2027-03-13",
+      "artist": "Légende Balavoine",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/49/dbc0038f-4fd3-3402-b972-d0d973b76834",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.95718,
+      "lon": 0.2015
+    },
+    {
+      "date": "2027-03-14",
+      "artist": "Captain Parade",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "Punk",
+      "source": "https://data.datatourisme.fr/49/10ded290-4056-3300-8006-47852c9a01d3",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.00733,
+      "lon": 0.19889
+    },
+    {
       "date": "2027-03-18",
       "artist": "Conférence et musique avec Philippe Manoeuvre",
       "city": "Pornic",
@@ -3167,6 +3999,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.11609,
       "lon": -2.09212
+    },
+    {
+      "date": "2027-03-18",
+      "artist": "Mountain Men | Musique",
+      "city": "Fouesnant",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/e61e3265-83e3-324e-8b41-a7a3baaab84d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.89528,
+      "lon": -4.01316
     },
     {
       "date": "2027-03-19",
@@ -3234,6 +4079,19 @@
       "lon": 0.52669
     },
     {
+      "date": "2027-03-21",
+      "artist": "Concert Eric Frasiak",
+      "city": "Ruffey-sur-Seille",
+      "department": "39",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/cb4fffad-7320-3468-ab6b-258a56bd3250",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.74416,
+      "lon": 5.49434
+    },
+    {
       "date": "2027-03-24",
       "artist": "Watt - Bertrand Belin - W Spectacle",
       "city": "Granville",
@@ -3245,6 +4103,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.83878,
       "lon": -1.59869
+    },
+    {
+      "date": "2027-03-25",
+      "artist": "Jahneration",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "Punk",
+      "source": "https://data.datatourisme.fr/49/a5d34254-2c31-36b7-ad50-66bee60b8905",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.95975,
+      "lon": 0.20228
     },
     {
       "date": "2027-03-26",
@@ -3312,6 +4183,32 @@
       "lon": -1.33044
     },
     {
+      "date": "2027-04-03",
+      "artist": "Légende Balavoine",
+      "city": "Chalon-sur-Saône",
+      "department": "71",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/88f14539-a087-33fc-97e4-3977abd2a41e",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.78667,
+      "lon": 4.859
+    },
+    {
+      "date": "2027-04-04",
+      "artist": "Kaptain Bando",
+      "city": "Ploulec'h",
+      "department": "22",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/3f664ba1-d5d2-344c-94ad-65ff37fd9662",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.7202,
+      "lon": -3.49847
+    },
+    {
       "date": "2027-04-06",
       "artist": "Musique : Bowie symphonic",
       "city": "Évreux",
@@ -3323,6 +4220,19 @@
       "origin": "datatourisme-vetted",
       "lat": 49.02002,
       "lon": 1.13877
+    },
+    {
+      "date": "2027-04-07",
+      "artist": "Rodrigo y Gabriela",
+      "city": "Dijon",
+      "department": "21",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/c604f34c-3481-3781-9542-4e1f9599190f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.3238,
+      "lon": 5.03861
     },
     {
       "date": "2027-04-08",
@@ -3352,6 +4262,19 @@
     },
     {
       "date": "2027-04-09",
+      "artist": "Concert - Wolfgang Valbrun",
+      "city": "Landerneau",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/1d80aa3d-8d75-33f3-90da-4113fecebe9f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.44898,
+      "lon": -4.25501
+    },
+    {
+      "date": "2027-04-09",
       "artist": "Concert de métal : Ultra Vomit à La Prade",
       "city": "Pradines",
       "department": "46",
@@ -3375,6 +4298,19 @@
       "origin": "datatourisme-vetted",
       "lat": 46.9427,
       "lon": -1.4999
+    },
+    {
+      "date": "2027-04-11",
+      "artist": "Hubert-Felix Thiefaine",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/cfee4415-7ccc-392c-bc9c-18b006e3117d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.95541,
+      "lon": 0.22437
     },
     {
       "date": "2027-04-15",
@@ -3401,6 +4337,19 @@
       "origin": "datatourisme-vetted",
       "lat": 43.2965,
       "lon": 5.37199
+    },
+    {
+      "date": "2027-04-16",
+      "artist": "BOXING BANJO",
+      "city": "Saint-Martin-des-Champs",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/aa57f16d-6889-35fc-841e-69562cd68d82",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.57224,
+      "lon": -3.84767
     },
     {
       "date": "2027-04-16",
@@ -3455,6 +4404,19 @@
       "lon": -1.16876
     },
     {
+      "date": "2027-04-17",
+      "artist": "Vanupié",
+      "city": "Crozon",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/2df1ec0f-f8dc-3274-a235-dafceb47c539",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.24765,
+      "lon": -4.49386
+    },
+    {
       "date": "2027-04-23",
       "artist": "Trio Alfred Yellow",
       "city": "Marseille 2e Arrondissement",
@@ -3481,6 +4443,19 @@
       "lon": 3.08164
     },
     {
+      "date": "2027-05-06",
+      "artist": "Rituel Noir - Week-end de rassemblement interculturel",
+      "city": "Querrien",
+      "department": "29",
+      "venue": "",
+      "genre": "Metal",
+      "source": "https://data.datatourisme.fr/38/fa73ab36-7b95-34de-9601-f6b11ce6ed38",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.93768,
+      "lon": -3.5473
+    },
+    {
       "date": "2027-05-20",
       "artist": "Tranzistor, l'émission live !",
       "city": "Château-Gontier-sur-Mayenne",
@@ -3492,6 +4467,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.82862,
       "lon": -0.6976
+    },
+    {
+      "date": "2027-05-21",
+      "artist": "Courts Of Chaos Festival - Heavy metal",
+      "city": "Plozévet",
+      "department": "29",
+      "venue": "",
+      "genre": "metal",
+      "source": "https://data.datatourisme.fr/38/a5e2fbe7-9551-3b32-a598-17206207409a",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.98555,
+      "lon": -4.41995
     },
     {
       "date": "2027-05-22",
@@ -3546,6 +4534,19 @@
       "lon": -2.74416
     },
     {
+      "date": "2027-05-29",
+      "artist": "Concert - Kaolila",
+      "city": "Lannilis",
+      "department": "29",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/44b96a6f-1298-3979-96cc-972bc1874300",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.56937,
+      "lon": -4.51932
+    },
+    {
       "date": "2027-06-19",
       "artist": "FÊTE DE LA MUSIQUE",
       "city": "Château-Gontier-sur-Mayenne",
@@ -3573,6 +4574,19 @@
     },
     {
       "date": "2027-06-21",
+      "artist": "Fête de la Musique à la Commanderie d'Arville",
+      "city": "Couëtron-au-Perche",
+      "department": "41",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/15/cb8a5911-8435-3cb1-9cfa-360dfe720aa6",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.06382,
+      "lon": 0.94782
+    },
+    {
+      "date": "2027-06-21",
       "artist": "La fête de la musique",
       "city": "Arles",
       "department": "13",
@@ -3596,6 +4610,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.07373,
       "lon": -0.77575
+    },
+    {
+      "date": "2027-07-03",
+      "artist": "Douric en fête",
+      "city": "Concarneau",
+      "department": "29",
+      "venue": "",
+      "genre": "indie",
+      "source": "https://data.datatourisme.fr/38/9ccde4d1-f221-3c8b-a79e-ff0e37636a53",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.86399,
+      "lon": -3.89773
     },
     {
       "date": "2027-07-04",
@@ -3653,6 +4680,45 @@
       "lon": 5.36656
     },
     {
+      "date": "2027-09-26",
+      "artist": "One Night of Queen - WEMBLEY 86",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/cf25e6c8-d428-3e94-a616-41270be9249e",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.95675,
+      "lon": 0.22645
+    },
+    {
+      "date": "2027-11-13",
+      "artist": "Jain Soul System Tour",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/f80c1801-5bb6-3262-8ae2-08211b5675ca",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.95763,
+      "lon": 0.20306
+    },
+    {
+      "date": "2027-12-04",
+      "artist": "The 5 Rosies - A Tribute to AC/DC",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "HARD ROCK",
+      "source": "https://data.datatourisme.fr/49/3b11dd0b-a67c-3a35-9b44-853cc41b5987",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.95718,
+      "lon": 0.2015
+    },
+    {
       "date": "2027-12-07",
       "artist": "BRUCE DICKINSON + EVERGREY",
       "city": "Lyon",
@@ -3693,6 +4759,32 @@
       "id": 4,
       "lat": 48.8566,
       "lon": 2.3522
+    },
+    {
+      "date": "2027-12-10",
+      "artist": "The 5 Rosies",
+      "city": "Besançon",
+      "department": "25",
+      "venue": "",
+      "genre": "hard rock",
+      "source": "https://data.datatourisme.fr/6/825fd8e6-2513-3036-88b2-36e6b726a9d3",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.22263,
+      "lon": 5.98042
+    },
+    {
+      "date": "2027-12-11",
+      "artist": "Tribute Phil Collins Genesis",
+      "city": "Le Mans",
+      "department": "72",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/2a6252aa-f578-341e-a479-8d28337070e6",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.95763,
+      "lon": 0.20306
     }
   ]
 }
