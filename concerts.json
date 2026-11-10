@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09T16:39:11.233465+00:00",
+  "updated": "2026-11-10T15:02:20.614037+00:00",
   "events": [
     {
       "date": "2026-11-10",
@@ -4402,6 +4402,19 @@
       "origin": "datatourisme-vetted",
       "lat": 45.1449,
       "lon": 0.52669
+    },
+    {
+      "date": "2027-05-22",
+      "artist": "Les Vulves assassines",
+      "city": "Marseille 6e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/58/c760b023-ea58-37d5-805a-b305b0c1c5a7",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.2942,
+      "lon": 5.38351
     },
     {
       "date": "2027-05-23",
