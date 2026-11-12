@@ -1,32 +1,6 @@
 {
-  "updated": "2026-11-11T14:34:02.254943+00:00",
+  "updated": "2026-11-12T15:27:09.250823+00:00",
   "events": [
-    {
-      "date": "2026-11-11",
-      "artist": "Jam-ais fini !",
-      "city": "Marseille 5e Arrondissement",
-      "department": "13",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/58/062815f9-89aa-3575-a097-4d818d7e3757",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.29323,
-      "lon": 5.39175
-    },
-    {
-      "date": "2026-11-11",
-      "artist": "Karaoké du Spot",
-      "city": "Biscarrosse",
-      "department": "40",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/23/3e6e507c-894f-36ae-a1f3-e938c0255617",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 44.39757,
-      "lon": -1.16173
-    },
     {
       "date": "2026-11-12",
       "artist": "CONCERT : Violent Sadie Mode - La Lune des Pirates",
@@ -104,6 +78,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.18912,
       "lon": 7.33918
+    },
+    {
+      "date": "2026-11-13",
+      "artist": "CONCERT : RAVAGE CLUB",
+      "city": "Abbaretz",
+      "department": "44",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/49/ba5e6cec-4a6b-3532-86e2-12715c285f56",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.55278,
+      "lon": -1.53364
     },
     {
       "date": "2026-11-13",
@@ -299,6 +286,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.38447,
       "lon": 0.70138
+    },
+    {
+      "date": "2026-11-14",
+      "artist": "Animation - DJ Set Fred Lostsoul",
+      "city": "Plérin",
+      "department": "22",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/170baab4-1daa-358d-93b0-30556ae8b232",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.52517,
+      "lon": -2.74255
     },
     {
       "date": "2026-11-14",
@@ -1769,6 +1769,19 @@
     },
     {
       "date": "2026-11-28",
+      "artist": "Concert \" le magasin des possibles accueil Stuart O'connor!\"",
+      "city": "Semur-en-Brionnais",
+      "department": "71",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/14cb3528-448d-3f90-84e1-6918fef0f6b5",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.26279,
+      "lon": 4.08884
+    },
+    {
+      "date": "2026-11-28",
       "artist": "Concert Tadaam",
       "city": "Trémargat",
       "department": "22",
@@ -2506,6 +2519,19 @@
       "origin": "datatourisme-vetted",
       "lat": 43.88611,
       "lon": 4.8513
+    },
+    {
+      "date": "2026-12-11",
+      "artist": "Soirée Musique folk - CORBBEL / Nick Wheeldon & The living paintings",
+      "city": "Le Mené",
+      "department": "22",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/367b93f5-e18e-3637-9276-a275b3294a78",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.29811,
+      "lon": -2.51908
     },
     {
       "date": "2026-12-11",
@@ -3935,6 +3961,19 @@
       "origin": "datatourisme-vetted",
       "lat": 46.74416,
       "lon": 5.49434
+    },
+    {
+      "date": "2027-03-24",
+      "artist": "Concert à l'Archipel : Watt - Bertrand Belin - W Spectacle",
+      "city": "Granville",
+      "department": "50",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/30/5d95fc96-5abf-318f-ae9f-771e5db58c8e",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.83878,
+      "lon": -1.59869
     },
     {
       "date": "2027-03-24",
