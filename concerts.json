@@ -1,58 +1,6 @@
 {
-  "updated": "2026-11-12T15:27:09.250823+00:00",
+  "updated": "2026-11-13T14:43:35.360991+00:00",
   "events": [
-    {
-      "date": "2026-11-12",
-      "artist": "CONCERT : Violent Sadie Mode - La Lune des Pirates",
-      "city": "Amiens",
-      "department": "80",
-      "venue": "",
-      "genre": "Punk",
-      "source": "https://data.datatourisme.fr/28/57f76c85-3ce5-3cbf-83b2-9d6902964e1c",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 49.89905,
-      "lon": 2.27528
-    },
-    {
-      "date": "2026-11-12",
-      "artist": "Concert : SAEZ, la tournée des maudits",
-      "city": "Amiens",
-      "department": "80",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/28/fd23eba1-c300-3967-9648-1ab94d33d237",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 49.89582,
-      "lon": 2.2743
-    },
-    {
-      "date": "2026-11-12",
-      "artist": "Concert : Zoe Heselton & Sister outsider",
-      "city": "Mulhouse",
-      "department": "68",
-      "venue": "",
-      "genre": "post-punk",
-      "source": "https://data.datatourisme.fr/5/2593e38c-cdad-3236-8f36-648344e994c5",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 47.75357,
-      "lon": 7.34951
-    },
-    {
-      "date": "2026-11-12",
-      "artist": "WOMENIZER",
-      "city": "Agen",
-      "department": "47",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/23/11e1b07a-bab4-3188-ba33-3e1e2113987d",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 44.20574,
-      "lon": 0.62716
-    },
     {
       "date": "2026-11-13",
       "artist": "2 Gars & 1 Indien",
@@ -416,6 +364,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.38937,
       "lon": -4.48402
+    },
+    {
+      "date": "2026-11-14",
+      "artist": "Concert Pop - Rock",
+      "city": "Draché",
+      "department": "37",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/15/d00d4bc1-1860-3d8a-a700-df63f5361b68",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.05381,
+      "lon": 0.62626
     },
     {
       "date": "2026-11-14",
@@ -1692,6 +1653,19 @@
     },
     {
       "date": "2026-11-27",
+      "artist": "Soirée \"Sortie album\" Helgä",
+      "city": "Morlaix",
+      "department": "29",
+      "venue": "",
+      "genre": "ROCK",
+      "source": "https://data.datatourisme.fr/38/7ad282cc-aefa-3092-a7a6-3b92b21b1449",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.57612,
+      "lon": -3.82482
+    },
+    {
+      "date": "2026-11-27",
       "artist": "Soirée concerts grunge",
       "city": "Valence",
       "department": "26",
@@ -1779,6 +1753,32 @@
       "origin": "datatourisme-vetted",
       "lat": 46.26279,
       "lon": 4.08884
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Concert - Little bob blues bastards (Rock)",
+      "city": "Quimperlé",
+      "department": "29",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/07dcb52e-4c88-30d3-80c8-54e08bd22f5a",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.86908,
+      "lon": -3.55272
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Concert 40 ans Trock’Son !  Après plusieurs dizaines de concerts en groupe, et des passag",
+      "city": "Morlaix",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/5cb0811b-6647-3844-b50f-0992ffc086d6",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.57612,
+      "lon": -3.82482
     },
     {
       "date": "2026-11-28",
@@ -2687,6 +2687,19 @@
       "origin": "datatourisme-vetted",
       "lat": 44.4548,
       "lon": 1.43823
+    },
+    {
+      "date": "2026-12-16",
+      "artist": "Ciné-Concert MONA KAZU",
+      "city": "Besançon",
+      "department": "25",
+      "venue": "",
+      "genre": "indie",
+      "source": "https://data.datatourisme.fr/6/f5427b67-b28a-3dd7-8748-66b29b2fd44e",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.24187,
+      "lon": 6.0207
     },
     {
       "date": "2026-12-16",
@@ -3664,6 +3677,19 @@
       "lon": -4.33799
     },
     {
+      "date": "2027-02-27",
+      "artist": "Mon Starmania – Fabienne Thibeault et sa troupe",
+      "city": "La Roche-Posay",
+      "department": "86",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/23/f10f12a5-a6e1-3379-a24f-7efc403c7251",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.79438,
+      "lon": 0.79699
+    },
+    {
       "date": "2027-03-03",
       "artist": "Concert – Bézèd’H",
       "city": "Wintzenheim",
@@ -4522,6 +4548,19 @@
       "lon": -3.89773
     },
     {
+      "date": "2027-07-03",
+      "artist": "Tribute Téléphone – Jean-Louis & Co’",
+      "city": "La Roche-Posay",
+      "department": "86",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/23/353f83c2-8ca4-3d68-b996-227c8b19c7b1",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.79438,
+      "lon": 0.79699
+    },
+    {
       "date": "2027-07-04",
       "artist": "MUSE · MAIN SQUARE FESTIVAL",
       "city": "Arras",
@@ -4534,6 +4573,19 @@
       "id": 7,
       "lat": 50.291,
       "lon": 2.777
+    },
+    {
+      "date": "2027-07-09",
+      "artist": "Festival Rock Land",
+      "city": "Clohars-Carnoët",
+      "department": "29",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/402f2840-c3d9-34ed-8fd0-af3843cc1880",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.76638,
+      "lon": -3.55041
     },
     {
       "date": "2027-07-12",
