@@ -192,7 +192,7 @@ consecutiveFours=(line===4||squareBonus)?(hauntedBonus?0:consecutiveFours+1):0;
 if(hauntedBonus){score+=2500;hauntedScream();vibe([50,30,90]);eventFlash('CRI HANTÉ +2500','mega')}
 updateBest();if(hauntedBonus)message('👻 DOUBLE ATOMIC RIFF ! +850 +2500 POINTS !',true);else if(line>=5)message('☠️ LE TRAIN DE LA MORT +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else if(line===4||squareBonus)message('☢️ ATOMIC RIFF +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else message(chain>1?'🤘 COMBO x'+chain+'  +'+points:'💀 RIFF +'+points,chain>1);removed.forEach(i=>board[i]=null);gravity();render();await wait(chain>1?155:110);if(line<4&&!squareBonus)maybeExtraBall(m.length,chain);checkLevel();if(chain>=1)gainSix();render()}if(chain>=18&&matches().length){fillFresh();ensurePlayable();render();message('⚡ TEMPÊTE DE RIFFS ! GRILLE REMIXÉE',true)}if(assistFiveOpportunity())render();return chain}
 function assistFiveOpportunity(){
- if(!privilegedRiffAssist()||Math.random()>=.65||matches().length)return false;
+ if(!privilegedRiffAssist()||Math.random()>=.325||matches().length)return false;
  const original=board.slice();
  for(let attempt=0;attempt<80;attempt++){
   board=original.slice();
