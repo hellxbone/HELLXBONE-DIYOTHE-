@@ -190,7 +190,25 @@ async function resolve(){let chain=0;while(chain<18){const m=matches();if(!m.len
 const hauntedBonus=(line===4||squareBonus)&&consecutiveFours===1;
 consecutiveFours=(line===4||squareBonus)?(hauntedBonus?0:consecutiveFours+1):0;
 if(hauntedBonus){score+=2500;hauntedScream();vibe([50,30,90]);eventFlash('CRI HANTÉ +2500','mega')}
-updateBest();if(hauntedBonus)message('👻 DOUBLE ATOMIC RIFF ! +850 +2500 POINTS !',true);else if(line>=5)message('☠️ LE TRAIN DE LA MORT +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else if(line===4||squareBonus)message('☢️ ATOMIC RIFF +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else message(chain>1?'🤘 COMBO x'+chain+'  +'+points:'💀 RIFF +'+points,chain>1);removed.forEach(i=>board[i]=null);gravity();render();await wait(chain>1?155:110);if(line<4&&!squareBonus)maybeExtraBall(m.length,chain);checkLevel();if(chain>=1)gainSix();render()}if(chain>=18&&matches().length){fillFresh();ensurePlayable();render();message('⚡ TEMPÊTE DE RIFFS ! GRILLE REMIXÉE',true)}return chain}
+updateBest();if(hauntedBonus)message('👻 DOUBLE ATOMIC RIFF ! +850 +2500 POINTS !',true);else if(line>=5)message('☠️ LE TRAIN DE LA MORT +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else if(line===4||squareBonus)message('☢️ ATOMIC RIFF +'+points+' POINTS'+(appliedMultiplier>1?' (×'+appliedMultiplier+')':'')+' / +'+awarded+' BALLES !',true);else message(chain>1?'🤘 COMBO x'+chain+'  +'+points:'💀 RIFF +'+points,chain>1);removed.forEach(i=>board[i]=null);gravity();render();await wait(chain>1?155:110);if(line<4&&!squareBonus)maybeExtraBall(m.length,chain);checkLevel();if(chain>=1)gainSix();render()}if(chain>=18&&matches().length){fillFresh();ensurePlayable();render();message('⚡ TEMPÊTE DE RIFFS ! GRILLE REMIXÉE',true)}if(assistFiveOpportunity())render();return chain}
+function assistFiveOpportunity(){
+ if(!privilegedRiffAssist()||Math.random()>=.65||matches().length)return false;
+ const original=board.slice();
+ for(let attempt=0;attempt<80;attempt++){
+  board=original.slice();
+  const horizontal=Math.random()<.5;
+  const r=Math.floor(Math.random()*(horizontal?ROWS:ROWS-4)),c=Math.floor(Math.random()*(horizontal?COLS-4:COLS));
+  const gap=1+Math.floor(Math.random()*3),gr=r+(horizontal?0:gap),gc=c+(horizontal?gap:0);
+  const side=(horizontal?gr:gc)===0?1:(horizontal?gr:gc)===(horizontal?ROWS:COLS)-1?-1:(Math.random()<.5?1:-1);
+  const donor=idx(gr+(horizontal?side:0),gc+(horizontal?0:side)),hole=idx(gr,gc);
+  const symbol=ICONS[Math.floor(Math.random()*ICONS.length)];
+  for(let k=0;k<5;k++)if(k!==gap)board[idx(r+(horizontal?0:k),c+(horizontal?k:0))]=symbol;
+  board[donor]=symbol;
+  if(board[hole]===symbol)board[hole]=ICONS[(ICONS.indexOf(symbol)+1)%ICONS.length];
+  if(!matches().length)return true;
+ }
+ board=original;return false;
+}
 function registerBadMove(){const now=Date.now();badMoves=now-lastBadAt<5000?badMoves+1:1;lastBadAt=now;if(badMoves>=3){badMoves=0;sfx('tilt');vibe([90,50,120]);eventFlash('TILT !','tilt');message('☠️ TILT ! Calme le flipper…',true);return true}return false}
 async function trySwap(a,b){if(busy||gameLost||moves<=0||!adjacent(a,b))return;busy=true;sfx('swap');swap(a,b);render();const m=matches();if(!m.length){if(!privilegedRiffAssist()){consecutiveFours=0;streak=0;multiplier=1}await wait(110);swap(a,b);moves--;selected=null;render();sfx('bad');vibe(30);const tilted=registerBadMove();if(!tilted)message('Pas de riff ici… −1 balle');if(tilted)await wait(650);if(moves<=0){leaderboardEnd();message('☠️ FIN DU SET — '+score+' POINTS',true);sfx('end')}else finishIfBlocked();busy=false;return}badMoves=0;moves--;selected=null;combo=1;streak++;const previousMultiplier=multiplier;multiplier=streak>=12?5:streak>=8?3:streak>=5?2:1;if(multiplier>previousMultiplier){eventFlash('MULTIPLICATEUR ×'+multiplier+' !','mega');message('🔥 MULTIPLICATEUR ×'+multiplier+' ACTIVÉ !',true);vibe([20,30,50])}render();await resolve();if(moves<=0){leaderboardEnd();message('☠️ FIN DU SET — '+score+' POINTS',true);sfx('end');vibe([40,60,40])}else if(!finishIfBlocked()&&level>=5)message('🔥 MODE CHAOS — NIVEAU '+level+' !',true);busy=false}
 function cellClick(e){const btn=e.target.closest('.riff-cell');if(!btn||busy||gameLost||moves<=0)return;unlockAudio();sfx('tap');const i=Number(btn.dataset.i);if(selected===null){selected=i;render();return}if(selected===i){selected=null;render();return}if(adjacent(selected,i)){const a=selected;trySwap(a,i)}else{selected=i;render()}}
