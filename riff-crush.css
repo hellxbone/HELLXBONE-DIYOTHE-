@@ -594,3 +594,42 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 }
 #hellx-riff-crush .riff-actions{top:79%!important}
 #hellx-riff-crush .riff-cell{border-radius:6px!important}
+
+
+/* INFERNO V3 — responsive live game, controls and particle ambience. */
+#hellx-riff-crush{isolation:isolate}
+#hellx-riff-crush::before,#hellx-riff-crush::after{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+ background-image:radial-gradient(circle,#ffcf6b 0 1px,transparent 2px),radial-gradient(circle,#ff4d0a 0 2px,transparent 3px);
+ background-size:71px 109px,113px 151px;background-position:12px 30px,47px 88px;
+ opacity:.55;animation:hellx-embers 12s linear infinite;
+}
+#hellx-riff-crush::after{animation-duration:18s;animation-direction:reverse;opacity:.27;filter:blur(1px)}
+#hellx-riff-crush .riff-wrap{isolation:isolate;overflow:visible}
+#hellx-riff-crush .riff-board{
+ top:34%!important;left:13.5%!important;width:73%!important;
+ aspect-ratio:1/1!important;grid-template-rows:repeat(7,minmax(0,1fr))!important;
+ gap:clamp(2px,.48cqw,4px)!important;overflow:visible!important;
+}
+#hellx-riff-crush .riff-cell{height:100%!important;aspect-ratio:1/1!important;min-height:0!important}
+#hellx-riff-crush .riff-stats .riff-stat{flex-direction:column!important;gap:2px!important}
+#hellx-riff-crush .riff-stats .riff-stat span{
+ display:block!important;color:#ffd5a0!important;font:700 clamp(7px,1.6cqw,11px)/1 system-ui!important;
+ text-shadow:0 1px 3px #000!important;
+}
+#hellx-riff-crush .riff-top .riff-color-rock{
+ background:linear-gradient(#a93b12,#310b09)!important;border:1px solid #e99b55!important;
+ box-shadow:0 2px 0 #150606,0 0 9px #f60a!important;color:#ffe7bf!important;
+}
+#hellx-riff-crush .riff-actions button,#hellx-riff-crush .riff-leaderboard summary{
+ background:linear-gradient(180deg,#6d2417,#1c0809)!important;
+ border:1px solid #c66b35!important;color:#ffddae!important;
+ text-shadow:0 1px 2px #000!important;
+ box-shadow:inset 0 1px #ffad6344,0 3px 7px #000a!important;
+}
+#hellx-riff-crush .riff-actions button:active{transform:scale(.96)}
+#hellx-riff-crush .riff-cell:focus-visible{outline:2px solid #ffd179!important;outline-offset:1px}
+@keyframes hellx-embers{from{background-position:12px 1100px,47px 1100px}to{background-position:12px -1100px,47px -1100px}}
+@media(prefers-reduced-motion:reduce){
+ #hellx-riff-crush::before,#hellx-riff-crush::after{animation:none!important;opacity:.12}
+}
