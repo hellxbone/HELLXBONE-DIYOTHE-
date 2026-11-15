@@ -149,3 +149,381 @@ html body #hellx-radar #hellx-ghost input,html body #hellx-radar .hx-nearby-chat
 html body #hellx-radar #hellx-ghost button,html body #hellx-radar .hx-nearby-chat button{padding:6px 8px!important;font-size:11px!important;min-height:32px!important}
 html body #hellx-radar .hx-nearby-chat .hx-chat-row{padding:3px 0!important;gap:4px!important;font-size:11px!important}
 html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;padding:4px!important;margin:3px 0!important}
+
+
+/* MEGA RIFF — fond personnalisé vert néon (image déposée à la racine du dépôt). */
+#hellx-riff-crush{
+  background-color:#000;
+  background-image:url("./hellxbone-mega-riff-bg.webp");
+  background-repeat:no-repeat;
+  background-position:center center;
+  background-size:100% 100%;
+  background-attachment:local;
+}
+#hellx-riff-crush .riff-wrap{
+  background:transparent;
+  border:0;
+  box-shadow:none;
+}
+#hellx-riff-crush .riff-board{
+  background:#000;
+  border-color:#5aff09;
+}
+
+
+/* MEGA RIFF — décor Hellxbone néon fourni le 04/11/2026 */
+#hellx-riff-crush{
+  background:#000 url("hellxbone-mega-riff-bg.webp") center top / 100% 100% no-repeat !important;
+  padding:0 !important;
+  overflow-x:hidden;
+}
+#hellx-riff-crush .riff-wrap{
+  width:100% !important;
+  max-width:620px !important;
+  min-height:100dvh;
+  margin:0 auto !important;
+  padding:clamp(24px,5vw,36px) clamp(16px,4.3vw,28px) max(40px,env(safe-area-inset-bottom)) !important;
+  box-sizing:border-box;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+}
+#hellx-riff-crush .riff-title,#hellx-riff-crush .riff-last-winner{position:relative;z-index:1}
+#hellx-riff-crush .riff-board{
+  background:#000 !important;
+  border:1px solid #76ff18 !important;
+  box-shadow:0 0 12px #54ff155c !important;
+}
+#hellx-riff-crush .riff-stat{
+  background:rgba(0,0,0,.93) !important;
+  border-color:#70ef27 !important;
+}
+#hellx-riff-crush .riff-actions button,#hellx-riff-crush .riff-leaderboard{
+  background:#050805 !important;
+  border-color:#71f32b !important;
+}
+@media (min-width:621px){
+  #hellx-riff-crush{background-size:620px 100% !important}
+}
+
+/* 2026-11-04 : les valeurs du jeu sont intégrées aux emplacements du décor,
+   sans modifier les compteurs dynamiques ni la logique de MEGA RIFF. */
+#hellx-riff-crush{background:#000 !important;overflow-y:auto !important;padding:0!important}
+#hellx-riff-crush .riff-wrap{
+  position:relative!important;display:block!important;
+  width:min(100%,620px)!important;max-width:620px!important;
+  height:max(100dvh,175vw)!important;min-height:0!important;
+  padding:0!important;margin:0 auto!important;
+  background:#000 url("./hellxbone-mega-riff-bg.webp") center top/100% 100% no-repeat!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+#hellx-riff-crush .riff-top{
+  position:absolute;top:6.2%;left:5%;width:91%;height:6%;
+  margin:0!important;display:flex;align-items:flex-start;justify-content:space-between;z-index:5;
+}
+#hellx-riff-crush .riff-top .riff-title{font-size:clamp(17px,4.3vw,29px)!important;line-height:1.05!important}
+#hellx-riff-crush .riff-last-winner{display:none!important}
+#hellx-riff-crush .riff-close{
+  position:relative;top:-2px;right:0;
+  width:clamp(34px,9vw,50px);height:clamp(34px,9vw,50px);min-height:0!important;
+  padding:0!important;border:0!important;border-radius:100%!important;
+  background:transparent!important;box-shadow:none!important;
+  font-size:clamp(21px,5.5vw,30px);color:#fff!important;
+}
+#hellx-riff-crush .riff-stats{
+  position:absolute!important;left:4.4%;top:13.6%;width:91.2%;height:6%;
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:1.7%!important;margin:0!important;z-index:2;
+}
+#hellx-riff-crush .riff-stats .riff-stat{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;
+  background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+#hellx-riff-crush .riff-stats .riff-stat b{
+  display:block!important;font:900 clamp(15px,4.3vw,31px)/1 system-ui,sans-serif!important;
+  color:#b7ff86!important;text-align:center!important;text-shadow:0 0 8px #60ff4890!important;
+  letter-spacing:-.04em!important;overflow:hidden;max-width:100%;
+}
+#hellx-riff-crush .riff-stats .riff-stat span{display:none!important}
+#hellx-riff-crush .riff-sixes{
+  position:absolute!important;left:31%;top:21.7%;width:38%;height:5%;
+  display:flex!important;align-items:center!important;justify-content:space-evenly!important;
+  gap:3%!important;margin:0!important;padding:0!important;z-index:2;
+}
+#hellx-riff-crush .riff-sixes .riff-six{
+  display:grid!important;place-items:center!important;
+  width:31%!important;height:100%!important;
+  color:#6dff35!important;font:900 clamp(22px,7vw,48px)/1 system-ui,sans-serif!important;
+  background:transparent!important;border:0!important;border-radius:0!important;
+  box-shadow:none!important;text-shadow:0 0 7px #6aff35!important;
+}
+#hellx-riff-crush .riff-sixes .riff-six.won{
+  color:#eaffd6!important;text-shadow:0 0 12px #8fff46,0 0 4px white!important;
+}
+#hellx-riff-crush .riff-message{
+  position:absolute;top:28.3%;left:10%;width:80%;height:3.1%;
+  margin:0!important;padding:0!important;min-height:0!important;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(11px,3.4vw,19px)!important;line-height:1.05!important;
+  white-space:normal;text-align:center;z-index:3;
+}
+#hellx-riff-crush .riff-board{
+  position:absolute!important;top:33.2%;left:6%;width:88%;
+  display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;
+  gap:clamp(2px,.65vw,5px)!important;
+  padding:clamp(2px,.6vw,5px)!important;margin:0!important;
+  box-sizing:border-box!important;background:#000!important;border:0!important;
+  border-radius:7px!important;box-shadow:none!important;z-index:2;
+}
+#hellx-riff-crush .riff-cell{
+  aspect-ratio:1!important;font-size:clamp(20px,6.5vw,37px)!important;
+  padding:0!important;min-width:0!important;
+}
+#hellx-riff-crush .riff-actions{
+  position:absolute!important;left:15%;top:79%;width:70%;
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:2%!important;margin:0!important;padding:0!important;
+  z-index:4;
+}
+#hellx-riff-crush .riff-actions .riff-restart,
+#hellx-riff-crush .riff-actions .riff-sound{
+  min-height:clamp(30px,8vw,45px)!important;
+  padding:3px 5px!important;font-size:clamp(10px,2.7vw,14px)!important;
+  border:0!important;background:transparent!important;box-shadow:none!important;
+}
+#hellx-riff-crush .riff-actions .riff-leaderboard{
+  grid-column:1/-1!important;width:100%!important;box-sizing:border-box!important;
+  margin:clamp(20px,5.3vh,46px) auto 0!important;
+  background:rgba(0,0,0,.95)!important;
+  border:0!important;border-radius:10px!important;
+}
+#hellx-riff-crush .riff-leaderboard summary{
+  color:#bdff8b!important;text-align:center!important;padding:6px!important;
+}
+#hellx-riff-crush .riff-best,#hellx-riff-crush .riff-world-score,
+#hellx-riff-crush .riff-progress,#hellx-riff-crush #riff-multi-banner{display:none!important}
+@media(min-width:621px){
+  #hellx-riff-crush .riff-wrap{height:max(100dvh,1100px)!important}
+}
+
+/* 2026-11-04 — finition smartphone : alignement des textes sur le visuel MEGA RIFF.
+   La croix blanche est déjà dessinée dans le fond : ne pas en superposer une seconde. */
+#hellx-riff-crush .riff-top{
+  left:5%!important;
+  top:6.2%!important;
+  width:91%!important;
+  align-items:center!important;
+}
+#hellx-riff-crush .riff-top>div:first-child{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:42%!important;
+  min-width:0!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-top .riff-title{
+  width:100%!important;
+  margin:0!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-close{
+  position:absolute!important;
+  top:-8%!important;
+  right:0%!important;
+  width:11%!important;
+  height:100%!important;
+  min-width:38px!important;
+  min-height:38px!important;
+  opacity:0!important;
+  font-size:0!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+}
+/* Centrage stable des 5 chiffres dans les compteurs illustrés. */
+#hellx-riff-crush .riff-stats .riff-stat{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-stats .riff-stat b{
+  width:100%!important;
+  text-align:center!important;
+}
+/* Les boutons du bas ne doivent plus chevaucher les bordures du décor. */
+#hellx-riff-crush .riff-actions{
+  top:77.4%!important;
+  left:16%!important;
+  width:68%!important;
+  column-gap:4%!important;
+  row-gap:0!important;
+}
+#hellx-riff-crush .riff-actions .riff-restart,
+#hellx-riff-crush .riff-actions .riff-sound{
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  min-height:32px!important;
+  padding:0 3px!important;
+  line-height:1.15!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-actions .riff-leaderboard{
+  margin:clamp(8px,2vh,18px) auto 0!important;
+  padding:0!important;
+}
+#hellx-riff-crush .riff-leaderboard summary{
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  min-height:42px!important;
+  padding:0 6px!important;
+  line-height:1.15!important;
+  text-align:center!important;
+  list-style:none!important;
+}
+#hellx-riff-crush .riff-leaderboard summary::-webkit-details-marker{display:none}
+
+/* 2026-11-04 — grille encastrée dans l'ouverture noire du décor sur mobile :
+   bordures symétriques et marge haute/basse régulière. */
+#hellx-riff-crush .riff-board{
+  top:31.65%!important;
+  left:6.6%!important;
+  width:86.8%!important;
+  padding:clamp(2px,.5vw,4px)!important;
+  gap:clamp(2px,.6vw,4px)!important;
+  border-radius:5px!important;
+}
+
+/* 2026-11-04 : texte du cartouche supérieur compact et compteurs légèrement remontés.
+   Garder ces changements limités au HUD ; la grille et les commandes restent intactes. */
+#hellx-riff-crush .riff-top{
+  top:6.05%!important;
+  height:4.7%!important;
+  align-items:center!important;
+}
+#hellx-riff-crush .riff-top>div:first-child{
+  position:relative!important;
+  flex:0 0 auto!important;
+  width:43%!important;
+  height:100%!important;
+  display:grid!important;
+  grid-template-columns:37% 63%!important;
+  align-items:center!important;
+  justify-content:initial!important;
+  gap:0!important;
+  overflow:hidden!important;
+}
+#hellx-riff-crush .riff-top .riff-title{
+  font-size:clamp(11px,2.3vw,16px)!important;
+  line-height:1.05!important;
+  letter-spacing:-.04em!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-top .riff-last-winner{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0 2px!important;
+  box-sizing:border-box!important;
+  font-size:clamp(7px,1.25vw,9px)!important;
+  line-height:1.18!important;
+  font-weight:700!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  text-align:center!important;
+}
+#hellx-riff-crush .riff-stats{top:13.0%!important}
+
+/* 2026-11-04 — MEGA RIFF : encastrer entièrement la grille dans le décor.
+   Cases légèrement réduites, grille centrée et bordures métalliques dégagées. */
+#hellx-riff-crush .riff-board{
+  top:32.15%!important;
+  left:8.5%!important;
+  width:83%!important;
+  padding:2px!important;
+  gap:clamp(2px,.55vw,4px)!important;
+  background:#000!important;
+  border:0!important;
+  border-radius:3px!important;
+  box-shadow:none!important;
+  z-index:1!important;
+}
+#hellx-riff-crush .riff-cell{
+  aspect-ratio:1!important;
+  min-width:0!important;
+  min-height:0!important;
+  font-size:clamp(19px,6.1vw,35px)!important;
+}
+
+/* 2026-11-04 — rectification des débordements constatés sur capture 14:13.
+   Le plateau carré doit rester intégralement dans l'ouverture du cadre, y compris en bas. */
+#hellx-riff-crush .riff-board{
+  top:32.7%!important;
+  left:10.5%!important;
+  width:79%!important;
+  gap:clamp(2px,.52vw,4px)!important;
+  padding:1px!important;
+  overflow:hidden!important;
+  border-radius:2px!important;
+}
+#hellx-riff-crush .riff-cell{
+  aspect-ratio:1!important;
+  font-size:clamp(18px,5.7vw,33px)!important;
+  box-sizing:border-box!important;
+}
+
+/* 2026-11-04 — centrage vertical vérifié sur la capture 14:16 :
+   réduire l'écart supérieur et dégager le bas du cadre. */
+#hellx-riff-crush .riff-board{
+  top:32.05%!important;
+  left:10.5%!important;
+  width:79%!important;
+}
+
+/* TOP 10 : descendre uniquement le classement dans son encadrement inférieur. */
+#hellx-riff-crush .riff-actions .riff-leaderboard{
+  margin-top:clamp(38px,5vh,55px)!important;
+}
+
+/* 2026-11-05 — MEGA RIFF: référentiel graphique unique, indépendant de la hauteur d'écran.
+   Le décor et toutes les positions en % partagent désormais la même boîte 620×1100. */
+#hellx-riff-crush .riff-wrap{
+  width:min(100%,620px)!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:620 / 1100!important;
+  margin-inline:auto!important;
+  flex-shrink:0!important;
+  background-size:100% 100%!important;
+}
+#hellx-riff-crush .riff-board{box-sizing:border-box!important}
+#hellx-riff-crush .riff-cell{width:100%!important;min-width:0!important;min-height:0!important}
+@media(min-width:621px){#hellx-riff-crush .riff-wrap{height:auto!important;min-height:0!important}}
+
+/* 2026-11-05 v2 — grille contenue dans la fenêtre du décor sur écrans étroits/larges. */
+#hellx-riff-crush .riff-wrap{container-type:inline-size!important;aspect-ratio:620/1100!important;height:auto!important;min-height:0!important}
+#hellx-riff-crush .riff-board{
+  left:12%!important;top:32.1%!important;width:76%!important;
+  grid-template-columns:repeat(7,minmax(0,1fr))!important;
+  gap:clamp(2px,.45cqw,4px)!important;padding:1px!important;
+  overflow:visible!important;box-sizing:border-box!important;
+}
+#hellx-riff-crush .riff-cell{aspect-ratio:1/1!important;width:100%!important;height:auto!important;font-size:clamp(16px,5cqw,33px)!important}
+#hellx-riff-crush .riff-actions{top:77.4%!important}
+@media(min-width:621px){#hellx-riff-crush .riff-wrap{height:auto!important}}
+
+/* Accès discret au coloriage, sans quitter la partie MEGA RIFF. */
+#hellx-riff-crush .riff-color-rock{flex:0 0 auto;margin:0 8px 0 auto;min-height:32px;padding:6px 9px;border:1px solid #b79562;border-radius:8px;color:#f9ddb1;background:linear-gradient(#6d211b,#290e0b);font:700 clamp(10px,2.7vw,13px) system-ui;cursor:pointer;white-space:nowrap;box-shadow:0 2px 6px #0008}
+#hellx-riff-crush .riff-color-rock:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.hellx-color-rock-dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;padding:0;margin:0;border:0;background:#100d0c;overflow:hidden}
+.hellx-color-rock-dialog::backdrop{background:#000}
+.hellx-color-rock-dialog iframe{display:block;width:100%;height:100%;border:0;background:#100d0c}
+#hellx-riff-crush .riff-color-rock{position:relative;z-index:1;margin-right:clamp(48px,11vw,68px)}
