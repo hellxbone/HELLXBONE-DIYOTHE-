@@ -13,6 +13,32 @@ window.HELLXBONE = {
   ],
   articles: [
     {
+  "id": "war-metal-fest-hommage-2026-11-15",
+  "category": "Festival",
+  "date": "2026-11-15",
+  "title": "🔥☠️ HELLXBONE CLUB MET LE WAR METAL FEST À L'HONNEUR ! ☠️🔥",
+  "excerpt": "⚔️🤘 WAR METAL FEST — LE METAL NE SE RACONTE PAS, IL SE VIT ! Une méga mise à l'honneur de mon parrain symbolique.",
+  "body": [
+    "⚔️🤘 WAR METAL FEST — LE METAL NE SE RACONTE PAS, IL SE VIT ! 🤘⚔️",
+    "💀 Du gros son !\n🔥 Des riffs qui déchirent !\n🤘 Des groupes qui envoient du lourd !\n⚡ Une communauté de passionnés qui fait vivre la scène Metal !",
+    "LE WAR METAL FEST, C'EST CET ESPRIT QU'ON AIME ! 🔥",
+    "Et aujourd'hui, j'ai envie de lui faire une PUTAIN DE PUB ! 📢💥",
+    "🖤 Pourquoi ?",
+    "Parce que le WAR METAL FEST fait partie des parrains symboliques de mon aventure artistique HELLXBONE / DIYOTHE.",
+    "Un soutien symbolique qui représente énormément pour moi, artiste en situation de handicap à plus de 80 %, engagé contre l'isolement social par la création artistique.",
+    "🙏 UN IMMENSE MERCI AU WAR METAL FEST !",
+    "━━━━━━━━━━━━━━━━━━",
+    "☠️ HELLXBONE CLUB SOUTIENT LE WAR METAL FEST !",
+    "🤘 Suis leur actualité !\n🔥 Partage leurs publications !\n⚔️ Fais découvrir le festival à tes potes !\n🎸 Soutiens les groupes et les organisateurs !",
+    "SANS FESTIVALS, PAS DE SCÈNE. SANS PUBLIC, PAS DE FESTIVALS ! 💀",
+    "📱 Et pour rejoindre mon univers rock et metal, découvre gratuitement mon application HELLXBONE CLUB :",
+    "👉 https://hellxbone.github.io/HELLXBONE-DIYOTHE-/",
+    "🔥 WAR METAL FEST × HELLXBONE 🔥",
+    "☠️ DEUX UNIVERS, UNE MÊME PASSION : LE METAL ! 🤘",
+    "#WarMetalFest #HELLXBONE #HELLXBONECLUB #DIYOTHE #MetalFest #MetalFrance #FestivalMetal #HeavyMetal #DeathMetal #BlackMetal #ThrashMetal #Metalheads #UndergroundMetal #SoutienAuxFestivals #HandicapEtArt #RockMetal"
+  ]
+},
+    {
     "id": "hellxbone-signal-urgence-2026",
     "category": "Actualités",
     "date": "2026-11-06",
