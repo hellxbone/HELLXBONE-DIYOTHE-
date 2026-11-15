@@ -573,3 +573,24 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 @media(prefers-reduced-motion:reduce){
  #hellx-riff-crush .riff-wrap::before,#hellx-riff-crush .riff-cell.match{animation:none!important}
 }
+
+
+/* INFERNO SCENE V2: one unified 620×1100 stage, not a floating game panel. */
+#hellx-riff-crush .riff-wrap{
+ background:#150403 url("./mega-riff-inferno-scene.svg") center top/100% 100% no-repeat!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;filter:none!important;
+}
+#hellx-riff-crush .riff-wrap::before{display:none!important}
+#hellx-riff-crush .riff-top{top:7.8%!important;left:8%!important;width:84%!important}
+#hellx-riff-crush .riff-top .riff-title{font-size:clamp(12px,3vw,18px)!important;color:#ffd8a0!important;text-shadow:0 0 9px #f50!important}
+#hellx-riff-crush .riff-stats{top:16%!important;left:7%!important;width:86%!important;height:4.5%!important}
+#hellx-riff-crush .riff-stats .riff-stat b{color:#ffcf88!important;text-shadow:0 0 9px #ff5100!important}
+#hellx-riff-crush .riff-sixes{top:24.3%!important}
+#hellx-riff-crush .riff-message{top:29%!important;color:#ffb34e!important}
+#hellx-riff-crush .riff-board{
+ top:33.8%!important;left:12.5%!important;width:75%!important;
+ background:transparent!important;border:0!important;border-radius:3px!important;
+ box-shadow:none!important;padding:0!important;gap:clamp(2px,.45cqw,4px)!important;
+}
+#hellx-riff-crush .riff-actions{top:79%!important}
+#hellx-riff-crush .riff-cell{border-radius:6px!important}
