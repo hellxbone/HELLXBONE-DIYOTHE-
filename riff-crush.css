@@ -527,3 +527,49 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 .hellx-color-rock-dialog::backdrop{background:#000}
 .hellx-color-rock-dialog iframe{display:block;width:100%;height:100%;border:0;background:#100d0c}
 #hellx-riff-crush .riff-color-rock{position:relative;z-index:1;margin-right:clamp(48px,11vw,68px)}
+
+
+/* HELLXBONE MEGA RIFF — inferno 3D visual refresh, 2026-11-15.
+   Pure presentation: game state, icons, scores and leaderboard remain unchanged. */
+#hellx-riff-crush{
+ background:
+ radial-gradient(ellipse at 50% 110%,#ff6a00a8 0%,#9c160057 25%,transparent 65%),
+ repeating-linear-gradient(115deg,transparent 0 54px,#ff390014 55px 58px,transparent 60px 110px),
+ linear-gradient(180deg,#100305,#310605 55%,#070203)!important;
+}
+#hellx-riff-crush .riff-wrap{
+ border-color:#9e3920!important;
+ box-shadow:0 0 0 3px #220704,0 0 24px #f44318a6,0 18px 65px #000,inset 0 0 22px #ff6b0029!important;
+ filter:drop-shadow(0 6px 18px #ff2c0038);
+}
+#hellx-riff-crush .riff-wrap::before{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+ background:radial-gradient(ellipse at 50% 100%,#ff7b001c,transparent 55%);
+ box-shadow:inset 0 0 34px #ff3c0029;
+ animation:hellx-lava-glow 4s ease-in-out infinite alternate;
+}
+#hellx-riff-crush .riff-wrap > *{position:relative;z-index:1}
+#hellx-riff-crush .riff-board{
+ background:linear-gradient(135deg,#210a07,#080304)!important;
+ box-shadow:inset 0 0 16px #ff4b0047,0 0 0 2px #6f2816,0 0 16px #ff4a004a!important;
+}
+#hellx-riff-crush .riff-cell{
+ background:radial-gradient(circle at 30% 19%,#6e3127,#29100e 43%,#0b0506 85%)!important;
+ border:1px solid #7b3928!important;
+ border-radius:9px!important;
+ box-shadow:inset 0 2px 3px #ffa36545,inset 0 -4px 7px #000b,0 3px 3px #000a!important;
+ transform:translateZ(0);
+}
+#hellx-riff-crush .riff-cell img{filter:drop-shadow(0 3px 2px #000c) drop-shadow(0 0 3px #ff8a0040)}
+#hellx-riff-crush .riff-cell.selected{border-color:#ffbd54!important;box-shadow:0 0 13px #ff7b00,inset 0 0 10px #ff8a0066!important}
+#hellx-riff-crush .riff-cell.match{animation:hellx-inferno-match .28s ease-out!important}
+#hellx-riff-crush .riff-title{color:#ffb24c!important;text-shadow:0 2px 1px #570600,0 0 13px #ff3900!important}
+#hellx-riff-crush .riff-stat b,#hellx-riff-crush .riff-message{color:#ffb75d!important}
+#hellx-riff-crush .riff-progress>div{background:linear-gradient(90deg,#b71a00,#ff6b00,#ffce59)!important;box-shadow:0 0 12px #ff5a00!important}
+#hellx-riff-crush .riff-flash.combo{background:radial-gradient(circle,#ffac0077,#ff2a0029 42%,transparent 70%)}
+#hellx-riff-crush .riff-flash.mega{background:radial-gradient(circle,#fff5c7e0,#ff76008c 40%,transparent 75%)}
+@keyframes hellx-lava-glow{from{opacity:.4}to{opacity:1}}
+@keyframes hellx-inferno-match{50%{transform:scale(1.14);filter:brightness(2.1) drop-shadow(0 0 10px #ff7800)}}
+@media(prefers-reduced-motion:reduce){
+ #hellx-riff-crush .riff-wrap::before,#hellx-riff-crush .riff-cell.match{animation:none!important}
+}
