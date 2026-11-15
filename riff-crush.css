@@ -384,3 +384,29 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 }
 @keyframes hellx-forge-pulse{from{opacity:.6}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){#hellx-riff-crush .riff-board::before{animation:none}}
+
+
+/* MEGA RIFF — original uploaded 3D artwork, real gameplay remains interactive. */
+#hellx-riff-crush{
+ background-color:#0d0406!important;
+ background-image:linear-gradient(180deg,#10030626,#10030614),url("./a_detailed_dramatic_fantasy_game_ui_background-1.png")!important;
+ background-position:center top!important;
+ background-size:100% auto!important;
+ background-repeat:repeat-y!important;
+}
+#hellx-riff-crush .riff-wrap{
+ background:linear-gradient(180deg,#09030665 0%,#0903064d 32%,#09030626 72%,#09030673 100%)!important;
+}
+#hellx-riff-crush .riff-top,
+#hellx-riff-crush .riff-stats,
+#hellx-riff-crush .riff-actions{
+ backdrop-filter:blur(3px);
+ -webkit-backdrop-filter:blur(3px);
+}
+#hellx-riff-crush .riff-board{
+ isolation:isolate;
+ box-shadow:inset 0 0 22px #000,0 0 0 2px #ff8b30,0 0 22px #ff53008c,0 13px 26px #000c!important;
+}
+@media(max-width:420px){
+ #hellx-riff-crush{background-size:100% auto!important}
+}
