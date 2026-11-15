@@ -24,4 +24,37 @@
 <path d="M0 970Q110 925 205 983T410 976 620 968V1100H0Z" fill="#220706"/><path d="M0 1040Q110 980 205 1043T410 1028 620 1020V1100H0Z" fill="url(#lava)" opacity=".8"/>
 <g stroke="#241111" stroke-width="12"><path d="M0 15L150 170M620 15L470 170M0 1070L130 900M620 1070L490 900"/></g>
 <g stroke="#a58b81" stroke-width="4" stroke-dasharray="15 9" opacity=".7"><path d="M0 15L150 170M620 15L470 170"/></g>
+
+<!-- Inferno stage: sculpted demonic skull, horns, concert lights, molten side columns -->
+<g opacity=".86">
+ <path d="M123 310Q76 260 96 202Q100 241 137 253Q117 211 146 183Q145 234 181 260" fill="url(#lava)" stroke="#ffb13d" stroke-width="3"/>
+ <path d="M500 310Q545 260 525 202Q521 241 485 253Q502 211 474 183Q475 234 439 260" fill="url(#lava)" stroke="#ffb13d" stroke-width="3"/>
+ <path d="M0 400Q65 315 35 255Q110 325 73 440L40 790Q25 850 0 900Z" fill="#230909" stroke="#a5471b" stroke-width="6"/>
+ <path d="M620 400Q555 315 585 255Q510 325 547 440L580 790Q595 850 620 900Z" fill="#230909" stroke="#a5471b" stroke-width="6"/>
+ <path d="M0 490Q55 445 25 395Q84 465 52 550T40 710Q10 755 0 780" fill="url(#lava)" opacity=".9"/>
+ <path d="M620 490Q565 445 595 395Q536 465 568 550T580 710Q610 755 620 780" fill="url(#lava)" opacity=".9"/>
+</g>
+<!-- skull crest in forged metal -->
+<g transform="translate(310 213)" stroke-linejoin="round">
+ <path d="M-45 -20Q-88 -75 -95 -112Q-55 -98 -28 -55M45 -20Q88 -75 95 -112Q55 -98 28 -55" fill="#6d2012" stroke="#d68a4d" stroke-width="5"/>
+ <path d="M-59 -29Q-56 -76 0 -79Q56 -76 59 -29L43 17 25 31 22 50-22 50-25 31-43 17Z" fill="url(#metal)" stroke="#e2a16a" stroke-width="5"/>
+ <path d="M-46 -21L-8 -8-20 10-45 5ZM46 -21L8 -8 20 10 45 5Z" fill="#ff6d09" stroke="#230400" stroke-width="4"/>
+ <path d="M0 -4L-12 22 12 22Z" fill="#140606"/>
+ <path d="M-22 31L22 31 17 47-17 47Z" fill="#140606" stroke="#d59d75" stroke-width="2"/>
+ <path d="M-9 32V46M0 32V49M9 32V46" stroke="#e8b49c" stroke-width="3"/>
+</g>
+<!-- concert spotlights -->
+<g opacity=".32"><path d="M45 146L180 345H110Z" fill="#ff8d28"/><path d="M575 146L440 345H510Z" fill="#ff8d28"/></g>
+<!-- rock rivets and forged chains -->
+<g fill="#b98966" stroke="#32120b" stroke-width="3">
+ <circle cx="40" cy="280" r="9"/><circle cx="580" cy="280" r="9"/>
+ <circle cx="40" cy="875" r="9"/><circle cx="580" cy="875" r="9"/>
+ <circle cx="40" cy="930" r="9"/><circle cx="580" cy="930" r="9"/>
+</g>
+<g stroke="#8b6e65" stroke-width="5" fill="none" opacity=".9">
+ <ellipse cx="39" cy="420" rx="9" ry="17"/><ellipse cx="39" cy="448" rx="9" ry="17"/><ellipse cx="39" cy="476" rx="9" ry="17"/>
+ <ellipse cx="581" cy="420" rx="9" ry="17"/><ellipse cx="581" cy="448" rx="9" ry="17"/><ellipse cx="581" cy="476" rx="9" ry="17"/>
+</g>
+<!-- lava bubbles -->
+<g fill="#ffbc43" opacity=".75"><circle cx="100" cy="1032" r="9"/><circle cx="182" cy="1075" r="5"/><circle cx="427" cy="1045" r="12"/><circle cx="535" cy="1090" r="6"/></g>
 </svg>
