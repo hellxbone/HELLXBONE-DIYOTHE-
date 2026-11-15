@@ -410,3 +410,34 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 @media(max-width:420px){
  #hellx-riff-crush{background-size:100% auto!important}
 }
+
+
+/* V8: show uploaded artwork on the actual visible game panel, not hidden behind it. */
+#hellx-riff-crush{
+ background:#100407 url("./a_detailed_dramatic_fantasy_game_ui_background-1.png?v=8") center top/cover fixed!important;
+}
+#hellx-riff-crush .riff-wrap{
+ position:relative!important;
+ background-image:
+ linear-gradient(180deg,#08040720 0%,#08040755 28%,#08040738 60%,#08040760 100%),
+ url("./a_detailed_dramatic_fantasy_game_ui_background-1.png?v=8")!important;
+ background-position:center top,center top!important;
+ background-size:100% 100%,100% 100%!important;
+ background-repeat:no-repeat!important;
+ border:4px ridge #7f4839!important;
+ box-shadow:0 0 30px #f50a,inset 0 0 22px #0008!important;
+}
+#hellx-riff-crush .riff-top,
+#hellx-riff-crush .riff-actions{
+ background:linear-gradient(145deg,#20090ab5,#100509ad)!important;
+}
+#hellx-riff-crush .riff-stats .riff-stat{
+ background:linear-gradient(155deg,#3c170fba,#11070bba)!important;
+}
+#hellx-riff-crush .riff-sixes{
+ background:linear-gradient(90deg,#1a0709bb,#5d1a0ba8,#1a0709bb)!important;
+}
+#hellx-riff-crush .riff-board{
+ background:linear-gradient(145deg,#260a0bcf,#070307db)!important;
+}
+#hellx-riff-crush .riff-actions .riff-leaderboard{background:#17080ad1!important}
