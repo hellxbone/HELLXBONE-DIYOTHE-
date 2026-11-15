@@ -340,3 +340,47 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 @media(prefers-reduced-motion:reduce){
  #hellx-riff-crush::before,#hellx-riff-crush .riff-cell.match{animation:none!important}
 }
+
+
+/* MEGA RIFF: volcanic art integrated into the real application, safe-flow layout. */
+#hellx-riff-crush{
+ background:#120406 url("./mega-riff-lava-walls.svg") center top/100% auto repeat-y!important;
+}
+#hellx-riff-crush .riff-wrap{
+ background:
+ linear-gradient(180deg,#120609de,#180608e8 42%,#160607db 90%,#210806d0)!important;
+ border-left:5px ridge #5b2c23!important;border-right:5px ridge #5b2c23!important;
+ box-shadow:inset 0 0 45px #000a,0 0 40px #ff3b0038!important;
+}
+#hellx-riff-crush .riff-top{
+ border:4px ridge #aa6246!important;
+ background:linear-gradient(155deg,#381014,#12080d 68%,#41140e)!important;
+ box-shadow:inset 0 0 24px #000b,0 0 18px #ff450055,0 7px 16px #000b!important;
+}
+#hellx-riff-crush .riff-top .riff-title{
+ color:#ffd59a!important;
+ text-shadow:0 2px 0 #5b1809,0 0 10px #f60,0 0 22px #e30!important;
+}
+#hellx-riff-crush .riff-board{
+ border:9px ridge #8d4d3d!important;
+ background:linear-gradient(145deg,#240c0f,#070307 55%,#2d0b0a)!important;
+ box-shadow:inset 0 0 25px #000,0 0 0 2px #f65819,0 0 26px #ff4d0088,0 12px 30px #000e!important;
+}
+#hellx-riff-crush .riff-board::before{
+ content:"";position:absolute;inset:-11px;z-index:-1;pointer-events:none;
+ border-radius:18px;border:2px solid #ff6e20;
+ box-shadow:0 0 12px #ff5700,0 0 25px #ff31006b;
+ animation:hellx-forge-pulse 4s ease-in-out infinite alternate;
+}
+#hellx-riff-crush .riff-cell{
+ background:radial-gradient(circle at 35% 16%,#753020,#23080c 58%,#080307)!important;
+ border:1px solid #b55b39!important;
+ box-shadow:inset 0 2px 3px #ffbe7966,inset 0 -4px 7px #000e,0 3px 5px #000a!important;
+}
+#hellx-riff-crush .riff-actions{
+ border:4px ridge #9c563b!important;
+ background:linear-gradient(145deg,#2d0b0e,#0b0509)!important;
+ box-shadow:0 0 18px #ff48003d,inset 0 0 14px #000b!important;
+}
+@keyframes hellx-forge-pulse{from{opacity:.6}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){#hellx-riff-crush .riff-board::before{animation:none}}
