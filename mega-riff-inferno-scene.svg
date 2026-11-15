@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 1100" preserveAspectRatio="none"><defs>
+<linearGradient id="bg" x2=".3" y2="1"><stop stop-color="#110507"/><stop offset=".45" stop-color="#6a0c05"/><stop offset="1" stop-color="#170202"/></linearGradient>
+<linearGradient id="metal" x2=".2" y2="1"><stop stop-color="#fff0bc"/><stop offset=".1" stop-color="#9d8b80"/><stop offset=".3" stop-color="#33201d"/><stop offset=".65" stop-color="#130d0e"/><stop offset=".85" stop-color="#67483c"/><stop offset="1" stop-color="#1b1010"/></linearGradient>
+<linearGradient id="lava" x2="0" y2="1"><stop stop-color="#ffda55"/><stop offset=".3" stop-color="#ff6000"/><stop offset=".7" stop-color="#c51700"/><stop offset="1" stop-color="#4b0704"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ff8c00" stop-opacity=".8"/><stop offset="1" stop-color="#ff2b00" stop-opacity="0"/></radialGradient>
+<filter id="fire"><feGaussianBlur stdDeviation="9"/></filter>
+<pattern id="rock" width="58" height="67" patternUnits="userSpaceOnUse"><path d="M0 23L26 5 53 18 58 54 23 67 0 44" fill="none" stroke="#fa5010" stroke-opacity=".16" stroke-width="2"/></pattern>
+</defs>
+<rect width="620" height="1100" fill="url(#bg)"/><rect width="620" height="1100" fill="url(#rock)"/>
+<path d="M0 0H95L60 190 110 305 0 420ZM620 0H525L560 190 510 305 620 420Z" fill="#120b0e" stroke="#8b2411" stroke-width="8"/>
+<g filter="url(#fire)" opacity=".75"><path d="M80 0Q110 90 75 180T100 400M530 0Q500 120 545 210T525 440" stroke="#ff5100" stroke-width="38" fill="none"/><ellipse cx="310" cy="1020" rx="320" ry="125" fill="#ff3d00"/></g>
+<path d="M85 0Q110 95 79 195T100 390M540 0Q506 105 544 225T520 400" fill="none" stroke="url(#lava)" stroke-width="12"/>
+<g fill="#ffb42c" opacity=".85"><circle cx="120" cy="165" r="3"/><circle cx="515" cy="160" r="4"/><circle cx="32" cy="560" r="3"/><circle cx="580" cy="760" r="4"/><circle cx="90" cy="900" r="2"/><circle cx="490" cy="1010" r="4"/></g>
+<path d="M35 35L95 18 310 60 525 18 585 35 554 126 310 145 66 126Z" fill="url(#metal)" stroke="#b45d31" stroke-width="8"/>
+<path d="M56 42L310 83 564 42" fill="none" stroke="#ff6d17" stroke-width="4"/>
+<text x="310" y="90" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="53" font-weight="900" fill="#f7c795" stroke="#240803" stroke-width="2" paint-order="stroke">HELLXBONE</text>
+<path d="M230 95L255 113 285 97 310 122 335 97 365 113 390 95 368 135 252 135Z" fill="#bd3510" stroke="#f3a250" stroke-width="3"/>
+<text x="310" y="133" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="38" font-weight="900" fill="#ff8b26" stroke="#280602" stroke-width="3" paint-order="stroke">MEGA RIFF</text>
+<path d="M25 145H595V235H25Z" fill="#14090a" stroke="url(#metal)" stroke-width="12"/><path d="M38 155H582V225H38Z" fill="none" stroke="#ff4b0b" stroke-width="2"/>
+<g fill="#110607" stroke="#ad5229" stroke-width="5"><rect x="25" y="247" width="570" height="90" rx="15"/><rect x="25" y="348" width="570" height="490" rx="23"/><rect x="27" y="852" width="566" height="105" rx="17"/></g>
+<rect x="35" y="358" width="550" height="470" rx="16" fill="#0c0608" stroke="#d0692b" stroke-width="5"/>
+<path d="M36 355L70 338 310 350 550 338 584 355M36 829L70 843 310 830 550 843 584 829" stroke="url(#metal)" stroke-width="16" fill="none"/>
+<g fill="#d7b19b" stroke="#1d0a07" stroke-width="3"><circle cx="48" cy="365" r="8"/><circle cx="572" cy="365" r="8"/><circle cx="48" cy="821" r="8"/><circle cx="572" cy="821" r="8"/></g>
+<path d="M0 970Q110 925 205 983T410 976 620 968V1100H0Z" fill="#220706"/><path d="M0 1040Q110 980 205 1043T410 1028 620 1020V1100H0Z" fill="url(#lava)" opacity=".8"/>
+<g stroke="#241111" stroke-width="12"><path d="M0 15L150 170M620 15L470 170M0 1070L130 900M620 1070L490 900"/></g>
+<g stroke="#a58b81" stroke-width="4" stroke-dasharray="15 9" opacity=".7"><path d="M0 15L150 170M620 15L470 170"/></g>
+</svg>
