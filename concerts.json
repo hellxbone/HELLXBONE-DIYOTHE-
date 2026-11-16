@@ -1,45 +1,6 @@
 {
-  "updated": "2026-11-15T14:06:36.367929+00:00",
+  "updated": "2026-11-16T16:05:52.050126+00:00",
   "events": [
-    {
-      "date": "2026-11-15",
-      "artist": "California party - Le retour !",
-      "city": "Pont-l'Abbé",
-      "department": "29",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/38/6d8de6ea-8dae-32c0-a2cc-ca6c8ea059be",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 47.86887,
-      "lon": -4.22559
-    },
-    {
-      "date": "2026-11-15",
-      "artist": "Concert Rock'Spell",
-      "city": "Auriol",
-      "department": "13",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/58/17c63ec6-d7cd-3f78-a1df-1579ada5cb59",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.36889,
-      "lon": 5.64373
-    },
-    {
-      "date": "2026-11-15",
-      "artist": "Quentin Sauvé + Dressed Like Boys",
-      "city": "Laval",
-      "department": "53",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/49/8a59bf76-60bf-321b-a31b-5d8e164d80a0",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.07893,
-      "lon": -0.7714
-    },
     {
       "date": "2026-11-17",
       "artist": "Legendary Rock Voices",
@@ -481,6 +442,19 @@
       "origin": "datatourisme-vetted",
       "lat": 43.63203,
       "lon": 5.15686
+    },
+    {
+      "date": "2026-11-21",
+      "artist": "Concert | Vocal'Ease et Choeur de Lune",
+      "city": "Gardonne",
+      "department": "24",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/23/a69edefa-3f32-3414-86ce-57e0e0826777",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 44.83787,
+      "lon": 0.33241
     },
     {
       "date": "2026-11-21",
@@ -990,6 +964,19 @@
     },
     {
       "date": "2026-11-27",
+      "artist": "Clôture du festival | Festival [TrafiK]*",
+      "city": "Bergerac",
+      "department": "24",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/23/cb2ac84b-d65b-3dad-973a-337592a251cf",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 44.86645,
+      "lon": 0.48418
+    },
+    {
+      "date": "2026-11-27",
       "artist": "Concert \"Strange o'clock\"",
       "city": "Poilley",
       "department": "50",
@@ -1337,6 +1324,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.48153,
       "lon": -2.16001
+    },
+    {
+      "date": "2026-11-28",
+      "artist": "Folk Rock au Château",
+      "city": "Bœrsch",
+      "department": "67",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/5/ec6e05b5-49a1-3509-b104-0110f193c03b",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.46938,
+      "lon": 7.4091
     },
     {
       "date": "2026-11-28",
@@ -2651,6 +2651,19 @@
     },
     {
       "date": "2027-01-22",
+      "artist": "DOUBLE CONCERT BALLS'N FRIENDS  ➤ @MARINSDEAUDOUCE ➤ RAMONVILLE",
+      "city": "Ramonville-Saint-Agne",
+      "department": "31",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/33/92f33491-0b95-32d2-acf9-6a066ca32721",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.54957,
+      "lon": 1.48561
+    },
+    {
+      "date": "2027-01-22",
       "artist": "Gorfou-Tornade",
       "city": "Marseille 7e Arrondissement",
       "department": "13",
@@ -3454,6 +3467,19 @@
       "origin": "datatourisme-vetted",
       "lat": 43.43858,
       "lon": 1.31329
+    },
+    {
+      "date": "2027-03-19",
+      "artist": "SOUL FUNK TENDENCIES ➤ @MARINSDEAUDOUCE ➤ RAMONVILLE",
+      "city": "Ramonville-Saint-Agne",
+      "department": "31",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/33/c2d86b2e-75ff-30bc-971d-985a602bd85c",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.54957,
+      "lon": 1.48561
     },
     {
       "date": "2027-03-20",
