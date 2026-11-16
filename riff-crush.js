@@ -8,7 +8,7 @@ let board=[],score=0,moves=BASE_MOVES,combo=0,level=1,selected=null,busy=false,p
 const hellxboneOwnerAssist=()=>!dailyMode&&String(localStorage.getItem('hellx-riff-player-name')||'').trim().toLocaleLowerCase('fr').normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='hellxbone';
 const metalNinieAssist=()=>!dailyMode&&String(localStorage.getItem('hellx-riff-player-name')||'').trim().toLocaleLowerCase('fr').normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='metal ninie';
 const privilegedRiffAssist=()=>hellxboneOwnerAssist();
-const memberFiveFloor=()=>!hellxboneOwnerAssist();
+const memberFiveFloor=()=>!hellxboneOwnerAssist()||!dailyMode;
 const q=s=>document.querySelector(s),pos=i=>[Math.floor(i/COLS),i%COLS],idx=(r,c)=>r*COLS+c,wait=ms=>new Promise(r=>setTimeout(r,ms));
 let muted=false;localStorage.setItem('hellx-riff-muted','0');
 let dailyMode=false,dailySeed=0;
