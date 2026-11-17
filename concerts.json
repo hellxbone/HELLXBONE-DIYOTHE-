@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16T16:05:52.050126+00:00",
+  "updated": "2026-11-17T16:15:21.140544+00:00",
   "events": [
     {
       "date": "2026-11-17",
@@ -172,6 +172,19 @@
     },
     {
       "date": "2026-11-20",
+      "artist": "CONCERT - Drama King",
+      "city": "Moncontour",
+      "department": "22",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/38/955b4a2b-19b7-389b-ae8a-a4e1aeba61fa",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.361,
+      "lon": -2.63398
+    },
+    {
+      "date": "2026-11-20",
       "artist": "CONCERT ÉCLECTIQUE EXPERIMENTAL",
       "city": "Cox",
       "department": "31",
@@ -250,6 +263,19 @@
     },
     {
       "date": "2026-11-20",
+      "artist": "Concert Tourists of Perfection",
+      "city": "Domloup",
+      "department": "35",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/55a3bb7e-d277-33b2-b8b8-f1ccd97fb1df",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.06164,
+      "lon": -1.5218
+    },
+    {
+      "date": "2026-11-20",
       "artist": "Concert de Marion Roch",
       "city": "Saint-Cosme-en-Vairais",
       "department": "72",
@@ -325,6 +351,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.38447,
       "lon": 0.70138
+    },
+    {
+      "date": "2026-11-20",
+      "artist": "Rock The End",
+      "city": "Saint-Étienne-de-Montluc",
+      "department": "44",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/49/0ff616a1-f339-3974-becf-5d65a40bf259",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.27891,
+      "lon": -1.79187
     },
     {
       "date": "2026-11-20",
@@ -1288,6 +1327,19 @@
     },
     {
       "date": "2026-11-28",
+      "artist": "Concert Stuart O'connor",
+      "city": "Semur-en-Brionnais",
+      "department": "71",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/14cb3528-448d-3f90-84e1-6918fef0f6b5",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.26279,
+      "lon": 4.08884
+    },
+    {
+      "date": "2026-11-28",
       "artist": "Concert Tadaam",
       "city": "Trémargat",
       "department": "22",
@@ -1545,6 +1597,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.51339,
       "lon": -2.76152
+    },
+    {
+      "date": "2026-12-01",
+      "artist": "Téléthon – Concert Sooo Cosmic",
+      "city": "Saint-Lunaire",
+      "department": "35",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/1304d5b7-c9c7-319d-85c5-4750ca3c743d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.6326,
+      "lon": -2.10683
     },
     {
       "date": "2026-12-02",
