@@ -7,8 +7,8 @@ function hydrateRiffIcons(root){root.querySelectorAll('img[data-riff-icon]').for
 let board=[],score=0,moves=BASE_MOVES,combo=0,level=1,selected=null,busy=false,pointerStart=null,audio=null,master=null,audioReady=false,best=Number(localStorage.getItem('hellx-riff-best')||0),globalLevel=Number(localStorage.getItem('hellx-riff-global-level')||1),badMoves=0,lastBadAt=0,extraAwarded=new Set(),bonusBalls=0,lastLaughAt=0,laughUntil=0,laughTimer=null,roundId=0,sixes=0,sixPrizePaid=false,sixMisses=0,consecutiveFours=0,streak=0,multiplier=1,gameLost=false,trainUntil=0,trainTick=null,trainTriggered=false;
 const hellxboneOwnerAssist=()=>!dailyMode&&String(localStorage.getItem('hellx-riff-player-name')||'').trim().toLocaleLowerCase('fr').normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='hellxbone';
 const metalNinieAssist=()=>!dailyMode&&String(localStorage.getItem('hellx-riff-player-name')||'').trim().toLocaleLowerCase('fr').normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='metal ninie';
-const privilegedRiffAssist=()=>hellxboneOwnerAssist();
-const memberFiveFloor=()=>!hellxboneOwnerAssist()||!dailyMode;
+const privilegedRiffAssist=()=>false;
+const memberFiveFloor=()=>true;
 const q=s=>document.querySelector(s),pos=i=>[Math.floor(i/COLS),i%COLS],idx=(r,c)=>r*COLS+c,wait=ms=>new Promise(r=>setTimeout(r,ms));
 let muted=false;localStorage.setItem('hellx-riff-muted','0');
 let dailyMode=false,dailySeed=0;
