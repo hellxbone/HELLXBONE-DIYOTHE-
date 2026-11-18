@@ -238,5 +238,5 @@ riffSmoothStyle.textContent=`
 .riff-avalanche-particle{box-shadow:none!important}
 @keyframes riffSmoothPop{0%{transform:scale(1);opacity:1}65%{transform:scale(1.12);opacity:.9}100%{transform:scale(.5);opacity:0}}
 @media(prefers-reduced-motion:reduce){#riff-board .riff-cell.match{animation:none!important}}
-';document.head.appendChild(riffSmoothStyle);
+`;document.head.appendChild(riffSmoothStyle);
 buildShell();/* La bannière est réservée à HELLXBONE UNDERGROUND ; le jeu reste accessible par le menu Jeux. */window.HellRiffCrush={open:openGame,openDaily:openDailyGame,close:closeGame};if(new URLSearchParams(location.search).get('game')==='mega-riff'||location.hash==='#mega-riff')setTimeout(openGame,120);})();
