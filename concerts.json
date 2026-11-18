@@ -1,45 +1,6 @@
 {
-  "updated": "2026-11-17T16:15:21.140544+00:00",
+  "updated": "2026-11-18T15:49:55.603274+00:00",
   "events": [
-    {
-      "date": "2026-11-17",
-      "artist": "Legendary Rock Voices",
-      "city": "Marseille 4e Arrondissement",
-      "department": "13",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/58/ef7e921e-740f-33c8-972e-861234d0e338",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.31534,
-      "lon": 5.40436
-    },
-    {
-      "date": "2026-11-17",
-      "artist": "Rodiathèque - American Stars & Bars (Vol. 1)",
-      "city": "Ornans",
-      "department": "25",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/6/00954fe7-380d-385c-9190-03250b088f18",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 47.1058,
-      "lon": 6.14608
-    },
-    {
-      "date": "2026-11-17",
-      "artist": "Tom McRae - Concert",
-      "city": "Brest",
-      "department": "29",
-      "venue": "",
-      "genre": "alternative",
-      "source": "https://data.datatourisme.fr/38/23721e7f-f0ed-3eec-8895-a0296de1b525",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.38928,
-      "lon": -4.48421
-    },
     {
       "date": "2026-11-18",
       "artist": "Antti Paalanen - Techno à bretelles",
@@ -156,6 +117,19 @@
       "origin": "datatourisme-vetted",
       "lat": 46.77521,
       "lon": 4.84551
+    },
+    {
+      "date": "2026-11-20",
+      "artist": "Ann Fag & El Mira",
+      "city": "Salins-les-Bains",
+      "department": "39",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/6/d1c1f48b-da91-3ed0-8e54-4e04f372babc",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 46.93642,
+      "lon": 5.87744
     },
     {
       "date": "2026-11-20",
@@ -429,6 +403,19 @@
       "origin": "datatourisme-vetted",
       "lat": 45.04391,
       "lon": 5.04965
+    },
+    {
+      "date": "2026-11-21",
+      "artist": "Concert : Sheep Rebellion (rock)",
+      "city": "Scaër",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/e2c81d8c-6cc2-3bf6-a7a7-9833c0b57a7a",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.99126,
+      "lon": -3.71924
     },
     {
       "date": "2026-11-21",
@@ -1573,6 +1560,19 @@
       "lon": -0.44432
     },
     {
+      "date": "2026-11-29",
+      "artist": "Orchestre à Vents du Trégor",
+      "city": "Lannion",
+      "department": "22",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/daaa6355-71c7-3cb2-814d-fc6fa78a6433",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.73004,
+      "lon": -3.46173
+    },
+    {
       "date": "2026-11-30",
       "artist": "CINÉ CONCERT : MÉNILMONTANT & BRUMES D'AUTOMNE",
       "city": "Toulouse",
@@ -2572,6 +2572,19 @@
       "lon": 2.29177
     },
     {
+      "date": "2027-01-14",
+      "artist": "So Floyd - From Pompeii to Pulse",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/6db14811-eae4-303b-b47a-627d4ba82bc4",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38701,
+      "lon": -4.52033
+    },
+    {
       "date": "2027-01-15",
       "artist": "Concert : Mukta",
       "city": "Pornic",
@@ -2975,6 +2988,19 @@
       "lon": 7.29454
     },
     {
+      "date": "2027-02-04",
+      "artist": "Bernard lavilliers",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/e979d076-1ac8-3f58-a7ab-a85b2a61815b",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38705,
+      "lon": -4.52061
+    },
+    {
       "date": "2027-02-05",
       "artist": "ADIKT ➤ @MARINSDEAUDOUCE ➤ RAMONVILLE",
       "city": "Ramonville-Saint-Agne",
@@ -3209,6 +3235,19 @@
       "lon": 4.84249
     },
     {
+      "date": "2027-02-19",
+      "artist": "Concert : Les garçons bouchers (rock)",
+      "city": "Quimperlé",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/b36c5a82-5ca7-34df-861f-629a5ec10524",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.87063,
+      "lon": -3.55282
+    },
+    {
       "date": "2027-02-20",
       "artist": "Candlelight : hommage à Queen",
       "city": "Marseille 7e Arrondissement",
@@ -3415,6 +3454,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.89941,
       "lon": -1.51272
+    },
+    {
+      "date": "2027-03-12",
+      "artist": "GORAN BREGOVIC et l'Orchestre des Mariages et des Enterrements",
+      "city": "Arc-et-Senans",
+      "department": "25",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/6/4a3f1b16-1992-3847-88a7-d3ce80484547",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.0351,
+      "lon": 5.76731
     },
     {
       "date": "2027-03-12",
@@ -3665,6 +3717,19 @@
     },
     {
       "date": "2027-04-01",
+      "artist": "Flashdance - The Musical",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/e287f8f2-ff23-3b77-b7eb-39bcf4fbfdb9",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38705,
+      "lon": -4.52061
+    },
+    {
+      "date": "2027-04-01",
       "artist": "Rodrigo y Gabriela",
       "city": "Marseille 2e Arrondissement",
       "department": "13",
@@ -3833,6 +3898,19 @@
       "lon": 0.22437
     },
     {
+      "date": "2027-04-14",
+      "artist": "Festival Panoramas",
+      "city": "Morlaix",
+      "department": "29",
+      "venue": "",
+      "genre": "hardcore",
+      "source": "https://data.datatourisme.fr/38/314e9a76-c351-333f-9ad0-5b83c7eaaf8d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.58578,
+      "lon": -3.79154
+    },
+    {
       "date": "2027-04-15",
       "artist": "Concert - Kaolila",
       "city": "Saint-Brieuc",
@@ -3964,6 +4042,19 @@
     },
     {
       "date": "2027-05-06",
+      "artist": "Festival de black metal \"Rituel Noir\" - Week-end de rassemblement interculturel",
+      "city": "Querrien",
+      "department": "29",
+      "venue": "",
+      "genre": "metal",
+      "source": "https://data.datatourisme.fr/38/fa73ab36-7b95-34de-9601-f6b11ce6ed38",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.93768,
+      "lon": -3.5473
+    },
+    {
+      "date": "2027-05-06",
       "artist": "Rituel Noir - Week-end de rassemblement interculturel",
       "city": "Querrien",
       "department": "29",
@@ -3974,6 +4065,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.93768,
       "lon": -3.5473
+    },
+    {
+      "date": "2027-05-14",
+      "artist": "Volatil Tour - Zazie",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/38/06ca9106-e2fe-3de2-907c-c5b9f6c62ce5",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38705,
+      "lon": -4.52061
     },
     {
       "date": "2027-05-20",
@@ -4052,6 +4156,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.4479,
       "lon": -2.74374
+    },
+    {
+      "date": "2027-05-28",
+      "artist": "Les Années 80 - La Tournée",
+      "city": "Brest",
+      "department": "29",
+      "venue": "",
+      "genre": "new wave",
+      "source": "https://data.datatourisme.fr/38/e4e450ba-096a-39dc-ae58-dfaf61d99e5a",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.38705,
+      "lon": -4.52061
     },
     {
       "date": "2027-05-28",
@@ -4224,6 +4341,19 @@
       "id": 1,
       "lat": 43.8367,
       "lon": 4.3601
+    },
+    {
+      "date": "2027-08-19",
+      "artist": "Motocultor open air Festival 2027",
+      "city": "Carhaix-Plouguer",
+      "department": "29",
+      "venue": "",
+      "genre": "Metal",
+      "source": "https://data.datatourisme.fr/38/0ebd0640-2401-3744-ba9c-419cb5604ffa",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 48.27231,
+      "lon": -3.55809
     },
     {
       "date": "2027-09-23",
