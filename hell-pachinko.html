@@ -107,6 +107,7 @@ document.getElementById('board').addEventListener('click',async()=>{
  }catch(e){ol.textContent='Classement indisponible pour le moment.'}
 });
 if(!id)mark('Reviens à l’accueil HELLXBONE pour activer ton pseudo.');
+else rpc('hellx_pachinko_my_score',{p_member_id:id}).then(value=>{total.textContent=fmt(value)}).catch(()=>{mark('Prêt à jouer. Vérifie ta connexion pour enregistrer les points.')});
 })();
 </script>
 </body></html>
