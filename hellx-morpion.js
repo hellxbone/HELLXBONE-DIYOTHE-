@@ -29,7 +29,7 @@ function draw(){
  const root=document.getElementById(ROOT);if(!root)return;
  root.querySelectorAll('[data-hx-morpion-cell]').forEach(el=>{
   const i=Number(el.dataset.hxMorpionCell);
-  el.textContent=board[i];el.disabled=ended||thinking||!!board[i];
+  el.replaceChildren();if(board[i]){const img=document.createElement('img');img.src=board[i]==='X'?'morpion-croix-griffe.png':'morpion-rond-demoniaque.png';img.alt=board[i];img.style.cssText='display:block;width:94%;height:94%;object-fit:contain;margin:auto;pointer-events:none';el.append(img)}el.disabled=ended||thinking||!!board[i];
   el.classList.toggle('hx-o',board[i]==='O');el.classList.toggle('hx-x',board[i]==='X');
  });
  const end=outcome(board);root.querySelectorAll('.hx-morpion-cell').forEach(x=>x.classList.remove('hx-win'));
