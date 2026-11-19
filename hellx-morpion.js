@@ -51,7 +51,7 @@ function play(i){
   const move=bestMove(board);if(move===undefined)return;
   board[move]='O';thinking=false;
   if(!finish()){status('À TOI DE JOUER !');draw()}
- },420);
+ },1000);
 }
 function reset(){round++;board=Array(9).fill('');ended=false;thinking=false;status('À TOI DE JOUER !');draw()}
 function mount(){
