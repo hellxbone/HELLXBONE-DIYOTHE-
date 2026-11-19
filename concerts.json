@@ -1,45 +1,6 @@
 {
-  "updated": "2026-11-18T15:49:55.603274+00:00",
+  "updated": "2026-11-19T15:54:19.616977+00:00",
   "events": [
-    {
-      "date": "2026-11-18",
-      "artist": "Antti Paalanen - Techno à bretelles",
-      "city": "Trédrez-Locquémeau",
-      "department": "22",
-      "venue": "",
-      "genre": "metal",
-      "source": "https://data.datatourisme.fr/38/96650c3f-4153-3155-8ee3-e53466b84222",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.7127,
-      "lon": -3.56306
-    },
-    {
-      "date": "2026-11-18",
-      "artist": "Concert dessin animé - Animaux totem Cie KOHBA",
-      "city": "Portets",
-      "department": "33",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/23/2a3fee7b-3545-3f44-80c5-9c608b44fe69",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 44.69315,
-      "lon": -0.42486
-    },
-    {
-      "date": "2026-11-18",
-      "artist": "Karaoké du Spot",
-      "city": "Biscarrosse",
-      "department": "40",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/23/3e6e507c-894f-36ae-a1f3-e938c0255617",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 44.39757,
-      "lon": -1.16173
-    },
     {
       "date": "2026-11-19",
       "artist": "BIRDSTONE (RELEASE PARTY !)   MARAVE",
