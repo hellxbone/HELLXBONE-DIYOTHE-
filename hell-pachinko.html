@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#090000"><title>HELL PACHINKO — HELLXBONE</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050000;color:#fff;font-family:system-ui,-apple-system,sans-serif}button{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#stage{position:relative;height:100dvh;max-width:calc(100dvh / 2);width:100vw;margin:auto;overflow:hidden;background:#120303 url('./hell-pachinko-art.svg') center/100% 100% no-repeat;isolation:isolate}
+#balls{position:absolute;inset:0;display:block;width:100%;height:100%;pointer-events:none}
+#close{position:absolute;right:1.2%;top:.3%;width:16%;height:8%;border:0;background:transparent;color:transparent;cursor:pointer;z-index:20}
+#close:focus-visible{outline:3px solid white;outline-offset:-3px;border-radius:50%}
+#status{position:absolute;left:5%;right:5%;bottom:11.2%;text-align:center;font-size:clamp(12px,3.3vw,18px);font-weight:900;text-shadow:0 2px 5px #000,0 0 12px #f00;z-index:8;min-height:2em}
+#launch{position:absolute;left:22%;width:56%;bottom:3.2%;height:8%;border-radius:999px;border:2px solid #ff973b;color:#fff;background:linear-gradient(160deg,#bb2206,#510500);box-shadow:0 0 12px #f22, inset 0 1px 8px #fa7;letter-spacing:.07em;font-size:clamp(18px,5vw,26px);font-weight:1000;text-shadow:0 2px #280300;cursor:pointer;z-index:10}
+#launch:disabled{opacity:.55;cursor:wait}
+#score{position:absolute;top:21%;left:17%;right:17%;text-align:center;font-size:clamp(11px,3vw,17px);font-weight:900;text-shadow:0 2px 3px #000;z-index:6;padding:.3em;background:#060000b8;border:1px solid #b54a16;border-radius:8px}
+#notice{position:absolute;left:8%;right:8%;top:26%;min-height:1.4em;text-align:center;color:#ffdaa6;font-size:clamp(11px,2.8vw,16px);text-shadow:0 2px 3px #000;z-index:6}
+#bins{position:absolute;top:76%;left:6%;width:88%;display:grid;grid-template-columns:repeat(7,1fr);text-align:center;align-items:end;z-index:5;font-size:clamp(9px,2.7vw,14px);font-weight:1000;text-shadow:0 1px 5px #000,0 0 7px #e30;pointer-events:none}
+#bins span:nth-child(4){color:#ffe957}
+#result{position:absolute;left:12%;right:12%;top:46%;text-align:center;font-size:clamp(23px,7vw,42px);font-weight:1000;color:#ffe8a0;text-shadow:0 2px #2b0000,0 0 16px red,0 0 20px #f70;z-index:15;opacity:0;pointer-events:none}
+#result.show{animation:result-pop 1.4s ease-out forwards}@keyframes result-pop{0%{transform:scale(.5);opacity:0}16%{transform:scale(1.25);opacity:1}70%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}
+#board{position:absolute;top:29%;right:2%;z-index:8;font-size:clamp(10px,2.5vw,14px);border:1px solid #b94b1a;border-radius:6px;padding:.4em .55em;background:#090000dc;color:#ffd4ba;cursor:pointer}
+#ranking{display:none;position:absolute;inset:14% 6% 17%;z-index:22;background:#090606f5;border:2px solid #d64b20;border-radius:15px;padding:16px 12px;overflow:auto;box-shadow:0 0 30px #f20}
+#ranking.open{display:block}#ranking h2{text-align:center;color:#ffddae;margin:0 0 12px;font-size:20px}#ranking ol{margin:0;padding-left:32px}#ranking li{padding:5px 0;font-weight:700}#ranking li span{float:right;color:#ffb67d}#ranking button{display:block;margin:18px auto 0;background:#911b0b;color:white;border:1px solid #f70;border-radius:9px;padding:10px 24px;font-weight:900}
+@media (prefers-reduced-motion:reduce){#result.show{animation:none;opacity:1}}
+</style>
+</head>
+<body>
+<main id="stage" aria-label="HELL PACHINKO, jeu à billes">
+<canvas id="balls" aria-hidden="true"></canvas>
+<button id="close" aria-label="Fermer le jeu et retourner à l'accueil" title="Fermer">Fermer</button>
+<div id="score" aria-live="polite">SCORE DU MOIS : <span id="total">0</span></div>
+<div id="notice" role="status">Lance la bille et regarde où elle tombe !</div>
+<button id="board" aria-label="Classement mensuel">CLASSEMENT</button>
+<div id="result" aria-hidden="true"></div>
+<div id="bins"><span>100</span><span>500</span><span>1 000</span><span>5 000</span><span>1 000</span><span>500</span><span>100</span></div>
+<button id="launch">LANCER</button>
+<section id="ranking" role="dialog" aria-label="Classement HELL PACHINKO" aria-modal="true"><h2>CLASSEMENT DU MOIS</h2><ol id="ranking-list"></ol><button id="rank-close">FERMER</button></section>
+</main>
+<script>
+(()=>{'use strict';
+const URL='https://ldibykpitjutratyqqax.supabase.co/rest/v1/rpc/';
+const KEY='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv';
+const stage=document.getElementById('stage'),canvas=document.getElementById('balls'),ctx=canvas.getContext('2d');
+const launch=document.getElementById('launch'),notice=document.getElementById('notice'),result=document.getElementById('result'),total=document.getElementById('total');
+const slots=[100,500,1000,5000,1000,500,100];
+const id=localStorage.getItem('hellx-club-device-v1');
+let current=null,raf=0,active=false;
+const fmt=n=>Number(n||0).toLocaleString('fr-FR');
+function resize(){const r=stage.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(r.width*d);canvas.height=Math.round(r.height*d);ctx.setTransform(canvas.width/887,0,0,canvas.height/1774,0,0)}
+window.addEventListener('resize',resize);resize();
+function close(){cancelAnimationFrame(raf);location.replace('./');}
+document.getElementById('close').addEventListener('click',close);
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('ranking').classList.contains('open'))hideRank();else close()}});
+function mark(s){notice.textContent=s}
+async function rpc(name,payload){
+ const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),11000);
+ try{const response=await fetch(URL+name,{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:JSON.stringify(payload||{}),signal:ctrl.signal});const body=await response.json().catch(()=>null);if(!response.ok)throw Error(body?.message||'Erreur du classement');return body}
+ finally{clearTimeout(timer)}
+}
+function drawBall(x,y){
+ ctx.save();ctx.shadowColor='#ff390a';ctx.shadowBlur=22;const g=ctx.createRadialGradient(x-8,y-10,2,x,y,20);g.addColorStop(0,'#fff');g.addColorStop(.26,'#e3e9ed');g.addColorStop(.6,'#899098');g.addColorStop(1,'#11151d');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,19,0,Math.PI*2);ctx.fill();ctx.restore();
+}
+function animate(slot,points,savedTotal){
+ active=true;launch.disabled=true;mark('LA BILLE DESCEND…');result.classList.remove('show');
+ const start=performance.now(),duration=3200,beginX=438,endX=96+(slot+.5)*100;
+ // Rebonds symétriques, avec trajectoire qui rejoint la case décidée par Supabase.
+ const path=[{x:438,y:464}];
+ let x=438;for(let k=0;k<14;k++){const y=520+k*55;const progress=(k+1)/15;const center=438+(endX-438)*Math.pow(progress,1.15);x=Math.max(95,Math.min(792,x+(center-x)*.38+(Math.random()-.5)*123));path.push({x,y})}
+ path.push({x:endX,y:1336});path.push({x:endX,y:1404});
+ const times=path.map((_,i)=>i/(path.length-1));
+ function frame(t){
+  ctx.clearRect(0,0,887,1774);
+  const p=Math.min(1,(t-start)/duration),s=p*(path.length-1),i=Math.min(path.length-2,Math.floor(s)),u=s-i;
+  const smooth=u*u*(3-2*u),bx=path[i].x+(path[i+1].x-path[i].x)*smooth,by=path[i].y+(path[i+1].y-path[i].y)*u;
+  drawBall(bx,by);
+  if(p<1){raf=requestAnimationFrame(frame)}else{
+    active=false;launch.disabled=false;ctx.clearRect(0,0,887,1774);
+    result.textContent='+'+fmt(points)+' POINTS';result.classList.remove('show');void result.offsetWidth;result.classList.add('show');
+    if(savedTotal!==null){total.textContent=fmt(savedTotal);mark('À toi de relancer !')}
+    else mark('Mode hors ligne : points non enregistrés');
+  }
+ }
+ raf=requestAnimationFrame(frame);
+}
+launch.addEventListener('click',async()=>{
+ if(active)return;
+ if(!id){mark('Ouvre HELLXBONE et crée d’abord ton pseudo.');return;}
+ launch.disabled=true;mark('LANCEMENT…');
+ try{const out=await rpc('hellx_pachinko_launch',{p_member_id:id});const data=Array.isArray(out)?out[0]:out;
+ if(!data||!Number.isInteger(data.slot)||data.slot<0||data.slot>6)throw Error('Réponse de jeu invalide');
+ animate(data.slot,data.points,Number(data.total_month));
+ }catch(error){launch.disabled=false;const m=String(error?.message||'');
+ if(m.includes('ATTENDS_3_SECONDES'))mark('Attends 3 secondes avant le prochain lancer.');
+ else if(m.includes('LIMITE_300'))mark('Limite de 300 lancers atteinte pour aujourd’hui.');
+ else if(m.includes('MEMBRE_INCONNU'))mark('Ton compte doit être ouvert dans HELLXBONE.');
+ else mark('Connexion indisponible. Réessaie.');
+ }
+});
+function hideRank(){document.getElementById('ranking').classList.remove('open')}
+document.getElementById('rank-close').addEventListener('click',hideRank);
+document.getElementById('board').addEventListener('click',async()=>{
+ const p=document.getElementById('ranking'),ol=document.getElementById('ranking-list');p.classList.add('open');ol.replaceChildren();
+ const info=document.createElement('li');info.textContent='Chargement…';ol.appendChild(info);
+ try{const rows=await rpc('hellx_pachinko_leaderboard',{});ol.replaceChildren();
+ if(!rows.length){const li=document.createElement('li');li.textContent='Aucun score ce mois-ci.';ol.appendChild(li)}
+ for(const row of rows){const li=document.createElement('li'),score=document.createElement('span');li.textContent=row.pseudo+' ';score.textContent=fmt(row.score);li.appendChild(score);ol.appendChild(li)}
+ }catch(e){ol.textContent='Classement indisponible pour le moment.'}
+});
+if(!id)mark('Reviens à l’accueil HELLXBONE pour activer ton pseudo.');
+})();
+</script>
+</body></html>
