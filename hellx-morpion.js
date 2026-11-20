@@ -22,7 +22,7 @@ function bestMove(b){
  }
  let score=-Infinity,candidates=[];
  for(const i of free){b[i]='O';const s=solve(b,false,1);b[i]='';if(s>score){score=s;candidates=[i]}else if(s===score)candidates.push(i)}
- if(Math.random()<0.75 && free.length>1){const alternatives=free.filter(i=>!candidates.includes(i));if(alternatives.length)return alternatives[Math.floor(Math.random()*alternatives.length)];}
+
  return candidates[Math.floor(Math.random()*candidates.length)];
 }
 function status(text){const el=document.getElementById('hellx-morpion-status');if(el)el.textContent=text}
