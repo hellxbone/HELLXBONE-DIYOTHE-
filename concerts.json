@@ -1,84 +1,6 @@
 {
-  "updated": "2026-11-19T15:54:19.616977+00:00",
+  "updated": "2026-11-20T15:37:59.714263+00:00",
   "events": [
-    {
-      "date": "2026-11-19",
-      "artist": "BIRDSTONE (RELEASE PARTY !)   MARAVE",
-      "city": "Joué-lès-Tours",
-      "department": "37",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/15/367d429c-96c6-39af-962b-01762d2caa68",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 47.33938,
-      "lon": 0.66303
-    },
-    {
-      "date": "2026-11-19",
-      "artist": "Bertrand Belin | Musique",
-      "city": "Fouesnant",
-      "department": "29",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/38/d3abb85e-f261-395f-8ed1-2d1d8e4105e9",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 47.89528,
-      "lon": -4.01316
-    },
-    {
-      "date": "2026-11-19",
-      "artist": "Concert Three Birds Whisper — The Positive Rebellion Tour 2026",
-      "city": "Quetigny",
-      "department": "21",
-      "venue": "",
-      "genre": "Rock",
-      "source": "https://data.datatourisme.fr/6/b8a4d6df-b951-3733-87e3-d42a54a1a101",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 47.31425,
-      "lon": 5.11274
-    },
-    {
-      "date": "2026-11-19",
-      "artist": "Fethi Trab · Sirbey",
-      "city": "Marseille 5e Arrondissement",
-      "department": "13",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/58/f6988527-8e66-3d14-9e5f-2277de1cd02e",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.29323,
-      "lon": 5.39175
-    },
-    {
-      "date": "2026-11-19",
-      "artist": "Tyreek McDole + Lea Maria Fries & Julien Herné",
-      "city": "Le Mans",
-      "department": "72",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/49/2948f751-9914-3863-bbb5-bc529dc62a12",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.00733,
-      "lon": 0.19889
-    },
-    {
-      "date": "2026-11-19",
-      "artist": "[Concerts] Peter Kernel + Zato",
-      "city": "Chalon-sur-Saône",
-      "department": "71",
-      "venue": "",
-      "genre": "punk",
-      "source": "https://data.datatourisme.fr/6/ae38909e-cbdc-3ea7-8aef-ff012a1f07eb",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 46.77521,
-      "lon": 4.84551
-    },
     {
       "date": "2026-11-20",
       "artist": "Ann Fag & El Mira",
@@ -549,6 +471,19 @@
     },
     {
       "date": "2026-11-21",
+      "artist": "Ouverture du festival JEST - Jamais d'Eux Sans Toi",
+      "city": "Marseille 1er Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/58/7d7681b0-f192-334c-a0a8-b093772e7994",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.30161,
+      "lon": 5.3755
+    },
+    {
+      "date": "2026-11-21",
       "artist": "Reverend Beat Man et Milan Slick",
       "city": "Saint-Vallier",
       "department": "71",
@@ -666,6 +601,19 @@
     },
     {
       "date": "2026-11-22",
+      "artist": "Festival JEST - Compagnie Déraciné × Mildacoro",
+      "city": "Marseille 3e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/58/37e930bc-82b2-3247-aba4-2ec2c9a847d2",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.30959,
+      "lon": 5.39037
+    },
+    {
+      "date": "2026-11-22",
       "artist": "Manu Lanvin (Blues, Booze and Rock'n'Roll !) / Crêpes",
       "city": "Quimperlé",
       "department": "29",
@@ -714,6 +662,19 @@
       "origin": "datatourisme-vetted",
       "lat": 49.89408,
       "lon": 2.29177
+    },
+    {
+      "date": "2026-11-25",
+      "artist": "Festival JEST - armor&murmur × Mai Mai Mai",
+      "city": "Marseille 3e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "metal",
+      "source": "https://data.datatourisme.fr/58/61f8eb37-9670-3af9-87e0-64af80851003",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.31022,
+      "lon": 5.38997
     },
     {
       "date": "2026-11-25",
@@ -857,6 +818,32 @@
       "origin": "datatourisme-vetted",
       "lat": 43.5844,
       "lon": 1.42761
+    },
+    {
+      "date": "2026-11-26",
+      "artist": "Jam Session - Le Spot",
+      "city": "Ancenis-Saint-Géréon",
+      "department": "44",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/d98e2b87-9b57-3860-a139-7d18ef43e8be",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.37033,
+      "lon": -1.18972
+    },
+    {
+      "date": "2026-11-26",
+      "artist": "Les 3 univers du violoncelle",
+      "city": "Tarascon",
+      "department": "13",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/58/1a098de3-877e-3dbb-b5b3-bc222be019bf",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.80554,
+      "lon": 4.65578
     },
     {
       "date": "2026-11-26",
@@ -1091,6 +1078,19 @@
       "origin": "datatourisme-vetted",
       "lat": 49.41948,
       "lon": 2.83004
+    },
+    {
+      "date": "2026-11-27",
+      "artist": "Festival JEST - Lucien Balconi × Peter Kernel × Céline Inthegarage",
+      "city": "Marseille 3e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/58/b0f096fa-ecec-3703-8227-06c48a228e7c",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.31022,
+      "lon": 5.38997
     },
     {
       "date": "2026-11-27",
@@ -1509,6 +1509,19 @@
     },
     {
       "date": "2026-11-29",
+      "artist": "Concert Rock Progressif : Hamasaari",
+      "city": "Janzé",
+      "department": "35",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/893bea0f-00ff-3dfe-9e8c-c66519538ea3",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.88358,
+      "lon": -1.44084
+    },
+    {
+      "date": "2026-11-29",
       "artist": "Futur 2000 avec The Wackids pour jeune public",
       "city": "Saint-André-de-Cubzac",
       "department": "33",
@@ -1652,6 +1665,19 @@
     },
     {
       "date": "2026-12-04",
+      "artist": "BLINDTEST APAPA : INSTRUMENTAL ET MUSICAL",
+      "city": "Saint-Brevin-les-Pins",
+      "department": "44",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/49/2eb67291-6dc7-370b-a01e-4bd10f25e9c5",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.24761,
+      "lon": -2.16662
+    },
+    {
+      "date": "2026-12-04",
       "artist": "Jazz au Caveau : The Bartenders",
       "city": "Plouescat",
       "department": "29",
@@ -1710,6 +1736,32 @@
       "venue": "",
       "genre": "rock",
       "source": "https://data.datatourisme.fr/58/4537f795-528d-3650-a652-c5ab8845ac77",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.29323,
+      "lon": 5.39175
+    },
+    {
+      "date": "2026-12-04",
+      "artist": "Tumulte club #3 w/ Miss Jay B2B TTristana",
+      "city": "Marseille 5e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "hardcore",
+      "source": "https://data.datatourisme.fr/58/2b2078a8-1fb2-3164-9a9f-af5d29876d5c",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.29323,
+      "lon": 5.39175
+    },
+    {
+      "date": "2026-12-04",
+      "artist": "Tumulte club #3 w/ Miss Jay B2B TTristana et Tumulte",
+      "city": "Marseille 5e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "hardcore",
+      "source": "https://data.datatourisme.fr/58/ab3e9479-3374-3adf-8853-7d38962519ee",
       "tickets": "",
       "origin": "datatourisme-vetted",
       "lat": 43.29323,
@@ -1883,6 +1935,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.00733,
       "lon": 0.19889
+    },
+    {
+      "date": "2026-12-05",
+      "artist": "Sonidera - Latin fusion",
+      "city": "Marseille 2e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/58/be700f1c-8bc1-3638-a3a8-301f1afcb38c",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.29818,
+      "lon": 5.36599
     },
     {
       "date": "2026-12-05",
@@ -2312,6 +2377,19 @@
       "lon": 5.04391
     },
     {
+      "date": "2026-12-17",
+      "artist": "Concert solidaire : Chorale participative + Let Kids Rock - Noël à Romans",
+      "city": "Romans-sur-Isère",
+      "department": "26",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/13/b255c7ea-4c94-3340-856d-57ef8fa9a21d",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 45.04342,
+      "lon": 5.04391
+    },
+    {
       "date": "2026-12-18",
       "artist": "Candlelight  : musiques de Noël",
       "city": "Colmar",
@@ -2388,6 +2466,19 @@
       "origin": "datatourisme-vetted",
       "lat": 49.89672,
       "lon": 2.27242
+    },
+    {
+      "date": "2026-12-19",
+      "artist": "Concert Folk Blues",
+      "city": "Janzé",
+      "department": "35",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/38/2ccf2261-9e50-370d-b997-51a1558ad312",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.88358,
+      "lon": -1.44084
     },
     {
       "date": "2026-12-19",
@@ -3805,6 +3896,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.03824,
       "lon": -1.5016
+    },
+    {
+      "date": "2027-04-09",
+      "artist": "Bouss en concert",
+      "city": "Marseille 4e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/58/3252219e-68ad-3745-a10f-f25e5649c30e",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.31534,
+      "lon": 5.40436
     },
     {
       "date": "2027-04-09",
