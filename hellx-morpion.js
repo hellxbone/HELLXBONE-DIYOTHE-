@@ -22,7 +22,7 @@ function bestMove(b){
  }
  let score=-Infinity,candidates=[];
  for(const i of free){b[i]='O';const s=solve(b,false,1);b[i]='';if(s>score){score=s;candidates=[i]}else if(s===score)candidates.push(i)}
- if(Math.random()<0.30 && free.length>1){const alternatives=free.filter(i=>!candidates.includes(i));if(alternatives.length)return alternatives[Math.floor(Math.random()*alternatives.length)];}
+ if(Math.random()<0.75 && free.length>1){const alternatives=free.filter(i=>!candidates.includes(i));if(alternatives.length)return alternatives[Math.floor(Math.random()*alternatives.length)];}
  return candidates[Math.floor(Math.random()*candidates.length)];
 }
 function status(text){const el=document.getElementById('hellx-morpion-status');if(el)el.textContent=text}
@@ -30,7 +30,7 @@ function draw(){
  const root=document.getElementById(ROOT);if(!root)return;
  root.querySelectorAll('[data-hx-morpion-cell]').forEach(el=>{
   const i=Number(el.dataset.hxMorpionCell);
-  el.replaceChildren();if(board[i]){const img=document.createElement('img');img.src=board[i]==='X'?'morpion-croix-griffe.png':'morpion-rond-demoniaque.png';img.alt=board[i];img.style.cssText='display:block;width:94%;height:94%;object-fit:contain;margin:auto;pointer-events:none';el.append(img)}el.disabled=ended||thinking||!!board[i];
+  el.replaceChildren();if(board[i]){const img=document.createElement('img');img.src=board[i]==='X'?'morpion-croix-griffe.png':'morpion-rond-demoniaque.png';img.alt=board[i];img.style.cssText='display:block;width:94%;height:94%;object-fit:contain;margin:auto;pointer-events:none;position:relative;z-index:5;filter:drop-shadow(0 0 4px #f33)';el.append(img)}el.disabled=ended||thinking||!!board[i];
   el.classList.toggle('hx-o',board[i]==='O');el.classList.toggle('hx-x',board[i]==='X');
  });
  const end=outcome(board);root.querySelectorAll('.hx-morpion-cell').forEach(x=>x.classList.remove('hx-win'));
