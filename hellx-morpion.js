@@ -23,6 +23,9 @@ function bestMove(b){
  let score=-Infinity,candidates=[];
  for(const i of free){b[i]='O';const s=solve(b,false,1);b[i]='';if(s>score){score=s;candidates=[i]}else if(s===score)candidates.push(i)}
 
+ // Mode accessible : HELLX joue parfois un coup imparfait pour laisser gagner les membres.
+ // 65 % de coups libres, 35 % de coups stratégiques.
+ if(Math.random()<0.65)return free[Math.floor(Math.random()*free.length)];
  return candidates[Math.floor(Math.random()*candidates.length)];
 }
 function status(text){const el=document.getElementById('hellx-morpion-status');if(el)el.textContent=text}
