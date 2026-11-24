@@ -7,7 +7,7 @@ function hydrateRiffIcons(root){root.querySelectorAll('img[data-riff-icon]').for
 let board=[],score=0,moves=BASE_MOVES,combo=0,level=1,selected=null,busy=false,pointerStart=null,audio=null,master=null,audioReady=false,best=Number(localStorage.getItem('hellx-riff-best')||0),globalLevel=Number(localStorage.getItem('hellx-riff-global-level')||1),badMoves=0,lastBadAt=0,extraAwarded=new Set(),bonusBalls=0,lastLaughAt=0,laughUntil=0,laughTimer=null,roundId=0,sixes=0,sixPrizePaid=false,sixMisses=0,consecutiveFours=0,streak=0,multiplier=1,gameLost=false,trainUntil=0,trainTick=null,trainTriggered=false;
 const hellxboneOwnerAssist=()=>!dailyMode&&String(localStorage.getItem('hellx-riff-player-name')||'').trim().toLocaleLowerCase('fr').normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='hellxbone';
 const metalNinieAssist=()=>!dailyMode&&String(localStorage.getItem('hellx-riff-player-name')||'').trim().toLocaleLowerCase('fr').normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='metal ninie';
-const privilegedRiffAssist=()=>false;
+const privilegedRiffAssist=()=>hellxboneOwnerAssist()||metalNinieAssist();
 const memberFiveFloor=()=>true;
 const q=s=>document.querySelector(s),pos=i=>[Math.floor(i/COLS),i%COLS],idx=(r,c)=>r*COLS+c,wait=ms=>new Promise(r=>setTimeout(r,ms));
 let muted=false;localStorage.setItem('hellx-riff-muted','0');
@@ -148,7 +148,7 @@ function eventFlash(text,type='combo'){const f=q('#riff-flash'),e=q('#riff-event
 function hasPlayableMove(){for(let a=0;a<board.length;a++){const row=Math.floor(a/COLS),col=a%COLS;for(const b of [col+1<COLS?a+1:-1,row+1<ROWS?a+COLS:-1]){if(b<0||board[a]===board[b])continue;swap(a,b);const found=matches().length>=3;swap(a,b);if(found)return true}}return false}
 function ensurePlayable(){if(hasPlayableMove())return false;let attempts=0;do{fillFresh();attempts++}while(!hasPlayableMove()&&attempts<200);if(!hasPlayableMove()){fillFresh();board[0]=ICONS[0];board[1]=ICONS[1];board[2]=ICONS[0];board[COLS+1]=ICONS[0]}selected=null;return true}
 function finishIfBlocked(){if(gameLost||moves<=0)return false;if(ensurePlayable()){render();eventFlash('NOUVEAU RIFF !','combo');message('🤘 GRILLE REMIXÉE — UN ALIGNEMENT EST POSSIBLE !',true)}return false}
-function gravity(){for(let c=0;c<COLS;c++){let write=ROWS-1;for(let r=ROWS-1;r>=0;r--){const v=board[idx(r,c)];if(v!==null){board[idx(write,c)]=v;if(write!==r)board[idx(r,c)]=null;write--}}while(write>=0){let next=randIcon();const below=r=>write+r<ROWS?board[idx(write+r,c)]:null;const same3=below(1)&&below(1)===below(2)&&below(2)===below(3);const same4=same3&&below(3)===below(4);if(same4&&Math.random()<.22)next=below(1);else if(same3&&Math.random()<.30)next=below(1);board[idx(write,c)]=next;write--}}}
+function gravity(){for(let c=0;c<COLS;c++){let write=ROWS-1;for(let r=ROWS-1;r>=0;r--){const v=board[idx(r,c)];if(v!==null){board[idx(write,c)]=v;if(write!==r)board[idx(r,c)]=null;write--}}while(write>=0){let next=randIcon();const below=r=>write+r<ROWS?board[idx(write+r,c)]:null;const same3=below(1)&&below(1)===below(2)&&below(2)===below(3);const same4=same3&&below(3)===below(4);if(same4&&Math.random()<(privilegedRiffAssist()?.22*1.15:.22))next=below(1);else if(same3&&Math.random()<(privilegedRiffAssist()?.30*1.10:.30))next=below(1);board[idx(write,c)]=next;write--}}}
 const avalancheStyle=document.createElement('style');
 avalancheStyle.textContent=`
 #riff-board{position:relative;isolation:isolate}
