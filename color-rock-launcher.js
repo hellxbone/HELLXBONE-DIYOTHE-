@@ -2,6 +2,7 @@
 let dialog,frame,opener;
 function close(){if(!dialog?.open)return;window.HellxTelemetry?.gameEnd('Coloriages');dialog.close();opener?.focus()}
 function open(){
+window.HellxTelemetry?.gameStart('Coloriages');
 opener=document.activeElement;
 if(!dialog){
 dialog=document.createElement('dialog');dialog.className='hellx-color-rock-dialog';dialog.setAttribute('aria-label','Color Rock — coloriages HELLXBONE');
