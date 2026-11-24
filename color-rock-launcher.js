@@ -1,6 +1,6 @@
 (()=>{
 let dialog,frame,opener;
-function close(){if(!dialog?.open)return;dialog.close();opener?.focus()}
+function close(){if(!dialog?.open)return;window.HellxTelemetry?.gameEnd('Coloriages');dialog.close();opener?.focus()}
 function open(){
 opener=document.activeElement;
 if(!dialog){
