@@ -6,8 +6,10 @@ const KEY='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv';
 const VISITOR_KEY='hellx-analytics-visitor-v1';
 const VISIT=crypto.randomUUID();
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-let visitor;try{visitor=localStorage.getItem(VISITOR_KEY)}catch{}
-if(!uuid.test(visitor||'')){visitor=crypto.randomUUID();try{localStorage.setItem(VISITOR_KEY,visitor)}catch{}}
+let visitor=crypto.randomUUID();
+try{if(localStorage.getItem('hellx-member-stats-consent-v1')==='yes'){
+ const saved=localStorage.getItem(VISITOR_KEY);if(uuid.test(saved||''))visitor=saved;
+}}catch{}
 const safe=s=>String(s??'').replace(/[<>\r\n\t]/g,' ').trim().slice(0,100);
 function track(category,eventName,detail='',seconds=0){
  if(!['page','game','radio','action'].includes(category))return;
