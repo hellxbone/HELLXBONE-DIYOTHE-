@@ -40,7 +40,7 @@ document.addEventListener('click',e=>{
  if(target.matches('[data-sumup-click]'))track('action','click','Boutique SumUp');
  else if(target.matches('[data-share]'))track('action','click','Partager un article');
  else if(target.id==='hellx-invite-button')track('action','click','Inviter des amis');
- else {const label=(target.getAttribute('aria-label')||target.textContent||'').toLowerCase();if(/carte|membre/.test(label))track('action','click','Carte de membre');else if(/tirage|tee-shirt/.test(label))track('action','click','Tirage tee-shirt');else if(/invite|potes|amis/.test(label))track('action','click','Inviter des amis');}
+ else {const label=(target.getAttribute('aria-label')||target.textContent||'').toLowerCase();if(/\bsos\b|signal/.test(label))track('action','click','SOS — ouverture du mode');else if(/live|radio/.test(label))track('action','click','Accès Radio LIVE 666');else if(/carte|membre/.test(label))track('action','click','Carte de membre');else if(/tirage|tee-shirt/.test(label))track('action','click','Tirage tee-shirt');else if(/invite|potes|amis/.test(label))track('action','click','Inviter des amis');}
 },true);
 let radioSelected=false;
 function detectRadio(){
