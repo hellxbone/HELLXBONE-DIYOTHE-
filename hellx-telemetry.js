@@ -42,10 +42,6 @@ document.addEventListener('click',e=>{
  else if(target.id==='hellx-invite-button')track('action','click','Inviter des amis');
  else {const label=(target.getAttribute('aria-label')||target.textContent||'').toLowerCase();if(/carte|membre/.test(label))track('action','click','Carte de membre');else if(/tirage|tee-shirt/.test(label))track('action','click','Tirage tee-shirt');else if(/invite|potes|amis/.test(label))track('action','click','Inviter des amis');}
 },true);
-document.addEventListener('click',e=>{
- if(e.target?.closest?.('[data-mastermind-open]'))openGame('Master Mind Hell');
- if(e.target?.closest?.('[data-color-rock-open]'))openGame('Coloriages');
-},true);
 let radioSelected=false;
 function detectRadio(){
  const selected=document.documentElement.classList.contains('hx-radio-selected');
