@@ -552,3 +552,5 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 #hellx-riff-crush .riff-board{gap:3px!important;padding:5px!important;border:2px solid #82917f!important;background:#070b08!important;box-shadow:0 0 22px #91ff3022!important}
 #hellx-riff-crush .riff-actions .riff-restart,#hellx-riff-crush .riff-actions .riff-sound{background:linear-gradient(#354339,#141c16)!important;border:1px solid #748776!important;min-height:44px!important}
 #hellx-riff-crush .riff-actions .riff-leaderboard{margin:8px 0 0!important}
+
+#hellx-riff-crush .riff-wrap{background:#070a07 url("./2027/forge-arena.svg") center/100% 100% no-repeat!important;padding:34px 24px!important}#hellx-riff-crush #riff-board .riff-cell{background:radial-gradient(ellipse at 35% 15%,#69786b,#252e27 35%,#080c09 78%)!important;border:1px solid #89988b!important;box-shadow:inset 0 0 0 2px #111a14,inset 0 3px 3px #aab9a66b,0 3px 4px #000!important}#hellx-riff-crush #riff-board .riff-cell img{filter:drop-shadow(0 3px 2px #000) drop-shadow(0 0 3px #9cff5260) contrast(1.15)!important}
