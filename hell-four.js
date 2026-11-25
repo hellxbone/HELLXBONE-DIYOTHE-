@@ -26,6 +26,9 @@ function mount(){
  #hell-four-root .hf-left{left:15%;color:#a0ff3c}
  #hell-four-root .hf-right{left:58%;color:#ff6767}
  #hell-four-root .hf-turn{position:absolute;left:32%;top:29.55%;width:45%;height:3.35%;z-index:2;background:#061004ed;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#a7ff61;font-size:clamp(10px,3.1vw,16px);font-weight:900;text-align:center;line-height:1.1;text-shadow:0 0 7px #51ff36;overflow:hidden}
+ #hell-four-root .hf-drop{position:absolute;z-index:3;top:36.6%;width:10.2%;height:5%;transform:translateX(-50%);border:0;padding:0;background:transparent;cursor:pointer}
+ #hell-four-root .hf-drop:disabled{cursor:default}
+ #hell-four-root .hf-drop:focus-visible{outline:2px solid white}
  #hell-four-root .hf-cell{position:absolute;width:10.2%;height:5.85%;border:0;border-radius:50%;padding:0;margin:0;transform:translate(-50%,-50%);z-index:3;background:transparent;cursor:pointer;display:flex;justify-content:center;align-items:center}
  #hell-four-root .hf-cell:disabled{cursor:default}
  #hell-four-root .hf-cell:focus-visible{outline:3px solid #fff;outline-offset:2px}
@@ -72,7 +75,7 @@ function mount(){
   <button class="hf-close" data-hf="close" aria-label="Retour aux jeux"></button>
   <div class="hf-name hf-left"></div><div class="hf-name hf-right"></div>
   <div class="hf-turn" aria-live="polite"></div>
-  <div class="hf-cells"></div>
+  <div class="hf-arrows"></div><div class="hf-cells"></div>
   <div class="hf-wait" hidden></div>
   <button class="hf-zone challenge" data-hf="choose" aria-label="Défier un membre"></button>
   <button class="hf-zone replay" data-hf="replay" aria-label="Revanche"></button>
@@ -131,7 +134,7 @@ async function run(action,options={},nextPanel=null){
   state.error='';
   apply(data);
  }catch(e){showError(e.message||'Une erreur est survenue.');}
- finally{state.waiting=false;}
+ finally{state.waiting=false;if(state.open)render();}
 }
 async function refresh(silent=false){
  if(!state.open||state.waiting)return;
@@ -148,7 +151,7 @@ async function refresh(silent=false){
   if(state.selected!=null && !data.games.some(g=>g.id===state.selected))state.selected=null;
   render();
  }catch(e){if(!silent)showError(e.message||'Impossible de récupérer les parties.');}
- finally{state.waiting=false;}
+ finally{state.waiting=false;if(state.open)render();}
 }
 function turnText(g){
  if(!g)return 'CHOISIS UN ADVERSAIRE';
@@ -200,6 +203,7 @@ function render(){
  root.querySelector('.hf-right').textContent=g?g.opponent_name:'HELLX';
  root.querySelector('.hf-turn').textContent=turnText(g);
  const enabled=!!g&&g.status==='active'&&g.turn===g.me_side&&!state.waiting;
+ root.querySelector('.hf-arrows').innerHTML=Array.from({length:7},(_,c)=>`<button class="hf-drop" style="left:${16+11.3*c}%" data-hf="col" data-col="${c}" aria-label="Jouer dans la colonne ${c+1}" ${!enabled||board[c]!==0?'disabled':''}></button>`).join('');
  root.querySelector('.hf-cells').innerHTML=board.map((v,i)=>{
   const c=i%7,r=Math.floor(i/7),x=16+11.3*c,y=44.3+6.23*r;
   return `<button class="hf-cell" style="left:${x}%;top:${y}%" data-hf="col" data-col="${c}" aria-label="Colonne ${c+1}, ligne ${r+1}${v?', occupée':' vide'}" ${!enabled||board[c]!==0?'disabled':''}>${v?`<span class="hf-token ${v===1?'green':'red'}" aria-hidden="true">☠</span>`:''}</button>`;
@@ -282,7 +286,7 @@ async function onClick(e){
    state.panel=updated?.status==='done'?'result':'play';
    render();
   }catch(err){toast(err.message||'Coup impossible.');}
-  finally{state.waiting=false;}
+  finally{state.waiting=false;if(state.open)render();}
   return;
  }
  if(what==='replay'){
