@@ -19,7 +19,7 @@ function mount(){
  #hell-four-root{position:fixed;inset:0;z-index:2147483400;background:#000;color:#fff;font-family:system-ui,Arial,sans-serif;display:none;align-items:center;justify-content:center;overscroll-behavior:contain}
  #hell-four-root.hf-visible{display:flex}
  #hell-four-root *{box-sizing:border-box}
- #hell-four-root .hf-stage{position:relative;width:min(100vw,600px);height:100dvh;min-height:420px;background:#030603;overflow:hidden;isolation:isolate}
+ #hell-four-root .hf-stage{position:relative;width:min(100vw,600px,calc(100dvh * 0.55));height:auto;aspect-ratio:0.55;container-type:inline-size;background:#030603;overflow:hidden;isolation:isolate}
  #hell-four-root .hf-art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
  #hell-four-root .hf-close{position:absolute;left:1%;top:0.2%;width:12%;height:7%;border:0;background:transparent;cursor:pointer;z-index:8}
  #hell-four-root .hf-name{position:absolute;top:24.65%;width:27%;height:3%;z-index:2;display:flex;align-items:center;justify-content:center;font-size:clamp(10px,3.25vw,17px);font-weight:900;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px #000}
@@ -29,10 +29,10 @@ function mount(){
  #hell-four-root .hf-drop{position:absolute;z-index:3;top:36.6%;width:10.2%;height:5%;transform:translateX(-50%);border:0;padding:0;background:transparent;cursor:pointer}
  #hell-four-root .hf-drop:disabled{cursor:default}
  #hell-four-root .hf-drop:focus-visible{outline:2px solid white}
- #hell-four-root .hf-cell{position:absolute;width:10.2%;height:5.85%;border:0;border-radius:50%;padding:0;margin:0;transform:translate(-50%,-50%);z-index:3;background:transparent;cursor:pointer;display:flex;justify-content:center;align-items:center}
+ #hell-four-root .hf-cell{position:absolute;width:10.2%;height:auto;aspect-ratio:1;border:0;border-radius:50%;padding:0;margin:0;transform:translate(-50%,-50%);z-index:3;background:transparent;cursor:pointer;display:flex;justify-content:center;align-items:center}
  #hell-four-root .hf-cell:disabled{cursor:default}
  #hell-four-root .hf-cell:focus-visible{outline:3px solid #fff;outline-offset:2px}
- #hell-four-root .hf-token{width:89%;height:89%;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(13px,4vw,24px);color:#071006}
+ #hell-four-root .hf-token{width:89%;height:auto;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(13px,4vw,24px);color:#071006}
  #hell-four-root .hf-token.green{background:radial-gradient(circle at 33% 24%,#e1ffc2 0%,#89ff12 28%,#238800 68%,#063800 100%);box-shadow:inset -3px -4px 6px #000a,0 0 9px #8dff15;border:1px solid #ddff9e}
  #hell-four-root .hf-token.red{background:radial-gradient(circle at 33% 24%,#ffcebc 0%,#ff513c 30%,#a60006 70%,#450003 100%);box-shadow:inset -3px -4px 6px #000a,0 0 9px #ff3b21;border:1px solid #ffb4a0}
  #hell-four-root .hf-token.red{color:#210302}
@@ -146,6 +146,8 @@ async function refresh(silent=false){
    const recent=Number(localStorage.getItem(GAME_KEY)||'0');
    if(data.games?.some(g=>g.id===recent && g.status!=='declined'))state.selected=recent;
   }
+  const old=selectedGame();const fresh=data.games?.find(g=>g.id===state.selected);
+  if(old&&fresh&&fresh.board.some((v,i)=>v!==old.board[i]))bip();
   state.data=data;
   state.loaded=true;
   if(state.selected!=null && !data.games.some(g=>g.id===state.selected))state.selected=null;
@@ -195,6 +197,9 @@ function panelHtml(){
    ${outbound.length?`<p class="hf-minor">Défis envoyés : ${outbound.map(g=>esc(g.opponent)).join(', ')}</p>`:''}
    <div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button><button class="hf-action" data-hf="choose">DÉFIER UN MEMBRE</button>${g?`<button class="hf-action secondary" data-hf="hide">RETOUR À LA GRILLE</button>`:''}</div>`;
 }
+let audio=null;
+function unlockAudio(){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch(e){}}
+function bip(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.value=720;g.gain.setValueAtTime(.09,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.13);}catch(e){}}
 function render(){
  if(!root)return;
  const g=selectedGame();
@@ -249,7 +254,7 @@ function close(){
 async function onClick(e){
  const action=e.target.closest('[data-hf]');
  if(!action||!root?.contains(action))return;
- const what=action.dataset.hf;
+ const what=action.dataset.hf;unlockAudio();
  if(what==='close'){close();return;}
  if(what==='hide'){state.panel='play';render();return;}
  if(what==='lobby'){state.panel='lobby';render();return;}
@@ -279,7 +284,16 @@ async function onClick(e){
   if(state.waiting)return;
   state.waiting=true;
   try{
-   const data=await request('move',{gameId:g.id,col:Number(action.dataset.col)});
+   const col=Number(action.dataset.col);
+   const data=await request('move',{gameId:g.id,col});
+   const next=data.games.find(x=>x.id===g.id);
+   if(g.bot&&next){
+    const interim=[...g.board];
+    for(let row=5;row>=0;row--){const i=row*7+col;if(!interim[i]){interim[i]=g.me_side;break;}}
+    state.data={...data,games:data.games.map(x=>x.id===g.id?{...g,board:interim,turn:3-g.me_side}:x)};
+    render();bip();
+    if(next.board.some((v,i)=>v!==interim[i])){await new Promise(resolve=>setTimeout(resolve,1000));if(state.open)bip();}
+   }else bip();
    state.data=data;
    state.error='';
    const updated=selectedGame();
