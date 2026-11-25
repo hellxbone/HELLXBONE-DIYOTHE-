@@ -201,7 +201,11 @@ function panelHtml(){
    ${outbound.length?`<p class="hf-minor">Défis envoyés : ${outbound.map(g=>esc(g.opponent)).join(', ')}</p>`:''}
    <div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button><button class="hf-action" data-hf="choose">DÉFIER UN MEMBRE</button>${g?`<button class="hf-action secondary" data-hf="hide">RETOUR À LA GRILLE</button>`:''}</div>`;
 }
-let audio=null;
+let audio=null, tickTimer=null;
+function stopTicks(){clearInterval(tickTimer);tickTimer=null;}
+function tick(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.type='triangle';o.frequency.value=440;g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.001,t+.075);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.08);}catch(e){}}
+function syncTicks(game){const on=state.open&&state.panel==='play'&&game?.status==='active'&&!document.hidden;if(!on){stopTicks();return;}if(!tickTimer){tick();tickTimer=setInterval(()=>{if(document.hidden)stopTicks();else tick();},650);}}
+function thinkDelay(board){const filled=board.filter(Boolean).length;let threats=0;for(let c=0;c<7;c++){for(const side of [1,2]){const b=board.slice();for(let r=5;r>=0;r--){const i=r*7+c;if(!b[i]){b[i]=side;if(winningCells(b,side).size)threats++;break;}}}}const complexity=Math.min(1,filled/42+threats*.15);return Math.round(1000+3000*Math.min(1,.55*Math.random()+.45*complexity));}
 function unlockAudio(){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch(e){}}
 function bip(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.value=720;g.gain.setValueAtTime(.65,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.13);}catch(e){}}
 function winningCells(board,winner){
@@ -221,6 +225,7 @@ function render(){
  root.querySelector('.hf-left').textContent=g?g.challenger_name:state.data?.me||'JOUEUR 1';
  root.querySelector('.hf-right').textContent=g?g.opponent_name:'HELLX';
  root.querySelector('.hf-turn').textContent=turnText(g);
+ syncTicks(g);
  const enabled=!!g&&g.status==='active'&&g.turn===g.me_side&&!state.waiting;
  root.querySelector('.hf-arrows').innerHTML=Array.from({length:7},(_,c)=>`<button class="hf-drop" style="left:${16+11.3*c}%" data-hf="col" data-col="${c}" aria-label="Jouer dans la colonne ${c+1}" ${!enabled||board[c]!==0?'disabled':''}></button>`).join('');
  root.querySelector('.hf-cells').innerHTML=board.map((v,i)=>{
@@ -260,7 +265,7 @@ function open(){
 function close(){
  if(!state.open)return;
  state.open=false;
- clearInterval(state.timer);
+ clearInterval(state.timer);stopTicks();
  clearTimeout(toast.timer);
  root.classList.remove('hf-visible');
  document.body.style.overflow=state.previousOverflow;
@@ -306,7 +311,7 @@ async function onClick(e){
     for(let row=5;row>=0;row--){const i=row*7+col;if(!interim[i]){interim[i]=g.me_side;break;}}
     state.data={...data,games:data.games.map(x=>x.id===g.id?{...g,board:interim,turn:3-g.me_side}:x)};
     render();bip();
-    if(next.board.some((v,i)=>v!==interim[i])){await new Promise(resolve=>setTimeout(resolve,1000));if(state.open)bip();}
+    if(next.board.some((v,i)=>v!==interim[i])){await new Promise(resolve=>setTimeout(resolve,thinkDelay(interim)));if(state.open)bip();}
    }else bip();
    state.data=data;
    state.error='';
