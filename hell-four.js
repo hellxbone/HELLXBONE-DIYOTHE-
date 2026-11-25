@@ -199,7 +199,7 @@ function panelHtml(){
 }
 let audio=null;
 function unlockAudio(){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch(e){}}
-function bip(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.value=720;g.gain.setValueAtTime(.09,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.13);}catch(e){}}
+function bip(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.value=720;g.gain.setValueAtTime(.65,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.13);}catch(e){}}
 function render(){
  if(!root)return;
  const g=selectedGame();
