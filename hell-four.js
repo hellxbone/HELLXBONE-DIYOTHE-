@@ -10,6 +10,9 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const id=()=>localStorage.getItem(DEVICE)||'';
 const GAME_KEY='hell-four-last-game';
 function uidOk(v){return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);}
+function online(p){return p==='HELLX'||(state.data?.members||[]).some(m=>m.pseudo===p);}
+function available(g){return !!g&&(g.bot||online(g.opponent));}
+function dot(){return '<span class="hf-online" aria-label="En ligne"></span>';}
 function selectedGame(){return(state.data?.games||[]).find(g=>g.id===state.selected)||null;}
 function mount(){
  if(root)return;
@@ -55,6 +58,7 @@ function mount(){
  #hell-four-root .hf-action.red{border-color:#f75b4c;background:#38120f}
  #hell-four-root .hf-action:disabled{opacity:.5}
  #hell-four-root .hf-row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #34502b}
+ #hell-four-root .hf-online{display:inline-block;width:8px;height:8px;border-radius:50%;background:#48ff36;box-shadow:0 0 6px #48ff36;margin-right:6px;flex-shrink:0}
  #hell-four-root .hf-row strong{font-size:13px;max-width:48%;overflow-wrap:anywhere}
  #hell-four-root .hf-row button{width:auto;min-width:100px;padding:9px}
  #hell-four-root .hf-minor{color:#c1d3b9;font-size:12px}
@@ -155,12 +159,14 @@ async function refresh(silent=false){
   state.data=data;
   state.loaded=true;
   if(state.selected!=null && !data.games.some(g=>g.id===state.selected))state.selected=null;
+  if(selectedGame()?.status==='pending'&&!available(selectedGame())){state.selected=null;state.panel='lobby';}
   render();
  }catch(e){if(!silent)showError(e.message||'Impossible de récupérer les parties.');}
  finally{state.waiting=false;if(state.open)render();}
 }
 function turnText(g){
  if(!g)return 'CHOISIS UN ADVERSAIRE';
+ if(!available(g)&&g.status==='pending')return 'CHOISIS UN ADVERSAIRE';
  if(g.status==='pending')return g.me_side===2?'ACCEPTE LE DÉFI !':'DÉFI EN ATTENTE';
  if(g.status==='declined')return 'DÉFI REFUSÉ';
  if(g.status==='done'){
@@ -171,7 +177,7 @@ function turnText(g){
 }
 function panelHtml(){
  const g=selectedGame();
- const games=state.data?.games||[];
+ const games=(state.data?.games||[]).filter(available);
  if(state.panel==='error'){
   return `<h2>HELL FOUR</h2><p class="hf-error">${esc(state.error)}</p><div class="hf-actions"><button class="hf-action" data-hf="retry">RÉESSAYER</button><button class="hf-action secondary" data-hf="lobby">RETOUR</button></div>`;
  }
@@ -182,10 +188,10 @@ function panelHtml(){
  if(state.panel==='choose'){
   const members=state.data?.members||[];
   return `<h2>DÉFIER UN MEMBRE</h2><div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button></div>
-  ${members.length?`<p class="hf-minor">Envoie un défi à un membre. Il pourra l’accepter à son prochain passage.</p>${members.map(m=>`<div class="hf-row"><strong>${esc(m.pseudo)}</strong><button class="hf-action" data-hf="challenge" data-opponent="${esc(m.pseudo)}">DÉFIER</button></div>`).join('')}`:'<p class="hf-empty">Aucun autre membre inscrit pour le moment. HELLX est prêt à jouer.</p>'}
+  ${members.length?`<p class="hf-minor">Défie un membre actuellement en ligne.</p>${members.map(m=>`<div class="hf-row"><strong>${dot()}${esc(m.pseudo)}</strong><button class="hf-action" data-hf="challenge" data-opponent="${esc(m.pseudo)}">DÉFIER</button></div>`).join('')}`:'<p class="hf-empty">Aucun autre joueur en ligne. HELLX est prêt à jouer.</p>'}
   <div class="hf-actions"><button class="hf-action secondary" data-hf="lobby">RETOUR</button></div>`;
  }
- if(state.panel==='invite' && g?.status==='pending' && g.me_side===2){
+ if(state.panel==='invite' && available(g) && g?.status==='pending' && g.me_side===2){
   return `<h2>DÉFI DE ${esc(g.opponent)}</h2><p>Tu as reçu un défi de Puissance 4 !</p><div class="hf-actions"><button class="hf-action" data-hf="accept">ACCEPTER LE DUEL</button><button class="hf-action red" data-hf="decline">REFUSER</button><button class="hf-action secondary" data-hf="lobby">PLUS TARD</button></div>`;
  }
  if(state.panel==='result' && g?.status==='done'){
@@ -196,10 +202,10 @@ function panelHtml(){
  const active=games.filter(g=>g.status==='active');
  const outbound=games.filter(g=>g.status==='pending'&&g.me_side===1);
  return `<h2>HELL FOUR</h2><p>Puissance 4 version métal : aligne quatre crânes pour gagner.</p>
-   ${pending.length?`<p><strong style="color:#ff8a70">${pending.length} défi(s) reçu(s)</strong></p>${pending.map(g=>`<div class="hf-row"><strong>${esc(g.opponent)}</strong><button class="hf-action" data-hf="view" data-id="${g.id}">ACCEPTER</button></div>`).join('')}`:''}
-   ${active.length?`<p><strong>Parties en cours</strong></p>${active.slice(0,10).map(g=>`<div class="hf-row"><strong>${esc(g.opponent)}</strong><button class="hf-action" data-hf="view" data-id="${g.id}">${g.turn===g.me_side?'À TOI':'VOIR'}</button></div>`).join('')}`:''}
+   ${pending.length?`<p><strong style="color:#ff8a70">${pending.length} défi(s) reçu(s)</strong></p>${pending.map(g=>`<div class="hf-row"><strong>${dot()}${esc(g.opponent)}</strong><button class="hf-action" data-hf="view" data-id="${g.id}">ACCEPTER</button></div>`).join('')}`:''}
+   ${active.length?`<p><strong>Parties en cours</strong></p>${active.slice(0,10).map(g=>`<div class="hf-row"><strong>${dot()}${esc(g.opponent)}</strong><button class="hf-action" data-hf="view" data-id="${g.id}">${g.turn===g.me_side?'À TOI':'VOIR'}</button></div>`).join('')}`:''}
    ${outbound.length?`<p class="hf-minor">Défis envoyés : ${outbound.map(g=>esc(g.opponent)).join(', ')}</p>`:''}
-   <div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button><button class="hf-action" data-hf="choose">DÉFIER UN MEMBRE</button>${g?`<button class="hf-action secondary" data-hf="hide">RETOUR À LA GRILLE</button>`:''}</div>`;
+   <div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button>${state.data?.members?.length?`<button class="hf-action" data-hf="choose">DÉFIER UN MEMBRE</button>`:""}${g?`<button class="hf-action secondary" data-hf="hide">RETOUR À LA GRILLE</button>`:''}</div>`;
 }
 let audio=null, tickTimer=null;
 function stopTicks(){clearInterval(tickTimer);tickTimer=null;}
@@ -226,6 +232,8 @@ function render(){
  root.querySelector('.hf-right').textContent=g?g.opponent_name:'HELLX';
  root.querySelector('.hf-turn').textContent=turnText(g);
  syncTicks(g);
+ const challenge=root.querySelector('.hf-zone.challenge');challenge.disabled=!state.data?.members?.length;challenge.style.background=challenge.disabled?'#030603':'';challenge.style.opacity=challenge.disabled?'1':'';
+ if(g&&available(g)){const side=g.me_side===1?'.hf-right':'.hf-left';root.querySelector(side).insertAdjacentHTML('afterbegin',dot());}
  const enabled=!!g&&g.status==='active'&&g.turn===g.me_side&&!state.waiting;
  root.querySelector('.hf-arrows').innerHTML=Array.from({length:7},(_,c)=>`<button class="hf-drop" style="left:${16+11.3*c}%" data-hf="col" data-col="${c}" aria-label="Jouer dans la colonne ${c+1}" ${!enabled||board[c]!==0?'disabled':''}></button>`).join('');
  root.querySelector('.hf-cells').innerHTML=board.map((v,i)=>{
@@ -233,7 +241,7 @@ function render(){
   return `<button class="hf-cell ${winning.has(i)?'hf-winning':''}" style="left:${x}%;top:${y}%" data-hf="col" data-col="${c}" aria-label="Colonne ${c+1}, ligne ${r+1}${v?', occupée':' vide'}" ${!enabled||board[c]!==0?'disabled':''}>${v?`<span class="hf-token ${v===1?'green':'red'}" aria-hidden="true"></span>`:''}</button>`;
  }).join('');
  const wait=root.querySelector('.hf-wait');
- wait.hidden=!(g&&g.status==='pending'&&g.me_side===1);
+ wait.hidden=!(available(g)&&g.status==='pending'&&g.me_side===1);
  if(!wait.hidden)wait.textContent='DÉFI ENVOYÉ — EN ATTENTE DE '+g.opponent.toUpperCase();
  const dialog=root.querySelector('.hf-dialog'),shade=root.querySelector('.hf-shade');
  const show=state.panel!=='play';
@@ -277,11 +285,12 @@ async function onClick(e){
  if(what==='close'){close();return;}
  if(what==='hide'){state.panel='play';render();return;}
  if(what==='lobby'){state.panel='lobby';render();return;}
- if(what==='choose'){state.panel='choose';render();return;}
+ if(what==='choose'){if(!state.data?.members?.length)return;state.panel='choose';render();return;}
  if(what==='ranking'){state.panel='ranking';render();return;}
  if(what==='retry'){state.panel='lobby';render();refresh();return;}
  if(what==='bot'){state.panel='play';render();await run('new',{opponent:'__HELLX__'},'play');return;}
  if(what==='challenge'){
+  if(!online(action.dataset.opponent)){toast('Ce joueur est hors ligne.');return;}
   state.panel='play';render();
   await run('new',{opponent:action.dataset.opponent},'play');
   if(!state.error)toast('Défi envoyé !');
@@ -325,6 +334,7 @@ async function onClick(e){
  if(what==='replay'){
   if(!g){state.panel='choose';render();return;}
   if(g.status==='active'||g.status==='pending'){toast('Termine d’abord cette partie.');return;}
+  if(!available(g)){toast('Ce joueur est hors ligne.');return;}
   const opponent=g.bot?'__HELLX__':g.opponent;
   state.panel='play';render();
   await run('new',{opponent},'play');
