@@ -38,6 +38,8 @@ function mount(){
  #hell-four-root .hf-token.green,#hell-four-root .hf-token.red{background-size:contain;background-position:center;background-repeat:no-repeat;box-shadow:none;border:0;width:100%;height:auto;aspect-ratio:1}
  #hell-four-root .hf-token.green{background-image:url("file_00000000096c81f48c8eee9fcc280bbf.png")}
  #hell-four-root .hf-token.red{background-image:url("file_00000000a8748210bccea0acb3420832.png")}
+ #hell-four-root .hf-cell.hf-winning{z-index:4;outline:3px solid #fff4a0;box-shadow:0 0 8px 3px #ffd700,0 0 18px 5px #ffb300}
+ #hell-four-root .hf-winning .hf-token{filter:brightness(1.35)}
  #hell-four-root .hf-zone{position:absolute;z-index:4;top:81%;height:10%;padding:0;border:0;background:transparent;cursor:pointer}
  #hell-four-root .hf-zone.challenge{left:0;width:34%}
  #hell-four-root .hf-zone.replay{left:34%;width:32%}
@@ -202,10 +204,20 @@ function panelHtml(){
 let audio=null;
 function unlockAudio(){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch(e){}}
 function bip(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.value=720;g.gain.setValueAtTime(.65,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.13);}catch(e){}}
+function winningCells(board,winner){
+ if(winner!==1&&winner!==2)return new Set();
+ for(let r=0;r<6;r++)for(let c=0;c<7;c++)for(const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]){
+  const er=r+3*dr,ec=c+3*dc;if(er<0||er>=6||ec<0||ec>=7)continue;
+  const cells=Array.from({length:4},(_,k)=>(r+k*dr)*7+c+k*dc);
+  if(cells.every(i=>board[i]===winner))return new Set(cells);
+ }
+ return new Set();
+}
 function render(){
  if(!root)return;
  const g=selectedGame();
  const board=(Array.isArray(g?.board)&&g.board.length===42?g.board:Array(42).fill(0)).map(n=>Number(n)||0);
+ const winning=g?.status==='done'?winningCells(board,Number(g.winner)):new Set();
  root.querySelector('.hf-left').textContent=g?g.challenger_name:state.data?.me||'JOUEUR 1';
  root.querySelector('.hf-right').textContent=g?g.opponent_name:'HELLX';
  root.querySelector('.hf-turn').textContent=turnText(g);
@@ -213,7 +225,7 @@ function render(){
  root.querySelector('.hf-arrows').innerHTML=Array.from({length:7},(_,c)=>`<button class="hf-drop" style="left:${16+11.3*c}%" data-hf="col" data-col="${c}" aria-label="Jouer dans la colonne ${c+1}" ${!enabled||board[c]!==0?'disabled':''}></button>`).join('');
  root.querySelector('.hf-cells').innerHTML=board.map((v,i)=>{
   const c=i%7,r=Math.floor(i/7),x=16+11.3*c,y=44.3+6.23*r;
-  return `<button class="hf-cell" style="left:${x}%;top:${y}%" data-hf="col" data-col="${c}" aria-label="Colonne ${c+1}, ligne ${r+1}${v?', occupée':' vide'}" ${!enabled||board[c]!==0?'disabled':''}>${v?`<span class="hf-token ${v===1?'green':'red'}" aria-hidden="true"></span>`:''}</button>`;
+  return `<button class="hf-cell ${winning.has(i)?'hf-winning':''}" style="left:${x}%;top:${y}%" data-hf="col" data-col="${c}" aria-label="Colonne ${c+1}, ligne ${r+1}${v?', occupée':' vide'}" ${!enabled||board[c]!==0?'disabled':''}>${v?`<span class="hf-token ${v===1?'green':'red'}" aria-hidden="true"></span>`:''}</button>`;
  }).join('');
  const wait=root.querySelector('.hf-wait');
  wait.hidden=!(g&&g.status==='pending'&&g.me_side===1);
@@ -299,7 +311,7 @@ async function onClick(e){
    state.data=data;
    state.error='';
    const updated=selectedGame();
-   state.panel=updated?.status==='done'?'result':'play';
+   state.panel='play';
    render();
   }catch(err){toast(err.message||'Coup impossible.');}
   finally{state.waiting=false;if(state.open)render();}
