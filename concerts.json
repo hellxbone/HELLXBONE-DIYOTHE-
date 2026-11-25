@@ -1,31 +1,6 @@
 {
-  "updated": "2026-11-23T18:29:04.146844+00:00",
+  "updated": "2026-11-25T17:25:39.375271+00:00",
   "events": [
-    {
-      "date": "2026-11-24",
-      "artist": "Brama",
-      "city": "Le Mans",
-      "department": "72",
-      "venue": "",
-      "genre": "rock",
-      "source": "https://data.datatourisme.fr/49/48f8765d-d08a-3097-be54-56cd49498fdd",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 48.00733,
-      "lon": 0.19889
-    },
-    {
-      "date": "2026-11-24",
-      "artist": "Shaârghot",
-      "city": "Nantes",
-      "department": "44",
-      "venue": "Stereolux",
-      "genre": "Metal industriel",
-      "source": "",
-      "tickets": "",
-      "verified": true,
-      "id": 15849795
-    },
     {
       "date": "2026-11-25",
       "artist": "Danse – Musique : Manifesto",
@@ -716,6 +691,19 @@
     },
     {
       "date": "2026-11-28",
+      "artist": "Concert \"Hygïaphone\"",
+      "city": "Gisors",
+      "department": "27",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/30/4ff3e336-c8ee-3364-b92c-8d507abb4180",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 49.26328,
+      "lon": 1.78615
+    },
+    {
+      "date": "2026-11-28",
       "artist": "Concert - Little bob blues bastards (Rock)",
       "city": "Quimperlé",
       "department": "29",
@@ -1223,6 +1211,19 @@
     },
     {
       "date": "2026-12-04",
+      "artist": "Les chants de Noël en Louisiane",
+      "city": "Marseille 8e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "indie",
+      "source": "https://data.datatourisme.fr/58/223a0567-47ff-3d2f-9c44-60bfee190d86",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.3133,
+      "lon": 5.38486
+    },
+    {
+      "date": "2026-12-04",
       "artist": "SARAB",
       "city": "Toulouse",
       "department": "31",
@@ -1546,6 +1547,19 @@
       "id": 15546725
     },
     {
+      "date": "2026-12-08",
+      "artist": "Les chants de Noël en Louisiane",
+      "city": "Marseille 8e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "indie",
+      "source": "https://data.datatourisme.fr/58/223a0567-47ff-3d2f-9c44-60bfee190d86",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.3133,
+      "lon": 5.38486
+    },
+    {
       "date": "2026-12-09",
       "artist": "Billie",
       "city": "Dijon",
@@ -1729,6 +1743,19 @@
     },
     {
       "date": "2026-12-11",
+      "artist": "Les chants de Noël en Louisiane",
+      "city": "Marseille 8e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "indie",
+      "source": "https://data.datatourisme.fr/58/223a0567-47ff-3d2f-9c44-60bfee190d86",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.3133,
+      "lon": 5.38486
+    },
+    {
+      "date": "2026-12-11",
       "artist": "Les rockeurs ont du cœur",
       "city": "Brumath",
       "department": "67",
@@ -1897,6 +1924,19 @@
     },
     {
       "date": "2026-12-12",
+      "artist": "Spectacle musical",
+      "city": "Les Moutiers-en-Retz",
+      "department": "44",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/49/c064a87d-5770-3e36-b5d2-25234e60292b",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.06361,
+      "lon": -2.00062
+    },
+    {
+      "date": "2026-12-12",
       "artist": "Super Flèche + Passionate",
       "city": "Arbois",
       "department": "39",
@@ -1974,6 +2014,19 @@
       "lon": 1.43823
     },
     {
+      "date": "2026-12-15",
+      "artist": "Les chants de Noël en Louisiane",
+      "city": "Marseille 8e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "indie",
+      "source": "https://data.datatourisme.fr/58/223a0567-47ff-3d2f-9c44-60bfee190d86",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.3133,
+      "lon": 5.38486
+    },
+    {
       "date": "2026-12-16",
       "artist": "Ciné-Concert MONA KAZU",
       "city": "Besançon",
@@ -2011,6 +2064,19 @@
       "origin": "datatourisme-vetted",
       "lat": 43.2965,
       "lon": 5.37199
+    },
+    {
+      "date": "2026-12-16",
+      "artist": "Les chants de Noël en Louisiane",
+      "city": "Marseille 8e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "indie",
+      "source": "https://data.datatourisme.fr/58/223a0567-47ff-3d2f-9c44-60bfee190d86",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.3133,
+      "lon": 5.38486
     },
     {
       "date": "2026-12-17",
@@ -3118,6 +3184,19 @@
       "lon": -1.25345
     },
     {
+      "date": "2027-02-17",
+      "artist": "Jacob Banks",
+      "city": "Marseille 6e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "alternative",
+      "source": "https://data.datatourisme.fr/58/2d295ed6-8157-3e43-b6e3-905c758c4f73",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.2942,
+      "lon": 5.38351
+    },
+    {
       "date": "2027-02-18",
       "artist": "Concert : En Apparence",
       "city": "Chaumont",
@@ -4039,6 +4118,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.38705,
       "lon": -4.52061
+    },
+    {
+      "date": "2027-05-15",
+      "artist": "Marillion",
+      "city": "Marseille 2e Arrondissement",
+      "department": "13",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/58/aeaa792c-b24b-373d-b4c2-e5d44b1141b6",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.31047,
+      "lon": 5.36656
     },
     {
       "date": "2027-05-20",
