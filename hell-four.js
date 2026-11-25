@@ -220,7 +220,7 @@ function eerieMusicBox(){
   const notes=[659.25,587.33,493.88,523.25,440,493.88,392,370,329.63,392,293.66,277.18];
   const times=[0,.36,.72,1.08,1.48,1.84,2.24,2.68,3.12,3.60,4.14,4.74];
   const start=audio.currentTime+.05;
-  const master=audio.createGain();master.gain.value=.27;master.connect(audio.destination);
+  const master=audio.createGain();master.gain.value=1.05;master.connect(audio.destination);
   notes.forEach((freq,i)=>{
    const t=start+times[i],duration=i===notes.length-1?1.15:.78;
    const osc=audio.createOscillator(),harm=audio.createOscillator(),gain=audio.createGain();
