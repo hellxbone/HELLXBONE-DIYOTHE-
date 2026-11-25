@@ -527,30 +527,3 @@ html body #hellx-radar .hx-nearby-chat .hx-chat-box{max-height:90px!important;pa
 .hellx-color-rock-dialog::backdrop{background:#000}
 .hellx-color-rock-dialog iframe{display:block;width:100%;height:100%;border:0;background:#100d0c}
 #hellx-riff-crush .riff-color-rock{position:relative;z-index:1;margin-right:clamp(48px,11vw,68px)}
-
-/* DARK METAL 2027 — visual only, preserve board geometry and game logic */
-#hellx-riff-crush #riff-board .riff-cell{border:1px solid #66746a!important;border-radius:5px!important;background:linear-gradient(145deg,#5b655e 0%,#252d28 17%,#101713 50%,#303b32 85%,#090d0a 100%)!important;box-shadow:inset 0 2px 1px #d0e3d44a,inset 0 -3px 2px #000b,0 2px 3px #000!important;isolation:isolate}
-#hellx-riff-crush #riff-board .riff-cell img{filter:drop-shadow(0 2px 2px #000) contrast(1.12);object-fit:contain!important}
-#hellx-riff-crush #riff-board .riff-cell.selected{border:2px solid #b6ff45!important;box-shadow:inset 0 0 12px #b6ff4566,0 0 10px #b6ff45!important;background:linear-gradient(145deg,#435c35,#111d13)!important}
-#hellx-riff-crush #riff-board .riff-cell.match{animation:darkMetalImpact .24s ease-out both!important}
-@keyframes darkMetalImpact{0%{transform:scale(1);filter:brightness(1)}40%{transform:scale(1.12);filter:brightness(1.65);box-shadow:inset 0 0 12px #b6ff45,0 0 12px #b6ff45}100%{transform:scale(.7);opacity:.25}}
-#hellx-riff-crush .riff-flash.go{animation:darkMetalGlow .5s ease-out!important}
-@keyframes darkMetalGlow{0%,100%{opacity:0}30%{opacity:.38}}
-@media(prefers-reduced-motion:reduce){#hellx-riff-crush #riff-board .riff-cell.match,#hellx-riff-crush .riff-flash.go{animation:none!important}}
-
-/* 2027 v2 — full responsive arena, no fixed background alignment */
-#hellx-riff-crush .riff-wrap{aspect-ratio:auto!important;min-height:100dvh!important;height:auto!important;padding:16px 12px 28px!important;background:linear-gradient(180deg,#080c09e8,#101710f5),url("./hellxbone-mega-riff-bg.webp") center/cover!important;border:1px solid #455449!important;display:flex!important;flex-direction:column!important;gap:12px!important}
-#hellx-riff-crush .riff-top,#hellx-riff-crush .riff-stats,#hellx-riff-crush .riff-sixes,#hellx-riff-crush .riff-message,#hellx-riff-crush .riff-board,#hellx-riff-crush .riff-actions{position:relative!important;inset:auto!important;width:100%!important;height:auto!important;margin:0!important}
-#hellx-riff-crush .riff-top>div:first-child{display:block!important;width:80%!important;height:auto!important;text-align:left!important}
-#hellx-riff-crush .riff-top .riff-title{font-size:clamp(28px,8vw,48px)!important;text-align:left!important;letter-spacing:-.04em!important;color:#b6ff45!important}
-#hellx-riff-crush .riff-top .riff-last-winner{font-size:11px!important;text-align:left!important;margin-top:6px!important}
-#hellx-riff-crush .riff-close{position:relative!important;inset:auto!important;opacity:1!important;font-size:26px!important;background:#202b22!important;border:1px solid #68766a!important}
-#hellx-riff-crush .riff-stats .riff-stat{background:linear-gradient(#303b32,#111713)!important;border:1px solid #566659!important;padding:8px 2px!important;min-height:54px!important;border-radius:4px!important}
-#hellx-riff-crush .riff-stats .riff-stat span{display:block!important;font-size:9px!important}
-#hellx-riff-crush .riff-sixes{max-width:180px;align-self:center}
-#hellx-riff-crush .riff-message{min-height:25px!important}
-#hellx-riff-crush .riff-board{gap:3px!important;padding:5px!important;border:2px solid #82917f!important;background:#070b08!important;box-shadow:0 0 22px #91ff3022!important}
-#hellx-riff-crush .riff-actions .riff-restart,#hellx-riff-crush .riff-actions .riff-sound{background:linear-gradient(#354339,#141c16)!important;border:1px solid #748776!important;min-height:44px!important}
-#hellx-riff-crush .riff-actions .riff-leaderboard{margin:8px 0 0!important}
-
-#hellx-riff-crush .riff-wrap{background:#070a07 url("./2027/forge-arena.svg") center/100% 100% no-repeat!important;padding:34px 24px!important}#hellx-riff-crush #riff-board .riff-cell{background:radial-gradient(ellipse at 35% 15%,#69786b,#252e27 35%,#080c09 78%)!important;border:1px solid #89988b!important;box-shadow:inset 0 0 0 2px #111a14,inset 0 3px 3px #aab9a66b,0 3px 4px #000!important}#hellx-riff-crush #riff-board .riff-cell img{filter:drop-shadow(0 3px 2px #000) drop-shadow(0 0 3px #9cff5260) contrast(1.15)!important}
