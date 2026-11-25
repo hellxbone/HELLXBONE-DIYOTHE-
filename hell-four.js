@@ -141,6 +141,7 @@ async function run(action,options={},nextPanel=null){
   if(nextPanel!==null)state.panel=nextPanel;
   state.error='';
   apply(data);
+  if(action==='new' && state.open) eerieMusicBox();
  }catch(e){showError(e.message||'Une erreur est survenue.');}
  finally{state.waiting=false;if(state.open)render();}
 }
@@ -208,6 +209,36 @@ function panelHtml(){
    <div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button>${state.data?.members?.length?`<button class="hf-action" data-hf="choose">DÉFIER UN MEMBRE</button>`:""}${g?`<button class="hf-action secondary" data-hf="hide">RETOUR À LA GRILLE</button>`:''}</div>`;
 }
 let audio=null, tickTimer=null;
+let introTimers=[];
+function stopIntro(){for(const timer of introTimers)clearTimeout(timer);introTimers=[];}
+function eerieMusicBox(){
+ stopIntro();
+ try{
+  unlockAudio();
+  if(!audio)return;
+  // Original lullaby, intentionally detuned and gradually slowing down.
+  const notes=[659.25,587.33,493.88,523.25,440,493.88,392,370,329.63,392,293.66,277.18];
+  const times=[0,.36,.72,1.08,1.48,1.84,2.24,2.68,3.12,3.60,4.14,4.74];
+  const start=audio.currentTime+.05;
+  const master=audio.createGain();master.gain.value=.27;master.connect(audio.destination);
+  notes.forEach((freq,i)=>{
+   const t=start+times[i],duration=i===notes.length-1?1.15:.78;
+   const osc=audio.createOscillator(),harm=audio.createOscillator(),gain=audio.createGain();
+   osc.type='sine';harm.type='sine';
+   osc.frequency.setValueAtTime(freq*(i%4===3?.987:1),t);
+   harm.frequency.setValueAtTime(freq*2.003,t);
+   gain.gain.setValueAtTime(.0001,t);
+   gain.gain.exponentialRampToValueAtTime(.42,t+.014);
+   gain.gain.exponentialRampToValueAtTime(.0001,t+duration);
+   const top=audio.createGain();top.gain.value=.17;
+   osc.connect(gain);harm.connect(top);top.connect(gain);gain.connect(master);
+   osc.start(t);harm.start(t);osc.stop(t+duration+.02);harm.stop(t+duration+.02);
+  });
+  const timer=setTimeout(()=>{try{master.disconnect();}catch(e){}introTimers=[];},6500);
+  introTimers.push(timer);
+ }catch(e){}
+}
+
 function stopTicks(){clearInterval(tickTimer);tickTimer=null;}
 function tick(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.type='triangle';o.frequency.value=440;g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.001,t+.075);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.08);}catch(e){}}
 function syncTicks(game){const on=state.open&&state.panel==='play'&&game?.status==='active'&&!document.hidden;if(!on){stopTicks();return;}if(!tickTimer){tick();tickTimer=setInterval(()=>{if(document.hidden)stopTicks();else tick();},650);}}
@@ -273,7 +304,7 @@ function open(){
 function close(){
  if(!state.open)return;
  state.open=false;
- clearInterval(state.timer);stopTicks();
+ clearInterval(state.timer);stopTicks();stopIntro();
  clearTimeout(toast.timer);
  root.classList.remove('hf-visible');
  document.body.style.overflow=state.previousOverflow;
