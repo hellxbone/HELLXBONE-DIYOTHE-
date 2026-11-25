@@ -35,7 +35,9 @@ function mount(){
  #hell-four-root .hf-token{width:89%;height:auto;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(13px,4vw,24px);color:#071006}
  #hell-four-root .hf-token.green{background:radial-gradient(circle at 33% 24%,#e1ffc2 0%,#89ff12 28%,#238800 68%,#063800 100%);box-shadow:inset -3px -4px 6px #000a,0 0 9px #8dff15;border:1px solid #ddff9e}
  #hell-four-root .hf-token.red{background:radial-gradient(circle at 33% 24%,#ffcebc 0%,#ff513c 30%,#a60006 70%,#450003 100%);box-shadow:inset -3px -4px 6px #000a,0 0 9px #ff3b21;border:1px solid #ffb4a0}
- #hell-four-root .hf-token.red{color:#210302}
+ #hell-four-root .hf-token.green,#hell-four-root .hf-token.red{background-size:contain;background-position:center;background-repeat:no-repeat;box-shadow:none;border:0;width:100%;height:auto;aspect-ratio:1}
+ #hell-four-root .hf-token.green{background-image:url("file_00000000096c81f48c8eee9fcc280bbf.png")}
+ #hell-four-root .hf-token.red{background-image:url("file_00000000a8748210bccea0acb3420832.png")}
  #hell-four-root .hf-zone{position:absolute;z-index:4;top:81%;height:10%;padding:0;border:0;background:transparent;cursor:pointer}
  #hell-four-root .hf-zone.challenge{left:0;width:34%}
  #hell-four-root .hf-zone.replay{left:34%;width:32%}
@@ -211,7 +213,7 @@ function render(){
  root.querySelector('.hf-arrows').innerHTML=Array.from({length:7},(_,c)=>`<button class="hf-drop" style="left:${16+11.3*c}%" data-hf="col" data-col="${c}" aria-label="Jouer dans la colonne ${c+1}" ${!enabled||board[c]!==0?'disabled':''}></button>`).join('');
  root.querySelector('.hf-cells').innerHTML=board.map((v,i)=>{
   const c=i%7,r=Math.floor(i/7),x=16+11.3*c,y=44.3+6.23*r;
-  return `<button class="hf-cell" style="left:${x}%;top:${y}%" data-hf="col" data-col="${c}" aria-label="Colonne ${c+1}, ligne ${r+1}${v?', occupée':' vide'}" ${!enabled||board[c]!==0?'disabled':''}>${v?`<span class="hf-token ${v===1?'green':'red'}" aria-hidden="true">☠</span>`:''}</button>`;
+  return `<button class="hf-cell" style="left:${x}%;top:${y}%" data-hf="col" data-col="${c}" aria-label="Colonne ${c+1}, ligne ${r+1}${v?', occupée':' vide'}" ${!enabled||board[c]!==0?'disabled':''}>${v?`<span class="hf-token ${v===1?'green':'red'}" aria-hidden="true"></span>`:''}</button>`;
  }).join('');
  const wait=root.querySelector('.hf-wait');
  wait.hidden=!(g&&g.status==='pending'&&g.me_side===1);
