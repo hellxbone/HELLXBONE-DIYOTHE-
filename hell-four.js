@@ -213,6 +213,7 @@ let audio=null, tickTimer=null;
 let introMaster=null;
 function stopIntro(){if(introMaster){try{introMaster.disconnect()}catch(e){}introMaster=null;}}
 function eerieMusicBox(){
+ stopHellSfx();
  stopIntro();
  try{
  unlockAudio();if(!audio)return;
@@ -233,6 +234,57 @@ function eerieMusicBox(){
  });
  setTimeout(()=>{try{master.disconnect()}catch(e){}if(introMaster===master)introMaster=null;},6300);
  }catch(e){}
+}
+// Real, freely reusable recordings hosted by Wikimedia Commons (not synthesized).
+// Growls: stilgar, public domain, https://commons.wikimedia.org/wiki/File:Monster_growls_2.ogg
+// Hell atmosphere: Joseph SARDIN, CC0, https://commons.wikimedia.org/wiki/File:Joseph_SARDIN_-_Ambiance_halloween_1.ogg
+const HELL_SFX={
+ roar:'https://upload.wikimedia.org/wikipedia/commons/3/36/Monster_growls_2.ogg',
+ ambient:'https://upload.wikimedia.org/wikipedia/commons/4/4b/Joseph_SARDIN_-_Ambiance_halloween_1.ogg'
+};
+let hellSfxTimer=null,hellSfxCut=null,hellSfxActive=null,hellSfxNext='roar';
+const hellSfxPlayers={};
+function stopHellSfx(){
+ clearTimeout(hellSfxTimer);clearTimeout(hellSfxCut);
+ hellSfxTimer=null;hellSfxCut=null;
+ Object.values(hellSfxPlayers).forEach(player=>{try{player.pause();player.currentTime=0;}catch(e){}});
+ hellSfxActive=null;
+}
+function hellSfxAllowed(){
+ return state.open&&state.panel==='play'&&selectedGame()?.status==='active'&&!document.hidden;
+}
+function scheduleHellSfx(){
+ clearTimeout(hellSfxTimer);
+ if(!hellSfxAllowed())return;
+ hellSfxTimer=setTimeout(playHellSfx,8000+Math.random()*17000);
+}
+function playHellSfx(){
+ hellSfxTimer=null;
+ if(!hellSfxAllowed())return;
+ const kind=hellSfxNext;
+ hellSfxNext=kind==='roar'?'ambient':'roar';
+ try{
+  let player=hellSfxPlayers[kind];
+  if(!player){
+   player=new Audio(HELL_SFX[kind]);player.preload='auto';player.playsInline=true;
+   hellSfxPlayers[kind]=player;
+  }
+  Object.values(hellSfxPlayers).forEach(p=>{if(p!==player)p.pause();});
+  player.pause();player.currentTime=0;player.volume=kind==='roar'?.95:.40;
+  hellSfxActive=player;
+  const finish=()=>{
+   if(hellSfxActive!==player)return;
+   clearTimeout(hellSfxCut);hellSfxCut=null;
+   player.pause();hellSfxActive=null;scheduleHellSfx();
+  };
+  player.onended=finish;
+  hellSfxCut=setTimeout(finish,kind==='roar'?6500:10000);
+  const result=player.play();if(result&&typeof result.catch==='function')result.catch(finish);
+ }catch(e){hellSfxActive=null;scheduleHellSfx();}
+}
+function syncHellSfx(){
+ if(!hellSfxAllowed()){stopHellSfx();return;}
+ if(!hellSfxTimer&&!hellSfxCut&&!hellSfxActive)scheduleHellSfx();
 }
 function stopTicks(){clearInterval(tickTimer);tickTimer=null;}
 function tick(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.type='triangle';o.frequency.value=440;g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.001,t+.075);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.08);}catch(e){}}
@@ -258,6 +310,7 @@ function render(){
  root.querySelector('.hf-right').textContent=g?g.opponent_name:'HELLX';
  root.querySelector('.hf-turn').textContent=turnText(g);
  syncTicks(g);
+ syncHellSfx();
  const challenge=root.querySelector('.hf-zone.challenge');challenge.disabled=!state.data?.members?.length;challenge.style.background=challenge.disabled?'#030603':'';challenge.style.opacity=challenge.disabled?'1':'';
  if(g&&available(g)){const side=g.me_side===1?'.hf-right':'.hf-left';root.querySelector(side).insertAdjacentHTML('afterbegin',dot());}
  const enabled=!!g&&g.status==='active'&&g.turn===g.me_side&&!state.waiting;
@@ -299,7 +352,7 @@ function open(){
 function close(){
  if(!state.open)return;
  state.open=false;
- clearInterval(state.timer);stopTicks();stopIntro();
+ clearInterval(state.timer);stopTicks();stopIntro();stopHellSfx();
  clearTimeout(toast.timer);
  root.classList.remove('hf-visible');
  document.body.style.overflow=state.previousOverflow;
@@ -368,6 +421,7 @@ async function onClick(e){
   return;
  }
 }
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&state.open)syncHellSfx();else stopHellSfx();});
 document.addEventListener('click',e=>{
  const btn=e.target.closest('[data-hell-four-open]');
  if(btn){e.preventDefault();open();}
