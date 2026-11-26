@@ -1,45 +1,6 @@
 {
-  "updated": "2026-11-25T17:25:39.375271+00:00",
+  "updated": "2026-11-26T17:05:40.216165+00:00",
   "events": [
-    {
-      "date": "2026-11-25",
-      "artist": "Danse – Musique : Manifesto",
-      "city": "Amiens",
-      "department": "80",
-      "venue": "",
-      "genre": "métal",
-      "source": "https://data.datatourisme.fr/28/69a885f9-7421-3115-a9c3-870879efc24e",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 49.89408,
-      "lon": 2.29177
-    },
-    {
-      "date": "2026-11-25",
-      "artist": "Festival JEST - armor&murmur × Mai Mai Mai",
-      "city": "Marseille 3e Arrondissement",
-      "department": "13",
-      "venue": "",
-      "genre": "metal",
-      "source": "https://data.datatourisme.fr/58/61f8eb37-9670-3af9-87e0-64af80851003",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 43.31022,
-      "lon": 5.38997
-    },
-    {
-      "date": "2026-11-25",
-      "artist": "[Apéro Concert] Dear Pola",
-      "city": "Chalon-sur-Saône",
-      "department": "71",
-      "venue": "",
-      "genre": "Indie",
-      "source": "https://data.datatourisme.fr/6/f0ff931f-f651-3303-bcf8-4d7727069a50",
-      "tickets": "",
-      "origin": "datatourisme-vetted",
-      "lat": 46.77513,
-      "lon": 4.84544
-    },
     {
       "date": "2026-11-26",
       "artist": "CONCERT : Leroy se meurt + Mario.D - La Lune des Pirates",
@@ -1497,6 +1458,19 @@
     },
     {
       "date": "2026-12-05",
+      "artist": "SLIM PAUL & MOJO – THE SPIRIT OF DR JOHN",
+      "city": "Toulouse",
+      "department": "31",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/33/2828af32-8860-38b5-b82a-517d9033c899",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.60594,
+      "lon": 1.42788
+    },
+    {
+      "date": "2026-12-05",
       "artist": "Shaârghot + Solitaris",
       "city": "Le Mans",
       "department": "72",
@@ -1507,6 +1481,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.00733,
       "lon": 0.19889
+    },
+    {
+      "date": "2026-12-05",
+      "artist": "Soirée Axoa",
+      "city": "Moustey",
+      "department": "40",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/23/6fd57a1c-feeb-36e1-a84c-ded00321a933",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 44.36003,
+      "lon": -0.76163
     },
     {
       "date": "2026-12-05",
@@ -1808,6 +1795,19 @@
     },
     {
       "date": "2026-12-11",
+      "artist": "Svinkels family & friends - Tour d'honneur 2026",
+      "city": "Oignies",
+      "department": "62",
+      "venue": "",
+      "genre": "punk",
+      "source": "https://data.datatourisme.fr/14/6eef0821-bbe4-3798-a1cf-30009d0d754c",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 50.46236,
+      "lon": 2.98648
+    },
+    {
+      "date": "2026-12-11",
       "artist": "Winecraft",
       "city": "Ruffey-sur-Seille",
       "department": "39",
@@ -2028,6 +2028,19 @@
     },
     {
       "date": "2026-12-16",
+      "artist": "AL’KHENA",
+      "city": "Toulouse",
+      "department": "31",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/33/1ae854a7-d499-39a1-8798-db2115a9f0a6",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 43.60594,
+      "lon": 1.42788
+    },
+    {
+      "date": "2026-12-16",
       "artist": "Ciné-Concert MONA KAZU",
       "city": "Besançon",
       "department": "25",
@@ -2145,6 +2158,19 @@
     },
     {
       "date": "2026-12-18",
+      "artist": "Apéro-Concert | Boule",
+      "city": "Saint-Aubin-de-Lanquais",
+      "department": "24",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/23/324b301d-56a9-3097-bceb-759d19b9ebb7",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 44.7944,
+      "lon": 0.59693
+    },
+    {
+      "date": "2026-12-18",
       "artist": "Candlelight  : musiques de Noël",
       "city": "Colmar",
       "department": "68",
@@ -2246,6 +2272,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.12872,
       "lon": -2.21915
+    },
+    {
+      "date": "2026-12-19",
+      "artist": "Concert | Vocal'ease",
+      "city": "Bergerac",
+      "department": "24",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/23/5c8ed88d-554e-3e3b-a659-5e84a1915234",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 44.84513,
+      "lon": 0.47993
     },
     {
       "date": "2026-12-19",
@@ -2431,6 +2470,19 @@
     },
     {
       "date": "2027-01-09",
+      "artist": "Concert candlelight à la Cité du Train",
+      "city": "Mulhouse",
+      "department": "68",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/5/dbe79bc2-db28-3dea-9b74-0db8cd42610f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.7502,
+      "lon": 7.29412
+    },
+    {
+      "date": "2027-01-09",
       "artist": "Concert du Nouvel-An : Sandy Smoke",
       "city": "Lesparre-Médoc",
       "department": "33",
@@ -2506,6 +2558,19 @@
       "origin": "datatourisme-vetted",
       "lat": 47.11725,
       "lon": -2.09286
+    },
+    {
+      "date": "2027-01-15",
+      "artist": "Concert candlelight à la Cité du Train",
+      "city": "Mulhouse",
+      "department": "68",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/5/dbe79bc2-db28-3dea-9b74-0db8cd42610f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.7502,
+      "lon": 7.29412
     },
     {
       "date": "2027-01-15",
@@ -2704,6 +2769,19 @@
     },
     {
       "date": "2027-01-23",
+      "artist": "Concert de Paskal au restaurant Com D Roy",
+      "city": "Andernos-les-Bains",
+      "department": "33",
+      "venue": "",
+      "genre": "Rock",
+      "source": "https://data.datatourisme.fr/23/9aea6e95-f3fe-3a08-b8c5-9a30e05b6232",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 44.74717,
+      "lon": -1.10467
+    },
+    {
+      "date": "2027-01-23",
       "artist": "Concerts - Scardanelli et Sophie / La Raymonde / Les Gaillards d'en Face",
       "city": "Plédran",
       "department": "22",
@@ -2896,6 +2974,19 @@
       "origin": "datatourisme-vetted",
       "lat": 48.07578,
       "lon": 7.37105
+    },
+    {
+      "date": "2027-01-30",
+      "artist": "Concert candlelight à la Cité du Train",
+      "city": "Mulhouse",
+      "department": "68",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/5/dbe79bc2-db28-3dea-9b74-0db8cd42610f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.7502,
+      "lon": 7.29412
     },
     {
       "date": "2027-01-30",
@@ -3650,6 +3741,19 @@
       "origin": "datatourisme-vetted",
       "lat": 45.1449,
       "lon": 0.52669
+    },
+    {
+      "date": "2027-03-20",
+      "artist": "Concert candlelight à la Cité du Train",
+      "city": "Mulhouse",
+      "department": "68",
+      "venue": "",
+      "genre": "rock",
+      "source": "https://data.datatourisme.fr/5/dbe79bc2-db28-3dea-9b74-0db8cd42610f",
+      "tickets": "",
+      "origin": "datatourisme-vetted",
+      "lat": 47.7502,
+      "lon": 7.29412
     },
     {
       "date": "2027-03-21",
