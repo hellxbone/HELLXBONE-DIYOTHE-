@@ -12,6 +12,12 @@
 <div class="chart-card"><h3>Stations populaires</h3><div id="bar-stations"></div></div>
 <div class="chart-card"><h3>Boutons et fonctions</h3><div id="bar-actions"></div></div>
 </section>
+<h2>HELL FOUR — Puissance 4</h2><p class="subtle">Activité enregistrée depuis l'activation du suivi. Résultats comptés lors de la transition vers une partie terminée.</p>
+<div class="grid" id="four-tiles" aria-label="Statistiques de HELL FOUR"></div>
+<section class="chart-columns" aria-label="Graphiques de HELL FOUR">
+<div class="chart-card"><h3>Évolution des lancements</h3><div id="chart-four-activity"></div></div>
+<div class="chart-card"><h3>Victoires, défaites et nuls</h3><div id="chart-four-outcomes"></div></div>
+</section>
 <h2>Statistiques de chaque jeu</h2><div class="scroll"><table><thead><tr><th>Jeu</th><th>Lancements</th><th>Joueurs</th><th>Durée</th><th>Résultats</th></tr></thead><tbody id="game-activity-rows"></tbody></table></div>
 <h2>Statistiques de chaque page</h2><div class="scroll"><table><thead><tr><th>Page</th><th>Vues</th><th>Visiteurs</th><th>Durée</th></tr></thead><tbody id="page-activity-rows"></tbody></table></div>
 <h2>Radio LIVE 666, par station</h2><div class="scroll"><table><thead><tr><th>Station</th><th>Écoutes</th><th>Auditeurs</th><th>Durée</th><th>Moyenne</th></tr></thead><tbody id="radio-activity-rows"></tbody></table></div>
@@ -96,7 +102,7 @@ function renderActivities(data,start,days){
    return map;
  };
  const pages=group('page','view'),pageDuration=group('page','duration');
- const games=group('game','open'),gameDuration=group('game','duration'),wins=group('game','win'),losses=group('game','loss');
+ const games=group('game','open'),gameDuration=group('game','duration'),wins=group('game','win'),losses=group('game','loss'),draws=group('game','draw');
  const radios=group('radio','play'),radioDuration=group('radio','listen'),actions=group('action','click');
  const sorted=m=>[...m.values()].sort((a,b)=>b.count-a.count);
  const joined=(m,t)=>sorted(m).map(x=>({name:x.name,count:x.count,visitors:x.visitors.size,seconds:t.get(x.name)?.seconds||0}));
@@ -105,10 +111,24 @@ function renderActivities(data,start,days){
  if(!rows.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=(kind==='game'||kind==='radio')?5:4;td.textContent='Pas encore de données disponibles.';tr.append(td);body.append(tr);return}
  for(const x of rows){const tr=document.createElement('tr');
  let cells=[x.name,formatNumber(x.count),formatNumber(x.visitors),duration(x.seconds)];
- if(kind==='game'){const w=wins.get(x.name)?.count||0,l=losses.get(x.name)?.count||0;cells.push(w+l?formatNumber(w)+' gagnées / '+formatNumber(l)+' perdues':'—')}else if(kind==='radio'){cells.push(duration(x.count?x.seconds/x.count:0))}
+ if(kind==='game'){const w=wins.get(x.name)?.count||0,l=losses.get(x.name)?.count||0;const d=draws.get(x.name)?.count||0;cells.push(w+l+d?formatNumber(w)+' gagnées / '+formatNumber(l)+' perdues / '+formatNumber(d)+' nuls':'—')}else if(kind==='radio'){cells.push(duration(x.count?x.seconds/x.count:0))}
  for(const cell of cells){const td=document.createElement('td');td.textContent=cell;tr.append(td)}body.append(tr);
  }};
  table('game-activity-rows',gameRows,'game');table('page-activity-rows',pageRows,'page');table('radio-activity-rows',radioRows,'radio');
+
+ // Dedicated HELL FOUR metrics; never infer played games from mere screen openings.
+ const fourEvents=events.filter(x=>x.category==='game'&&x.detail==='HELL FOUR');
+ const fourCount=name=>fourEvents.filter(x=>x.event_name===name).length;
+ const fourOpens=fourCount('open'),fourWins=fourCount('win'),fourLosses=fourCount('loss'),fourDraws=fourCount('draw');
+ const fourCompleted=fourWins+fourLosses+fourDraws;
+ const fourSeconds=fourEvents.filter(x=>x.event_name==='duration').reduce((sum,x)=>sum+Math.max(0,safeNumber(x.duration_seconds)),0);
+ const fourUsers=new Set(fourEvents.filter(x=>x.event_name==='open'&&x.visitor_id).map(x=>x.visitor_id)).size;
+ const fourRate=fourCompleted?Math.round(100*fourWins/fourCompleted)+' %':'—';
+ const fourTiles=[['Lancements',fourOpens],['Joueurs',fourUsers],['Parties terminées',fourCompleted],['Victoires',fourWins],['Défaites',fourLosses],['Matchs nuls',fourDraws],['Taux de victoire',fourRate],['Temps passé',duration(fourSeconds)]];
+ el('four-tiles').replaceChildren(...fourTiles.map(([name,value])=>{const tile=document.createElement('div');tile.className='tile';const strong=document.createElement('b'),small=document.createElement('small');strong.textContent=formatNumber(value);if(typeof value==='string')strong.textContent=value;small.textContent=name;tile.append(strong,small);return tile}));
+ plotLine('chart-four-activity',timeline(fourEvents.filter(x=>x.event_name==='open'),start,days,'recorded_at','visits'),'lancements HELL FOUR');
+ plotActivityBars('chart-four-outcomes',[{name:'Victoires',value:fourWins},{name:'Défaites',value:fourLosses},{name:'Nuls',value:fourDraws}].filter(x=>x.value>0));
+
  plotActivityBars('bar-pages',pageRows.map(x=>({name:x.name,value:x.count})));
  plotActivityBars('bar-games',gameRows.map(x=>({name:x.name,value:x.count})));
  plotActivityBars('bar-stations',radioRows.map(x=>({name:x.name,value:x.count})));
