@@ -301,9 +301,20 @@ function winningCells(board,winner){
  }
  return new Set();
 }
+const statsSeen=new Set();
+let statsPrevious=null;
+function trackFourResult(g){
+ if(!state.open)return;
+ if(g?.status==='done'&&statsPrevious?.id===g.id&&statsPrevious.status==='active'&&!statsSeen.has(g.id)){
+  statsSeen.add(g.id);
+  window.HellxTelemetry?.gameResult('HELL FOUR',Number(g.winner)===3?'draw':Number(g.winner)===Number(g.me_side)?'win':'loss');
+ }
+ statsPrevious=g?{id:g.id,status:g.status}:null;
+}
 function render(){
  if(!root)return;
  const g=selectedGame();
+ trackFourResult(g);
  const board=(Array.isArray(g?.board)&&g.board.length===42?g.board:Array(42).fill(0)).map(n=>Number(n)||0);
  const winning=g?.status==='done'?winningCells(board,Number(g.winner)):new Set();
  root.querySelector('.hf-left').textContent=g?g.challenger_name:state.data?.me||'JOUEUR 1';
@@ -337,8 +348,10 @@ function toast(message){
 function open(){
  mount();
  if(state.open)return;
+ window.HellxTelemetry?.gameStart('HELL FOUR');
  state.open=true;
  state.loaded=false;
+ statsPrevious=null;
  state.panel='lobby';
  state.selected=null;
  state.data=null;
@@ -352,6 +365,7 @@ function open(){
 function close(){
  if(!state.open)return;
  state.open=false;
+ window.HellxTelemetry?.gameEnd('HELL FOUR');
  clearInterval(state.timer);stopTicks();stopIntro();stopHellSfx();
  clearTimeout(toast.timer);
  root.classList.remove('hf-visible');
