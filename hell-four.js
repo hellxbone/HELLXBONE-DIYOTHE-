@@ -162,6 +162,7 @@ async function refresh(silent=false){
   if(state.selected!=null && !data.games.some(g=>g.id===state.selected))state.selected=null;
   if(selectedGame()?.status==='pending'&&!available(selectedGame())){state.selected=null;state.panel='lobby';}
   render();
+  if(old&&fresh&&old.status==='active'&&fresh.status==='done'&&state.open)eerieMusicBox();
  }catch(e){if(!silent)showError(e.message||'Impossible de récupérer les parties.');}
  finally{state.waiting=false;if(state.open)render();}
 }
@@ -352,6 +353,7 @@ async function onClick(e){
    const updated=selectedGame();
    state.panel='play';
    render();
+   if(state.open&&updated?.status==='done')eerieMusicBox();
   }catch(err){toast(err.message||'Coup impossible.');}
   finally{state.waiting=false;if(state.open)render();}
   return;
