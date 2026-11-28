@@ -4,6 +4,17 @@ if(window.HellxTelemetry||!window.crypto?.randomUUID||!window.fetch)return;
 const ENDPOINT='https://ldibykpitjutratyqqax.supabase.co/rest/v1/hellx_activity_events';
 const KEY='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv';
 const VISITOR_KEY='hellx-analytics-visitor-v1';
+const CONSENT_KEY='hellx-member-stats-consent-v1';
+const MEMBER_KEY='hellxbone-member-v1';
+const DEVICE_KEY='hellx-club-device-v1';
+function consentedMember(){
+ try{
+  if(localStorage.getItem(CONSENT_KEY)!=='yes')return null;
+  const account=JSON.parse(localStorage.getItem(MEMBER_KEY)||'null');
+  const id=localStorage.getItem(DEVICE_KEY);
+  return account?.synced&&uuid.test(id||'')?id:null;
+ }catch{return null;}
+}
 const VISIT=crypto.randomUUID();
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 let visitor=crypto.randomUUID();
@@ -16,6 +27,7 @@ function track(category,eventName,detail='',seconds=0){
  const name=safe(eventName).slice(0,80), subject=safe(detail);
  if(!name)return;
  const payload={visit_id:VISIT,visitor_id:visitor,category,event_name:name,detail:subject,duration_seconds:Math.max(0,Math.min(86400,Math.floor(Number(seconds)||0)))};
+ const memberId=consentedMember();if(memberId)payload.member_id=memberId;
  fetch(ENDPOINT,{method:'POST',keepalive:true,headers:{apikey:KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(payload)}).catch(()=>{});
 }
 let page='',pageStarted=0,radio='',radioStarted=0;
