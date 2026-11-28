@@ -21,6 +21,16 @@
 <h2>Statistiques de chaque jeu</h2><div class="scroll"><table><thead><tr><th>Jeu</th><th>Lancements</th><th>Joueurs</th><th>Durée</th><th>Résultats</th></tr></thead><tbody id="game-activity-rows"></tbody></table></div>
 <h2>Statistiques de chaque page</h2><div class="scroll"><table><thead><tr><th>Page</th><th>Vues</th><th>Visiteurs</th><th>Durée</th></tr></thead><tbody id="page-activity-rows"></tbody></table></div>
 <h2>Radio LIVE 666, par station</h2><div class="scroll"><table><thead><tr><th>Station</th><th>Écoutes</th><th>Auditeurs</th><th>Durée</th><th>Moyenne</th></tr></thead><tbody id="radio-activity-rows"></tbody></table></div>
+<h2>Qui joue à quoi ?</h2>
+<p class="subtle">Activité des pseudos ayant accepté le suivi, depuis la mise en place de cette fonctionnalité. Une ouverture de jeu n'est pas forcément une partie terminée.</p>
+<div class="scroll"><table><thead><tr><th>Pseudo</th><th>Jeu</th><th>Lancements</th><th>Durée</th><th>Dernière fois</th></tr></thead><tbody id="member-game-rows"></tbody></table></div>
+<h2>Qui écoute quelle radio ?</h2>
+<p class="subtle">Stations réellement lancées, temps d'écoute enregistré et dernière activité par pseudo ayant accepté le suivi.</p>
+<div class="scroll"><table><thead><tr><th>Pseudo</th><th>Station</th><th>Écoutes</th><th>Durée</th><th>Dernière fois</th></tr></thead><tbody id="member-radio-rows"></tbody></table></div>
+<h2>Activité individuelle</h2>
+<p class="subtle">Sélectionne un pseudo pour afficher les jeux et stations suivis sur la période choisie.</p>
+<select id="activity-member-filter" aria-label="Choisir un membre"><option value="">Tous les membres consentants</option></select>
+<div id="member-activity-detail" class="chart-card"></div>
 <p id="activity-note" class="subtle"></p><button id="refresh">ACTUALISER</button> <button id="logout">DÉCONNECTER CET APPAREIL</button><p id="note"></p></section><p><button onclick="location.href='./'">RETOUR</button></p></main><script type="module">
 import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.0';
 const url='https://ldibykpitjutratyqqax.supabase.co',key='sb_publishable_YIL89sE8bNs9jQ_az-ClkA_Wq-80zKv',db=createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'hellx-admin-auth-v1'}});
@@ -89,6 +99,43 @@ function plotActivityBars(id,items){
  const total=items.reduce((a,x)=>a+x.value,0),max=Math.max(1,...items.map(x=>x.value));
  host.innerHTML=items.slice(0,12).map(x=>'<div class="bar-item"><div class="bar-label"><span>'+htmlEscape(x.name)+'</span><strong>'+formatNumber(x.value)+' · '+(total?Math.round(100*x.value/total):0)+' %</strong></div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(100*x.value/max)+'%"></div></div></div>').join('');
 }
+
+function renderMemberActivities(events,members){
+ const selected=el('activity-member-filter'),previous=selected.value;
+ const names=new Map((members||[]).map(x=>[x.member_id,x.pseudo]));
+ const groups={game:new Map(),radio:new Map()};
+ for(const event of events){
+   if(!event.member_id||!names.has(event.member_id))continue;
+   if(event.category!=='game'&&event.category!=='radio')continue;
+   const map=groups[event.category],key=JSON.stringify([event.member_id,event.detail]);
+   if(!map.has(key))map.set(key,{member:event.member_id,name:names.get(event.member_id),subject:event.detail||'Sans nom',count:0,seconds:0,last:''});
+   const rec=map.get(key);
+   if((event.category==='game'&&event.event_name==='open')||(event.category==='radio'&&event.event_name==='play'))rec.count++;
+   if((event.category==='game'&&event.event_name==='duration')||(event.category==='radio'&&event.event_name==='listen'))rec.seconds+=Math.max(0,safeNumber(event.duration_seconds));
+   if(!rec.last||event.recorded_at>rec.last)rec.last=event.recorded_at;
+ }
+ const populate=(id,records)=>{
+   const body=el(id);body.replaceChildren();
+   if(!records.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.textContent='Pas encore de données identifiées sur cette période.';tr.append(td);body.append(tr);return;}
+   records.sort((a,b)=>b.last.localeCompare(a.last));
+   for(const a of records){
+     const tr=document.createElement('tr');
+     [a.name,a.subject,formatNumber(a.count),duration(a.seconds),new Date(a.last).toLocaleString('fr-FR')].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td);});body.append(tr);
+   }
+ };
+ const games=[...groups.game.values()],radios=[...groups.radio.values()];
+ const identified=new Set([...games,...radios].map(x=>x.member));
+ selected.replaceChildren(new Option('Tous les membres consentants',''));
+ [...identified].sort((a,b)=>String(names.get(a)).localeCompare(String(names.get(b)),'fr')).forEach(id=>selected.append(new Option(names.get(id),id)));
+ selected.value=identified.has(previous)?previous:'';
+ populate('member-game-rows',games.filter(x=>!selected.value||x.member===selected.value));
+ populate('member-radio-rows',radios.filter(x=>!selected.value||x.member===selected.value));
+ const gameList=games.filter(x=>!selected.value||x.member===selected.value);
+ const radioList=radios.filter(x=>!selected.value||x.member===selected.value);
+ const label=selected.value?names.get(selected.value):'Tous les pseudos identifiés';
+ el('member-activity-detail').textContent=label+' · '+formatNumber(gameList.reduce((n,x)=>n+x.count,0))+' lancements de jeux · '+formatNumber(radioList.reduce((n,x)=>n+x.count,0))+' écoutes radio · '+duration(radioList.reduce((n,x)=>n+x.seconds,0))+' de radio.';
+ selected.onchange=()=>renderMemberActivities(events,members);
+}
 function renderActivities(data,start,days){
  const events=Array.isArray(data)?data.filter(x=>new Date(x.recorded_at).getTime()>=start):[];
  const group=(category,name,measure)=>{
@@ -143,7 +190,7 @@ function renderActivities(data,start,days){
  const gameStarts=events.filter(x=>x.category==='game'&&x.event_name==='open').length;
  const radioStarts=events.filter(x=>x.category==='radio'&&x.event_name==='play').length;
  const radioSecs=events.filter(x=>x.category==='radio'&&x.event_name==='listen').reduce((a,x)=>a+Math.max(0,safeNumber(x.duration_seconds)),0);
- el('activity-note').textContent='Vues : '+formatNumber(visits)+' · Parties ouvertes : '+formatNumber(gameStarts)+' · Écoutes radio : '+formatNumber(radioStarts)+' · Durée radio : '+duration(radioSecs)+'. Les visiteurs uniques sont dédupliqués avec un identifiant aléatoire, sans pseudo. Historique limité aux 10 000 derniers événements enregistrés.';
+ el('activity-note').textContent='Vues : '+formatNumber(visits)+' · Parties ouvertes : '+formatNumber(gameStarts)+' · Écoutes radio : '+formatNumber(radioStarts)+' · Durée radio : '+duration(radioSecs)+'. Les visiteurs uniques sont dédupliqués avec un identifiant aléatoire. Seuls les membres consentants sont associés à leur pseudo. Historique limité aux 10 000 derniers événements enregistrés.';
  return {visits,gameStarts,radioStarts,radioSecs};
 }
 function render(){if(!dataset)return;const days=Number(el('period').value),start=days===1?new Date(new Date().setHours(0,0,0,0)).getTime():Date.now()-days*86400000;
@@ -151,6 +198,7 @@ const sessions=dataset.sessions.filter(x=>new Date(x.recorded_at).getTime()>=sta
 const total=sessions.reduce((a,x)=>a+x.active_seconds,0),active=new Set(sessions.filter(x=>x.member_id).map(x=>x.member_id));
 renderCharts(sessions,scores,members,start,days,active);
 const activityTotals=renderActivities(dataset.activities||[],start,days);
+renderMemberActivities((dataset.activities||[]).filter(x=>new Date(x.recorded_at).getTime()>=start),members);
 const cards=[['Membres inscrits',members.length],['Membres actifs',active.size],['Visites',sessions.length],['Temps total',duration(total)],['Durée moyenne',duration(sessions.length?total/sessions.length:0)],['Scores MEGA RIFF',scores.length],['Meilleur score',Math.max(0,...scores.map(x=>x.score))],['Défis quotidiens',daily.length],['Vues des pages',activityTotals.visits],['Lancements de jeux',activityTotals.gameStarts],['Démarrages radio',activityTotals.radioStarts],['Temps radio',duration(activityTotals.radioSecs)],['Écoute moyenne',duration(activityTotals.radioStarts?activityTotals.radioSecs/activityTotals.radioStarts:0)]];
 el('tiles').replaceChildren(...cards.map(([label,value])=>{const d=document.createElement('div');d.className='tile';const b=document.createElement('b'),s=document.createElement('small');b.textContent=value;s.textContent=label;d.append(b,s);return d}));
 const groups=new Map();for(const m of members)groups.set(m.member_id,{name:m.pseudo,visits:0,seconds:0,last:''});for(const s of sessions){if(!s.member_id||!groups.has(s.member_id))continue;const g=groups.get(s.member_id);g.visits++;g.seconds+=s.active_seconds;if(!g.last||s.recorded_at>g.last)g.last=s.recorded_at;}
