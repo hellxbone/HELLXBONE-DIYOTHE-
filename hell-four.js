@@ -25,6 +25,7 @@ function mount(){
  #hell-four-root .hf-stage{position:relative;width:min(100vw,600px,calc(100dvh * 0.55));height:auto;aspect-ratio:0.55;container-type:inline-size;background:#030603;overflow:hidden;isolation:isolate}
  #hell-four-root .hf-art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
  #hell-four-root .hf-close{position:absolute;left:1%;top:0.2%;width:12%;height:7%;border:0;background:transparent;cursor:pointer;z-index:8}
+ #hell-four-root .hf-sound{position:absolute;right:2%;top:1%;z-index:20;min-width:44px;min-height:44px;border:1px solid #78ff40;border-radius:8px;background:#081006;color:#b1ff75;font-weight:bold;font-size:12px;cursor:pointer;padding:5px}
  #hell-four-root .hf-name{position:absolute;top:24.65%;width:27%;height:3%;z-index:2;display:flex;align-items:center;justify-content:center;font-size:clamp(10px,3.25vw,17px);font-weight:900;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px #000}
  #hell-four-root .hf-left{left:15%;color:#a0ff3c}
  #hell-four-root .hf-right{left:58%;color:#ff6767}
@@ -81,6 +82,7 @@ function mount(){
  root.innerHTML=`<div class="hf-stage">
   <img class="hf-art" src="${IMAGE}" alt="HELL FOUR, plateau de 7 colonnes et 6 lignes" draggable="false"/>
   <button class="hf-close" data-hf="close" aria-label="Retour aux jeux"></button>
+  <button class="hf-sound" data-hf="sound" aria-label="Couper le son" aria-pressed="false">SON ON</button>
   <div class="hf-name hf-left"></div><div class="hf-name hf-right"></div>
   <div class="hf-turn" aria-live="polite"></div>
   <div class="hf-arrows"></div><div class="hf-cells"></div>
@@ -210,9 +212,12 @@ function panelHtml(){
    <div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button>${g?`<button class="hf-action secondary" data-hf="hide">RETOUR À LA GRILLE</button>`:''}</div><h2 style="font-size:15px">MEMBRES EN LIGNE (${(state.data?.members||[]).length})</h2>${(state.data?.members||[]).length?(state.data.members.map(m=>`<div class="hf-row"><strong>${dot()}${esc(m.pseudo)}</strong><button class="hf-action" data-hf="challenge" data-opponent="${esc(m.pseudo)}">INVITER</button></div>`).join("")):`<p class="hf-empty">${state.loaded?"Aucun autre membre en ligne.":"Recherche des membres en ligne…"}</p>`}`;
 }
 let audio=null, tickTimer=null;
+let muted=false;try{muted=localStorage.getItem('hell-four-muted')==='1';}catch(e){}
+function toggleSound(){muted=!muted;try{localStorage.setItem('hell-four-muted',muted?'1':'0');}catch(e){}if(muted){stopTicks();stopIntro();stopHellSfx();}else unlockAudio();render();}
 let introMaster=null;
 function stopIntro(){if(introMaster){try{introMaster.disconnect()}catch(e){}introMaster=null;}}
 function eerieMusicBox(){
+ if(muted)return;
  stopHellSfx();
  stopIntro();
  try{
@@ -251,7 +256,7 @@ function stopHellSfx(){
  hellSfxActive=null;
 }
 function hellSfxAllowed(){
- return state.open&&state.panel==='play'&&selectedGame()?.status==='active'&&!document.hidden;
+ return !muted&&state.open&&state.panel==='play'&&selectedGame()?.status==='active'&&!document.hidden;
 }
 function scheduleHellSfx(){
  clearTimeout(hellSfxTimer);
@@ -287,11 +292,11 @@ function syncHellSfx(){
  if(!hellSfxTimer&&!hellSfxCut&&!hellSfxActive)scheduleHellSfx();
 }
 function stopTicks(){clearInterval(tickTimer);tickTimer=null;}
-function tick(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.type='triangle';o.frequency.value=440;g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.001,t+.075);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.08);}catch(e){}}
-function syncTicks(game){const on=state.open&&state.panel==='play'&&game?.status==='active'&&!document.hidden;if(!on){stopTicks();return;}if(!tickTimer){tick();tickTimer=setInterval(()=>{if(document.hidden)stopTicks();else tick();},650);}}
+function tick(){if(muted)return;try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.type='triangle';o.frequency.value=440;g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.001,t+.075);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.08);}catch(e){}}
+function syncTicks(game){const on=!muted&&state.open&&state.panel==='play'&&game?.status==='active'&&!document.hidden;if(!on){stopTicks();return;}if(!tickTimer){tick();tickTimer=setInterval(()=>{if(document.hidden)stopTicks();else tick();},650);}}
 function thinkDelay(board){const filled=board.filter(Boolean).length;let threats=0;for(let c=0;c<7;c++){for(const side of [1,2]){const b=board.slice();for(let r=5;r>=0;r--){const i=r*7+c;if(!b[i]){b[i]=side;if(winningCells(b,side).size)threats++;break;}}}}const complexity=Math.min(1,filled/42+threats*.15);return Math.round(1000+3000*Math.min(1,.55*Math.random()+.45*complexity));}
-function unlockAudio(){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch(e){}}
-function bip(){try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.value=720;g.gain.setValueAtTime(.65,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.13);}catch(e){}}
+function unlockAudio(){if(muted)return;try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch(e){}}
+function bip(){if(muted)return;try{if(!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.value=720;g.gain.setValueAtTime(.65,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.13);}catch(e){}}
 function winningCells(board,winner){
  if(winner!==1&&winner!==2)return new Set();
  for(let r=0;r<6;r++)for(let c=0;c<7;c++)for(const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]){
@@ -313,6 +318,7 @@ function trackFourResult(g){
 }
 function render(){
  if(!root)return;
+ const sound=root.querySelector('.hf-sound');sound.textContent=muted?'SON OFF':'SON ON';sound.setAttribute('aria-pressed',String(muted));sound.setAttribute('aria-label',muted?'Réactiver le son':'Couper le son');
  const g=selectedGame();
  trackFourResult(g);
  const board=(Array.isArray(g?.board)&&g.board.length===42?g.board:Array(42).fill(0)).map(n=>Number(n)||0);
@@ -374,7 +380,7 @@ function close(){
 async function onClick(e){
  const action=e.target.closest('[data-hf]');
  if(!action||!root?.contains(action))return;
- const what=action.dataset.hf;unlockAudio();
+ const what=action.dataset.hf;if(what==='sound'){toggleSound();return;}unlockAudio();
  if(what==='close'){close();return;}
  if(what==='hide'){state.panel='play';render();return;}
  if(what==='lobby'){state.panel='lobby';render();return;}
