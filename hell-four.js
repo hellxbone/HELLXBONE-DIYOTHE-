@@ -207,7 +207,7 @@ function panelHtml(){
    ${pending.length?`<p><strong style="color:#ff8a70">${pending.length} défi(s) reçu(s)</strong></p>${pending.map(g=>`<div class="hf-row"><strong>${dot()}${esc(g.opponent)}</strong><button class="hf-action" data-hf="view" data-id="${g.id}">ACCEPTER</button></div>`).join('')}`:''}
    ${active.length?`<p><strong>Parties en cours</strong></p>${active.slice(0,10).map(g=>`<div class="hf-row"><strong>${dot()}${esc(g.opponent)}</strong><button class="hf-action" data-hf="view" data-id="${g.id}">${g.turn===g.me_side?'À TOI':'VOIR'}</button></div>`).join('')}`:''}
    ${outbound.length?`<p class="hf-minor">Défis envoyés : ${outbound.map(g=>esc(g.opponent)).join(', ')}</p>`:''}
-   <div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button>${state.data?.members?.length?`<button class="hf-action" data-hf="choose">DÉFIER UN MEMBRE</button>`:""}${g?`<button class="hf-action secondary" data-hf="hide">RETOUR À LA GRILLE</button>`:''}</div>`;
+   <div class="hf-actions"><button class="hf-action" data-hf="bot">JOUER CONTRE HELLX</button>${g?`<button class="hf-action secondary" data-hf="hide">RETOUR À LA GRILLE</button>`:''}</div><h2 style="font-size:15px">MEMBRES EN LIGNE (${(state.data?.members||[]).length})</h2>${(state.data?.members||[]).length?(state.data.members.map(m=>`<div class="hf-row"><strong>${dot()}${esc(m.pseudo)}</strong><button class="hf-action" data-hf="challenge" data-opponent="${esc(m.pseudo)}">INVITER</button></div>`).join("")):`<p class="hf-empty">${state.loaded?"Aucun autre membre en ligne.":"Recherche des membres en ligne…"}</p>`}`;
 }
 let audio=null, tickTimer=null;
 let introMaster=null;
